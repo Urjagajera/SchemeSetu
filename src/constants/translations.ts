@@ -177,7 +177,40 @@ export const TRANSLATIONS = {
     housing: "Housing",
     employment: "Employment",
     womenAndChild: "Women & Child",
-    seniorCitizens: "Senior Citizens"
+    seniorCitizens: "Senior Citizens",
+
+    // Bookmarks page
+    bookmarksSubtitle: "Here are the government welfare schemes you have bookmarked for quick access.",
+    noSavedSchemesTitle: "No saved schemes yet",
+    noSavedSchemesDesc: "Click the bookmark icon on any welfare scheme in the search catalog to save it for quick review.",
+    exploreSchemes: "Explore Schemes",
+
+    // Compare page
+    clearSelection: "Clear Selection",
+    noSchemesSelectedTitle: "No schemes selected",
+    noSchemesSelectedDesc: "Compare benefits, eligibility, and documents of up to 3 programs. Go to the search catalog to add schemes.",
+    scheme: "Scheme",
+    addScheme: "Add Scheme",
+    action: "Action",
+
+    // Eligibility page
+    results: "Results",
+    basedOnSavedProfile: "Based on your saved profile. Change metrics in your Profile Settings.",
+    profileSummary: "Profile Summary",
+    profileComplete: "Profile Complete",
+    availableMatches: "Available Matches",
+    noMatchingSchemesFoundDetails: "No matching welfare schemes found. Let's adjust details.",
+
+    // Help page
+    howCanWeHelp: "How can we help you?",
+    helpDesc: "Find answers to common questions about government eligibility matching, application workflows, and security.",
+    searchHelpArticles: "Search help articles...",
+    faqsTitle: "Frequently Asked Questions",
+    noArticlesFound: "No FAQ articles found matching",
+    stillHaveQuestions: "Still have questions? Contact Support",
+    emailSupport: "Email Support",
+    helpline: "Toll-Free Helpline",
+    liveChat: "Live Chat"
   },
   hi: {
     appName: "योजनासेतु",
@@ -357,7 +390,40 @@ export const TRANSLATIONS = {
     housing: "आवास",
     employment: "रोजगार",
     womenAndChild: "महिला और बाल",
-    seniorCitizens: "वरिष्ठ नागरिक"
+    seniorCitizens: "वरिष्ठ नागरिक",
+
+    // Bookmarks page
+    bookmarksSubtitle: "यहाँ वे सरकारी कल्याणकारी योजनाएँ दी गई हैं जिन्हें आपने त्वरित पहुँच के लिए सहेजा है।",
+    noSavedSchemesTitle: "अभी तक कोई सहेजी गई योजना नहीं है",
+    noSavedSchemesDesc: "त्वरित समीक्षा के लिए इसे सहेजने के लिए खोज कैटलॉग में किसी भी कल्याणकारी योजना पर बुकमार्क आइकन पर क्लिक करें।",
+    exploreSchemes: "योजनाएं खोजें",
+
+    // Compare page
+    clearSelection: "चयन साफ़ करें",
+    noSchemesSelectedTitle: "कोई योजना चयनित नहीं है",
+    noSchemesSelectedDesc: "3 कार्यक्रमों तक के लाभों, पात्रता और दस्तावेजों की तुलना करें। योजनाएं जोड़ने के लिए खोज सूची पर जाएं।",
+    scheme: "योजना",
+    addScheme: "योजना जोड़ें",
+    action: "कार्रवाई",
+
+    // Eligibility page
+    results: "परिणाम",
+    basedOnSavedProfile: "आपकी सहेजी गई प्रोफ़ाइल के आधार पर। अपनी प्रोफ़ाइल सेटिंग्स में विवरण बदलें।",
+    profileSummary: "प्रोफ़ाइल सारांश",
+    profileComplete: "प्रोफ़ाइल पूर्ण",
+    availableMatches: "उपलब्ध मिलान",
+    noMatchingSchemesFoundDetails: "कोई मेल खाती कल्याणकारी योजना नहीं मिली। कृपया विवरण समायोजित करें।",
+
+    // Help page
+    howCanWeHelp: "हम आपकी क्या सहायता कर सकते हैं?",
+    helpDesc: "सरकारी पात्रता मिलान, आवेदन वर्कफ़्लो और सुरक्षा के बारे में सामान्य प्रश्नों के उत्तर खोजें।",
+    searchHelpArticles: "सहायता लेख खोजें...",
+    faqsTitle: "अक्सर पूछे जाने वाले प्रश्न",
+    noArticlesFound: "खोज से मेल खाता कोई सहायता लेख नहीं मिला",
+    stillHaveQuestions: "अभी भी सवाल हैं? सहायता टीम से संपर्क करें",
+    emailSupport: "ईमेल सहायता",
+    helpline: "टोल-फ्री हेल्पलाइन",
+    liveChat: "लाइव चैट"
   },
   gu: {
     appName: "યોજનાસેતુ",
@@ -537,6 +603,39 @@ export const TRANSLATIONS = {
     housing: "આવાસ",
     employment: "રોગાર",
     womenAndChild: "મહિલા અને બાળ",
-    seniorCitizens: "વરિષ્ઠ નાગરિક"
+    seniorCitizens: "વરિષ્ઠ નાગરિક",
+
+    // Bookmarks page
+    bookmarksSubtitle: "ઝડપી ઍક્સેસ માટે તમે સાચવેલી સરકારી કલ્યાણકારી યોજનાઓ અહીં છે.",
+    noSavedSchemesTitle: "હજી સુધી કોઈ સાચવેલી યોજનાઓ નથી",
+    noSavedSchemesDesc: "ઝડપી સમીક્ષા માટે તેને સાચવવા માટે શોધ કેટલોગમાં કોઈપણ કલ્યાણકારી યોજના પર બુકમાર્ક આઇકોન પર ક્લિક કરો.",
+    exploreSchemes: "યોજનાઓ શોધો",
+
+    // Compare page
+    clearSelection: "પસંદગી સાફ કરો",
+    noSchemesSelectedTitle: "કોઈ યોજનાઓ પસંદ કરેલ નથી",
+    noSchemesSelectedDesc: "૩ પ્રોગ્રામ્સ સુધીના લાભો, પાત્રતા અને દસ્તાવેજોની સરખામણી કરો. યોજનાઓ ઉમેરવા માટે શોધ સૂચિ પર જાઓ.",
+    scheme: "યોજના",
+    addScheme: "યોજના ઉમેરો",
+    action: "કાર્યવાહી",
+
+    // Eligibility page
+    results: "પરિણામો",
+    basedOnSavedProfile: "તમારી સાચવેલી પ્રોફાઇલના આધારે. તમારી પ્રોફાઇલ સેટિંગ્સમાં ફેરફાર કરો.",
+    profileSummary: "પ્રોફાઇલ સારાંશ",
+    profileComplete: "પ્રોફાઇલ પૂર્ણ",
+    availableMatches: "ઉપલબ્ધ મેળ",
+    noMatchingSchemesFoundDetails: "કોઈ મેળ ખાતી કલ્યાણકારી યોજના મળી નથી. કૃપા કરીને વિગતો બદલો.",
+
+    // Help page
+    howCanWeHelp: "અમે તમારી શું મદદ કરી શકીએ?",
+    helpDesc: "સરકારી પાત્રતા મેળ, અરજી પ્રક્રિયા અને સુરક્ષા સંબંધિત સામાન્ય પ્રશ્નોના જવાબો શોધો.",
+    searchHelpArticles: "મદદ લેખો શોધો...",
+    faqsTitle: "વારંવાર પૂછાતા પ્રશ્નો",
+    noArticlesFound: "શોધ સાથે મેળ ખાતા કોઈ મદદ લેખો મળ્યા નથી",
+    stillHaveQuestions: "હજી પણ પ્રશ્નો છે? સપોર્ટ ટીમનો સંપર્ક કરો",
+    emailSupport: "ઇમેઇલ સપોર્ટ",
+    helpline: "ટોલ-ફ્રી હેલ્પલાઇન",
+    liveChat: "લાઇવ ચેટ"
   }
 };

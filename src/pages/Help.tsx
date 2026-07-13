@@ -16,35 +16,35 @@ export const Help: React.FC = () => {
 
   const faqs: FAQ[] = [
     {
-      q: 'How do I know which schemes I am eligible for?',
-      a: "Use our Eligibility Checker tool. Just answer a few simple questions about your age, income, occupation, and state, and we'll show you a personalized list of matching schemes instantly."
+      q: t('faqQ1') || 'How do I know which schemes I am eligible for?',
+      a: t('faqA1') || "Use our Eligibility Checker tool. Just answer a few simple questions about your age, income, occupation, and state, and we'll show you a personalized list of matching schemes instantly."
     },
     {
-      q: 'Is SchemeSetu an official government website?',
-      a: 'SchemeSetu is a citizen-assistance platform that aggregates publicly available information from official government portals like MyScheme.gov.in, Scholarships.gov.in, and others. We are not directly affiliated with the Government of India, but all scheme data is sourced from official sources.'
+      q: t('faqQ2') || 'Is SchemeSetu an official government website?',
+      a: t('faqA2') || 'SchemeSetu is a citizen-assistance platform that aggregates publicly available information from official government portals like MyScheme.gov.in, Scholarships.gov.in, and others. We are not directly affiliated with the Government of India, but all scheme data is sourced from official sources.'
     },
     {
-      q: 'Can I apply for a scheme directly through SchemeSetu?',
-      a: 'No. SchemeSetu helps you discover and understand schemes, check your eligibility, and prepare your documents. For the actual application, we redirect you to the official government portal for that specific scheme. This ensures your application is processed through official channels.'
+      q: t('faqQ3') || 'Can I apply for a scheme directly through SchemeSetu?',
+      a: t('faqA3') || 'No. SchemeSetu helps you discover and understand schemes, check your eligibility, and prepare your documents. For the actual application, we redirect you to the official government portal for that specific scheme. This ensures your application is processed through official channels.'
     },
     {
-      q: 'How often is the scheme data updated?',
-      a: 'Our team updates scheme information daily. New schemes, deadline changes, and eligibility updates are reflected within 24-48 hours of official announcement. You can subscribe to notifications to get instant alerts.'
+      q: t('faqQ4') || 'How often is the scheme data updated?',
+      a: t('faqA4') || 'Our team updates scheme information daily. New schemes, deadline changes, and eligibility updates are reflected within 24-48 hours of official announcement. You can subscribe to notifications to get instant alerts.'
     },
     {
-      q: 'Is my personal data safe on SchemeSetu?',
-      a: 'Yes. We use Google OAuth 2.0 for authentication, which means we never store your password. The eligibility check information you enter is used only to match you with schemes and is not stored permanently on our servers. Please refer to our Privacy Policy for full details.'
+      q: t('faqQ5') || 'Is my personal data safe on SchemeSetu?',
+      a: t('faqA5') || 'Yes. We use Google OAuth 2.0 for authentication, which means we never store your password. The eligibility check information you enter is used only to match you with schemes and is not stored permanently on our servers. Please refer to our Privacy Policy for full details.'
     },
     {
-      q: 'What documents are generally required for most schemes?',
-      a: 'Most central government schemes require: Aadhaar Card, Bank Account (linked to Aadhaar), Income Certificate (from Tehsildar/SDM), Caste Certificate (if applicable), Age Proof (Birth Certificate or Class 10 Marksheet), Address Proof, Passport-sized photographs. Always check the specific scheme\'s document list for exact requirements.'
+      q: t('faqQ6') || 'What documents are generally required for most schemes?',
+      a: t('faqA6') || 'Most central government schemes require: Aadhaar Card, Bank Account (linked to Aadhaar), Income Certificate (from Tehsildar/SDM), Caste Certificate (if applicable), Age Proof (Birth Certificate or Class 10 Marksheet), Address Proof, Passport-sized photographs. Always check the specific scheme\'s document list for exact requirements.'
     }
   ];
 
   const contactMethods = [
-    { icon: Mail, title: 'Email Support', value: 'helpdesk@schemesetu.gov.in', sub: 'Response within 24-48 hours' },
-    { icon: Phone, title: 'Toll-Free Helpline', value: '1800-111-2026', sub: 'Mon–Sat, 9 AM – 6 PM IST' },
-    { icon: MessageSquare, title: 'Live Chat', value: 'Available on Weekdays', sub: 'Avg. response: 2 minutes' }
+    { icon: Mail, title: t('emailSupport'), value: 'helpdesk@schemesetu.gov.in', sub: 'Response within 24-48 hours' },
+    { icon: Phone, title: t('helpline'), value: '1800-111-2026', sub: 'Mon–Sat, 9 AM – 6 PM IST' },
+    { icon: MessageSquare, title: t('liveChat'), value: 'Available on Weekdays', sub: 'Avg. response: 2 minutes' }
   ];
 
   const filteredFaqs = faqs.filter(faq => 
@@ -65,10 +65,10 @@ export const Help: React.FC = () => {
             <HelpCircle className="w-6 h-6 text-white" />
           </div>
           <h1 className="font-display text-2xl md:text-4xl font-extrabold text-white">
-            How can we help you?
+            {t('howCanWeHelp')}
           </h1>
           <p className="font-body text-xs md:text-sm text-sky-100/80 max-w-lg mx-auto leading-relaxed">
-            Find answers to common questions about government eligibility matching, application workflows, and security.
+            {t('helpDesc')}
           </p>
 
           {/* Search bar */}
@@ -79,7 +79,7 @@ export const Help: React.FC = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search help articles..."
+                placeholder={t('searchHelpArticles')}
                 className="w-full border-none focus:outline-none focus:ring-0 bg-transparent px-3 py-2 text-xs md:text-sm text-on-surface dark:text-white outline-none placeholder:text-zinc-550"
               />
             </div>
@@ -90,7 +90,7 @@ export const Help: React.FC = () => {
       {/* Main FAQ list */}
       <section className="py-16 max-w-3xl mx-auto px-4 w-full flex-grow space-y-8">
         <h2 className="font-heading text-lg md:text-xl font-extrabold text-primary dark:text-white text-center">
-          Frequently Asked Questions
+          {t('faqsTitle')}
         </h2>
 
         {filteredFaqs.length > 0 ? (
@@ -119,14 +119,14 @@ export const Help: React.FC = () => {
           </div>
         ) : (
           <p className="text-center text-xs text-on-surface-variant dark:text-zinc-500 italic py-8">
-            No FAQ articles found matching "{searchQuery}".
+            {t('noArticlesFound')} "{searchQuery}".
           </p>
         )}
 
         {/* Contact support widgets */}
         <div className="pt-10 border-t border-outline-variant dark:border-zinc-800">
           <h3 className="font-heading text-sm font-bold text-primary dark:text-white text-center mb-6">
-            Still have questions? Contact Support
+            {t('stillHaveQuestions')}
           </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

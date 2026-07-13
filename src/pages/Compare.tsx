@@ -15,6 +15,14 @@ export const Compare: React.FC = () => {
   const emptySlotsCount = 3 - comparedSchemes.length;
   const slots = [...comparedSchemes, ...Array(emptySlotsCount).fill(null)];
 
+  const getCategoryLabel = (c: string) => {
+    if (c.toLowerCase() === 'education') return t('scholarships');
+    if (c.toLowerCase() === 'healthcare') return t('healthInsurance');
+    if (c.toLowerCase() === 'agriculture') return t('farmerLoans');
+    if (c.toLowerCase() === 'senior citizens') return t('pensions');
+    return t(c.toLowerCase() as any) || c;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -36,9 +44,9 @@ export const Compare: React.FC = () => {
         {comparedSchemes.length > 0 && (
           <button
             onClick={clearCompare}
-            className="px-4 py-2 border border-red-200 text-red-600 dark:border-red-900/30 dark:text-red-400 bg-red-50/50 dark:bg-red-950/15 rounded-lg text-xs font-bold hover:bg-red-100 transition-all focus:outline-none w-fit"
+            className="px-4 py-2 border border-red-200 text-red-600 dark:border-red-900/30 dark:text-red-400 bg-red-50/50 dark:bg-red-950/15 rounded-lg text-xs font-bold hover:bg-red-100 transition-all focus:outline-none w-fit cursor-pointer"
           >
-            Clear Selection
+            {t('clearSelection')}
           </button>
         )}
       </div>
@@ -50,16 +58,16 @@ export const Compare: React.FC = () => {
               <ArrowLeftRight className="w-8 h-8" />
             </div>
             <h3 className="font-heading text-lg font-bold text-primary dark:text-white mb-2">
-              No schemes selected
+              {t('noSchemesSelectedTitle')}
             </h3>
             <p className="font-body text-sm text-on-surface-variant dark:text-zinc-400 mb-6">
-              Compare benefits, eligibility, and documents of up to 3 programs. Go to the search catalog to add schemes.
+              {t('noSchemesSelectedDesc')}
             </p>
             <button
               onClick={() => navigate('/search')}
-              className="px-6 py-2.5 bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 rounded-lg text-sm font-bold shadow-sm"
+              className="px-6 py-2.5 bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 rounded-lg text-sm font-bold shadow-sm cursor-pointer"
             >
-              Browse Schemes
+              {t('exploreSchemes')}
             </button>
           </div>
         </div>
@@ -69,7 +77,7 @@ export const Compare: React.FC = () => {
             
             {/* Header / Titles Row */}
             <div className="grid grid-cols-4 bg-surface-container-low/50 dark:bg-zinc-950/40 p-4 font-bold text-sm items-center text-primary dark:text-white">
-              <div className="col-span-1 text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs">Scheme</div>
+              <div className="col-span-1 text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs">{t('scheme')}</div>
               
               {slots.map((s, idx) => (
                 <div key={idx} className="col-span-1 px-4 relative">
@@ -77,13 +85,13 @@ export const Compare: React.FC = () => {
                     <div className="space-y-2 pr-6">
                       <button
                         onClick={() => removeFromCompare(s.id)}
-                        className="absolute top-0 right-0 p-1 text-red-500 hover:bg-red-50 dark:hover:bg-zinc-850 rounded focus:outline-none"
+                        className="absolute top-0 right-0 p-1 text-red-500 hover:bg-red-50 dark:hover:bg-zinc-850 rounded focus:outline-none cursor-pointer"
                         title="Remove"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
-                      <span className="bg-secondary-container/20 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-2 py-0.5 rounded text-[9px] uppercase tracking-wider">
-                        {s.category}
+                      <span className="bg-secondary-container/20 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold">
+                        {getCategoryLabel(s.category)}
                       </span>
                       <h4 className="font-heading text-xs md:text-sm font-extrabold leading-snug line-clamp-2">
                         {s.title}
@@ -95,7 +103,7 @@ export const Compare: React.FC = () => {
                       className="flex flex-col items-center justify-center border-2 border-dashed border-outline-variant dark:border-zinc-800 p-4 rounded-xl text-on-surface-variant hover:text-secondary hover:border-secondary dark:hover:border-sky-500 transition-all group py-8"
                     >
                       <Plus className="w-5 h-5 text-zinc-400 group-hover:scale-110 transition-transform" />
-                      <span className="text-[10px] font-bold mt-1 uppercase tracking-wider">Add Scheme</span>
+                      <span className="text-[10px] font-bold mt-1 uppercase tracking-wider">{t('addScheme')}</span>
                     </Link>
                   )}
                 </div>
@@ -104,7 +112,7 @@ export const Compare: React.FC = () => {
 
             {/* Ministry Row */}
             <div className="grid grid-cols-4 p-4 text-xs md:text-sm items-start text-on-surface dark:text-zinc-300">
-              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs">Ministry</div>
+              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs">{t('ministryLabel')}</div>
               {slots.map((s, idx) => (
                 <div key={idx} className="col-span-1 px-4 line-clamp-3 leading-relaxed">
                   {s ? s.ministry : <span className="text-zinc-300 dark:text-zinc-700">—</span>}
@@ -114,7 +122,7 @@ export const Compare: React.FC = () => {
 
             {/* Benefit Row */}
             <div className="grid grid-cols-4 p-4 text-xs md:text-sm items-start text-on-surface dark:text-zinc-300">
-              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs">Benefits</div>
+              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs">{t('benefitAmount')}</div>
               {slots.map((s, idx) => (
                 <div key={idx} className="col-span-1 px-4 font-bold text-secondary dark:text-sky-400 leading-relaxed">
                   {s ? s.benefit : <span className="text-zinc-300 dark:text-zinc-700 font-normal">—</span>}
@@ -124,7 +132,7 @@ export const Compare: React.FC = () => {
 
             {/* Eligibility Requirements Row */}
             <div className="grid grid-cols-4 p-4 text-xs md:text-sm items-start text-on-surface dark:text-zinc-300">
-              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs font-heading">Eligibility</div>
+              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs font-heading">{t('eligibility')}</div>
               {slots.map((s, idx) => (
                 <div key={idx} className="col-span-1 px-4 space-y-1">
                   {s ? (
@@ -136,7 +144,7 @@ export const Compare: React.FC = () => {
                       ))}
                       {s.eligibility.length > 3 && (
                         <li className="text-[10px] text-on-surface-variant dark:text-zinc-500 list-none pl-4 italic">
-                          +{s.eligibility.length - 3} more criteria...
+                          +{s.eligibility.length - 3} more...
                         </li>
                       )}
                     </ul>
@@ -149,7 +157,7 @@ export const Compare: React.FC = () => {
 
             {/* Documents Row */}
             <div className="grid grid-cols-4 p-4 text-xs md:text-sm items-start text-on-surface dark:text-zinc-300">
-              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs font-heading">Documents</div>
+              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs font-heading">{t('documentsRequired')}</div>
               {slots.map((s, idx) => (
                 <div key={idx} className="col-span-1 px-4 space-y-1">
                   {s ? (
@@ -174,7 +182,7 @@ export const Compare: React.FC = () => {
 
             {/* Actions Row */}
             <div className="grid grid-cols-4 p-4 text-xs md:text-sm items-center text-on-surface dark:text-zinc-300">
-              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs">Action</div>
+              <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs">{t('action')}</div>
               {slots.map((s, idx) => (
                 <div key={idx} className="col-span-1 px-4">
                   {s ? (
@@ -184,7 +192,7 @@ export const Compare: React.FC = () => {
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-1 px-3 py-1.5 bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 rounded text-xs font-bold hover:opacity-90 active:scale-95 transition-all w-fit shadow-sm"
                     >
-                      Apply
+                      {t('applyBtn')}
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   ) : (

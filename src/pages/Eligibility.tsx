@@ -92,6 +92,16 @@ export const Eligibility: React.FC = () => {
   };
 
   if (isAuthenticated) {
+    const getStateLabel = (s: string) => {
+      const key = `state_${s.replace(/\s+/g, '_').toLowerCase()}`;
+      return t(key as any) || s;
+    };
+
+    const getOccupationLabel = (o: string) => {
+      const key = `occ_${o.replace(/\s+/g, '_').toLowerCase()}`;
+      return t(key as any) || o;
+    };
+
     return (
       <div className="flex h-[calc(100vh-4rem)] overflow-hidden bg-background dark:bg-zinc-950 transition-colors w-full">
         <Sidebar activePage="eligibility" />
@@ -104,12 +114,12 @@ export const Eligibility: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="font-display text-2xl md:text-3xl font-extrabold text-primary dark:text-white">
-              {t('eligibility')} Results
+              {t('eligibilityResults') || `${t('eligibility')} Results`}
             </h1>
             <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-450 mt-1">
-              Based on your saved profile. Change metrics in your{' '}
+              {t('basedOnSavedProfile')}{' '}
               <Link to="/profile" className="text-secondary dark:text-sky-400 font-bold hover:underline">
-                Profile Settings
+                {t('profile')}
               </Link>.
             </p>
           </div>
@@ -117,32 +127,32 @@ export const Eligibility: React.FC = () => {
             to="/profile"
             className="flex items-center gap-1.5 px-4 py-2 border border-secondary text-secondary dark:border-sky-500 dark:text-sky-400 rounded-lg text-xs font-bold hover:bg-secondary/10 hover:text-secondary transition-all w-fit"
           >
-            Update Profile
+            {t('updateProfileBtn')}
           </Link>
         </div>
 
         {/* Profile overview cards (read only) */}
         <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 shadow-sm transition-colors space-y-4">
           <h2 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white flex items-center justify-between">
-            <span>Profile Summary</span>
+            <span>{t('profileSummary')}</span>
             <span className="bg-[#d1fadf] text-[#027a48] px-3 py-0.5 rounded-full text-[10px] font-bold">
-              Profile Complete
+              {t('profileComplete')}
             </span>
           </h2>
           
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: 'Age', value: `${loggedInProfile.age} yrs` },
-              { label: 'Gender', value: loggedInProfile.gender.toUpperCase() },
-              { label: 'Occupation', value: loggedInProfile.occupation },
-              { label: 'Annual Income', value: `₹${parseInt(loggedInProfile.income).toLocaleString()}` },
-              { label: 'Residence', value: loggedInProfile.residence },
-              { label: 'State', value: loggedInProfile.state },
-              { label: 'Social Category', value: loggedInProfile.category.toUpperCase() },
-              { label: 'Education', value: loggedInProfile.education }
+              { label: t('ageLabel'), value: `${loggedInProfile.age} ${t('years') || 'yrs'}` },
+              { label: t('genderLabel'), value: t(loggedInProfile.gender.toLowerCase() as any) || loggedInProfile.gender.toUpperCase() },
+              { label: t('occupationLabel'), value: getOccupationLabel(loggedInProfile.occupation) },
+              { label: t('incomeLabel'), value: `₹${parseInt(loggedInProfile.income).toLocaleString()}` },
+              { label: t('residence') || 'Residence', value: t(loggedInProfile.residence.toLowerCase() as any) || loggedInProfile.residence },
+              { label: t('stateLabel'), value: getStateLabel(loggedInProfile.state) },
+              { label: t('socialCategory') || 'Social Category', value: loggedInProfile.category.toUpperCase() },
+              { label: t('education') || 'Education', value: loggedInProfile.education }
             ].map((item, idx) => (
               <div key={idx} className="bg-surface-container-low dark:bg-zinc-950 p-2.5 rounded-lg text-xs">
-                <p className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-semibold">{item.label}</p>
+                <p className="text-[10px] text-on-surface-variant dark:text-zinc-550 font-semibold">{item.label}</p>
                 <p className="font-bold text-primary dark:text-white mt-0.5 truncate">{item.value}</p>
               </div>
             ))}
@@ -152,7 +162,7 @@ export const Eligibility: React.FC = () => {
         {/* Eligible schemes reports */}
         <div className="space-y-6">
           <h3 className="font-heading text-base md:text-lg font-bold text-primary dark:text-white pt-4">
-            Available Matches ({schemes.length})
+            {t('availableMatches')} ({schemes.length})
           </h3>
 
           {loading ? (
@@ -174,10 +184,10 @@ export const Eligibility: React.FC = () => {
           ) : (
             <div className="text-center py-16 bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl max-w-md mx-auto shadow-sm">
               <p className="text-sm text-on-surface-variant dark:text-zinc-550 italic mb-4">
-                No matching welfare schemes found. Let's adjust details.
+                {t('noMatchingSchemesFoundDetails')}
               </p>
               <Link to="/profile" className="px-5 py-2 bg-secondary text-white rounded-lg text-xs font-bold shadow-sm">
-                Update Profile
+                {t('updateProfileBtn')}
               </Link>
             </div>
           )}

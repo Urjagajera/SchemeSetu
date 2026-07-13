@@ -52,7 +52,7 @@ export const Bookmarks: React.FC = () => {
           {t('bookmarks')}
         </h1>
         <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 mt-1">
-          Here are the government welfare schemes you have bookmarked for quick access.
+          {t('bookmarksSubtitle')}
         </p>
       </div>
 
@@ -73,9 +73,9 @@ export const Bookmarks: React.FC = () => {
         <div className="flex-grow flex items-center justify-center py-10">
           <EmptyState
             iconName="Bookmark"
-            title="No saved schemes yet"
-            description="Click the bookmark icon on any welfare scheme in the search catalog to save it for quick review."
-            actionText="Explore Schemes"
+            title={t('noSavedSchemesTitle')}
+            description={t('noSavedSchemesDesc')}
+            actionText={t('exploreSchemes')}
             onAction={() => navigate('/search')}
             className="w-full max-w-md"
           />
