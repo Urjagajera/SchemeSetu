@@ -1,0 +1,265 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>SchemeSetu | Help &amp; Support</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .faq-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .faq-item.active .faq-content {
+            max-height: 500px;
+        }
+        .faq-item.active .chevron-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#efedf1",
+                        "secondary": "#1960a3",
+                        "surface-container-low": "#f4f3f7",
+                        "on-tertiary-fixed": "#001d37",
+                        "on-background": "#1a1c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2f3033",
+                        "on-surface-variant": "#43474e",
+                        "tertiary-container": "#003762",
+                        "on-tertiary-container": "#58a2f0",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e3e2e6",
+                        "tertiary-fixed-dim": "#9fcaff",
+                        "background": "#faf9fd",
+                        "on-secondary-container": "#00477f",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#001c38",
+                        "secondary-container": "#7db6ff",
+                        "tertiary-fixed": "#d2e4ff",
+                        "primary-fixed-dim": "#adc7f7",
+                        "inverse-primary": "#adc7f7",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004881",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-tint": "#455f88",
+                        "outline-variant": "#c4c6cf",
+                        "tertiary": "#00213e",
+                        "on-primary-container": "#86a0cd",
+                        "surface-container-high": "#e9e7eb",
+                        "on-surface": "#1a1c1e",
+                        "secondary-fixed-dim": "#a2c9ff",
+                        "surface-bright": "#faf9fd",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "primary": "#002045",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-variant": "#e3e2e6",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1a365d",
+                        "inverse-on-surface": "#f1f0f4",
+                        "on-tertiary-fixed-variant": "#00497e",
+                        "surface-dim": "#dad9dd",
+                        "surface": "#faf9fd",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d3e4ff",
+                        "outline": "#74777f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "max-width": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "heading": ["Inter"],
+                        "display": ["Inter"],
+                        "display-mobile": ["Inter"],
+                        "body": ["Inter"],
+                        "small": ["Inter"]
+                    },
+                    "fontSize": {
+                        "heading": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "small": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant shadow-sm sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-16">
+<div class="text-heading font-heading font-bold text-primary">
+                SchemeSetu
+            </div>
+<nav class="hidden md:flex items-center gap-stack-lg">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Schemes</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body text-body" href="#">About</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-secondary">language</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-secondary">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg min-h-[calc(100vh-128px)]">
+<!-- Hero Section -->
+<section class="mb-stack-lg text-center md:text-left">
+<h1 class="font-display text-display mb-stack-sm text-primary">How can we help you today?</h1>
+<p class="font-body text-body text-on-surface-variant max-w-2xl">Find answers to common questions about government schemes, eligibility, and the application process.</p>
+</section>
+<!-- Search & Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: FAQ Section -->
+<div class="lg:col-span-8">
+<!-- Search Bar -->
+<div class="relative mb-stack-lg">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-12 pr-4 py-4 rounded-xl border border-outline-variant focus:ring-2 focus:ring-secondary focus:border-secondary transition-all bg-surface-container-lowest font-body" id="faqSearch" placeholder="Search for questions (e.g., 'How to apply?')" type="text">
+</div>
+<!-- FAQ Accordion -->
+<div class="space-y-stack-md" id="faqAccordion">
+<!-- FAQ Item 1 -->
+<div class="faq-item border border-outline-variant rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow active">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleFaq(this)">
+<span class="font-heading text-body font-semibold text-on-surface">How to apply for a scheme?</span>
+<span class="material-symbols-outlined chevron-icon faq-transition text-secondary">expand_more</span>
+</button>
+<div class="faq-content faq-transition bg-surface-container-lowest">
+<div class="p-stack-md pt-0 text-on-surface-variant font-body">
+                                To apply for a scheme, first identify the scheme that matches your needs using our 'Schemes' section. Once identified, click on 'Apply Now', fill in the required details in the digital form, and upload the necessary documents. You will receive an application ID for tracking.
+                            </div>
+</div>
+</div>
+<!-- FAQ Item 2 -->
+<div class="faq-item border border-outline-variant rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleFaq(this)">
+<span class="font-heading text-body font-semibold text-on-surface">What are the eligibility criteria?</span>
+<span class="material-symbols-outlined chevron-icon faq-transition text-secondary">expand_more</span>
+</button>
+<div class="faq-content faq-transition bg-surface-container-lowest">
+<div class="p-stack-md pt-0 text-on-surface-variant font-body">
+                                Eligibility varies by scheme. Generally, it depends on factors like annual income, age, residence (state/district), and category (e.g., student, farmer, artisan). Each scheme page has a dedicated 'Eligibility' tab with detailed requirements.
+                            </div>
+</div>
+</div>
+<!-- FAQ Item 3 -->
+<div class="faq-item border border-outline-variant rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleFaq(this)">
+<span class="font-heading text-body font-semibold text-on-surface">Can I track my application status?</span>
+<span class="material-symbols-outlined chevron-icon faq-transition text-secondary">expand_more</span>
+</button>
+<div class="faq-content faq-transition bg-surface-container-lowest">
+<div class="p-stack-md pt-0 text-on-surface-variant font-body">
+                                Yes. Navigate to your 'Dashboard' and select 'Applications'. You can enter your application ID or use your registered mobile number to view the real-time status of your request.
+                            </div>
+</div>
+</div>
+<!-- FAQ Item 4 -->
+<div class="faq-item border border-outline-variant rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<button class="w-full flex items-center justify-between p-stack-md text-left focus:outline-none" onclick="toggleFaq(this)">
+<span class="font-heading text-body font-semibold text-on-surface">What documents are commonly required?</span>
+<span class="material-symbols-outlined chevron-icon faq-transition text-secondary">expand_more</span>
+</button>
+<div class="faq-content faq-transition bg-surface-container-lowest">
+<div class="p-stack-md pt-0 text-on-surface-variant font-body">
+                                Common documents include Aadhaar Card, Pan Card, Income Certificate, Domicile Certificate, and Bank Account details. Specific schemes may require additional proofs like educational certificates or land records.
+                            </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Side Panel -->
+
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-primary py-stack-lg px-margin-desktop mt-stack-lg">
+<div class="max-w-max-width mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div class="text-heading font-heading text-on-primary">SchemeSetu</div>
+<div class="flex flex-wrap justify-center gap-stack-md">
+<a class="font-small text-small text-on-primary-container hover:text-on-primary hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="font-small text-small text-on-primary-container hover:text-on-primary hover:underline transition-all" href="#">Terms of Service</a>
+<a class="font-small text-small text-on-primary-container hover:text-on-primary hover:underline transition-all" href="#">Help Desk</a>
+<a class="font-small text-small text-on-primary-container hover:text-on-primary hover:underline transition-all" href="#">Contact Us</a>
+</div>
+<p class="font-small text-small text-on-primary-container text-center md:text-right">
+                © 2024 SchemeSetu - Government of India. All rights reserved.
+            </p>
+</div>
+</footer>
+<script>
+        function toggleFaq(button) {
+            const item = button.parentElement;
+            const isOpen = item.classList.contains('active');
+            
+            // Close all items
+            document.querySelectorAll('.faq-item').forEach(faq => {
+                faq.classList.remove('active');
+            });
+
+            // Open clicked item if it was closed
+            if (!isOpen) {
+                item.classList.add('active');
+            }
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('faqSearch');
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            faqItems.forEach(item => {
+                const question = item.querySelector('button span').textContent.toLowerCase();
+                if (question.includes(term)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize first FAQ as open
+        window.addEventListener('load', () => {
+            if(faqItems.length > 0) {
+                faqItems[0].classList.add('active');
+            }
+        });
+    </script>
+
+
+</body></html>

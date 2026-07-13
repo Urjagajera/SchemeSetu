@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Application Tracking | SchemeSetu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#efedf1",
+                    "secondary": "#1960a3",
+                    "surface-container-low": "#f4f3f7",
+                    "on-tertiary-fixed": "#001d37",
+                    "on-background": "#1a1c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#2f3033",
+                    "on-surface-variant": "#43474e",
+                    "tertiary-container": "#003762",
+                    "on-tertiary-container": "#58a2f0",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e3e2e6",
+                    "tertiary-fixed-dim": "#9fcaff",
+                    "background": "#faf9fd",
+                    "on-secondary-container": "#00477f",
+                    "error": "#ba1a1a",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#001c38",
+                    "secondary-container": "#7db6ff",
+                    "tertiary-fixed": "#d2e4ff",
+                    "primary-fixed-dim": "#adc7f7",
+                    "inverse-primary": "#adc7f7",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#004881",
+                    "primary-fixed": "#d6e3ff",
+                    "surface-tint": "#455f88",
+                    "outline-variant": "#c4c6cf",
+                    "tertiary": "#00213e",
+                    "on-primary-container": "#86a0cd",
+                    "surface-container-high": "#e9e7eb",
+                    "on-surface": "#1a1c1e",
+                    "secondary-fixed-dim": "#a2c9ff",
+                    "surface-bright": "#faf9fd",
+                    "on-primary-fixed-variant": "#2d476f",
+                    "primary": "#002045",
+                    "on-primary-fixed": "#001b3c",
+                    "surface-variant": "#e3e2e6",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "primary-container": "#1a365d",
+                    "inverse-on-surface": "#f1f0f4",
+                    "on-tertiary-fixed-variant": "#00497e",
+                    "surface-dim": "#dad9dd",
+                    "surface": "#faf9fd",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#d3e4ff",
+                    "outline": "#74777f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "16px",
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "max-width": "1280px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "heading": ["Inter"],
+                    "display": ["Inter"],
+                    "display-mobile": ["Inter"],
+                    "body": ["Inter"],
+                    "small": ["Inter"]
+            },
+            "fontSize": {
+                    "heading": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "small": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-active .step-line { background-color: #1960a3; }
+        .step-complete .step-line { background-color: #1960a3; }
+        .step-pending .step-line { background-color: #e3e2e6; }
+        
+        .zebra-table tr:nth-child(even) { background-color: #f4f3f7; }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant shadow-sm sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-16">
+<div class="flex items-center gap-stack-md">
+<span class="text-heading font-heading font-bold text-primary">SchemeSetu</span>
+<div class="hidden md:flex items-center gap-stack-lg ml-stack-lg">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Home</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body text-body" href="#">Schemes</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">About</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full text-small font-small w-64 focus:ring-2 focus:ring-secondary" placeholder="Search applications..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-all">
+<span class="material-symbols-outlined text-secondary">language</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-all">
+<span class="material-symbols-outlined text-secondary">account_circle</span>
+</button>
+</div>
+</nav>
+</header>
+<div class="flex max-w-max-width mx-auto min-h-screen">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-screen sticky top-16 w-64 p-stack-md border-r border-outline-variant bg-surface-container-low">
+<div class="mb-stack-lg px-4">
+<h2 class="text-primary font-heading text-heading">Welcome back</h2>
+<p class="text-on-surface-variant font-small text-small">Citizen Account</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors font-small text-small" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-stack-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-3 font-small text-small" href="#">
+<span class="material-symbols-outlined">assignment</span>
+                    Applications
+                </a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors font-small text-small" href="#">
+<span class="material-symbols-outlined">person</span>
+                    Profile
+                </a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors font-small text-small" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+</nav>
+<div class="mt-auto p-4 bg-primary-container/10 rounded-xl border border-primary-container/20">
+<p class="text-on-primary-container font-small text-small mb-2">Need Help?</p>
+<p class="text-on-surface-variant text-[12px] leading-tight mb-3">Our support team is available 24/7 for application queries.</p>
+<button class="w-full py-2 bg-secondary text-on-secondary rounded-lg font-small text-small hover:opacity-90 transition-opacity">Contact Us</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-margin-mobile md:p-stack-lg overflow-x-hidden">
+<div class="mb-stack-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<nav class="flex items-center gap-2 text-on-surface-variant font-small text-small mb-2">
+<span>Applications</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-secondary">APP-2024-8832</span>
+</nav>
+<h1 class="font-display text-display text-primary leading-tight">Scholarship for SC Students</h1>
+<div class="flex items-center gap-stack-sm mt-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-small font-small">In Progress</span>
+<span class="text-on-surface-variant font-small text-small">• Submitted on Oct 24, 2024</span>
+</div>
+</div>
+<div class="flex gap-stack-sm">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline text-secondary rounded-lg font-small text-small hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">download</span>
+                            Download Receipt
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-secondary text-on-secondary rounded-lg font-small text-small hover:opacity-90 shadow-md transition-all">
+<span class="material-symbols-outlined">mail</span>
+                            Contact Nodal Officer
+                        </button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Timeline Section (Level 1 Card) -->
+<section class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-lg shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<h3 class="font-heading text-heading text-primary mb-stack-lg">Application Progress</h3>
+<div class="relative space-y-0">
+<!-- Step 1: Complete -->
+<div class="flex gap-stack-lg group">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-on-secondary z-10 shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-[2px] h-20 bg-secondary"></div>
+</div>
+<div class="pt-1">
+<h4 class="font-heading text-body font-bold text-on-surface">Submitted</h4>
+<p class="text-on-surface-variant font-small text-small">Application received by the Department of Social Justice.</p>
+<span class="inline-block mt-1 text-[12px] text-secondary font-bold">Oct 24, 2024 • 10:30 AM</span>
+</div>
+</div>
+<!-- Step 2: Complete -->
+<div class="flex gap-stack-lg group">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-on-secondary z-10 shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-[2px] h-20 bg-secondary"></div>
+</div>
+<div class="pt-1">
+<h4 class="font-heading text-body font-bold text-on-surface">Under Review</h4>
+<p class="text-on-surface-variant font-small text-small">Initial screening completed by District Welfare Officer.</p>
+<span class="inline-block mt-1 text-[12px] text-secondary font-bold">Oct 28, 2024 • 02:15 PM</span>
+</div>
+</div>
+<!-- Step 3: Active -->
+<div class="flex gap-stack-lg group">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-secondary-container border-4 border-secondary flex items-center justify-center text-on-secondary-container z-10 shrink-0 relative">
+<div class="absolute inset-0 rounded-full animate-ping bg-secondary/20"></div>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">hourglass_top</span>
+</div>
+<div class="w-[2px] h-20 bg-outline-variant"></div>
+</div>
+<div class="pt-1">
+<h4 class="font-heading text-body font-bold text-secondary">Document Verification</h4>
+<p class="text-on-surface-variant font-small text-small">Physical verification of uploaded certificates is in progress.</p>
+<div class="mt-3 p-3 bg-surface-container-low rounded-lg border-l-4 border-secondary">
+<p class="text-[12px] text-on-surface font-medium">Estimated Completion: Nov 05, 2024</p>
+</div>
+</div>
+</div>
+<!-- Step 4: Pending -->
+<div class="flex gap-stack-lg group">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface-variant z-10 shrink-0">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<div class="w-[2px] h-20 bg-outline-variant"></div>
+</div>
+<div class="pt-1">
+<h4 class="font-heading text-body font-bold text-outline">Approved</h4>
+<p class="text-on-surface-variant font-small text-small">Final approval by the State Scholarship Board.</p>
+</div>
+</div>
+<!-- Step 5: Pending -->
+<div class="flex gap-stack-lg group">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-on-surface-variant z-10 shrink-0">
+<span class="material-symbols-outlined">payments</span>
+</div>
+</div>
+<div class="pt-1">
+<h4 class="font-heading text-body font-bold text-outline">Disbursed</h4>
+<p class="text-on-surface-variant font-small text-small">Direct Benefit Transfer (DBT) to your linked bank account.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Side Panel (Document Status) -->
+<aside class="lg:col-span-5 space-y-gutter">
+<!-- Document Status Table -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-md shadow-[0px_4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex items-center justify-between mb-stack-md">
+<h3 class="font-heading text-body font-bold text-primary">Document Status</h3>
+<span class="text-[12px] text-on-surface-variant bg-surface-container px-2 py-1 rounded">5 Uploaded</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left zebra-table">
+<thead class="bg-primary text-on-primary">
+<tr>
+<th class="p-3 font-small text-small rounded-tl-lg">File Name</th>
+<th class="p-3 font-small text-small rounded-tr-lg">Status</th>
+</tr>
+</thead>
+<tbody class="text-small font-small">
+<tr>
+<td class="p-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">description</span>
+                                            Caste_Certificate.pdf
+                                        </td>
+<td class="p-3">
+<span class="flex items-center gap-1 text-[#2e7d32]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                                Verified
+                                            </span>
+</td>
+</tr>
+<tr>
+<td class="p-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">description</span>
+                                            Income_Proof_2023.pdf
+                                        </td>
+<td class="p-3">
+<span class="flex items-center gap-1 text-[#2e7d32]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                                Verified
+                                            </span>
+</td>
+</tr>
+<tr>
+<td class="p-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">description</span>
+                                            Aadhar_Card.pdf
+                                        </td>
+<td class="p-3">
+<span class="flex items-center gap-1 text-[#2e7d32]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                                Verified
+                                            </span>
+</td>
+</tr>
+<tr>
+<td class="p-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[20px]">warning</span>
+                                            Mark_Sheet_12th.pdf
+                                        </td>
+<td class="p-3">
+<span class="flex flex-col">
+<span class="flex items-center gap-1 text-error">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">cancel</span>
+                                                    Rejected
+                                                </span>
+<button class="text-secondary text-[10px] text-left underline font-bold mt-1">Re-upload</button>
+</span>
+</td>
+</tr>
+<tr>
+<td class="p-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">description</span>
+                                            Bank_Passbook.pdf
+                                        </td>
+<td class="p-3">
+<span class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                                Pending
+                                            </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Profile Context Card -->
+<section class="bg-primary text-on-primary rounded-xl p-stack-md relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-heading text-body font-bold mb-2">Officer Assigned</h3>
+<div class="flex items-center gap-stack-sm mb-4">
+<img class="w-12 h-12 rounded-full border-2 border-on-primary/20 object-cover" data-alt="A professional headshot of a middle-aged male government official in formal attire, set against a clean, light blue office background with the official seal of the Government of India. The lighting is soft and flattering, emphasizing trustworthiness and administrative authority. The overall style is modern corporate photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkPwK4QzhfAAAfbXRiNqflZdFa9oMRH_EWk9o_RqPYfaS4mqr54p1sr9TQL5Tap1cFjNQMwgTe20i63hGiPup0L1AfpLBz5MDcH6purcQkcB4VLuKyn627-zA8Lyq-CDrH7VTlN45AaQHg7-7HqD_JF-WYVPajDiCsECWFetwrGSHmZFAEpi5doJ8fd8vNCeacjv7CPCWnYYmE0Yx6JXvY7tMUgI3oPfagLDvsGFLAnGN3C_FT06up"/>
+<div>
+<p class="font-small text-small font-bold">Rakesh Sharma</p>
+<p class="text-[12px] opacity-80">District Welfare Officer, Jaipur</p>
+</div>
+</div>
+<button class="w-full py-2 bg-on-primary text-primary rounded-lg font-small text-small font-bold hover:bg-surface-container-low transition-colors">
+                                View Full Directory
+                            </button>
+</div>
+<!-- Subtle Background Pattern -->
+<div class="absolute right-[-20px] bottom-[-20px] opacity-10">
+<span class="material-symbols-outlined text-[120px]">account_balance</span>
+</div>
+</section>
+<!-- Alert Banner -->
+<div class="p-4 bg-error-container border border-error/20 rounded-xl flex gap-3">
+<span class="material-symbols-outlined text-error">error</span>
+<div>
+<p class="text-on-error-container font-small text-small font-bold">Action Required</p>
+<p class="text-on-error-container text-[12px]">Please re-upload your 12th Grade Marksheet. The current file is blurred and unreadable.</p>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-primary border-t border-primary-fixed-dim/20">
+<div class="w-full py-stack-lg px-margin-desktop max-w-max-width mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div class="flex flex-col md:items-start items-center">
+<span class="text-heading font-heading text-on-primary mb-2">SchemeSetu</span>
+<p class="font-small text-small text-on-primary-container text-center md:text-left">© 2024 SchemeSetu - Government of India. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-stack-md">
+<a class="text-on-primary-container hover:text-on-primary transition-all font-small text-small" href="#">Privacy Policy</a>
+<a class="text-on-primary-container hover:text-on-primary transition-all font-small text-small" href="#">Terms of Service</a>
+<a class="text-on-primary-container hover:text-on-primary transition-all font-small text-small" href="#">Help Desk</a>
+<a class="text-on-primary-container hover:text-on-primary transition-all font-small text-small" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+<!-- Interactive Scripts -->
+<script>
+        // Simple micro-interaction for document hover
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0px)';
+            });
+        });
+
+        // Pulsing notification icon if action required
+        const alertBanner = document.querySelector('.bg-error-container');
+        if(alertBanner) {
+            setInterval(() => {
+                alertBanner.classList.toggle('opacity-90');
+            }, 1000);
+        }
+    </script>
+</body></html>

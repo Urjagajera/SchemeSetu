@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SchemeSetu - Eligibility Checker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-container": "#efedf1",
+                "secondary": "#1960a3",
+                "surface-container-low": "#f4f3f7",
+                "on-tertiary-fixed": "#001d37",
+                "on-background": "#1a1c1e",
+                "surface-container-lowest": "#ffffff",
+                "inverse-surface": "#2f3033",
+                "on-surface-variant": "#43474e",
+                "tertiary-container": "#003762",
+                "on-tertiary-container": "#58a2f0",
+                "on-secondary": "#ffffff",
+                "surface-container-highest": "#e3e2e6",
+                "tertiary-fixed-dim": "#9fcaff",
+                "background": "#faf9fd",
+                "on-secondary-container": "#00477f",
+                "error": "#ba1a1a",
+                "on-primary": "#ffffff",
+                "on-secondary-fixed": "#001c38",
+                "secondary-container": "#7db6ff",
+                "tertiary-fixed": "#d2e4ff",
+                "primary-fixed-dim": "#adc7f7",
+                "inverse-primary": "#adc7f7",
+                "on-tertiary": "#ffffff",
+                "on-secondary-fixed-variant": "#004881",
+                "primary-fixed": "#d6e3ff",
+                "surface-tint": "#455f88",
+                "outline-variant": "#c4c6cf",
+                "tertiary": "#00213e",
+                "on-primary-container": "#86a0cd",
+                "surface-container-high": "#e9e7eb",
+                "on-surface": "#1a1c1e",
+                "secondary-fixed-dim": "#a2c9ff",
+                "surface-bright": "#faf9fd",
+                "on-primary-fixed-variant": "#2d476f",
+                "primary": "#002045",
+                "on-primary-fixed": "#001b3c",
+                "surface-variant": "#e3e2e6",
+                "on-error-container": "#93000a",
+                "on-error": "#ffffff",
+                "primary-container": "#1a365d",
+                "inverse-on-surface": "#f1f0f4",
+                "on-tertiary-fixed-variant": "#00497e",
+                "surface-dim": "#dad9dd",
+                "surface": "#faf9fd",
+                "error-container": "#ffdad6",
+                "secondary-fixed": "#d3e4ff",
+                "outline": "#74777f"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "stack-md": "16px",
+                "margin-desktop": "64px",
+                "margin-mobile": "16px",
+                "stack-sm": "8px",
+                "stack-lg": "32px",
+                "max-width": "1280px",
+                "gutter": "24px"
+            },
+            "fontFamily": {
+                "heading": ["Inter"],
+                "display": ["Inter"],
+                "display-mobile": ["Inter"],
+                "body": ["Inter"],
+                "small": ["Inter"]
+            },
+            "fontSize": {
+                "heading": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "display-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "body": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                "small": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #F7FAFC;
+        }
+        .form-card-shadow {
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .active-step-bar {
+            width: 33.33%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="font-body text-body bg-surface text-on-surface">
+<!-- TopNavBar Component -->
+<header class="bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline shadow-sm docked full-width top-0 sticky z-50">
+<nav class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-16">
+<div class="text-heading font-heading font-bold text-primary dark:text-primary-fixed">
+                SchemeSetu
+            </div>
+<div class="hidden md:flex items-center gap-stack-lg h-full">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Home</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body text-body" href="#">Schemes</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">About</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 rounded-full hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all text-secondary">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all text-secondary">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</nav>
+</header>
+<main class="min-h-[calc(100vh-64px-100px)] flex flex-col items-center justify-center px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Eligibility Checker Form Container -->
+<div class="w-full max-w-2xl bg-surface-container-lowest rounded-xl border border-outline-variant form-card-shadow overflow-hidden">
+<!-- Progress Section -->
+<div class="px-stack-lg pt-stack-lg pb-stack-md bg-surface-container-low border-b border-outline-variant">
+<div class="flex justify-between items-end mb-stack-sm">
+<div>
+<span class="font-small text-small text-secondary block mb-1">Step 1 of 3</span>
+<h1 class="font-heading text-heading text-primary">Personal Info</h1>
+</div>
+<span class="font-small text-small text-on-surface-variant">33% Complete</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary active-step-bar"></div>
+</div>
+</div>
+<!-- Form Body -->
+<div class="p-stack-lg space-y-stack-lg">
+<p class="font-body text-body text-on-surface-variant">
+                    Please provide your basic demographic details to help us identify government schemes you may be eligible for.
+                </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<!-- Age Input -->
+<div class="space-y-1">
+<label class="block font-small text-small text-on-surface-variant font-semibold" for="age">Age</label>
+<input class="w-full h-12 px-4 border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none bg-surface" id="age" name="age" placeholder="e.g. 25" type="number"/>
+</div>
+<!-- Gender Selection -->
+<div class="space-y-1">
+<label class="block font-small text-small text-on-surface-variant font-semibold" for="gender">Gender</label>
+<select class="w-full h-12 px-4 border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none bg-surface appearance-none" id="gender" name="gender">
+<option disabled="" selected="" value="">Select Gender</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="transgender">Transgender</option>
+<option value="prefer_not_to_say">Prefer not to say</option>
+</select>
+</div>
+<!-- State Selection -->
+<div class="space-y-1">
+<label class="block font-small text-small text-on-surface-variant font-semibold" for="state">State</label>
+<select class="w-full h-12 px-4 border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none bg-surface appearance-none" id="state" name="state">
+<option disabled="" selected="" value="">Select State</option>
+<option value="delhi">Delhi</option>
+<option value="maharashtra">Maharashtra</option>
+<option value="karnataka">Karnataka</option>
+<option value="tamil_nadu">Tamil Nadu</option>
+</select>
+</div>
+<!-- District Selection -->
+<div class="space-y-1">
+<label class="block font-small text-small text-on-surface-variant font-semibold" for="district">District</label>
+<select class="w-full h-12 px-4 border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none bg-surface appearance-none" id="district" name="district">
+<option disabled="" selected="" value="">Select District</option>
+<option value="central">Central</option>
+<option value="north">North</option>
+<option value="south">South</option>
+</select>
+</div>
+</div>
+<!-- Info Box -->
+<div class="bg-tertiary-fixed p-4 rounded-lg flex gap-3 border border-on-tertiary-fixed-variant/10">
+<span class="material-symbols-outlined text-on-tertiary-fixed">info</span>
+<p class="font-small text-small text-on-tertiary-fixed leading-snug">
+                        Your data is processed securely and used only for eligibility calculation as per National Data Governance Policy.
+                    </p>
+</div>
+</div>
+<!-- Form Footer / Navigation -->
+<div class="px-stack-lg py-stack-md bg-surface-container-low flex justify-end items-center border-t border-outline-variant">
+<button class="bg-secondary hover:bg-on-secondary-container text-on-secondary font-heading text-body px-8 h-12 rounded-lg transition-all active:scale-95 shadow-md flex items-center gap-2">
+                    Next
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Decorative Element -->
+<div class="mt-stack-lg flex items-center gap-stack-sm text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="font-small text-small">Secure 256-bit SSL Encrypted Connection</span>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="bg-primary dark:bg-on-tertiary-fixed w-full py-stack-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md mt-auto">
+<div class="text-heading font-heading text-on-primary">SchemeSetu</div>
+<div class="flex flex-wrap justify-center gap-stack-md">
+<a class="font-small text-small text-on-primary-container hover:text-on-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-small text-small text-on-primary-container hover:text-on-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-small text-small text-on-primary-container hover:text-on-primary transition-colors" href="#">Help Desk</a>
+<a class="font-small text-small text-on-primary-container hover:text-on-primary transition-colors" href="#">Contact Us</a>
+</div>
+<div class="font-small text-small text-on-primary opacity-90 text-center md:text-right">
+            © 2024 SchemeSetu - Government of India. All rights reserved.
+        </div>
+</footer>
+<!-- Background Decoration (Optional Micro-interaction) -->
+<div class="fixed inset-0 -z-10 pointer-events-none opacity-20">
+<div class="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary-container/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-tertiary-fixed/30 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
+</div>
+<script>
+        // Simple micro-interaction for button press
+        document.querySelector('button.bg-secondary').addEventListener('mousedown', function() {
+            this.classList.add('opacity-80');
+        });
+        document.querySelector('button.bg-secondary').addEventListener('mouseup', function() {
+            this.classList.remove('opacity-80');
+        });
+        
+        // Dynamic district update (Mock)
+        const stateSelect = document.getElementById('state');
+        const districtSelect = document.getElementById('district');
+        
+        stateSelect.addEventListener('change', (e) => {
+            const value = e.target.value;
+            districtSelect.innerHTML = `<option value="" disabled selected>Select District in ${value.charAt(0).toUpperCase() + value.slice(1)}</option>
+                                       <option value="dist_1">District A</option>
+                                       <option value="dist_2">District B</option>
+                                       <option value="dist_3">District C</option>`;
+            districtSelect.classList.add('border-secondary');
+            setTimeout(() => districtSelect.classList.remove('border-secondary'), 1000);
+        });
+    </script>
+</body></html>

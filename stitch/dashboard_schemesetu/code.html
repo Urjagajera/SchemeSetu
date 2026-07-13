@@ -1,0 +1,332 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>SchemeSetu - User Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf9fd;
+        }
+        .bento-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bento-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e3e2e6;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Theme Config Script -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#efedf1",
+                        "secondary": "#1960a3",
+                        "surface-container-low": "#f4f3f7",
+                        "on-tertiary-fixed": "#001d37",
+                        "on-background": "#1a1c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2f3033",
+                        "on-surface-variant": "#43474e",
+                        "tertiary-container": "#003762",
+                        "on-tertiary-container": "#58a2f0",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e3e2e6",
+                        "tertiary-fixed-dim": "#9fcaff",
+                        "background": "#faf9fd",
+                        "on-secondary-container": "#00477f",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#001c38",
+                        "secondary-container": "#7db6ff",
+                        "tertiary-fixed": "#d2e4ff",
+                        "primary-fixed-dim": "#adc7f7",
+                        "inverse-primary": "#adc7f7",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004881",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-tint": "#455f88",
+                        "outline-variant": "#c4c6cf",
+                        "tertiary": "#00213e",
+                        "on-primary-container": "#86a0cd",
+                        "surface-container-high": "#e9e7eb",
+                        "on-surface": "#1a1c1e",
+                        "secondary-fixed-dim": "#a2c9ff",
+                        "surface-bright": "#faf9fd",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "primary": "#002045",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-variant": "#e3e2e6",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1a365d",
+                        "inverse-on-surface": "#f1f0f4",
+                        "on-tertiary-fixed-variant": "#00497e",
+                        "surface-dim": "#dad9dd",
+                        "surface": "#faf9fd",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d3e4ff",
+                        "outline": "#74777f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "max-width": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "heading": ["Inter"],
+                        "display": ["Inter"],
+                        "display-mobile": ["Inter"],
+                        "body": ["Inter"],
+                        "small": ["Inter"]
+                    },
+                    "fontSize": {
+                        "heading": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "small": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<!-- TopNavBar Implementation -->
+<header class="bg-surface fixed top-0 w-full z-50 border-b border-outline-variant shadow-sm h-16">
+<nav class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-full">
+<div class="text-heading font-heading font-bold text-primary">SchemeSetu</div>
+<div class="hidden md:flex items-center gap-stack-lg">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Schemes</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">About</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 rounded-full bg-surface-container-low border-none focus:ring-2 focus:ring-secondary w-64 text-small font-small" placeholder="Search schemes..." type="text">
+</div>
+<button class="material-symbols-outlined text-secondary p-2 hover:bg-surface-container-low rounded-full transition-all">language</button>
+<button class="material-symbols-outlined text-secondary p-2 hover:bg-surface-container-low rounded-full transition-all">account_circle</button>
+</div>
+</nav>
+</header>
+<div class="flex pt-16 h-screen overflow-hidden">
+<!-- SideNavBar Implementation -->
+<aside class="hidden md:flex flex-col h-full p-stack-md border-r border-outline-variant bg-surface-container-low w-64 shrink-0 overflow-y-auto">
+<div class="mb-stack-lg px-4 pt-4">
+<div class="flex items-center gap-stack-sm mb-2">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold">R</div>
+<div>
+<p class="font-heading text-primary text-[16px] font-bold">Rajesh Kumar</p>
+<p class="font-small text-small text-on-surface-variant">Citizen Account</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-stack-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-3 font-small text-small" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors font-small text-small" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+                    Saved Schemes
+                </a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors font-small text-small" href="#">
+<span class="material-symbols-outlined">assignment</span>
+                    Applications
+                </a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors font-small text-small" href="#">
+<span class="material-symbols-outlined">person</span>
+                    Profile
+                </a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors font-small text-small" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+</nav>
+<div class="mt-auto p-4 bg-tertiary-fixed rounded-xl">
+<p class="text-on-tertiary-fixed font-bold text-small mb-1">Support Desk</p>
+<p class="text-on-tertiary-fixed-variant text-[12px] leading-tight mb-3">Need help with your application?</p>
+<button class="bg-on-tertiary-fixed text-tertiary-fixed text-[12px] px-4 py-2 rounded-lg font-bold w-full">Contact Expert</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="px-margin-desktop py-stack-lg max-w-[1000px] mx-auto">
+<!-- Greeting -->
+<div class="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+<div>
+<h1 class="font-display text-display text-primary mb-2">Welcome back, Rajesh</h1>
+<p class="font-body text-body text-on-surface-variant">Here is an overview of your government services and active requests.</p>
+</div>
+<div class="flex gap-stack-sm">
+<button class="px-6 py-2.5 bg-secondary text-on-secondary rounded-full font-small text-small shadow-sm hover:opacity-90 active:scale-95 transition-all">Find New Schemes</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md">
+<!-- Active Applications (Main Bento Cell) -->
+<div class="md:col-span-8 bento-card bg-surface-container-lowest rounded-xl border border-outline-variant p-stack-lg shadow-sm">
+<div class="flex items-center justify-between mb-stack-lg">
+<h2 class="font-heading text-heading text-primary">Active Applications</h2>
+<button class="text-secondary font-small text-small hover:underline">View All</button>
+</div>
+<div class="space-y-4">
+<!-- Application Item 1 -->
+<div class="flex items-center justify-between p-4 bg-surface rounded-lg border border-outline-variant/30">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">agriculture</span>
+</div>
+<div>
+<h3 class="font-body text-body font-bold text-on-surface">PM-Kisan Nidhi</h3>
+<p class="text-small text-on-surface-variant">ID: #AS-98231 • Applied 12 Oct</p>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[12px] font-bold">Pending Verification</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">chevron_right</span>
+</div>
+</div>
+<!-- Application Item 2 -->
+<div class="flex items-center justify-between p-4 bg-surface rounded-lg border border-outline-variant/30">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h3 class="font-body text-body font-bold text-on-surface">Post-Matric Scholarship</h3>
+<p class="text-small text-on-surface-variant">ID: #SCH-44211 • Applied 05 Oct</p>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<span class="px-3 py-1 bg-[#d1fadf] text-[#027a48] rounded-full text-[12px] font-bold">Approved</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Panel (Side Bento Cell) -->
+
+<!-- Saved Schemes (Full Width Bento Cell) -->
+<div class="md:col-span-12 bento-card bg-surface-container-lowest rounded-xl border border-outline-variant p-stack-lg shadow-sm">
+<div class="flex items-center justify-between mb-stack-lg">
+<h2 class="font-heading text-heading text-primary">Saved for Later</h2>
+<button class="text-secondary font-small text-small hover:underline">Explore More</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-stack-md">
+<!-- Scheme Card 1 -->
+<div class="group bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-secondary transition-all">
+<div class="h-32 bg-cover bg-center" data-alt="A clean, minimalist 3D rendering of a modern sustainable house with solar panels on the roof, surrounded by green trees under a bright blue sky, corporate light-mode aesthetic." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCtkKlYMR3wMfgzXNcpUZL9_2m0hdoYTuQ6tCeAfLM1qOw1RLlktx40pqNHA6GgLzPCRl8XTy4EAeFKgfB8Ovu-aiBDvGSyGhwr_Cmu30thReVqfjygZU5OKa-wZ5GY7jQxULTGM-O9yokHy__ZTB7p4E_TtXH3avZtv79cHGQKOYoyn4fweGxi3865IPnPbGtsxTI7SIDyFkuW1YCaFZ2j8_X_23hOspIB_gb0U6CZKnrgw3TaiIE_&quot;);"></div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-body text-body font-bold text-on-surface">Solar Rooftop Subsidy</h4>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: &quot;FILL&quot; 1;">bookmark</span>
+</div>
+<p class="text-small text-on-surface-variant line-clamp-2 mb-4">Get up to 40% subsidy on installation of solar panels at your residence.</p>
+<button class="w-full py-2 bg-surface-container text-secondary rounded-lg font-bold text-small hover:bg-secondary hover:text-on-secondary transition-all">Check Eligibility</button>
+</div>
+</div>
+<!-- Scheme Card 2 -->
+<div class="group bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-secondary transition-all">
+<div class="h-32 bg-cover bg-center" data-alt="A professional close-up of a digital tablet showing financial growth charts and government logos, held by a person in a clean office environment, bright and airy lighting." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuB5wEM5Pnc_COZlBJ6KXZJtMiPPXh0bwq06rJK35DltSHXgaXyEQPKU3fg72ca-n4d6R7aamqgse4U6VPpUkbuPg90dRnYG3hAzzu-i0p09utAMesg5wirIzWH8a1_fzNkFOkxiUL4K17yxHWHwOYExP3TMEZue8vSIX5-N_Fy-g0lOVQS2t9CR8B2dzq84YaDSDDplTHGAXVlwYGTnff383fUR1vZU8Gb45K8EdgsiampBiZK9Tv9F&quot;);"></div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-body text-body font-bold text-on-surface">Start-up India Seed Fund</h4>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: &quot;FILL&quot; 1;">bookmark</span>
+</div>
+<p class="text-small text-on-surface-variant line-clamp-2 mb-4">Financial assistance for early-stage entrepreneurs to build innovative products.</p>
+<button class="w-full py-2 bg-surface-container text-secondary rounded-lg font-bold text-small hover:bg-secondary hover:text-on-secondary transition-all">Check Eligibility</button>
+</div>
+</div>
+<!-- Scheme Card 3 -->
+<div class="group bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-secondary transition-all">
+<div class="h-32 bg-cover bg-center" data-alt="An artistic medical icon of a stethoscope overlaid on a soft blue digital background with DNA strands, reflecting public health and security in a modern corporate style." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBsQiusbadFdy9DTGoMzYQjZ3QdxqAJ71NkXOEgjT-6wHFUeMh46MZyLr3cMPijsWONmjKjO2eKp78ABfT2Bq9i8BD8Hw4xg1DG1OqAMsoRNOxz6gFZYyYTycMUhb2n4iLruNXII8R7nhTpalV5rFAilImu53tv8bb9aocgDMMeTqRnNBlce1nRJYiyIkSSPv70I8O0EGWGhMscsDzZlNuoEslqf2gMU8c8_5a-pBxY_aYbL59dBXIq&quot;);"></div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-body text-body font-bold text-on-surface">Ayushman Bharat</h4>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: &quot;FILL&quot; 1;">bookmark</span>
+</div>
+<p class="text-small text-on-surface-variant line-clamp-2 mb-4">Free healthcare coverage up to ₹5 Lakhs per family for secondary care.</p>
+<button class="w-full py-2 bg-surface-container text-secondary rounded-lg font-bold text-small hover:bg-secondary hover:text-on-secondary transition-all">Check Eligibility</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Profile Quick Stats -->
+<div class="md:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-stack-md">
+<div class="bg-surface-container-low p-4 rounded-xl text-center">
+<p class="text-display-mobile font-display text-primary">04</p>
+<p class="text-small text-on-surface-variant">Active Benefits</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl text-center">
+<p class="text-display-mobile font-display text-primary">₹12k</p>
+<p class="text-small text-on-surface-variant">Total Disbursed</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl text-center">
+<p class="text-display-mobile font-display text-primary">85%</p>
+<p class="text-small text-on-surface-variant">Profile Score</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl text-center">
+<p class="text-display-mobile font-display text-primary">12</p>
+<p class="text-small text-on-surface-variant">Saved Schemes</p>
+</div>
+</div>
+</div>
+<!-- Footer Integration -->
+<footer class="mt-stack-lg py-stack-lg border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<p class="font-small text-small text-on-surface-variant">© 2024 SchemeSetu - Government of India. All rights reserved.</p>
+<div class="flex gap-stack-md">
+<a class="font-small text-small text-on-surface-variant hover:text-secondary" href="#">Privacy Policy</a>
+<a class="font-small text-small text-on-surface-variant hover:text-secondary" href="#">Help Desk</a>
+<a class="font-small text-small text-on-surface-variant hover:text-secondary" href="#">Contact Us</a>
+</div>
+</footer>
+</div>
+</main>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = 'rgba(25, 96, 163, 0.5)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = '';
+            });
+        });
+    </script>
+
+
+</body></html>

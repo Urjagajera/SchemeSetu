@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Setu AI Assistant | SchemeSetu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #c4c6cf;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#74777f",
+                        "secondary-container": "#7db6ff",
+                        "on-tertiary-container": "#58a2f0",
+                        "surface-container-high": "#e9e7eb",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "tertiary-container": "#003762",
+                        "primary-container": "#1a365d",
+                        "on-tertiary-fixed": "#001d37",
+                        "tertiary-fixed": "#d2e4ff",
+                        "tertiary": "#00213e",
+                        "secondary-fixed": "#d3e4ff",
+                        "on-surface-variant": "#43474e",
+                        "on-primary-container": "#86a0cd",
+                        "secondary-fixed-dim": "#a2c9ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#1960a3",
+                        "primary": "#002045",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-variant": "#e3e2e6",
+                        "on-secondary-fixed": "#001c38",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#adc7f7",
+                        "surface-container": "#efedf1",
+                        "outline-variant": "#c4c6cf",
+                        "inverse-on-surface": "#f1f0f4",
+                        "tertiary-fixed-dim": "#9fcaff",
+                        "surface-tint": "#455f88",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dad9dd",
+                        "background": "#faf9fd",
+                        "surface-container-low": "#f4f3f7",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-container-highest": "#e3e2e6",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#00477f",
+                        "inverse-surface": "#2f3033",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#adc7f7",
+                        "on-tertiary-fixed-variant": "#00497e",
+                        "on-background": "#1a1c1e",
+                        "surface": "#faf9fd",
+                        "on-secondary-fixed-variant": "#004881",
+                        "on-surface": "#1a1c1e",
+                        "surface-bright": "#faf9fd",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-width": "1280px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "body": ["Inter"],
+                        "display-mobile": ["Inter"],
+                        "heading": ["Inter"],
+                        "small": ["Inter"],
+                        "display": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "display-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "heading": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "small": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface h-screen flex flex-col overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface border-b border-outline-variant shadow-sm z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-16">
+<div class="flex items-center gap-4">
+<span class="text-heading font-heading font-bold text-primary">SchemeSetu</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Schemes</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-all text-secondary">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-all text-secondary">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full w-64 bg-surface-container-low p-stack-md border-r border-outline-variant shadow-md">
+<div class="mb-8 px-2">
+<h2 class="font-heading text-primary font-semibold text-lg">Welcome back</h2>
+<p class="font-small text-on-surface-variant opacity-70">Citizen Account</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-small text-small">Dashboard</span>
+</a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-small text-small">Applications</span>
+</a>
+<!-- Active Tab: Setu AI -->
+<a class="flex items-center gap-stack-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-3 transition-transform translate-x-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="font-small text-small font-bold">Setu AI</span>
+</a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-small text-small">Profile</span>
+</a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-small text-small">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-4 bg-surface-container-highest rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a friendly Indian government official or citizen representative, smiling warmly against a soft blue gradient background. The lighting is bright and corporate, evoking a sense of trust and accessibility. The style is clean and high-resolution, matching a modern administrative UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4LrUaD7KP8c05eFFA0grFbi9oTSngEbDeY38WLX8L8hnr5H9vW-Gh3i2-GzwNBgfy-uDJj3MVG6ydpAhoWkdlIpH-cXyEevWH_Yepw9MQLBKHCS5bM5pXTfORSF3RiC1yexDLo1tXYFxNR620iaCJ8z89gR26_ggBpSzzMSdgh-QLE1V5JOh3O2g6NZ3Ta50W_4ak39lelr0QatI9Id7e2VjlgAYdwDAjwyPMWU_VA10K66Emqhz3"/>
+</div>
+<div>
+<p class="font-small text-primary font-bold">Amit Kumar</p>
+<p class="text-[12px] text-on-surface-variant">Verified Citizen</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col relative bg-surface-bright">
+<!-- Chat Header -->
+<div class="pt-stack-lg px-8 pb-4 text-center">
+<h1 class="font-display text-display text-primary mb-2">How can Setu AI help you today?</h1>
+<p class="font-body text-on-surface-variant max-w-2xl mx-auto">Your personalized assistant for navigating government schemes and citizen services.</p>
+</div>
+<!-- Chat Window -->
+<div class="flex-1 overflow-y-auto px-margin-desktop chat-container space-y-stack-md py-stack-md">
+<div class="max-w-4xl mx-auto space-y-6">
+<!-- AI Message -->
+<div class="flex items-start gap-4 animate-fade-in">
+<div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4 rounded-xl rounded-tl-none max-w-[80%] shadow-sm">
+<p class="font-body text-body text-on-surface">
+                                I can help you find schemes based on your profile, explain eligibility criteria, or track your active applications. What would you like to do?
+                            </p>
+<span class="text-[10px] text-on-surface-variant mt-2 block opacity-60">10:45 AM</span>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex items-start justify-end gap-4">
+<div class="bg-primary text-on-primary p-4 rounded-xl rounded-tr-none max-w-[80%] shadow-md">
+<p class="font-body text-body">
+                                What education schemes am I eligible for in Karnataka?
+                            </p>
+<span class="text-[10px] text-on-primary-container mt-2 block opacity-80">10:46 AM</span>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0 border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A portrait photo of a middle-aged professional man with glasses, representing a verified user on a government platform. The background is a clean white office setting. The style is sharp and realistic, emphasizing a secure and professional user identity within a minimalist corporate design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAskmhWZsinV5ZA4jiOdTjvNufpvadjrGbj2Y40vn1ePWHl-clyezgyCa1LlnmEy6FIP3dKHWwIemSO_1px_5a-k-7_Wct2hFTHp5Fq59qN-QVCPXbLu7eseL7GDXGKgRpfkX9pdOWguBWViO_Hj8DTJTSaf-t3m8VDjeZvj3BLaUAf7kTorSO8Y6gIr2UifyxUMVUGeN-Cx-tKHOPlyZx2x4fCLa3ilehXFE4cvlVKJuQNzuHPycip"/>
+</div>
+</div>
+<!-- AI Message (Analysis/Searching) -->
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4 rounded-xl rounded-tl-none max-w-[80%] shadow-sm">
+<p class="font-body text-body text-on-surface mb-3">
+                                Searching for education schemes in Karnataka matching your profile... I've found 3 potential matches:
+                            </p>
+<div class="space-y-3">
+<div class="p-3 bg-surface-container-lowest border border-secondary-container rounded-lg flex justify-between items-center hover:shadow-md transition-shadow cursor-pointer">
+<div>
+<p class="font-small text-primary font-bold">Vidya Siri Scholarship</p>
+<p class="text-[12px] text-on-surface-variant">Post-Matric scholarship for OBC students.</p>
+</div>
+<span class="material-symbols-outlined text-secondary">chevron_right</span>
+</div>
+<div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-lg flex justify-between items-center hover:shadow-md transition-shadow cursor-pointer">
+<div>
+<p class="font-small text-primary font-bold">SSP Karnataka</p>
+<p class="text-[12px] text-on-surface-variant">State Scholarship Portal - All Categories.</p>
+</div>
+<span class="material-symbols-outlined text-secondary">chevron_right</span>
+</div>
+</div>
+<span class="text-[10px] text-on-surface-variant mt-2 block opacity-60">10:46 AM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Interaction Area -->
+<div class="px-margin-desktop pb-8 bg-surface-bright">
+<div class="max-w-4xl mx-auto space-y-4">
+<!-- Quick Actions -->
+<div class="flex flex-wrap gap-2 py-2">
+<button class="px-4 py-2 bg-surface-container-high hover:bg-secondary-container hover:text-on-secondary-container text-on-surface-variant rounded-full text-small font-small transition-all flex items-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">search</span>
+                            Find Schemes
+                        </button>
+<button class="px-4 py-2 bg-surface-container-high hover:bg-secondary-container hover:text-on-secondary-container text-on-surface-variant rounded-full text-small font-small transition-all flex items-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">fact_check</span>
+                            Check Eligibility
+                        </button>
+<button class="px-4 py-2 bg-surface-container-high hover:bg-secondary-container hover:text-on-secondary-container text-on-surface-variant rounded-full text-small font-small transition-all flex items-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">pending_actions</span>
+                            Track Application
+                        </button>
+<button class="px-4 py-2 bg-surface-container-high hover:bg-secondary-container hover:text-on-secondary-container text-on-surface-variant rounded-full text-small font-small transition-all flex items-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">upload_file</span>
+                            Upload Documents
+                        </button>
+</div>
+<!-- Input Bar -->
+<div class="relative flex items-center gap-3 p-2 bg-surface border border-outline-variant rounded-xl shadow-lg focus-within:ring-2 focus-within:ring-secondary/20 focus-within:border-secondary transition-all">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-body py-3" placeholder="Ask Setu AI about any government scheme..." type="text"/>
+<button class="bg-primary text-on-primary p-3 rounded-lg flex items-center justify-center hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+<p class="text-center text-[11px] text-on-surface-variant opacity-50">Setu AI can make mistakes. Please verify important information with official scheme documents.</p>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Bottom Nav -->
+<nav class="md:hidden bg-surface border-t border-outline-variant flex justify-around items-center h-16 px-4">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px]">Dashboard</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="text-[10px]">Applications</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="text-[10px] font-bold">AI</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px]">Profile</span>
+</a>
+</nav>
+<footer class="hidden md:block w-full py-4 px-margin-desktop bg-primary text-on-primary">
+<div class="max-w-max-width mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<p class="font-small text-small">© 2024 SchemeSetu - Government of India. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="text-on-primary-container hover:text-on-primary text-small transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-primary-container hover:text-on-primary text-small transition-colors" href="#">Help Desk</a>
+<a class="text-on-primary-container hover:text-on-primary text-small transition-colors" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple chat interaction simulation
+        const input = document.querySelector('input[type="text"]');
+        const sendBtn = document.querySelector('button .material-symbols-outlined:contains("send")')?.parentElement || document.querySelector('.bg-primary.p-3');
+        
+        const handleSend = () => {
+            if (input.value.trim() === '') return;
+            const message = input.value;
+            // Clear input
+            input.value = '';
+            // Logic for visual feedback could go here
+            console.log('Message sent:', message);
+        };
+
+        sendBtn.addEventListener('click', handleSend);
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSend();
+        });
+
+        // Atmosphere Micro-interactions
+        document.querySelectorAll('.p-3.bg-surface-container-lowest').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>SchemeSetu Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chart-gradient {
+            background: linear-gradient(180deg, rgba(25, 96, 163, 0.1) 0%, rgba(25, 96, 163, 0) 100%);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c4c6cf;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #74777f;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#efedf1",
+                        "secondary": "#1960a3",
+                        "surface-container-low": "#f4f3f7",
+                        "on-tertiary-fixed": "#001d37",
+                        "on-background": "#1a1c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2f3033",
+                        "on-surface-variant": "#43474e",
+                        "tertiary-container": "#003762",
+                        "on-tertiary-container": "#58a2f0",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e3e2e6",
+                        "tertiary-fixed-dim": "#9fcaff",
+                        "background": "#faf9fd",
+                        "on-secondary-container": "#00477f",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#001c38",
+                        "secondary-container": "#7db6ff",
+                        "tertiary-fixed": "#d2e4ff",
+                        "primary-fixed-dim": "#adc7f7",
+                        "inverse-primary": "#adc7f7",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004881",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-tint": "#455f88",
+                        "outline-variant": "#c4c6cf",
+                        "tertiary": "#00213e",
+                        "on-primary-container": "#86a0cd",
+                        "surface-container-high": "#e9e7eb",
+                        "on-surface": "#1a1c1e",
+                        "secondary-fixed-dim": "#a2c9ff",
+                        "surface-bright": "#faf9fd",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "primary": "#002045",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-variant": "#e3e2e6",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1a365d",
+                        "inverse-on-surface": "#f1f0f4",
+                        "on-tertiary-fixed-variant": "#00497e",
+                        "surface-dim": "#dad9dd",
+                        "surface": "#faf9fd",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d3e4ff",
+                        "outline": "#74777f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "max-width": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "heading": ["Inter"],
+                        "display": ["Inter"],
+                        "display-mobile": ["Inter"],
+                        "body": ["Inter"],
+                        "small": ["Inter"]
+                    },
+                    "fontSize": {
+                        "heading": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "small": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body antialiased flex flex-col h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline shadow-sm z-50 fixed top-0 w-full h-16">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-16">
+<div class="flex items-center gap-stack-md">
+<span class="text-heading font-heading font-bold text-primary dark:text-primary-fixed">SchemeSetu</span>
+<nav class="hidden md:flex gap-stack-lg ml-stack-lg">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Home</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body text-body" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">About</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-small w-64 focus:ring-2 focus:ring-secondary" placeholder="Search operations..." type="text">
+</div>
+<button class="material-symbols-outlined text-secondary dark:text-secondary-fixed p-2 hover:bg-surface-container-low rounded-full transition-all">language</button>
+<button class="material-symbols-outlined text-secondary dark:text-secondary-fixed p-2 hover:bg-surface-container-low rounded-full transition-all">account_circle</button>
+</div>
+</div>
+</header>
+<div class="flex pt-16 flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full p-stack-md border-r border-outline-variant bg-surface-container-low dark:bg-on-tertiary-fixed w-64 shrink-0 shadow-md">
+<div class="mb-stack-lg px-4 pt-4">
+<p class="font-small text-small text-secondary dark:text-secondary-fixed uppercase tracking-wider">Citizen Account</p>
+<h3 class="text-heading font-heading text-primary mt-1">Welcome back</h3>
+</div>
+<nav class="space-y-2 flex-1">
+<!-- Determining Active: User is on Admin Dashboard/Analytics -->
+<a class="flex items-center gap-stack-sm bg-secondary-container text-on-secondary-container rounded-lg px-4 py-3 translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-small text-small">Dashboard</span>
+</a><a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-small text-small">Setu AI</span>
+</a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-small text-small">Applications</span>
+</a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-small text-small">Analytics</span>
+</a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-small text-small">Profile</span>
+</a>
+<a class="flex items-center gap-stack-sm text-on-surface-variant px-4 py-3 hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-small text-small">Settings</span>
+</a>
+</nav>
+
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-background p-margin-mobile md:p-stack-lg">
+<div class="max-w-max-width mx-auto">
+<header class="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-display text-display text-primary">Analytics Overview</h1>
+<p class="text-on-surface-variant mt-2">Real-time performance metrics for all government schemes.</p>
+</div>
+<div class="flex gap-stack-sm">
+<button class="bg-surface-container-highest text-on-surface-variant px-4 py-2 rounded-lg text-small font-small flex items-center gap-2 border border-outline-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                            Last 30 Days
+                        </button>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded-lg text-small font-small flex items-center gap-2 shadow-md hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                            Export Report
+                        </button>
+</div>
+</header>
+<!-- Analytics Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-stack-lg">
+<!-- Total Schemes -->
+<div class="md:col-span-3 bg-white border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-secondary bg-secondary-container/20 p-2 rounded-lg mb-4">account_balance</span>
+<h3 class="text-on-surface-variant text-small font-small">Total Schemes</h3>
+</div>
+<div class="mt-4">
+<span class="text-display font-display text-primary leading-none">142</span>
+<div class="flex items-center gap-1 text-green-600 text-small font-small mt-2">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                                +12% from last month
+                            </div>
+</div>
+</div>
+<!-- Total Applicants -->
+<div class="md:col-span-3 bg-white border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-secondary bg-secondary-container/20 p-2 rounded-lg mb-4">group</span>
+<h3 class="text-on-surface-variant text-small font-small">Total Applicants</h3>
+</div>
+<div class="mt-4">
+<span class="text-display font-display text-primary leading-none">42,891</span>
+<div class="flex items-center gap-1 text-green-600 text-small font-small mt-2">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                                +5.4% from last month
+                            </div>
+</div>
+</div>
+<!-- Approval Rate Chart Placeholder -->
+<div class="md:col-span-6 bg-white border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-on-surface font-heading text-heading">Approval Rate Trend</h3>
+<p class="text-on-surface-variant text-small">Daily verification success percentage</p>
+</div>
+<div class="text-right">
+<span class="text-heading font-heading text-secondary">87.4%</span>
+<p class="text-[12px] text-on-surface-variant">Average Rate</p>
+</div>
+</div>
+<div class="h-32 flex items-end gap-2 px-2">
+<!-- Simple Animated SVG Bar Chart -->
+<div class="bg-secondary-container w-full rounded-t" style="height: 60%;"></div>
+<div class="bg-secondary-container w-full rounded-t" style="height: 75%;"></div>
+<div class="bg-secondary-container w-full rounded-t" style="height: 45%;"></div>
+<div class="bg-secondary-container w-full rounded-t" style="height: 90%;"></div>
+<div class="bg-secondary w-full rounded-t" style="height: 87%;"></div>
+<div class="bg-secondary-container w-full rounded-t" style="height: 80%;"></div>
+<div class="bg-secondary-container w-full rounded-t" style="height: 65%;"></div>
+<div class="bg-secondary-container w-full rounded-t" style="height: 70%;"></div>
+</div>
+</div>
+</div>
+<!-- Recent Applicants Table Section -->
+<section class="bg-white border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+
+<div class="overflow-x-auto">
+
+</div>
+
+</section>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-on-tertiary-fixed w-full z-50">
+<div class="w-full py-stack-md px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md mx-auto max-w-max-width">
+<span class="text-heading font-heading text-on-primary">SchemeSetu</span>
+<p class="text-on-tertiary-fixed-variant text-small font-small text-center md:text-left">© 2024 SchemeSetu - Government of India. All rights reserved.</p>
+<div class="flex gap-stack-md">
+<a class="text-on-primary-container hover:text-on-primary transition-all text-small font-small" href="#">Privacy Policy</a>
+<a class="text-on-primary-container hover:text-on-primary transition-all text-small font-small" href="#">Terms of Service</a>
+<a class="text-on-primary-container hover:text-on-primary transition-all text-small font-small" href="#">Help Desk</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for sidebar expansion/collapse or active states
+        document.querySelectorAll('aside nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Not actually navigating, just for visual feedback in this static demo
+                document.querySelectorAll('aside nav a').forEach(l => {
+                    l.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'translate-x-1');
+                    l.classList.add('text-on-surface-variant');
+                });
+                this.classList.add('bg-secondary-container', 'text-on-secondary-container', 'translate-x-1');
+                this.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+
+
+
+
+</body></html>

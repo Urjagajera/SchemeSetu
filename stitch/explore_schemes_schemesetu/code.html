@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SchemeSetu | Explore Government Schemes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#efedf1",
+                    "secondary": "#1960a3",
+                    "surface-container-low": "#f4f3f7",
+                    "on-tertiary-fixed": "#001d37",
+                    "on-background": "#1a1c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#2f3033",
+                    "on-surface-variant": "#43474e",
+                    "tertiary-container": "#003762",
+                    "on-tertiary-container": "#58a2f0",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e3e2e6",
+                    "tertiary-fixed-dim": "#9fcaff",
+                    "background": "#faf9fd",
+                    "on-secondary-container": "#00477f",
+                    "error": "#ba1a1a",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#001c38",
+                    "secondary-container": "#7db6ff",
+                    "tertiary-fixed": "#d2e4ff",
+                    "primary-fixed-dim": "#adc7f7",
+                    "inverse-primary": "#adc7f7",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#004881",
+                    "primary-fixed": "#d6e3ff",
+                    "surface-tint": "#455f88",
+                    "outline-variant": "#c4c6cf",
+                    "tertiary": "#00213e",
+                    "on-primary-container": "#86a0cd",
+                    "surface-container-high": "#e9e7eb",
+                    "on-surface": "#1a1c1e",
+                    "secondary-fixed-dim": "#a2c9ff",
+                    "surface-bright": "#faf9fd",
+                    "on-primary-fixed-variant": "#2d476f",
+                    "primary": "#002045",
+                    "on-primary-fixed": "#001b3c",
+                    "surface-variant": "#e3e2e6",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "primary-container": "#1a365d",
+                    "inverse-on-surface": "#f1f0f4",
+                    "on-tertiary-fixed-variant": "#00497e",
+                    "surface-dim": "#dad9dd",
+                    "surface": "#faf9fd",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#d3e4ff",
+                    "outline": "#74777f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "16px",
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "max-width": "1280px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "heading": ["Inter"],
+                    "display": ["Inter"],
+                    "display-mobile": ["Inter"],
+                    "body": ["Inter"],
+                    "small": ["Inter"]
+            },
+            "fontSize": {
+                    "heading": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "small": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #faf9fd;
+            color: #1a1c1e;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c4c6cf;
+            border-radius: 10px;
+        }
+        .scheme-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .scheme-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0px 8px 24px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface docked full-width top-0 border-b border-outline-variant shadow-sm z-50">
+<nav class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-16">
+<div class="flex items-center gap-8">
+<span class="text-heading font-heading font-bold text-primary">SchemeSetu</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Home</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body text-body" href="#">Schemes</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">About</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container-low px-4 py-1.5 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-small font-small w-48" placeholder="Search schemes..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-all">
+<span class="material-symbols-outlined text-secondary">language</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-all">
+<span class="material-symbols-outlined text-secondary">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+</header>
+<main class="flex-grow w-full max-w-max-width mx-auto px-margin-desktop py-stack-lg">
+<div class="flex flex-col md:flex-row gap-gutter">
+<!-- Left: Filter Sidebar -->
+<aside class="w-full md:w-80 flex-shrink-0">
+<div class="sticky top-24 space-y-stack-md">
+<div class="bg-white p-stack-md rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-heading text-body font-bold text-primary">Filters</h2>
+<button class="text-secondary text-small font-small hover:underline">Clear All</button>
+</div>
+<!-- Sort Options -->
+<div class="mb-6">
+<label class="block font-small text-small text-on-surface-variant mb-2">Sort By</label>
+<select class="w-full rounded-lg border-outline-variant text-body font-body focus:ring-secondary focus:border-secondary">
+<option>Most Relevant</option>
+<option>Recently Added</option>
+<option>Deadline Approaching</option>
+</select>
+</div>
+<!-- State Dropdown -->
+<div class="mb-6">
+<label class="block font-small text-small text-on-surface-variant mb-2">Location/State</label>
+<select class="w-full rounded-lg border-outline-variant text-body font-body focus:ring-secondary focus:border-secondary">
+<option>All India</option>
+<option>Maharashtra</option>
+<option>Karnataka</option>
+<option>Uttar Pradesh</option>
+<option>Tamil Nadu</option>
+</select>
+</div>
+<!-- Category Checkboxes -->
+<div class="mb-6">
+<label class="block font-small text-small text-on-surface-variant mb-3">Categories</label>
+<div class="space-y-2">
+<label class="flex items-center group cursor-pointer">
+<input checked="" class="rounded text-secondary focus:ring-secondary mr-3 w-5 h-5 border-outline-variant" type="checkbox"/>
+<span class="text-body font-body text-on-surface group-hover:text-secondary">Education</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="rounded text-secondary focus:ring-secondary mr-3 w-5 h-5 border-outline-variant" type="checkbox"/>
+<span class="text-body font-body text-on-surface group-hover:text-secondary">Agriculture</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="rounded text-secondary focus:ring-secondary mr-3 w-5 h-5 border-outline-variant" type="checkbox"/>
+<span class="text-body font-body text-on-surface group-hover:text-secondary">Healthcare</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="rounded text-secondary focus:ring-secondary mr-3 w-5 h-5 border-outline-variant" type="checkbox"/>
+<span class="text-body font-body text-on-surface group-hover:text-secondary">Housing</span>
+</label>
+</div>
+</div>
+<!-- Eligibility Range Slider (Income) -->
+<div class="mb-6">
+<label class="block font-small text-small text-on-surface-variant mb-2">Annual Income (Up to)</label>
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-secondary" max="1000000" min="0" step="50000" type="range"/>
+<div class="flex justify-between mt-2 text-small font-small text-on-surface-variant">
+<span>₹0</span>
+<span>₹10L+</span>
+</div>
+</div>
+<!-- Eligibility Range Slider (Age) -->
+<div class="mb-2">
+<label class="block font-small text-small text-on-surface-variant mb-2">Age Group</label>
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-secondary" max="100" min="0" type="range"/>
+<div class="flex justify-between mt-2 text-small font-small text-on-surface-variant">
+<span>0</span>
+<span>100</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right: Results Grid -->
+<section class="flex-grow">
+<div class="mb-stack-md flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-display text-display text-primary mb-1">Explore Schemes</h1>
+<p class="font-body text-body text-on-surface-variant">Found 128 active government schemes for your criteria.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-lg border border-outline-variant text-secondary font-small text-small">
+<span class="material-symbols-outlined text-[20px]">grid_view</span> Grid
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-outline-variant text-on-surface-variant font-small text-small opacity-60">
+<span class="material-symbols-outlined text-[20px]">view_list</span> List
+                        </button>
+</div>
+</div>
+<!-- Scheme Cards Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-stack-md">
+<!-- Card 1 -->
+<div class="scheme-card bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-6 flex-grow">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-wider">Education</div>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-secondary">bookmark</span>
+</div>
+<h3 class="font-heading text-heading text-primary mb-2">Post-Matric Scholarship for SC Students</h3>
+<p class="font-body text-body text-on-surface-variant line-clamp-3 mb-4">Financial assistance to Scheduled Caste students studying at post-matriculation or post-secondary stages to enable them to complete their education.</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">Income &lt; 2.5L</span>
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">SC Category</span>
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">Pan India</span>
+</div>
+</div>
+<div class="px-6 py-4 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center text-error font-small text-small">
+<span class="material-symbols-outlined mr-1 text-[18px]">event</span> Ends in 12 days
+                            </div>
+<button class="bg-secondary text-white px-6 py-2 rounded-lg font-small text-small hover:opacity-90 active:scale-95 transition-all">Check Eligibility</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="scheme-card bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-6 flex-grow">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-wider">Agriculture</div>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-secondary">bookmark</span>
+</div>
+<h3 class="font-heading text-heading text-primary mb-2">PM Kisan Samman Nidhi</h3>
+<p class="font-body text-body text-on-surface-variant line-clamp-3 mb-4">Direct income support of ₹6,000 per year in three equal installments to all land-holding farmer families across the country.</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">Land Owner</span>
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">Rural</span>
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">Farmers</span>
+</div>
+</div>
+<div class="px-6 py-4 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center text-outline font-small text-small">
+<span class="material-symbols-outlined mr-1 text-[18px]">verified</span> Verified Scheme
+                            </div>
+<button class="bg-secondary text-white px-6 py-2 rounded-lg font-small text-small hover:opacity-90 active:scale-95 transition-all">Check Eligibility</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="scheme-card bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-6 flex-grow">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-wider">Healthcare</div>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-secondary">bookmark</span>
+</div>
+<h3 class="font-heading text-heading text-primary mb-2">Ayushman Bharat - PMJAY</h3>
+<p class="font-body text-body text-on-surface-variant line-clamp-3 mb-4">World's largest health insurance scheme providing a cover of ₹5 lakhs per family per year for secondary and tertiary care hospitalization.</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">BPL Families</span>
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">Health Cover</span>
+</div>
+</div>
+<div class="px-6 py-4 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center text-outline font-small text-small">
+<span class="material-symbols-outlined mr-1 text-[18px]">history</span> Ongoing
+                            </div>
+<button class="bg-secondary text-white px-6 py-2 rounded-lg font-small text-small hover:opacity-90 active:scale-95 transition-all">Check Eligibility</button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="scheme-card bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="p-6 flex-grow">
+<div class="flex justify-between items-start mb-4">
+<div class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-wider">Education</div>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-secondary">bookmark</span>
+</div>
+<h3 class="font-heading text-heading text-primary mb-2">National Means Cum Merit Scholarship</h3>
+<p class="font-body text-body text-on-surface-variant line-clamp-3 mb-4">Scholarship for meritorious students of economically weaker sections to arrest their drop out at class VIII.</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">Class IX-XII</span>
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded text-small font-small">Merit Based</span>
+</div>
+</div>
+<div class="px-6 py-4 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center text-error font-small text-small">
+<span class="material-symbols-outlined mr-1 text-[18px]">event</span> Ends in 4 days
+                            </div>
+<button class="bg-secondary text-white px-6 py-2 rounded-lg font-small text-small hover:opacity-90 active:scale-95 transition-all">Check Eligibility</button>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-stack-lg flex items-center justify-center gap-2">
+<button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-lg bg-secondary text-white font-bold">1</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant hover:bg-surface-container-low font-body transition-all">2</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant hover:bg-surface-container-low font-body transition-all">3</button>
+<span class="px-2">...</span>
+<button class="w-10 h-10 rounded-lg border border-outline-variant hover:bg-surface-container-low font-body transition-all">12</button>
+<button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-primary full-width bottom-0 mt-stack-lg">
+<div class="w-full py-stack-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md max-w-max-width mx-auto">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="text-heading font-heading text-on-primary">SchemeSetu</span>
+<p class="font-small text-small text-on-primary-container">Official Government Resources Portal</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-on-primary-container hover:text-on-primary transition-all font-small text-small" href="#">Privacy Policy</a>
+<a class="text-on-primary-container hover:text-on-primary transition-all font-small text-small" href="#">Terms of Service</a>
+<a class="text-on-primary-container hover:text-on-primary transition-all font-small text-small" href="#">Help Desk</a>
+<a class="text-on-primary-container hover:text-on-primary transition-all font-small text-small" href="#">Contact Us</a>
+</div>
+<div class="text-on-primary-container font-small text-small text-center md:text-right">
+                © 2024 SchemeSetu - Government of India. All rights reserved.
+            </div>
+</div>
+</footer>
+<!-- Micro-interactions Script -->
+<script>
+        // Simple search input interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput?.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('border-secondary', 'ring-1', 'ring-secondary');
+        });
+        searchInput?.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('border-secondary', 'ring-1', 'ring-secondary');
+        });
+
+        // Filter clear all logic (placeholder)
+        const clearBtn = document.querySelector('button.text-secondary');
+        clearBtn?.addEventListener('click', () => {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('select').forEach(sel => sel.selectedIndex = 0);
+        });
+
+        // Add scroll effect for header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('bg-opacity-90', 'backdrop-blur-md');
+            } else {
+                header.classList.remove('bg-opacity-90', 'backdrop-blur-md');
+            }
+        });
+    </script>
+</body></html>

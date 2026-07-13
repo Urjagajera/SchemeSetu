@@ -1,0 +1,237 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Login - SchemeSetu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .transition-all-300 {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#efedf1",
+                        "secondary": "#1960a3",
+                        "surface-container-low": "#f4f3f7",
+                        "on-tertiary-fixed": "#001d37",
+                        "on-background": "#1a1c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2f3033",
+                        "on-surface-variant": "#43474e",
+                        "tertiary-container": "#003762",
+                        "on-tertiary-container": "#58a2f0",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e3e2e6",
+                        "tertiary-fixed-dim": "#9fcaff",
+                        "background": "#faf9fd",
+                        "on-secondary-container": "#00477f",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#001c38",
+                        "secondary-container": "#7db6ff",
+                        "tertiary-fixed": "#d2e4ff",
+                        "primary-fixed-dim": "#adc7f7",
+                        "inverse-primary": "#adc7f7",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#004881",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-tint": "#455f88",
+                        "outline-variant": "#c4c6cf",
+                        "tertiary": "#00213e",
+                        "on-primary-container": "#86a0cd",
+                        "surface-container-high": "#e9e7eb",
+                        "on-surface": "#1a1c1e",
+                        "secondary-fixed-dim": "#a2c9ff",
+                        "surface-bright": "#faf9fd",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "primary": "#002045",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-variant": "#e3e2e6",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1a365d",
+                        "inverse-on-surface": "#f1f0f4",
+                        "on-tertiary-fixed-variant": "#00497e",
+                        "surface-dim": "#dad9dd",
+                        "surface": "#faf9fd",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d3e4ff",
+                        "outline": "#74777f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "max-width": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "heading": ["Inter"],
+                        "display": ["Inter"],
+                        "display-mobile": ["Inter"],
+                        "body": ["Inter"],
+                        "small": ["Inter"]
+                    },
+                    "fontSize": {
+                        "heading": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-mobile": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "small": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container min-h-screen flex flex-col relative overflow-hidden">
+<!-- Atmospheric Background Shader -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-40">
+
+</div>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center px-margin-mobile md:px-0 relative z-10">
+<!-- Auth Card -->
+<div class="w-full max-w-[440px] bg-surface-container-lowest shadow-lg rounded-xl border border-outline-variant p-stack-lg animate-in fade-in slide-in-from-bottom-4 duration-700">
+<!-- Branding Header -->
+<div class="flex flex-col items-center mb-stack-lg">
+<div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-stack-sm shadow-md">
+<span class="material-symbols-outlined text-on-primary text-3xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<h1 class="font-heading text-heading text-primary">SchemeSetu</h1>
+<p class="font-small text-small text-on-surface-variant">Empowering Citizens through Access</p>
+</div>
+<!-- Login/Signup Toggle -->
+<div class="bg-surface-container-low p-1 rounded-lg flex mb-stack-lg relative overflow-hidden">
+<div class="absolute h-[calc(100%-8px)] w-[calc(50%-4px)] bg-white rounded-md shadow-sm transition-all duration-300 left-1 top-1" id="active-indicator"></div>
+<button class="flex-1 py-2 text-small font-small z-20 text-on-surface transition-colors duration-300" id="btn-login" onclick="toggleAuth('login')">Login</button>
+<button class="flex-1 py-2 text-small font-small z-20 text-on-surface-variant transition-colors duration-300" id="btn-signup" onclick="toggleAuth('signup')">Sign Up</button>
+</div>
+<!-- Auth Form -->
+<div class="space-y-stack-md">
+<div class="space-y-stack-md">
+<div class="space-y-2">
+<label class="font-small text-small text-on-surface-variant ml-1" for="email">Email Address</label>
+<input class="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none font-body" id="email" placeholder="e.g. name@example.com" type="email">
+</div>
+<div class="space-y-2">
+<label class="font-small text-small text-on-surface-variant ml-1" for="password">Password</label>
+<input class="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none font-body" id="password" placeholder="••••••••" type="password">
+</div>
+</div>
+<div class="flex items-center justify-between mb-stack-md">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input type="checkbox" class="w-4 h-4 rounded border-outline-variant text-secondary focus:ring-secondary">
+<span class="text-small font-small text-on-surface-variant group-hover:text-on-surface transition-colors">Remember me</span>
+</label>
+
+</div><button class="w-full bg-secondary hover:bg-on-secondary-container text-on-secondary py-3 px-6 rounded-lg font-small text-body shadow-sm hover:shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2"><span class="">Login</span>
+<span class="material-symbols-outlined text-[20px]">login</span></button>
+</div>
+<!-- Social/Alt Login Separation -->
+<div class="relative my-stack-lg flex items-center">
+<div class="flex-grow border-t border-outline-variant"></div>
+<span class="mx-4 text-small font-small text-on-surface-variant bg-surface-container-lowest px-2">or continue with</span>
+<div class="flex-grow border-t border-outline-variant"></div>
+</div>
+<!-- Alternative Auth Methods -->
+<button class="w-full flex items-center justify-center gap-3 py-3 border border-outline-variant rounded-lg hover:bg-surface-container transition-all group">
+<svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span class="text-small font-small text-on-surface group-hover:text-primary transition-colors">Sign in with Google</span>
+</button>
+</div>
+</main>
+<!-- Bottom Actions / Language & Footer -->
+<footer class="w-full py-stack-md px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md relative z-10">
+<div class="flex items-center gap-stack-md">
+<button class="flex items-center gap-1.5 text-small font-small text-secondary hover:underline group transition-all">
+<span class="material-symbols-outlined text-[18px]">language</span>
+<span id="lang-text" class="">English / हिन्दी</span>
+</button>
+</div>
+<div class="flex items-center gap-stack-md">
+<a class="text-small font-small text-on-surface-variant hover:text-secondary transition-colors" href="#">Help Desk</a>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<a class="text-small font-small text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+</div>
+<p class="text-small font-small text-on-surface-variant opacity-70 order-last md:order-none">
+            © 2024 SchemeSetu - Government of India
+        </p>
+</footer>
+<!-- Decorative Corner Element -->
+<div class="fixed top-0 right-0 w-64 h-64 opacity-5 pointer-events-none">
+<div class="w-full h-full border-[40px] border-secondary rounded-full -mr-32 -mt-32"></div>
+</div>
+<script>
+        function toggleAuth(mode) {
+            const indicator = document.getElementById('active-indicator');
+            const loginBtn = document.getElementById('btn-login');
+            const signupBtn = document.getElementById('btn-signup');
+            const formTitle = document.getElementById('form-title');
+            const formDesc = document.getElementById('form-description');
+            
+            if (mode === 'login') {
+                indicator.style.left = '4px';
+                loginBtn.classList.add('text-on-surface');
+                loginBtn.classList.remove('text-on-surface-variant');
+                signupBtn.classList.add('text-on-surface-variant');
+                signupBtn.classList.remove('text-on-surface');
+                formTitle.innerText = "Enter your Mobile Number";
+                formDesc.innerText = "We'll send a one-time password (OTP) to verify your identity.";
+            } else {
+                indicator.style.left = 'calc(50% - 0px)';
+                signupBtn.classList.add('text-on-surface');
+                signupBtn.classList.remove('text-on-surface-variant');
+                loginBtn.classList.add('text-on-surface-variant');
+                loginBtn.classList.remove('text-on-surface');
+                formTitle.innerText = "Register your Mobile Number";
+                formDesc.innerText = "Create your Citizen Account to access 500+ government schemes.";
+            }
+        }
+
+        // Simple animation on input focus
+        const mobileInput = document.getElementById('mobile');
+        mobileInput.addEventListener('focus', () => {
+            mobileInput.parentElement.classList.add('scale-[1.02]');
+        });
+        mobileInput.addEventListener('blur', () => {
+            mobileInput.parentElement.classList.remove('scale-[1.02]');
+        });
+
+        // OTP field formatting
+        mobileInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, '').substring(0, 10);
+        });
+    </script>
+
+
+
+
+</body></html>

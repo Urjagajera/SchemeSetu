@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-surface-container: #efedf1;
+  --color-secondary: #1960a3;
+  --color-surface-container-low: #f4f3f7;
+  --color-on-tertiary-fixed: #001d37;
+  --color-on-background: #1a1c1e;
+  --color-surface-container-lowest: #ffffff;
+  --color-inverse-surface: #2f3033;
+  --color-on-surface-variant: #43474e;
+  --color-tertiary-container: #003762;
+  --color-on-tertiary-container: #58a2f0;
+  --color-on-secondary: #ffffff;
+  --color-surface-container-highest: #e3e2e6;
+  --color-tertiary-fixed-dim: #9fcaff;
+  --color-background: #faf9fd;
+  --color-on-secondary-container: #00477f;
+  --color-error: #ba1a1a;
+  --color-on-primary: #ffffff;
+  --color-on-secondary-fixed: #001c38;
+  --color-secondary-container: #7db6ff;
+  --color-tertiary-fixed: #d2e4ff;
+  --color-primary-fixed-dim: #adc7f7;
+  --color-inverse-primary: #adc7f7;
+  --color-on-tertiary: #ffffff;
+  --color-on-secondary-fixed-variant: #004881;
+  --color-primary-fixed: #d6e3ff;
+  --color-surface-tint: #455f88;
+  --color-outline-variant: #c4c6cf;
+  --color-tertiary: #00213e;
+  --color-on-primary-container: #86a0cd;
+  --color-surface-container-high: #e9e7eb;
+  --color-on-surface: #1a1c1e;
+  --color-secondary-fixed-dim: #a2c9ff;
+  --color-surface-bright: #faf9fd;
+  --color-on-primary-fixed-variant: #2d476f;
+  --color-primary: #002045;
+  --color-on-primary-fixed: #001b3c;
+  --color-surface-variant: #e3e2e6;
+  --color-on-error-container: #93000a;
+  --color-on-error: #ffffff;
+  --color-primary-container: #1a365d;
+  --color-inverse-on-surface: #f1f0f4;
+  --color-on-tertiary-fixed-variant: #00497e;
+  --color-surface-dim: #dad9dd;
+  --color-surface: #faf9fd;
+  --color-error-container: #ffdad6;
+  --color-secondary-fixed: #d3e4ff;
+  --color-outline: #74777f;
+
+  --font-heading: "Inter", sans-serif;
+  --font-display: "Inter", sans-serif;
+  --font-display-mobile: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-small: "Inter", sans-serif;
+}
+
+/* Base styles and defaults */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply text-on-surface bg-background;
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+  user-select: none;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c4c6cf;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #74777f;
+}
+
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Bento Grid */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Custom Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.25s ease forwards;
+}
+
+/* Status badges */
+.badge-approved  { @apply bg-[#d1fadf] text-[#027a48]; }
+.badge-pending   { @apply bg-[#fff3cd] text-[#856404]; }
+.badge-rejected  { @apply bg-[#ffdad6] text-[#93000a]; }
+.badge-review    { @apply bg-[#d3e4ff] text-[#00477f]; }
+.badge-submitted { @apply bg-[#efedf1] text-[#43474e]; }
+
+/* Custom utility for custom scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #c4c6cf transparent;
+}

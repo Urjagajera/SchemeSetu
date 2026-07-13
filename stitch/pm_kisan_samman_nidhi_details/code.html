@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scheme Detail - SchemeSetu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#efedf1",
+                    "secondary": "#1960a3",
+                    "surface-container-low": "#f4f3f7",
+                    "on-tertiary-fixed": "#001d37",
+                    "on-background": "#1a1c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#2f3033",
+                    "on-surface-variant": "#43474e",
+                    "tertiary-container": "#003762",
+                    "on-tertiary-container": "#58a2f0",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e3e2e6",
+                    "tertiary-fixed-dim": "#9fcaff",
+                    "background": "#faf9fd",
+                    "on-secondary-container": "#00477f",
+                    "error": "#ba1a1a",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#001c38",
+                    "secondary-container": "#7db6ff",
+                    "tertiary-fixed": "#d2e4ff",
+                    "primary-fixed-dim": "#adc7f7",
+                    "inverse-primary": "#adc7f7",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#004881",
+                    "primary-fixed": "#d6e3ff",
+                    "surface-tint": "#455f88",
+                    "outline-variant": "#c4c6cf",
+                    "tertiary": "#00213e",
+                    "on-primary-container": "#86a0cd",
+                    "surface-container-high": "#e9e7eb",
+                    "on-surface": "#1a1c1e",
+                    "secondary-fixed-dim": "#a2c9ff",
+                    "surface-bright": "#faf9fd",
+                    "on-primary-fixed-variant": "#2d476f",
+                    "primary": "#002045",
+                    "on-primary-fixed": "#001b3c",
+                    "surface-variant": "#e3e2e6",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "primary-container": "#1a365d",
+                    "inverse-on-surface": "#f1f0f4",
+                    "on-tertiary-fixed-variant": "#00497e",
+                    "surface-dim": "#dad9dd",
+                    "surface": "#faf9fd",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#d3e4ff",
+                    "outline": "#74777f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "16px",
+                    "stack-sm": "8px",
+                    "stack-lg": "32px",
+                    "max-width": "1280px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "heading": ["Inter"],
+                    "display": ["Inter"],
+                    "display-mobile": ["Inter"],
+                    "body": ["Inter"],
+                    "small": ["Inter"]
+            },
+            "fontSize": {
+                    "heading": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "small": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .zebra-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-on-background docked full-width top-0 border-b border-outline-variant dark:border-outline shadow-sm z-50 sticky">
+<nav class="flex justify-between items-center w-full px-margin-desktop max-w-max-width mx-auto h-16">
+<div class="flex items-center gap-stack-lg">
+<span class="text-heading font-heading font-bold text-primary dark:text-primary-fixed">SchemeSetu</span>
+<div class="hidden md:flex gap-stack-md">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">Home</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body text-body" href="#">Schemes</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body text-body" href="#">About</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-small w-64 focus:ring-2 focus:ring-secondary" placeholder="Search schemes..." type="text"/>
+</div>
+<div class="flex items-center gap-stack-sm">
+<button class="p-2 hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all rounded-full">
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed">language</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-all rounded-full">
+<span class="material-symbols-outlined text-secondary dark:text-secondary-fixed">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+</header>
+<main class="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Breadcrumbs -->
+<nav class="mb-stack-md flex items-center gap-2 text-on-surface-variant text-small font-small">
+<a class="hover:text-secondary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<a class="hover:text-secondary transition-colors" href="#">Agriculture &amp; Allied Services</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-on-surface">Pradhan Mantri Fasal Bima Yojana</span>
+</nav>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left: Detailed Content (8 Columns) -->
+<div class="lg:col-span-8 space-y-stack-lg">
+<!-- Hero Header -->
+<section class="space-y-stack-sm">
+<h1 class="font-display text-display md:text-display-mobile text-primary">Pradhan Mantri Fasal Bima Yojana (PMFBY)</h1>
+<div class="flex flex-wrap gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-small">Insurance</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-3 py-1 rounded-full text-small">Agriculture</span>
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-small">Central Sector</span>
+</div>
+</section>
+<!-- Featured Image -->
+<div class="rounded-xl overflow-hidden shadow-md">
+<img class="w-full h-80 object-cover" data-alt="A wide-angle landscape shot of a lush green rice paddy field at dawn. The rising sun casts a warm, golden glow over the dew-covered crops, representing agricultural prosperity and security. A modern tractor and a traditional farmer's hat are visible in the soft-focus foreground, blending technology with heritage. The sky is a serene gradient of orange and Action Blue, maintaining a modern light-mode corporate aesthetic for a government utility service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiM3JgkVV8gHKl9MuUWWkfloFmcXUpGllfCEM40Oh2LU79NSVEherH153xqtbIiPDv9sdaQIJqoIFaLR0Da0uxR2kW-0CUk409ePuQgttlXEzRqvA5BVawoWvJOkwyA8iWDiZN5O0oV-707jjc7QfCJgcnhJm2UvvPrL14mDqJ5r9yvJjIFPX17HpLV7fOAQ9_RfAjJtN3pv8fiWPTzbN7OocJ0WyDJYYj8ZLwzB8GuHtpOKhkT8JA"/>
+</div>
+<!-- Full Description Section -->
+<section class="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant" id="description">
+<h2 class="font-heading text-heading text-primary mb-stack-md">Full Description</h2>
+<div class="text-body font-body text-on-surface-variant leading-relaxed space-y-4">
+<p>The Pradhan Mantri Fasal Bima Yojana (PMFBY) is a government-sponsored crop insurance scheme that integrates multiple stakeholders on a single platform. Launched in 2016, it aims to support sustainable production in the agriculture sector by providing financial support to farmers suffering from crop loss or damage arising out of unforeseen events.</p>
+<p>The scheme provides comprehensive insurance cover against failure of the crop, thus helping in stabilizing the income of the farmers and encouraging them to adopt innovative and modern agricultural practices.</p>
+</div>
+</section>
+<!-- Eligibility Criteria Section -->
+<section class="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant" id="eligibility">
+<h2 class="font-heading text-heading text-primary mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">verified</span>
+                        Eligibility Criteria
+                    </h2>
+<ul class="space-y-stack-sm">
+<li class="flex items-start gap-3 text-body font-body text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary mt-1" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>All farmers including sharecroppers and tenant farmers growing the notified crops in the notified areas are eligible for coverage.</span>
+</li>
+<li class="flex items-start gap-3 text-body font-body text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary mt-1" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Mandatory coverage for all farmers who have sanctioned credit limits or have availed crop loans from Financial Institutions for the notified crops.</span>
+</li>
+<li class="flex items-start gap-3 text-body font-body text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary mt-1" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Optional coverage for non-loanee farmers.</span>
+</li>
+<li class="flex items-start gap-3 text-body font-body text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary mt-1" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Aadhar card is mandatory for application.</span>
+</li>
+</ul>
+</section>
+<!-- Benefits List (Bento Grid Style) -->
+<section id="benefits">
+<h2 class="font-heading text-heading text-primary mb-stack-md">Scheme Benefits</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="p-stack-md bg-secondary-container/10 border border-secondary-container/30 rounded-lg hover:shadow-md transition-shadow">
+<div class="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-white">payments</span>
+</div>
+<h3 class="font-heading text-body font-bold text-secondary mb-1">Financial Support</h3>
+<p class="text-small font-small text-on-surface-variant">Covers yield losses for food crops, oilseeds, and annual commercial/horticultural crops.</p>
+</div>
+<div class="p-stack-md bg-secondary-container/10 border border-secondary-container/30 rounded-lg hover:shadow-md transition-shadow">
+<div class="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-white">history_edu</span>
+</div>
+<h3 class="font-heading text-body font-bold text-secondary mb-1">Low Premium</h3>
+<p class="text-small font-small text-on-surface-variant">Uniform premium of only 2% to be paid by farmers for all Kharif crops and 1.5% for Rabi crops.</p>
+</div>
+<div class="p-stack-md bg-secondary-container/10 border border-secondary-container/30 rounded-lg hover:shadow-md transition-shadow">
+<div class="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-white">satellite_alt</span>
+</div>
+<h3 class="font-heading text-body font-bold text-secondary mb-1">Smart Assessment</h3>
+<p class="text-small font-small text-on-surface-variant">Uses remote sensing, smartphones, and drones for quick crop loss estimation and claim settlement.</p>
+</div>
+<div class="p-stack-md bg-secondary-container/10 border border-secondary-container/30 rounded-lg hover:shadow-md transition-shadow">
+<div class="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-white">security</span>
+</div>
+<h3 class="font-heading text-body font-bold text-secondary mb-1">Post-Harvest Coverage</h3>
+<p class="text-small font-small text-on-surface-variant">Coverage available up to a maximum period of two weeks from harvesting for unseasonal rains.</p>
+</div>
+</div>
+</section>
+<!-- Required Documents Table -->
+<section class="overflow-hidden rounded-xl border border-outline-variant shadow-sm" id="documents">
+<div class="bg-primary px-stack-lg py-4">
+<h2 class="font-heading text-body text-on-primary">Required Documents</h2>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left zebra-table">
+<thead>
+<tr class="bg-surface-container-high text-on-surface font-small border-b border-outline-variant">
+<th class="px-6 py-4">Document Name</th>
+<th class="px-6 py-4">Purpose</th>
+<th class="px-6 py-4">Format</th>
+</tr>
+</thead>
+<tbody class="text-body font-body text-on-surface-variant">
+<tr>
+<td class="px-6 py-4 font-bold text-on-surface">Aadhar Card</td>
+<td class="px-6 py-4">Identity Verification</td>
+<td class="px-6 py-4">PDF/JPG (max 2MB)</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-bold text-on-surface">Bank Passbook</td>
+<td class="px-6 py-4">Claim Disbursement</td>
+<td class="px-6 py-4">PDF/JPG (max 2MB)</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-bold text-on-surface">Land Records (7/12, 8A)</td>
+<td class="px-6 py-4">Ownership Proof</td>
+<td class="px-6 py-4">PDF/JPG (max 5MB)</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-bold text-on-surface">Sowing Certificate</td>
+<td class="px-6 py-4">Crop Verification</td>
+<td class="px-6 py-4">PDF (Signed)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Application Steps Timeline -->
+<section id="steps">
+<h2 class="font-heading text-heading text-primary mb-stack-lg">Application Process</h2>
+<div class="relative space-y-stack-lg before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-[2px] before:bg-outline-variant">
+<div class="relative pl-12">
+<div class="absolute left-0 top-0 w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold z-10 border-4 border-surface">1</div>
+<h4 class="font-heading text-body font-bold text-primary">Registration</h4>
+<p class="text-small text-on-surface-variant">Register on the PMFBY portal using your mobile number and Aadhar details.</p>
+</div>
+<div class="relative pl-12">
+<div class="absolute left-0 top-0 w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold z-10 border-4 border-surface">2</div>
+<h4 class="font-heading text-body font-bold text-primary">Crop Selection</h4>
+<p class="text-small text-on-surface-variant">Select the state, district, bank branch, and the crop you wish to insure.</p>
+</div>
+<div class="relative pl-12">
+<div class="absolute left-0 top-0 w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold z-10 border-4 border-surface">3</div>
+<h4 class="font-heading text-body font-bold text-primary">Upload Documents</h4>
+<p class="text-small text-on-surface-variant">Digitally upload all required documents mentioned in the documents section.</p>
+</div>
+<div class="relative pl-12">
+<div class="absolute left-0 top-0 w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold z-10 border-4 border-surface">4</div>
+<h4 class="font-heading text-body font-bold text-primary">Premium Payment</h4>
+<p class="text-small text-on-surface-variant">Pay the calculated premium amount via Net Banking, Debit Card, or UPI.</p>
+</div>
+<div class="relative pl-12">
+<div class="absolute left-0 top-0 w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold z-10 border-4 border-surface">5</div>
+<h4 class="font-heading text-body font-bold text-primary">Application Tracking</h4>
+<p class="text-small text-on-surface-variant">Receive an Application ID to track the status of your insurance policy.</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right: Sticky Side Panel (4 Columns) -->
+<aside class="lg:col-span-4 lg:sticky lg:top-24 space-y-stack-md">
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant shadow-md">
+<div class="mb-stack-md">
+<div class="text-small text-on-surface-variant mb-1">Status</div>
+<div class="flex items-center gap-2 text-primary font-bold">
+<span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                            Applications Open
+                        </div>
+</div>
+<button class="w-full bg-secondary text-on-secondary font-heading text-body py-4 rounded-lg hover:bg-on-secondary-fixed-variant transition-all active:scale-95 shadow-lg mb-stack-md flex items-center justify-center gap-2">
+                        Apply Now
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<hr class="border-outline-variant mb-stack-md"/>
+<div class="space-y-stack-md">
+<div>
+<h4 class="text-small font-bold text-on-surface mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+                                Important Deadlines
+                            </h4>
+<ul class="space-y-2">
+<li class="flex justify-between text-small">
+<span class="text-on-surface-variant">Kharif Season</span>
+<span class="font-bold">July 31, 2024</span>
+</li>
+<li class="flex justify-between text-small">
+<span class="text-on-surface-variant">Rabi Season</span>
+<span class="font-bold">Dec 31, 2024</span>
+</li>
+</ul>
+</div>
+<div>
+<h4 class="text-small font-bold text-on-surface mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">link</span>
+                                Official Links
+                            </h4>
+<ul class="space-y-2">
+<li>
+<a class="text-secondary text-small hover:underline flex items-center gap-1" href="#">
+                                        PMFBY Official Portal
+                                        <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+</a>
+</li>
+<li>
+<a class="text-secondary text-small hover:underline flex items-center gap-1" href="#">
+                                        Guidelines PDF (2024)
+                                        <span class="material-symbols-outlined text-[12px]">download</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="p-3 bg-surface-container rounded-lg">
+<p class="text-small text-on-surface-variant italic">Need assistance? Call our toll-free help desk at 1800-180-1551</p>
+</div>
+</div>
+</div>
+<!-- Shared Component logic: Floating Support if applicable -->
+<div class="bg-primary text-on-primary p-stack-md rounded-xl shadow-lg flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-3xl">help_center</span>
+<div>
+<div class="font-bold text-body">Ask Setu AI</div>
+<div class="text-small opacity-80">Get instant answers about PMFBY</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-on-tertiary-fixed text-on-primary dark:text-on-tertiary-fixed-variant full-width bottom-0">
+<div class="w-full py-stack-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md max-w-max-width mx-auto">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="text-heading font-heading text-on-primary">SchemeSetu</span>
+<p class="font-small text-small text-on-primary-container">© 2024 SchemeSetu - Government of India. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-stack-md">
+<a class="text-on-primary-container hover:text-on-primary hover:underline transition-all font-small text-small" href="#">Privacy Policy</a>
+<a class="text-on-primary-container hover:text-on-primary hover:underline transition-all font-small text-small" href="#">Terms of Service</a>
+<a class="text-on-primary-container hover:text-on-primary hover:underline transition-all font-small text-small" href="#">Help Desk</a>
+<a class="text-on-primary-container hover:text-on-primary hover:underline transition-all font-small text-small" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+<script>
+        // Smooth scroll spy for active states or navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Simple sticky header interaction
+        let lastScrollTop = 0;
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 50) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+            lastScrollTop = scrollTop;
+        });
+    </script>
+</body></html>
