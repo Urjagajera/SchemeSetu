@@ -110,7 +110,7 @@ export const Search: React.FC = () => {
 
           // State check
           if (filters.state) {
-            if (s.level === 'State' && !s.tags.some(t => t.toLowerCase() === filters.state.toLowerCase())) {
+            if (s.level === 'State' && s.authorityName.toLowerCase() !== filters.state.toLowerCase()) {
               return false;
             }
           }

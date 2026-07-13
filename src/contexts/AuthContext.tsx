@@ -33,7 +33,9 @@ const DEFAULT_PROFILE: UserProfile = {
   disability: 'no',
   farmer: 'yes',
   widow: 'no',
-  veteran: 'no'
+  veteran: 'no',
+  interests: ['Farmer', 'Agriculture'],
+  profileTags: ['Farmer', 'Agriculture']
 };
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);

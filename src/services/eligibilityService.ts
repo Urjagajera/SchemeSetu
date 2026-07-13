@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Scheme, UserProfile } from '../types';
-import { schemeService } from './schemeService';
 
 const API_URL = '/api/eligibility';
 
@@ -38,172 +37,57 @@ export const eligibilityService = {
     } catch (error) {
       console.warn('[eligibilityService.getEligibilityReport] Backend not available — running client-side analysis.', (error as Error).message);
 
-      const income = parseInt(profile.income || '0');
-      const age = parseInt(profile.age || '0');
-      const occupation = (profile.occupation || '').toLowerCase();
-      const gender = (profile.gender || '').toLowerCase();
-      const land = (profile.land || '').toLowerCase();
-      const category = (profile.category || '').toLowerCase();
+      // Collect user interests/profile tags
+      const interests = new Set<string>();
+      if (profile.interests && Array.isArray(profile.interests)) {
+        profile.interests.forEach(i => interests.add(i.toLowerCase()));
+      }
+      if (profile.profileTags && Array.isArray(profile.profileTags)) {
+        profile.profileTags.forEach(i => interests.add(i.toLowerCase()));
+      }
+
+      // Add default demographic tags
+      if (profile.occupation) interests.add(profile.occupation.toLowerCase());
+      if (profile.gender === 'female') {
+        interests.add('woman');
+        interests.add('women');
+      }
+      if (profile.farmer === 'yes') {
+        interests.add('farmer');
+        interests.add('farmers');
+        interests.add('agriculture');
+      }
+      if (profile.education) interests.add(profile.education.toLowerCase());
 
       const passedCriteria: string[] = [];
       const failedCriteria: string[] = [];
-      const reasons: string[] = [];
-      const suggestions: string[] = [];
-
-      let totalCriteriaCount = 3;
+      
+      const tags = scheme.tags || [];
+      const totalTags = tags.length || 1;
       let passedCount = 0;
 
-      if (scheme.id === 'pm-kisan') {
-        totalCriteriaCount = 4;
-
-        if (occupation === 'farmer') {
+      tags.forEach(tag => {
+        if (interests.has(tag.toLowerCase())) {
           passedCount++;
-          passedCriteria.push('Occupation: Farmer');
+          passedCriteria.push(`Interest match: "${tag}"`);
         } else {
-          failedCriteria.push('Occupation must be Farmer');
-          reasons.push('This scheme is exclusively for agricultural cultivators.');
-          suggestions.push('Update your profile occupation if you are a practicing farmer.');
+          failedCriteria.push(`Keyword mismatch: "${tag}"`);
         }
+      });
 
-        if (land === 'yes') {
-          passedCount++;
-          passedCriteria.push('Landownership: Cultivable land holder');
-        } else {
-          failedCriteria.push('Must own cultivable land');
-          reasons.push('Direct benefit transfers require verified land ownership records.');
-          suggestions.push('Provide Khasra/Khatauni land record documents to local revenue office.');
-        }
-
-        if (income <= 200000) {
-          passedCount++;
-          passedCriteria.push('Income: Under ₹2 Lakh/year');
-        } else {
-          failedCriteria.push('Annual income exceeds limit of ₹2 Lakh');
-          reasons.push('Institutional farmers and high-income tax payers are excluded.');
-          suggestions.push('Ensure your declared income aligns with standard non-taxpayer brackets.');
-        }
-
-        if (age >= 18) {
-          passedCount++;
-          passedCriteria.push('Age: Adult farmer');
-        } else {
-          failedCriteria.push('Must be 18 years or older');
-          reasons.push('Minors cannot register as independent landholding beneficiaries.');
-        }
-
-      } else if (scheme.id === 'ayushman-bharat') {
-        totalCriteriaCount = 3;
-
-        if (income <= 500000) {
-          passedCount++;
-          passedCriteria.push('Income: Below ₹5 Lakh/year (BPL range)');
-        } else {
-          failedCriteria.push('Income exceeds standard healthcare subsidy cap');
-          reasons.push('PM-JAY covers families registered under SECC socio-economic survey.');
-          suggestions.push('If you belong to BPL category, obtain a verified BPL Ration Card.');
-        }
-
-        passedCount++;
-        passedCriteria.push(`Location: Covered in state "${profile.state}"`);
-
-        passedCount++;
-        passedCriteria.push('Identity Verification: Aadhaar Card available');
-
-      } else if (scheme.id === 'post-matric-scholarship-sc') {
-        totalCriteriaCount = 4;
-
-        if (category === 'sc') {
-          passedCount++;
-          passedCriteria.push('Social Category: Scheduled Caste (SC)');
-        } else {
-          failedCriteria.push('Category must be Scheduled Caste (SC)');
-          reasons.push('This scholarship is constitutionally allocated for SC students.');
-          suggestions.push('If you are eligible, check equivalent Post-Matric scholarships for OBC/ST/General EWS.');
-        }
-
-        if (income <= 250000) {
-          passedCount++;
-          passedCriteria.push('Income: Below ₹2.5 Lakh/year');
-        } else {
-          failedCriteria.push('Family income exceeds ₹2.5 Lakh/year');
-          reasons.push('Merit-cum-means scholarships have strict parental income thresholds.');
-        }
-
-        if (['graduate', 'post-graduate', 'student', '12th'].includes((profile.education || '').toLowerCase())) {
-          passedCount++;
-          passedCriteria.push('Education: Studying at Class XI or higher');
-        } else {
-          failedCriteria.push('Must be class XI or higher');
-          reasons.push('Pre-matric students are not eligible for this post-secondary scholarship.');
-        }
-
-        if (age < 30) {
-          passedCount++;
-          passedCriteria.push('Age: Eligible student range');
-        } else {
-          failedCriteria.push('Age exceeds normal student academic cap');
-        }
-
-      } else if (scheme.id === 'sukanya-samriddhi') {
-        totalCriteriaCount = 2;
-
-        if (gender === 'female') {
-          passedCount++;
-          passedCriteria.push('Gender: Female beneficiary');
-        } else {
-          failedCriteria.push('Beneficiary must be Female');
-          reasons.push('SSY accounts are small savings schemes restricted to girls.');
-          suggestions.push('Look into general public provident savings (PPF) for male children.');
-        }
-
-        if (age <= 10) {
-          passedCount++;
-          passedCriteria.push('Age: Below 10 years');
-        } else {
-          failedCriteria.push('Beneficiary age exceeds 10 years');
-          reasons.push('Accounts can only be opened for girls under the age of 10.');
-          suggestions.push('Consider alternate post-office schemes or recurring deposits.');
-        }
-
-      } else {
-        // Generic rule solver for unrecognised schemes
-        if (income <= 300000) {
-          passedCount++;
-          passedCriteria.push('Income: Under limit');
-        } else {
-          failedCriteria.push('Income: Exceeds standard limit');
-          reasons.push('Welfare programs prioritize lower income groups.');
-        }
-
-        if (age >= 18) {
-          passedCount++;
-          passedCriteria.push('Age: Adult citizen');
-        } else {
-          failedCriteria.push('Age: Minor citizen');
-        }
-
-        passedCount++;
-        passedCriteria.push('Demographic criteria match');
-      }
-
-      const overallMatch = Math.round((passedCount / totalCriteriaCount) * 100);
-      const isEligible = passedCount === totalCriteriaCount;
+      const overallMatch = Math.round((passedCount / totalTags) * 100);
+      const isEligible = overallMatch >= 50;
 
       return {
         schemeId: scheme.id,
-        schemeTitle: scheme.title,
+        schemeTitle: scheme.name || scheme.title,
         overallMatch,
         isEligible,
         passedCriteria,
         failedCriteria,
-        reasons,
-        suggestions,
+        reasons: [`Matches ${passedCount} of your profile interests out of ${tags.length} total scheme tags.`],
+        suggestions: ['Add more tags to your profile settings matching your specific occupation, education, or requirements.']
       };
     }
-  },
-
-  async getAlternativeSchemes(profile: UserProfile, excludeSchemeId: string): Promise<Scheme[]> {
-    const allEligible = await schemeService.getEligibleSchemes(profile);
-    return allEligible.filter(s => s.id !== excludeSchemeId).slice(0, 3);
   }
 };

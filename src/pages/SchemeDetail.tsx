@@ -148,6 +148,18 @@ export const SchemeDetail: React.FC = () => {
                 <Building2 className="w-4 h-4 text-secondary dark:text-sky-400 shrink-0" />
                 <span>{scheme.ministry}</span>
               </div>
+
+              {/* Tags Section */}
+              {scheme.tags && scheme.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-2 border-t dark:border-zinc-800">
+                  {scheme.tags.map((tag, i) => (
+                    <span key={i} className="inline-block bg-surface-container-low border dark:bg-zinc-850 dark:border-zinc-800 dark:text-zinc-300 text-[10px] font-semibold px-2.5 py-0.5 rounded-full text-on-surface-variant">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
             </div>
           </div>
 
@@ -168,34 +180,38 @@ export const SchemeDetail: React.FC = () => {
           </div>
 
           {/* Eligibility checklist */}
-          <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm space-y-4 transition-colors">
-            <h3 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white">
-              {t('eligibilityCriteria')}
-            </h3>
-            <ul className="space-y-3">
-              {scheme.eligibility.map((criterion, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-xs md:text-sm text-on-surface dark:text-zinc-350">
-                  <CheckCircle className="w-4.5 h-4.5 text-green-600 dark:text-green-400 mt-0.5 shrink-0" />
-                  <span className="leading-relaxed">{criterion}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {scheme.eligibility && scheme.eligibility.length > 0 && (
+            <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm space-y-4 transition-colors">
+              <h3 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white">
+                {t('eligibilityCriteria')}
+              </h3>
+              <ul className="space-y-3">
+                {scheme.eligibility.map((criterion, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-xs md:text-sm text-on-surface dark:text-zinc-350">
+                    <CheckCircle className="w-4.5 h-4.5 text-green-600 dark:text-green-400 mt-0.5 shrink-0" />
+                    <span className="leading-relaxed">{criterion}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Documents required */}
-          <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm space-y-4 transition-colors">
-            <h3 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white">
-              {t('documentsRequired')}
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {scheme.documents.map((doc, i) => (
-                <div key={i} className="flex items-center gap-2.5 p-3 bg-surface-container-low dark:bg-zinc-950 rounded-lg text-xs md:text-sm font-semibold text-on-surface dark:text-zinc-300">
-                  <Receipt className="w-4.5 h-4.5 text-secondary dark:text-sky-400 shrink-0" />
-                  <span>{doc}</span>
-                </div>
-              ))}
+          {scheme.documents && scheme.documents.length > 0 && (
+            <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm space-y-4 transition-colors">
+              <h3 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white">
+                {t('documentsRequired')}
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {scheme.documents.map((doc, i) => (
+                  <div key={i} className="flex items-center gap-2.5 p-3 bg-surface-container-low dark:bg-zinc-950 rounded-lg text-xs md:text-sm font-semibold text-on-surface dark:text-zinc-300">
+                    <Receipt className="w-4.5 h-4.5 text-secondary dark:text-sky-400 shrink-0" />
+                    <span>{doc}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
 
 
@@ -225,12 +241,12 @@ export const SchemeDetail: React.FC = () => {
             </div>
 
             <a
-              href={scheme.applyUrl}
+              href={scheme.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-1.5 w-full py-3 bg-secondary hover:bg-opacity-95 text-white dark:bg-sky-500 dark:text-zinc-950 font-bold text-sm rounded-lg transition-all shadow-sm active:scale-95"
             >
-              Apply via Official Portal
+              Apply on Official Site
               <ExternalLink className="w-4 h-4" />
             </a>
           </div>

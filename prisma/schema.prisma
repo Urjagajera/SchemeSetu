@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Scheme {
+  id              String   @id @default(cuid())
+  name            String
+  sourceUrl       String   @unique   // from CSV "block href" — Apply Now redirect link
+  description     String              // from CSV "mt-3 2"
+  level           SchemeLevel         // STATE | CENTRAL
+  authorityName   String              // "Gujarat" or the Ministry name
+  categories      SchemeCategory[]    // many-to-many, derived from tags
+  tags            SchemeTag[]         // many-to-many, raw tags preserved as-is
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum SchemeLevel {
+  STATE
+  CENTRAL
+}
+
+model Category {
+  id      String   @id @default(cuid())
+  name    String   @unique   // "Student" | "Farmer" | "Woman"
+  schemes SchemeCategory[]
+}
+
+model SchemeCategory {
+  schemeId   String
+  categoryId String
+  scheme     Scheme   @relation(fields: [schemeId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+  @@id([schemeId, categoryId])
+}
+
+model Tag {
+  id      String @id @default(cuid())
+  name    String @unique
+  schemes SchemeTag[]
+}
+
+model SchemeTag {
+  schemeId String
+  tagId    String
+  scheme   Scheme @relation(fields: [schemeId], references: [id])
+  tag      Tag    @relation(fields: [tagId], references: [id])
+  @@id([schemeId, tagId])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  profile   Profile?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  age         String
+  gender      String
+  state       String
+  category    String
+  occupation  String
+  income      String
+  residence   String
+  land        String
+  education   String
+  interests   String[] // profileTags capturing user-selected keywords
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -50,6 +50,37 @@ export const Profile: React.FC = () => {
   
   const [successMsg, setSuccessMsg] = useState('');
   const [activeSection, setActiveSection] = useState<'personal' | 'academic' | 'finance' | 'location' | 'special'>('personal');
+  
+  const [selectedTags, setSelectedTags] = useState<string[]>(profile.interests || profile.profileTags || []);
+  const [newTagInput, setNewTagInput] = useState('');
+
+  const toggleTag = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter(t => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleAddCustomTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const val = newTagInput.trim();
+      if (val && !selectedTags.includes(val)) {
+        setSelectedTags([...selectedTags, val]);
+        setNewTagInput('');
+      }
+    }
+  };
+
+  const handleAddCustomTagBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const val = newTagInput.trim();
+    if (val && !selectedTags.includes(val)) {
+      setSelectedTags([...selectedTags, val]);
+      setNewTagInput('');
+    }
+  };
 
   const {
     register,
@@ -80,7 +111,11 @@ export const Profile: React.FC = () => {
   const onSubmit = async (values: ProfileFormValues) => {
     try {
       setSuccessMsg('');
-      await updateProfile(values);
+      await updateProfile({
+        ...values,
+        interests: selectedTags,
+        profileTags: selectedTags
+      });
       setSuccessMsg('Your eligibility profile has been successfully saved!');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
@@ -405,6 +440,86 @@ export const Profile: React.FC = () => {
                   </select>
                 </div>
               </div>
+
+              {/* Keywords & Interests */}
+              <div className="space-y-4 pt-4 border-t dark:border-zinc-800">
+                <h4 className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                  Select Your Keywords & Interests (Relevance Tags)
+                </h4>
+                
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    'Student', 'Scholarship', 'Education', 'Stipend', 'Internship',
+                    'Farmer', 'Agriculture', 'Animal Husbandry', 'Dairy Farmer',
+                    'Woman', 'Women', 'Maternity', 'Widow',
+                    'Scheduled Caste', 'Scheduled Tribe', 'OBC',
+                    'Disabled', 'PwD', 'Artisan', 'Entrepreneur', 'Business'
+                  ].map((tag, idx) => {
+                    const isSelected = selectedTags.includes(tag);
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => toggleTag(tag)}
+                        className={cn(
+                          "px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer border transition-all",
+                          isSelected
+                            ? "bg-secondary border-secondary text-white dark:bg-sky-500 dark:border-sky-500 dark:text-zinc-950"
+                            : "bg-surface-container-low border-outline-variant text-primary dark:bg-zinc-850 dark:border-zinc-800 dark:text-zinc-300 hover:bg-secondary/10 dark:hover:bg-sky-500/10"
+                        )}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Custom Tag Input */}
+                <div className="space-y-1 pt-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                    Add Custom Tags (Press Enter or click Add)
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newTagInput}
+                      onChange={(e) => setNewTagInput(e.target.value)}
+                      onKeyDown={handleAddCustomTag}
+                      placeholder="e.g. Solar, Pension, Fellowship..."
+                      className="flex-1 rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddCustomTagBtn}
+                      className="px-4 py-2 bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 font-bold text-xs rounded-lg active:scale-95"
+                    >
+                      Add
+                    </button>
+                  </div>
+                  
+                  {/* Selected Tags list preview */}
+                  {selectedTags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-2">
+                      {selectedTags.map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/10 border border-secondary/20 text-secondary dark:bg-zinc-850 dark:border-zinc-800 dark:text-sky-400 text-[10px] font-bold"
+                        >
+                          {tag}
+                          <button
+                            type="button"
+                            onClick={() => toggleTag(tag)}
+                            className="text-red-500 hover:text-red-700 focus:outline-none ml-1 font-extrabold text-[12px]"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
             </div>
           )}
 

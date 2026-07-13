@@ -1,26 +1,32 @@
 export interface Scheme {
   id: string;
+  name: string;
+  sourceUrl: string;
+  description: string;
+  level: 'STATE' | 'CENTRAL' | 'Central' | 'State';
+  authorityName: string;
+  tags: string[];
+  categories?: string[];
+  
+  // Compatibility properties
   title: string;
   category: string;
-  categoryColor: string;
-  categoryTextColor: string;
   ministry: string;
-  level: 'Central' | 'State';
-  status: string;
   benefit: string;
   deadline: string;
   deadlineUrgent?: boolean;
   shortDesc: string;
-  description: string;
-  eligibility: string[];
-  documents: string[];
   applyUrl: string;
-  tags: string[];
-  image: string;
   featured: boolean;
   totalBeneficiaries: string;
   disbursed: string;
   matchScore?: number;
+  eligibility?: string[];
+  documents?: string[];
+  categoryColor?: string;
+  categoryTextColor?: string;
+  image?: string;
+  status?: string;
 }
 
 export interface UserProfile {
@@ -45,6 +51,8 @@ export interface UserProfile {
   farmer?: string;
   widow?: string;
   veteran?: string;
+  interests?: string[];
+  profileTags?: string[];
 }
 
 export interface ChatMessage {
