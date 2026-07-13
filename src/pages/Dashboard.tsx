@@ -13,10 +13,7 @@ import {
   ArrowRight, 
   Bot, 
   TrendingUp, 
-  Bookmark, 
   Zap, 
-  CheckCircle2, 
-  BookOpen, 
   Sparkles 
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -31,7 +28,6 @@ export const Dashboard: React.FC = () => {
   const [recommended, setRecommended] = useState<Scheme[]>([]);
   const [trending, setTrending] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
-
 
   // Determine profile completeness
   const checkProfileCompleteness = () => {
@@ -76,16 +72,16 @@ export const Dashboard: React.FC = () => {
   }, [profile]);
 
   const recentUpdates = [
-    { title: 'PM Kisan 17th Installment Disbursed', date: 'Yesterday', category: 'Agriculture' },
-    { title: 'Post-Matric SC Scholarship deadline extended to July 25', date: '2 days ago', category: 'Education' },
-    { title: 'New solar panel grid list updated for Surya Ghar scheme', date: '1 week ago', category: 'Environment' }
+    { title: t('updateTitle1'), date: t('yesterday'), category: t('farmerLoans') },
+    { title: t('updateTitle2'), date: `2 ${t('daysAgo')}`, category: t('scholarships') },
+    { title: t('updateTitle3'), date: `1 ${t('weeksAgo')}`, category: t('housing') }
   ];
 
   const greeting = () => {
     const hr = new Date().getHours();
-    if (hr < 12) return 'Good morning';
-    if (hr < 17) return 'Good afternoon';
-    return 'Good evening';
+    if (hr < 12) return t('goodMorning');
+    if (hr < 17) return t('goodAfternoon');
+    return t('goodEvening');
   };
 
   return (
@@ -104,7 +100,7 @@ export const Dashboard: React.FC = () => {
             {user?.name.split(' ')[0]}
           </h1>
           <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 mt-1">
-            Here is an overview of your government services.
+            {t('dashboardOverviewDesc')}
           </p>
         </div>
         
@@ -114,7 +110,7 @@ export const Dashboard: React.FC = () => {
           className="flex items-center justify-center gap-1.5 px-5 py-2.5 bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 rounded-full text-xs md:text-sm font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all w-fit"
         >
           <ClipboardCheck className="w-4 h-4" />
-          Check Eligibility
+          {t('eligibility')}
         </Link>
       </div>
 
@@ -149,7 +145,7 @@ export const Dashboard: React.FC = () => {
                 to="/search"
                 className="text-secondary dark:text-sky-400 text-xs font-bold hover:underline flex items-center gap-1"
               >
-                Browse All <ArrowRight className="w-3.5 h-3.5" />
+                {t('browseAll')} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
@@ -170,7 +166,7 @@ export const Dashboard: React.FC = () => {
               ) : (
                 <div className="text-center py-12 bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl">
                   <p className="text-sm text-on-surface-variant dark:text-zinc-550 italic">
-                    No matching schemes found for your current profile filters.
+                    {t('noMatchingSchemesFound')}
                   </p>
                 </div>
               )
@@ -202,14 +198,14 @@ export const Dashboard: React.FC = () => {
                 {t('aiShortcut')}
               </h3>
               <p className="text-[11px] md:text-xs text-sky-100/75 mt-1">
-                Ask SetuAI about your eligibility, document verification, or guidelines.
+                {t('aiShortcutDesc')}
               </p>
             </div>
             <Link
               to="/ai"
               className="mt-4 flex items-center justify-center gap-1.5 w-full py-2 bg-white text-secondary dark:bg-sky-500 dark:text-zinc-950 font-bold text-xs rounded-lg hover:bg-opacity-95 transition-all shadow-sm"
             >
-              Start Chat
+              {t('startChat')}
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>

@@ -25,8 +25,10 @@ export const Navbar: React.FC = () => {
   };
 
   const isLandingPage = location.pathname === '/';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  const hideNavLinks = isLandingPage || isAuthPage;
 
-  const navLinks = isLandingPage ? [] : [
+  const navLinks = hideNavLinks ? [] : [
     { name: t('searchBtn'), path: '/search', icon: BookOpen },
     { name: t('aiAssistant'), path: '/ai', icon: Bot },
     { name: t('helpDesk'), path: '/help', icon: HelpCircle }

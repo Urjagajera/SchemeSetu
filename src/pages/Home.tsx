@@ -46,10 +46,10 @@ export const Home: React.FC = () => {
     { icon: 'school', label: t('scholarships'), value: 'Education' },
     { icon: 'medical_services', label: t('healthInsurance'), value: 'Healthcare' },
     { icon: 'agriculture', label: t('farmerLoans'), value: 'Agriculture' },
-    { icon: 'home', label: 'Housing', value: 'Housing' },
-    { icon: 'work', label: 'Employment', value: 'Employment' },
-    { icon: 'family_restroom', label: 'Women & Child', value: 'Women & Child' },
-    { icon: 'elderly', label: 'Senior Citizens', value: 'Senior Citizens' }
+    { icon: 'home', label: t('housing'), value: 'Housing' },
+    { icon: 'work', label: t('employment'), value: 'Employment' },
+    { icon: 'family_restroom', label: t('womenAndChild'), value: 'Women & Child' },
+    { icon: 'elderly', label: t('seniorCitizens'), value: 'Senior Citizens' }
   ];
 
   const steps = [
@@ -126,7 +126,7 @@ export const Home: React.FC = () => {
               onClick={() => navigate('/search')}
               className="text-secondary dark:text-sky-400 font-bold flex items-center gap-1 hover:underline text-sm focus:outline-none"
             >
-              Browse Catalog
+              {t('browseCatalog')}
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

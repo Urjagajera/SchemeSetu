@@ -188,10 +188,10 @@ export const Search: React.FC = () => {
       <div className="space-y-4">
         <div>
           <h1 className="font-display text-2xl md:text-3xl font-extrabold text-primary dark:text-white">
-            Search Schemes Catalog
+            {t('searchCatalogTitle')}
           </h1>
           <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 mt-1">
-            Discover active central and state programs matching your filters.
+            {t('searchCatalogDesc')}
           </p>
         </div>
 
@@ -234,7 +234,7 @@ export const Search: React.FC = () => {
               className="bg-white dark:bg-zinc-900 w-80 h-full p-4 overflow-y-auto space-y-4 flex flex-col justify-between"
             >
               <div className="flex justify-between items-center pb-2 border-b dark:border-zinc-800">
-                <span className="font-bold text-primary dark:text-white text-sm">Refine Search</span>
+                <span className="font-bold text-primary dark:text-white text-sm">{t('refineSearch')}</span>
                 <button onClick={() => setMobileFilterOpen(false)} className="text-zinc-500 font-bold p-1">
                   <X className="w-5 h-5" />
                 </button>
@@ -253,7 +253,7 @@ export const Search: React.FC = () => {
                 onClick={() => setMobileFilterOpen(false)}
                 className="w-full bg-secondary text-white py-2.5 rounded-lg text-sm font-bold mt-4"
               >
-                Apply Filters
+                {t('applyFilters')}
               </button>
             </motion.div>
           </div>
@@ -264,18 +264,18 @@ export const Search: React.FC = () => {
           {/* Sorting panel */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white dark:bg-zinc-900 p-4 border border-outline-variant dark:border-zinc-800 rounded-xl transition-colors">
             <span className="text-xs md:text-sm font-bold text-on-surface-variant dark:text-zinc-400">
-              {loading ? 'Searching...' : `${schemes.length} schemes found`}
+              {loading ? t('searching') : `${schemes.length} ${t('schemesFound')}`}
             </span>
 
             <div className="flex items-center gap-2 self-end sm:self-auto">
-              <span className="text-xs text-on-surface-variant dark:text-zinc-500 font-medium">Sort By:</span>
+              <span className="text-xs text-on-surface-variant dark:text-zinc-500 font-medium">{t('sortBy')}</span>
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
                 className="rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-zinc-300 text-xs font-semibold focus:ring-secondary focus:border-secondary py-1"
               >
-                <option>Most Relevant</option>
-                <option>Deadline Approaching</option>
+                <option value="Most Relevant">{t('mostRelevant')}</option>
+                <option value="Deadline Approaching">{t('deadlineApproaching')}</option>
               </select>
             </div>
           </div>
@@ -306,9 +306,9 @@ export const Search: React.FC = () => {
           ) : (
             <EmptyState
               iconName="SearchX"
-              title="No schemes matched your search"
-              description="Try adjusting your text queries or category filters to explore wider programs."
-              actionText="Reset Filters"
+              title={t('noSchemesMatchedTitle')}
+              description={t('noSchemesMatchedDesc')}
+              actionText={t('resetFilters')}
               onAction={handleClearFilters}
             />
           )}
