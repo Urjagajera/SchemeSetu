@@ -208,9 +208,19 @@ export const TRANSLATIONS = {
     faqsTitle: "Frequently Asked Questions",
     noArticlesFound: "No FAQ articles found matching",
     stillHaveQuestions: "Still have questions? Contact Support",
-    emailSupport: "Email Support",
-    helpline: "Toll-Free Helpline",
-    liveChat: "Live Chat"
+    liveChat: "Live Chat",
+    faqQ1: "How do I know which schemes I am eligible for?",
+    faqA1: "Use our Eligibility Checker tool. Just answer a few simple questions about your age, income, occupation, and state, and we'll show you a personalized list of matching schemes instantly.",
+    faqQ2: "Is SchemeSetu an official government website?",
+    faqA2: "SchemeSetu is a citizen-assistance platform that aggregates publicly available information from official government portals like MyScheme.gov.in, Scholarships.gov.in, and others. We are not directly affiliated with the Government of India, but all scheme data is sourced from official sources.",
+    faqQ3: "Can I apply for a scheme directly through SchemeSetu?",
+    faqA3: "No. SchemeSetu helps you discover and understand schemes, check your eligibility, and prepare your documents. For the actual application, we redirect you to the official government portal for that specific scheme. This ensures your application is processed through official channels.",
+    faqQ4: "How often is the scheme data updated?",
+    faqA4: "Our team updates scheme information daily. New schemes, deadline changes, and eligibility updates are reflected within 24-48 hours of official announcement. You can subscribe to notifications to get instant alerts.",
+    faqQ5: "Is my personal data safe on SchemeSetu?",
+    faqA5: "Yes. We use Google OAuth 2.0 for authentication, which means we never store your password. The eligibility check information you enter is used only to match you with schemes and is not stored permanently on our servers. Please refer to our Privacy Policy for full details.",
+    faqQ6: "What documents are generally required for most schemes?",
+    faqA6: "Most central government schemes require: Aadhaar Card, Bank Account (linked to Aadhaar), Income Certificate (from Tehsildar/SDM), Caste Certificate (if applicable), Age Proof (Birth Certificate or Class 10 Marksheet), Address Proof, Passport-sized photographs. Always check the specific scheme's document list for exact requirements."
   },
   hi: {
     appName: "योजनासेतु",
@@ -421,9 +431,19 @@ export const TRANSLATIONS = {
     faqsTitle: "अक्सर पूछे जाने वाले प्रश्न",
     noArticlesFound: "खोज से मेल खाता कोई सहायता लेख नहीं मिला",
     stillHaveQuestions: "अभी भी सवाल हैं? सहायता टीम से संपर्क करें",
-    emailSupport: "ईमेल सहायता",
-    helpline: "टोल-फ्री हेल्पलाइन",
-    liveChat: "लाइव चैट"
+    liveChat: "लाइव चैट",
+    faqQ1: "मुझे कैसे पता चलेगा कि मैं किन योजनाओं के लिए पात्र हूँ?",
+    faqA1: "हमारे पात्रता जाँचकर्ता टूल का उपयोग करें। बस अपनी आयु, आय, व्यवसाय और राज्य के बारे में कुछ सरल प्रश्नों के उत्तर दें, और हम आपको तुरंत मिलान करने वाली योजनाओं की एक व्यक्तिगत सूची दिखाएंगे।",
+    faqQ2: "क्या योजनासेतु एक आधिकारिक सरकारी वेबसाइट है?",
+    faqA2: "योजनासेतु एक नागरिक सहायता मंच है जो MyScheme.gov.in, Scholarships.gov.in और अन्य आधिकारिक सरकारी पोर्टलों से सार्वजनिक रूप से उपलब्ध जानकारी एकत्र करता है। हम भारत सरकार से सीधे संबद्ध नहीं हैं, लेकिन सभी योजना डेटा आधिकारिक स्रोतों से लिए गए हैं।",
+    faqQ3: "क्या मैं योजनासेतु के माध्यम से सीधे किसी योजना के लिए आवेदन कर सकता हूँ?",
+    faqA3: "नहीं। योजनासेतु आपको योजनाओं की खोज करने और समझने, आपकी पात्रता की जांच करने और आपके दस्तावेज तैयार करने में मदद करता है। वास्तविक आवेदन के लिए, हम आपको उस विशिष्ट योजना के लिए आधिकारिक सरकारी पोर्टल पर रीडायरेक्ट करते हैं। यह सुनिश्चित करता है कि आपका आवेदन आधिकारिक चैनलों के माध्यम से संसाधित हो।",
+    faqQ4: "योजना का डेटा कितनी बार अपडेट किया जाता है?",
+    faqA4: "हमारी टीम रोजाना योजना की जानकारी अपडेट करती है। नई योजनाएं, समय सीमा में बदलाव और पात्रता अपडेट आधिकारिक घोषणा के 24-48 घंटों के भीतर दिखाई देते हैं। तत्काल अलर्ट प्राप्त करने के लिए आप सूचनाओं की सदस्यता ले सकते हैं।",
+    faqQ5: "क्या योजनासेतु पर मेरा व्यक्तिगत डेटा सुरक्षित है?",
+    faqA5: "हाँ। हम प्रमाणीकरण के लिए Google OAuth 2.0 का उपयोग करते हैं, जिसका अर्थ है कि हम आपका पासवर्ड कभी संग्रहीत नहीं करते हैं। आपके द्वारा दर्ज की गई पात्रता जांच जानकारी का उपयोग केवल आपको योजनाओं के साथ मिलाने के लिए किया जाता है और हमारे सर्वर पर स्थायी रूप से संग्रहीत नहीं किया जाता है। कृपया पूरी जानकारी के लिए हमारी गोपनीयता नीति देखें।",
+    faqQ6: "अधिकांश योजनाओं के लिए आम तौर पर किन दस्तावेजों की आवश्यकता होती है?",
+    faqA6: "अधिकांश केंद्र सरकार की योजनाओं के लिए आवश्यक हैं: आधार कार्ड, बैंक खाता (आधार से लिंक), आय प्रमाण पत्र (तहसीलदार/एसडीएम से), जाति प्रमाण पत्र (यदि लागू हो), आयु प्रमाण (जन्म प्रमाण पत्र या कक्षा 10 की मार्कशीट), पता प्रमाण, पासपोर्ट आकार के फोटो। सटीक आवश्यकताओं के लिए हमेशा विशिष्ट योजना के दस्तावेज़ सूची की जांच करें।"
   },
   gu: {
     appName: "યોજનાસેતુ",
@@ -634,8 +654,18 @@ export const TRANSLATIONS = {
     faqsTitle: "વારંવાર પૂછાતા પ્રશ્નો",
     noArticlesFound: "શોધ સાથે મેળ ખાતા કોઈ મદદ લેખો મળ્યા નથી",
     stillHaveQuestions: "હજી પણ પ્રશ્નો છે? સપોર્ટ ટીમનો સંપર્ક કરો",
-    emailSupport: "ઇમેઇલ સપોર્ટ",
-    helpline: "ટોલ-ફ્રી હેલ્પલાઇન",
-    liveChat: "લાઇવ ચેટ"
+    liveChat: "લાઇવ ચેટ",
+    faqQ1: "મને કેવી રીતે ખબર પડશે કે હું કઈ યોજનાઓ માટે પાત્ર છું?",
+    faqA1: "અમારા પાત્રતા ચકાસણી સાધનનો ઉપયોગ કરો. ફક્ત તમારી ઉંમર, આવક, વ્યવસાય અને રાજ્ય વિશેના કેટલાક સરળ પ્રશ્નોના જવાબો આપો, અને અમે તમને તરત જ મેળ ખાતી યોજનાઓની વ્યક્તિગત સૂચિ બતાવીશું.",
+    faqQ2: "શું યોજનાસેતુ સત્તાવાર સરકારી વેબસાઇટ છે?",
+    faqA2: "યોજનાસેતુ એ નાગરિક-સહાય પ્લેટફોર્મ છે જે MyScheme.gov.in, Scholarships.gov.in અને અન્ય સત્તાવાર સરકારી પોર્ટલ પરથી જાહેર જનતા માટે ઉપલબ્ધ માહિતી એકત્રિત કરે છે. અમે ભારત સરકાર સાથે સીધા જોડાયેલા નથી, પરંતુ તમામ યોજનાઓનો ડેટા સત્તાવાર સ્ત્રોતોમાંથી મેળવવામાં આવે છે.",
+    faqQ3: "શું હું યોજનાસેતુ દ્વારા સીધી યોજના માટે અરજી કરી શકું?",
+    faqA3: "ના. યોજનાસેતુ તમને યોજનાઓ શોધવા અને સમજવામાં, તમારી પાત્રતા તપાસવામાં અને તમારા દસ્તાવેજો તૈયાર કરવામાં મદદ કરે છે. વાસ્તવિક અરજી માટે, અમે તમને તે ચોક્કસ યોજના માટેના સત્તાવાર સરકારી પોર્ટલ પર રીડાયરેક્ટ કરીએ છીએ. આ સુનિશ્ચિત કરે છે કે તમારી અરજી સત્તાવાર માધ્યમો દ્વારા પ્રક્રિયા કરવામાં આવે.",
+    faqQ4: "યોજનાનો ડેટા કેટલી વાર અપડેટ કરવામાં આવે છે?",
+    faqA4: "અમારી ટીમ દરરોજ યોજનાની માહિતી અપડેટ કરે છે. નવી યોજનાઓ, અંતિમ તારીખમાં ફેરફાર અને પાત્રતાના અપડેટ્સ સત્તાવાર જાહેરાતના ૨૪-૪૮ કલાકની અંદર પ્રતિબિંબિત થાય છે. ત્વરિત ચેતવણીઓ મેળવવા માટે તમે સૂચનાઓ સબ્સ્ક્રાઇબ કરી શકો છો.",
+    faqQ5: "શું યોજનાસેતુ પર મારો વ્યક્તિગત ડેટા સુરક્ષિત છે?",
+    faqA5: "હા. અમે પ્રમાણીકરણ માટે Google OAuth 2.0 નો ઉપયોગ કરીએ છીએ, જેનો અર્થ છે કે અમે તમારો પાસવર્ડ ક્યારેય સંગ્રહિત કરતા નથી. તમે દાખલ કરેલી પાત્રતા તપાસની માહિતીનો ઉપયોગ ફક્ત તમને યોજનાઓ સાથે મેળવવા માટે થાય છે અને તે અમારા સર્વર પર કાયમી ધોરણે સંગ્રહિત થતી નથી. કૃપા કરીને સંપૂર્ણ વિગતો માટે અમારી ગોપનીયતા નીતિ જુઓ.",
+    faqQ6: "મોટાભાગની યોજનાઓ માટે સામાન્ય રીતે કયા દસ્તાવેજોની જરૂર હોય છે?",
+    faqA6: "મોટાભાગની કેન્દ્ર સરકારની યોજનાઓ માટે જરૂરી છે: આધાર કાર્ડ, બેંક ખાતું (આધાર સાથે લિંક કરેલ), આવકનું પ્રમાણપત્ર (મામલતદાર/એસડીએમ તરફથી), જાતિનું પ્રમાણપત્ર (જો લાગુ હોય તો), ઉંમરનો પુરાવો (જન્મ પ્રમાણપત્ર અથવા ધોરણ ૧૦ ની માર્કશીટ), સરનામાનો પુરાવો, પાસપોર્ટ સાઇઝના ફોટોગ્રાફ્સ. ચોક્કસ જરૂરિયાતો માટે હંમેશા તે યોજનાના દસ્તાવેજોની સૂચિ તપાસો।"
   }
 };
