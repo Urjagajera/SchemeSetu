@@ -285,7 +285,7 @@ export const Search: React.FC = () => {
             <LoadingSkeleton count={3} />
           ) : currentSchemes.length > 0 ? (
             <div className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentSchemes.map(s => (
                   <SchemeCard
                     key={s.id}

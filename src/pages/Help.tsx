@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
-import { HelpCircle, Mail, Phone, MessageSquare, ChevronDown, ChevronUp, Search } from 'lucide-react';
+import { HelpCircle, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
 
@@ -39,12 +39,6 @@ export const Help: React.FC = () => {
       q: t('faqQ6') || 'What documents are generally required for most schemes?',
       a: t('faqA6') || 'Most central government schemes require: Aadhaar Card, Bank Account (linked to Aadhaar), Income Certificate (from Tehsildar/SDM), Caste Certificate (if applicable), Age Proof (Birth Certificate or Class 10 Marksheet), Address Proof, Passport-sized photographs. Always check the specific scheme\'s document list for exact requirements.'
     }
-  ];
-
-  const contactMethods = [
-    { icon: Mail, title: t('emailSupport'), value: 'helpdesk@schemesetu.gov.in', sub: 'Response within 24-48 hours' },
-    { icon: Phone, title: t('helpline'), value: '1800-111-2026', sub: 'Mon–Sat, 9 AM – 6 PM IST' },
-    { icon: MessageSquare, title: t('liveChat'), value: 'Available on Weekdays', sub: 'Avg. response: 2 minutes' }
   ];
 
   const filteredFaqs = faqs.filter(faq => 
@@ -123,30 +117,6 @@ export const Help: React.FC = () => {
           </p>
         )}
 
-        {/* Contact support widgets */}
-        <div className="pt-10 border-t border-outline-variant dark:border-zinc-800">
-          <h3 className="font-heading text-sm font-bold text-primary dark:text-white text-center mb-6">
-            {t('stillHaveQuestions')}
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {contactMethods.map((method, idx) => {
-              const Icon = method.icon;
-              return (
-                <div key={idx} className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 text-center shadow-sm space-y-2 transition-colors">
-                  <div className="w-10 h-10 rounded-full bg-secondary-container/20 text-secondary dark:text-sky-400 flex items-center justify-center mx-auto mb-2">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h4 className="font-heading text-xs font-bold text-primary dark:text-white">
-                    {method.title}
-                  </h4>
-                  <p className="text-xs font-semibold text-secondary dark:text-sky-400 truncate select-all">{method.value}</p>
-                  <p className="text-[10px] text-on-surface-variant dark:text-zinc-500">{method.sub}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
       </section>
 
     </motion.div>
