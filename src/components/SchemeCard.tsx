@@ -104,14 +104,19 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
             <span className="truncate">{scheme.ministry}</span>
           </div>
           {scheme.deadline && (
-            <span className={cn(
-              "text-[10px] px-1.5 py-0.5 rounded font-semibold border",
-              isDeadlineUrgent(scheme)
-                ? "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/20 dark:text-red-400 dark:border-red-900/30"
-                : "bg-zinc-550/5 text-zinc-650 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700/50"
-            )}>
-              {scheme.deadline}
-            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[9px] uppercase font-extrabold px-1.5 py-0.5 rounded bg-green-50 text-green-700 border border-green-200/50 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900/30">
+                {scheme.status || 'Active'}
+              </span>
+              <span className={cn(
+                "text-[9px] px-1.5 py-0.5 rounded font-semibold border",
+                isDeadlineUrgent(scheme)
+                  ? "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/20 dark:text-red-400 dark:border-red-900/30"
+                  : "bg-zinc-550/5 text-zinc-650 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700/50"
+              )}>
+                End Date: {scheme.deadline}
+              </span>
+            </div>
           )}
         </div>
 
@@ -139,14 +144,19 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
             {scheme.matchScore >= 3 ? t('strongMatch') : t('possibleMatch')}
           </span>
         ) : (
-          <span className={cn(
-            "text-[11px] font-semibold px-2 py-0.5 rounded-full border",
-            isDeadlineUrgent(scheme)
-              ? "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/20 dark:text-red-400 dark:border-red-900/30"
-              : "bg-zinc-550/5 text-zinc-650 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-750"
-          )}>
-            {scheme.deadline}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] uppercase font-extrabold px-1.5 py-0.5 rounded bg-green-50 text-green-700 border border-green-200/50 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900/30">
+              {scheme.status || 'Active'}
+            </span>
+            <span className={cn(
+              "text-[10px] font-bold px-1.5 py-0.5 rounded border",
+              isDeadlineUrgent(scheme)
+                ? "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/20 dark:text-red-400 dark:border-red-900/30"
+                : "bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-850 dark:text-zinc-400 dark:border-zinc-800"
+            )}>
+              End Date: {scheme.deadline || 'Ongoing'}
+            </span>
+          </div>
         )}
 
         {/* View Details Link */}
