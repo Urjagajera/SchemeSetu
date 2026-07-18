@@ -21,7 +21,75 @@ const FARMER_KEYWORDS = [
   'biofloc', 'recirculating aquaculture system'
 ];
 
-const WOMAN_KEYWORDS = ['woman', 'women'];
+const WOMAN_KEYWORDS = ['woman', 'women','widow','remarried','widow'];
+
+function getEnrichedDetailsForSeeding(
+  name: string,
+  description: string,
+  levelStr: string,
+  authName: string,
+  tags: string[],
+  cat: string
+) {
+  const isState = levelStr === 'STATE' || levelStr === 'State' || authName?.toLowerCase() === 'gujarat';
+
+  // Generate eligibility
+  const eligibility: string[] = [];
+  if (isState) {
+    eligibility.push('Must be a permanent resident of Gujarat state.');
+  } else {
+    eligibility.push('Must be a citizen of India.');
+  }
+
+  const categoryLower = cat.toLowerCase();
+  const tagsLower = tags.map(t => t.toLowerCase());
+
+  if (categoryLower === 'student' || tagsLower.includes('student') || tagsLower.includes('students')) {
+    eligibility.push('Must be currently enrolled in a recognized educational institution.');
+    eligibility.push('Must maintain minimum attendance or pass percentage as prescribed by the institution.');
+  } else if (categoryLower === 'farmer' || tagsLower.includes('farmer') || tagsLower.includes('farmers') || tagsLower.includes('agriculture')) {
+    eligibility.push('Must be an active farmer (landowner, tenant, or agricultural laborer).');
+    eligibility.push('Must hold a valid farmer identity card or land records.');
+  } else if (categoryLower === 'woman' || categoryLower === 'women & child' || tagsLower.includes('woman') || tagsLower.includes('women')) {
+    eligibility.push('Applicable exclusively for female candidates/households.');
+  }
+
+  if (tagsLower.includes('disability') || tagsLower.includes('pwd') || tagsLower.includes('disabled')) {
+    eligibility.push('Must possess a disability certificate with 40% or more disability.');
+  }
+
+  eligibility.push('Family annual income must be within the threshold limits (e.g., up to ₹2.5 Lakhs or as applicable).');
+
+  // Generate documents list
+  const documents: string[] = ['Aadhaar Card', 'Passport Size Photograph'];
+  if (isState) {
+    documents.push('Gujarat Domicile / Residence Proof');
+  } else {
+    documents.push('Identity & Address Proof');
+  }
+  
+  documents.push('Income Certificate');
+
+  if (categoryLower === 'student' || tagsLower.includes('student') || tagsLower.includes('students')) {
+    documents.push('School/College ID Card');
+    documents.push('Previous Year Marksheet / Progress Report');
+    documents.push('Fee Receipt of current academic year');
+  } else if (categoryLower === 'farmer' || tagsLower.includes('farmer') || tagsLower.includes('farmers') || tagsLower.includes('agriculture')) {
+    documents.push('Land Ownership Documents (7/12 extract)');
+    documents.push('Farmer Identity Card');
+  }
+
+  if (tagsLower.includes('disability') || tagsLower.includes('pwd') || tagsLower.includes('disabled')) {
+    documents.push('Disability Certificate (UDID Card)');
+  }
+  
+  documents.push('Active Bank Account Passbook (linked with Aadhaar)');
+
+  return {
+    eligibility,
+    documents
+  };
+}
 
 async function main() {
   console.log('Starting Scheme Database Seeding...');
@@ -73,24 +141,6 @@ async function main() {
     // Set Level
     const level = authorityName === 'Gujarat' ? SchemeLevel.STATE : SchemeLevel.CENTRAL;
 
-    // Create / Upsert Scheme
-    const scheme = await prisma.scheme.upsert({
-      where: { sourceUrl },
-      update: {
-        name,
-        description,
-        level,
-        authorityName
-      },
-      create: {
-        name,
-        sourceUrl,
-        description,
-        level,
-        authorityName
-      }
-    });
-
     // Handle Tags (bg-transparent through bg-transparent 6)
     const tagsList: string[] = [];
     for (let i = 1; i <= 7; i++) {
@@ -100,6 +150,54 @@ async function main() {
         tagsList.push(tagVal.trim());
       }
     }
+
+    // Determine category mapping (case-insensitive)
+    const schemeCategories: string[] = [];
+    const lowerTags = tagsList.map(t => t.toLowerCase());
+
+    const isStudent = lowerTags.some(t => STUDENT_KEYWORDS.includes(t));
+    if (isStudent) schemeCategories.push('Student');
+
+    const isFarmer = lowerTags.some(t => FARMER_KEYWORDS.includes(t));
+    if (isFarmer) schemeCategories.push('Farmer');
+
+    const isWoman = lowerTags.some(t => WOMAN_KEYWORDS.includes(t)) || 
+                    name.toLowerCase().includes('women') || 
+                    name.toLowerCase().includes('mahila');
+    if (isWoman) schemeCategories.push('Woman');
+
+    if (schemeCategories.length === 0) {
+      zeroCategoriesCount++;
+    } else if (schemeCategories.length === 1) {
+      oneCategoryCount++;
+    } else {
+      multipleCategoriesCount++;
+    }
+
+    const category = schemeCategories[0] || 'General';
+    const enriched = getEnrichedDetailsForSeeding(name, description, level, authorityName, tagsList, category);
+
+    // Create / Upsert Scheme
+    const scheme = await prisma.scheme.upsert({
+      where: { sourceUrl },
+      update: {
+        name,
+        description,
+        level,
+        authorityName,
+        eligibility: enriched.eligibility,
+        documents: enriched.documents
+      },
+      create: {
+        name,
+        sourceUrl,
+        description,
+        level,
+        authorityName,
+        eligibility: enriched.eligibility,
+        documents: enriched.documents
+      }
+    });
 
     // Upsert Tags and link to Scheme
     for (const tagName of tagsList) {
@@ -129,29 +227,6 @@ async function main() {
           tagId
         }
       });
-    }
-
-    // Determine category mapping (case-insensitive)
-    const schemeCategories: string[] = [];
-    const lowerTags = tagsList.map(t => t.toLowerCase());
-
-    const isStudent = lowerTags.some(t => STUDENT_KEYWORDS.includes(t));
-    if (isStudent) schemeCategories.push('Student');
-
-    const isFarmer = lowerTags.some(t => FARMER_KEYWORDS.includes(t));
-    if (isFarmer) schemeCategories.push('Farmer');
-
-    const isWoman = lowerTags.some(t => WOMAN_KEYWORDS.includes(t)) || 
-                    name.toLowerCase().includes('women') || 
-                    name.toLowerCase().includes('mahila');
-    if (isWoman) schemeCategories.push('Woman');
-
-    if (schemeCategories.length === 0) {
-      zeroCategoriesCount++;
-    } else if (schemeCategories.length === 1) {
-      oneCategoryCount++;
-    } else {
-      multipleCategoriesCount++;
     }
 
     // Link Categories to Scheme

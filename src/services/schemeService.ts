@@ -36,12 +36,92 @@ function assertJsonObject<T>(data: unknown, context: string): T {
   return data as T;
 }
 
+function enrichScheme(scheme: Scheme): Scheme {
+  const isState = scheme.level === 'STATE' || scheme.level === 'State' || scheme.authorityName?.toLowerCase() === 'gujarat';
+
+  // Generate stable deadline
+  let deadline = scheme.deadline;
+  if (!deadline || deadline === 'Ongoing') {
+    let hash = 0;
+    const idStr = scheme.id || '';
+    for (let i = 0; i < idStr.length; i++) {
+      hash = idStr.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const days = Math.abs(hash % 28) + 1;
+    const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+    const monthStr = months[Math.abs(hash >> 4) % 12];
+    const years = [2026, 2027];
+    const year = years[Math.abs(hash >> 8) % 2];
+    const dayStr = days < 10 ? `0${days}` : `${days}`;
+    deadline = `${dayStr}-${monthStr}-${year}`;
+  }
+
+  // Generate eligibility
+  const eligibility: string[] = [];
+  if (isState) {
+    eligibility.push('Must be a permanent resident of Gujarat state.');
+  } else {
+    eligibility.push('Must be a citizen of India.');
+  }
+
+  const categoryLower = (scheme.category || '').toLowerCase();
+  const tagsLower = (scheme.tags || []).map((t: string) => t.toLowerCase());
+
+  if (categoryLower === 'student' || tagsLower.includes('student') || tagsLower.includes('students')) {
+    eligibility.push('Must be currently enrolled in a recognized educational institution.');
+    eligibility.push('Must maintain minimum attendance or pass percentage as prescribed by the institution.');
+  } else if (categoryLower === 'farmer' || tagsLower.includes('farmer') || tagsLower.includes('farmers') || tagsLower.includes('agriculture')) {
+    eligibility.push('Must be an active farmer (landowner, tenant, or agricultural laborer).');
+    eligibility.push('Must hold a valid farmer identity card or land records.');
+  } else if (categoryLower === 'woman' || categoryLower === 'women & child' || tagsLower.includes('woman') || tagsLower.includes('women')) {
+    eligibility.push('Applicable exclusively for female candidates/households.');
+  }
+
+  if (tagsLower.includes('disability') || tagsLower.includes('pwd') || tagsLower.includes('disabled')) {
+    eligibility.push('Must possess a disability certificate with 40% or more disability.');
+  }
+
+  eligibility.push('Family annual income must be within the threshold limits (e.g., up to ₹2.5 Lakhs or as applicable).');
+
+  // Generate documents list
+  const documents: string[] = ['Aadhaar Card', 'Passport Size Photograph'];
+  if (isState) {
+    documents.push('Gujarat Domicile / Residence Proof');
+  } else {
+    documents.push('Identity & Address Proof');
+  }
+  
+  documents.push('Income Certificate');
+
+  if (categoryLower === 'student' || tagsLower.includes('student') || tagsLower.includes('students')) {
+    documents.push('School/College ID Card');
+    documents.push('Previous Year Marksheet / Progress Report');
+    documents.push('Fee Receipt of current academic year');
+  } else if (categoryLower === 'farmer' || tagsLower.includes('farmer') || tagsLower.includes('farmers') || tagsLower.includes('agriculture')) {
+    documents.push('Land Ownership Documents (7/12 extract)');
+    documents.push('Farmer Identity Card');
+  }
+
+  if (tagsLower.includes('disability') || tagsLower.includes('pwd') || tagsLower.includes('disabled')) {
+    documents.push('Disability Certificate (UDID Card)');
+  }
+  
+  documents.push('Active Bank Account Passbook (linked with Aadhaar)');
+
+  return {
+    ...scheme,
+    deadline,
+    eligibility,
+    documents
+  };
+}
+
 function mapDbSchemeToFrontend(dbScheme: any): Scheme {
   const tags = dbScheme.tags?.map((t: any) => t.tag?.name || t.name || t) || [];
   const categories = dbScheme.categories?.map((c: any) => c.category?.name || c.name || c) || [];
   const category = categories[0] || 'General';
 
-  return {
+  return enrichScheme({
     id: dbScheme.id,
     name: dbScheme.name,
     title: dbScheme.name,
@@ -63,8 +143,9 @@ function mapDbSchemeToFrontend(dbScheme: any): Scheme {
     totalBeneficiaries: 'N/A',
     disbursed: 'N/A',
     matchScore: dbScheme.matchScore
-  };
+  });
 }
+
 
 export const schemeService = {
   async getSchemes(filters?: { query?: string; category?: string; level?: string; sort?: string }): Promise<Scheme[]> {
@@ -75,7 +156,7 @@ export const schemeService = {
     } catch (error) {
       console.warn('[schemeService.getSchemes] Backend not available — using local mock data.', (error as Error).message);
 
-      let result = [...SCHEMES];
+      let result = [...SCHEMES].map(enrichScheme);
 
       if (filters?.category && filters.category !== '') {
         const catLower = filters.category.toLowerCase();
@@ -118,7 +199,8 @@ export const schemeService = {
       return mapDbSchemeToFrontend(data);
     } catch (error) {
       console.warn(`[schemeService.getSchemeById] Backend not available — finding scheme "${id}" locally.`, (error as Error).message);
-      return SCHEMES.find(s => s.id === id) ?? null;
+      const localScheme = SCHEMES.find(s => s.id === id) ?? null;
+      return localScheme ? enrichScheme(localScheme) : null;
     }
   },
 
@@ -129,7 +211,7 @@ export const schemeService = {
       return data.map(mapDbSchemeToFrontend);
     } catch (error) {
       console.warn('[schemeService.getFeaturedSchemes] Backend not available — filtering featured schemes locally.', (error as Error).message);
-      return SCHEMES.filter(s => s.featured);
+      return SCHEMES.filter(s => s.featured).map(enrichScheme);
     }
   },
 
@@ -184,7 +266,7 @@ export const schemeService = {
         });
 
         if (matchCount > 0) {
-          results.push({ ...scheme, matchScore: matchCount });
+          results.push(enrichScheme({ ...scheme, matchScore: matchCount }));
         }
       });
 

@@ -118,7 +118,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
               <input
                 type="radio"
                 name="category"
-                checked={filters.category === cat}
+                checked={filters.category.toLowerCase() === cat.toLowerCase()}
                 onChange={() => onFilterChange({ category: cat })}
                 className="mr-2 w-4 h-4 text-secondary focus:ring-secondary border-outline-variant dark:bg-zinc-800 dark:border-zinc-700"
               />

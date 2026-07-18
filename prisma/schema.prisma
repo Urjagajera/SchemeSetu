@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Scheme {
@@ -18,6 +19,8 @@ model Scheme {
   tags            SchemeTag[]         // many-to-many, raw tags preserved as-is
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  eligibility     String[]
+  documents       String[]
 }
 
 enum SchemeLevel {

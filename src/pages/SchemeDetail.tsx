@@ -140,7 +140,7 @@ export const SchemeDetail: React.FC = () => {
                 {scheme.title}
               </h1>
 
-              <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed">
+              <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed line-clamp-3">
                 {scheme.description}
               </p>
 
@@ -178,40 +178,6 @@ export const SchemeDetail: React.FC = () => {
               <p className="font-display text-sm md:text-lg font-bold">{scheme.disbursed}</p>
             </div>
           </div>
-
-          {/* Eligibility checklist */}
-          {scheme.eligibility && scheme.eligibility.length > 0 && (
-            <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm space-y-4 transition-colors">
-              <h3 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white">
-                {t('eligibilityCriteria')}
-              </h3>
-              <ul className="space-y-3">
-                {scheme.eligibility.map((criterion, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-xs md:text-sm text-on-surface dark:text-zinc-350">
-                    <CheckCircle className="w-4.5 h-4.5 text-green-600 dark:text-green-400 mt-0.5 shrink-0" />
-                    <span className="leading-relaxed">{criterion}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Documents required */}
-          {scheme.documents && scheme.documents.length > 0 && (
-            <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm space-y-4 transition-colors">
-              <h3 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white">
-                {t('documentsRequired')}
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {scheme.documents.map((doc, i) => (
-                  <div key={i} className="flex items-center gap-2.5 p-3 bg-surface-container-low dark:bg-zinc-950 rounded-lg text-xs md:text-sm font-semibold text-on-surface dark:text-zinc-300">
-                    <Receipt className="w-4.5 h-4.5 text-secondary dark:text-sky-400 shrink-0" />
-                    <span>{doc}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
 
 

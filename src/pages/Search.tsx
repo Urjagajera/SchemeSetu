@@ -30,11 +30,7 @@ export const Search: React.FC = () => {
   const [ministries, setMinistries] = useState<string[]>([]);
   
   // State lists & Occupations
-  const states = [
-    'Uttar Pradesh', 'Maharashtra', 'Bihar', 'Karnataka', 'Rajasthan', 
-    'Tamil Nadu', 'West Bengal', 'Madhya Pradesh', 'Gujarat', 'Punjab', 
-    'Kerala', 'Delhi', 'Haryana'
-  ];
+  const states = ['Gujarat'];
   const occupations = ['student', 'farmer', 'entrepreneur', 'senior citizen', 'unemployed', 'other'];
 
   // UI responsive filter toggle for mobile screen
@@ -108,9 +104,170 @@ export const Search: React.FC = () => {
           // Ministry check
           if (filters.ministry && s.ministry !== filters.ministry) return false;
 
+          // Category check
+          if (filters.category) {
+            const catLower = filters.category.toLowerCase();
+            const hasCat = s.category?.toLowerCase() === catLower || s.categories?.some(c => c.toLowerCase() === catLower);
+            if (!hasCat) return false;
+          }
+
           // State check
           if (filters.state) {
             if (s.level === 'State' && s.authorityName.toLowerCase() !== filters.state.toLowerCase()) {
+              return false;
+            }
+          }
+
+          // Occupation check
+          if (filters.occupation) {
+            const occ = filters.occupation.toLowerCase();
+            const titleLower = s.name.toLowerCase();
+            const descLower = s.description.toLowerCase();
+            const tagsLower = s.tags.map(t => t.toLowerCase());
+
+            let matchesOcc = false;
+
+            if (occ === 'student') {
+              const studentKeywords = [
+                'student', 'students', 'scholarship', 'education', 'fellowship', 'fellow',
+                'research', 'higher education', 'phd', 'internship', 'stipend', 'school',
+                'skill development', 'science', 'scientist'
+              ];
+              matchesOcc = s.category.toLowerCase() === 'student' || 
+                           s.categories?.some(c => c.toLowerCase() === 'student') ||
+                           tagsLower.some(t => studentKeywords.includes(t)) ||
+                           studentKeywords.some(kw => titleLower.includes(kw));
+            } else if (occ === 'farmer') {
+              const farmerKeywords = [
+                'agriculture', 'farmer', 'farming', 'animal husbandry', 'fishermen',
+                'fish farming', 'fish production', 'fish sellers', 'fish', 'poultry farming',
+                'biofloc', 'recirculating aquaculture system'
+              ];
+              matchesOcc = s.category.toLowerCase() === 'farmer' || 
+                           s.categories?.some(c => c.toLowerCase() === 'farmer') ||
+                           tagsLower.some(t => farmerKeywords.includes(t)) ||
+                           farmerKeywords.some(kw => titleLower.includes(kw));
+            } else if (occ === 'entrepreneur') {
+              const entrepreneurKeywords = [
+                'entrepreneur', 'business', 'start-up', 'startups', 'industry', 'industries', 
+                'msme', 'micro enterprise', 'self employment', 'self-employment', 'retailer', 'trader'
+              ];
+              matchesOcc = tagsLower.some(t => entrepreneurKeywords.includes(t)) ||
+                           entrepreneurKeywords.some(kw => titleLower.includes(kw) || descLower.includes(kw));
+            } else if (occ === 'senior citizen') {
+              const seniorKeywords = ['senior citizen', 'pension', 'old age', 'elderly'];
+              matchesOcc = s.category.toLowerCase() === 'senior citizen' || 
+                           tagsLower.some(t => seniorKeywords.includes(t)) ||
+                           seniorKeywords.some(kw => titleLower.includes(kw) || descLower.includes(kw));
+            } else if (occ === 'unemployed') {
+              const unemployedKeywords = ['unemployed', 'job seeker', 'unemployment', 'youth employment'];
+              matchesOcc = tagsLower.some(t => unemployedKeywords.includes(t)) ||
+                           unemployedKeywords.some(kw => titleLower.includes(kw) || descLower.includes(kw));
+            } else if (occ === 'other') {
+              const allSpecialKeywords = [
+                'student', 'students', 'scholarship', 'education', 'fellowship',
+                'agriculture', 'farmer', 'farming', 'entrepreneur', 'business', 'start-up',
+                'senior citizen', 'pension', 'old age', 'unemployed', 'job seeker'
+              ];
+              const hasSpecialKeywords = allSpecialKeywords.some(kw => 
+                titleLower.includes(kw) || 
+                tagsLower.includes(kw) ||
+                s.category.toLowerCase() === kw
+              );
+              matchesOcc = !hasSpecialKeywords;
+            }
+
+            if (!matchesOcc) return false;
+          }
+
+          // Gender check
+          if (filters.gender) {
+            const gender = filters.gender.toLowerCase();
+            const titleLower = s.name.toLowerCase();
+            const descLower = s.description.toLowerCase();
+            const tagsLower = s.tags.map(t => t.toLowerCase());
+
+            const isFemaleRestricted = s.category.toLowerCase() === 'woman' ||
+                                       s.categories?.some(c => c.toLowerCase() === 'woman') ||
+                                       tagsLower.some(t => t === 'woman' || t === 'women' || t === 'female' || t === 'girl' || t === 'girls' || t === 'widow') ||
+                                       titleLower.includes('mahila') || titleLower.includes('kanya') || titleLower.includes('widow') ||
+                                       descLower.includes('only female') || descLower.includes('only women');
+
+            if (gender === 'male' && isFemaleRestricted) {
+              return false;
+            }
+          }
+
+          // Age check
+          if (filters.age) {
+            const age = parseInt(filters.age);
+            if (!isNaN(age)) {
+              const descLower = s.description.toLowerCase();
+              const titleLower = s.name.toLowerCase();
+
+              const seniorKeywords = ['senior citizen', 'old age', 'above 60', '60 years or above', '60 years of age or above'];
+              const isSeniorScheme = seniorKeywords.some(kw => titleLower.includes(kw) || descLower.includes(kw));
+              if (isSeniorScheme && age < 60) return false;
+
+              const aboveMatch = descLower.match(/above\s+(\d+)\s+years/);
+              if (aboveMatch) {
+                const minAge = parseInt(aboveMatch[1]);
+                if (age < minAge) return false;
+              }
+
+              const ageOfAboveMatch = descLower.match(/(\d+)\s+years\s+of\s+age\s+or\s+above/);
+              if (ageOfAboveMatch) {
+                const minAge = parseInt(ageOfAboveMatch[1]);
+                if (age < minAge) return false;
+              }
+
+              const belowMatch = descLower.match(/below\s+(\d+)\s+years/);
+              if (belowMatch) {
+                const maxAge = parseInt(belowMatch[1]);
+                if (age > maxAge) return false;
+              }
+
+              const uptoMatch = descLower.match(/up\s+to\s+(\d+)\s+years/);
+              if (uptoMatch) {
+                const maxAge = parseInt(uptoMatch[1]);
+                if (age > maxAge) return false;
+              }
+
+              const betweenMatch = descLower.match(/between\s+(\d+)\s+(?:to|and)\s+(\d+)\s+years/);
+              if (betweenMatch) {
+                const minAge = parseInt(betweenMatch[1]);
+                const maxAge = parseInt(betweenMatch[2]);
+                if (age < minAge || age > maxAge) return false;
+              }
+            }
+          }
+
+          // Income check
+          if (filters.income) {
+            const incomeVal = filters.income;
+            const descLower = s.description.toLowerCase();
+
+            const extractIncomeLimit = (text: string): number | null => {
+              if (!text.includes('income')) return null;
+
+              const lakhsMatch = text.match(/(?:income|family income|annual income|limit of)\s+(?:less than|below|not exceed|up to|maximum of|within)?\s*(?:rs\.?|rupees|₹)?\s*([0-9.]+)\s*(?:lakh|lakhs|l)/i);
+              if (lakhsMatch) {
+                const val = parseFloat(lakhsMatch[1]);
+                if (!isNaN(val)) return val * 100000;
+              }
+
+              const rawMatch = text.match(/(?:income|family income|annual income|limit of)\s+(?:less than|below|not exceed|up to|maximum of|within)?\s*(?:rs\.?|rupees|₹)?\s*([0-9,]+)/i);
+              if (rawMatch) {
+                const cleanNum = rawMatch[1].replace(/,/g, '');
+                const val = parseInt(cleanNum);
+                if (!isNaN(val) && val > 1000) return val;
+              }
+
+              return null;
+            };
+
+            const limit = extractIncomeLimit(descLower);
+            if (limit !== null && incomeVal > limit) {
               return false;
             }
           }

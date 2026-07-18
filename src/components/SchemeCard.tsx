@@ -97,27 +97,10 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
           {scheme.title}
         </h3>
 
-        {/* Ministry & Deadline */}
-        <div className="flex flex-wrap items-center gap-y-1.5 gap-x-3 text-xs text-on-surface-variant dark:text-zinc-400 mb-3">
-          <div className="flex items-center gap-1.5">
-            <Building2 className="w-3.5 h-3.5 flex-shrink-0 text-secondary dark:text-sky-400" />
-            <span className="truncate">{scheme.ministry}</span>
-          </div>
-          {scheme.deadline && (
-            <div className="flex items-center gap-1.5">
-              <span className="text-[9px] uppercase font-extrabold px-1.5 py-0.5 rounded bg-green-50 text-green-700 border border-green-200/50 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900/30">
-                {scheme.status || 'Active'}
-              </span>
-              <span className={cn(
-                "text-[9px] px-1.5 py-0.5 rounded font-semibold border",
-                isDeadlineUrgent(scheme)
-                  ? "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/20 dark:text-red-400 dark:border-red-900/30"
-                  : "bg-zinc-550/5 text-zinc-650 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700/50"
-              )}>
-                End Date: {scheme.deadline}
-              </span>
-            </div>
-          )}
+        {/* Ministry */}
+        <div className="flex items-center gap-1.5 min-w-0 w-full text-xs text-on-surface-variant dark:text-zinc-400 mb-3">
+          <Building2 className="w-3.5 h-3.5 flex-shrink-0 text-secondary dark:text-sky-400" />
+          <span className="truncate" title={scheme.ministry}>{scheme.ministry}</span>
         </div>
 
         {/* Short Description */}

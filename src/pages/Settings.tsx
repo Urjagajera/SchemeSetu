@@ -78,6 +78,17 @@ export const Settings: React.FC = () => {
             >
               हिन्दी
             </button>
+            <button
+              onClick={() => setLanguage('gu')}
+              className={cn(
+                "px-3 py-1.5 text-xs font-bold rounded-md focus:outline-none transition-colors",
+                language === 'gu'
+                  ? "bg-white dark:bg-zinc-800 text-secondary dark:text-sky-400 shadow-sm"
+                  : "text-on-surface-variant dark:text-zinc-550"
+              )}
+            >
+              ગુજરાતી
+            </button>
           </div>
         </div>
 
