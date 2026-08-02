@@ -9,6 +9,7 @@ import { SchemeCard } from '../components/SchemeCard';
 import { EligibilityCard } from '../components/EligibilityCard';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import Sidebar from '../components/Sidebar';
+import { cn } from '../utils/cn';
 import { 
   User, 
   MapPin, 

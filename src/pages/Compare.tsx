@@ -137,14 +137,14 @@ export const Compare: React.FC = () => {
                 <div key={idx} className="col-span-1 px-4 space-y-1">
                   {s ? (
                     <ul className="list-disc list-inside space-y-1 pl-1">
-                      {s.eligibility.slice(0, 3).map((item, i) => (
+                      {(s.eligibility || []).slice(0, 3).map((item: string, i: number) => (
                         <li key={i} className="leading-relaxed text-[11px] md:text-xs">
                           {item}
                         </li>
                       ))}
-                      {s.eligibility.length > 3 && (
+                      {s.eligibility && s.eligibility.length > 3 && (
                         <li className="text-[10px] text-on-surface-variant dark:text-zinc-500 list-none pl-4 italic">
-                          +{s.eligibility.length - 3} more...
+                          +{s.eligibility.length - 3} {t('more')}...
                         </li>
                       )}
                     </ul>
@@ -162,14 +162,14 @@ export const Compare: React.FC = () => {
                 <div key={idx} className="col-span-1 px-4 space-y-1">
                   {s ? (
                     <ul className="list-disc list-inside space-y-1 pl-1">
-                      {s.documents.slice(0, 3).map((item, i) => (
+                      {(s.documents || []).slice(0, 3).map((item: string, i: number) => (
                         <li key={i} className="leading-relaxed text-[11px] md:text-xs">
                           {item}
                         </li>
                       ))}
-                      {s.documents.length > 3 && (
+                      {s.documents && s.documents.length > 3 && (
                         <li className="text-[10px] text-on-surface-variant dark:text-zinc-500 list-none pl-4 italic">
-                          +{s.documents.length - 3} more...
+                          +{s.documents.length - 3} {t('more')}...
                         </li>
                       )}
                     </ul>

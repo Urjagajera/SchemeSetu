@@ -7,7 +7,7 @@ export interface Scheme {
   authorityName: string;
   tags: string[];
   categories?: string[];
-  
+
   // Compatibility properties
   title: string;
   category: string;
@@ -33,7 +33,7 @@ export interface UserProfile {
   name?: string;
   email?: string;
   picture?: string;
-  role?: 'user' | 'admin';
+  role?: 'user';
   sub?: string;
   age: string;
   dob?: string;

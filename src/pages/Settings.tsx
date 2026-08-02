@@ -49,10 +49,10 @@ export const Settings: React.FC = () => {
           <div>
             <h3 className="text-xs md:text-sm font-bold text-primary dark:text-white flex items-center gap-2">
               <Globe className="w-4 h-4 text-secondary dark:text-sky-400" />
-              Language Support
+              {t('languageSupport')}
             </h3>
             <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
-              Choose the primary language for viewing the welfare catalog.
+              {t('choosePrimaryLang')}
             </p>
           </div>
           <div className="flex bg-surface-container-low dark:bg-zinc-950 p-1 rounded-lg select-none border dark:border-zinc-800">
@@ -62,7 +62,7 @@ export const Settings: React.FC = () => {
                 "px-3 py-1.5 text-xs font-bold rounded-md focus:outline-none transition-colors",
                 language === 'en'
                   ? "bg-white dark:bg-zinc-800 text-secondary dark:text-sky-400 shadow-sm"
-                  : "text-on-surface-variant dark:text-zinc-550"
+                  : "text-on-surface-variant dark:text-zinc-555"
               )}
             >
               English
@@ -73,7 +73,7 @@ export const Settings: React.FC = () => {
                 "px-3 py-1.5 text-xs font-bold rounded-md focus:outline-none transition-colors",
                 language === 'hi'
                   ? "bg-white dark:bg-zinc-800 text-secondary dark:text-sky-400 shadow-sm"
-                  : "text-on-surface-variant dark:text-zinc-550"
+                  : "text-on-surface-variant dark:text-zinc-555"
               )}
             >
               हिन्दी
@@ -84,7 +84,7 @@ export const Settings: React.FC = () => {
                 "px-3 py-1.5 text-xs font-bold rounded-md focus:outline-none transition-colors",
                 language === 'gu'
                   ? "bg-white dark:bg-zinc-800 text-secondary dark:text-sky-400 shadow-sm"
-                  : "text-on-surface-variant dark:text-zinc-550"
+                  : "text-on-surface-variant dark:text-zinc-555"
               )}
             >
               ગુજરાતી
@@ -97,10 +97,10 @@ export const Settings: React.FC = () => {
           <div>
             <h3 className="text-xs md:text-sm font-bold text-primary dark:text-white flex items-center gap-2">
               {theme === 'light' ? <Sun className="w-4 h-4 text-secondary dark:text-sky-400" /> : <Moon className="w-4 h-4 text-secondary" />}
-              Appearance Mode
+              {t('appearanceMode')}
             </h3>
             <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
-              Toggle light or dark modes depending on your preference.
+              {t('toggleLightDark')}
             </p>
           </div>
           <button
@@ -110,12 +110,12 @@ export const Settings: React.FC = () => {
             {theme === 'light' ? (
               <>
                 <Moon className="w-4 h-4 text-secondary" />
-                Dark Mode
+                {t('darkMode')}
               </>
             ) : (
               <>
                 <Sun className="w-4 h-4 text-yellow-400" />
-                Light Mode
+                {t('lightMode')}
               </>
             )}
           </button>
@@ -126,17 +126,17 @@ export const Settings: React.FC = () => {
           <div>
             <h3 className="text-xs md:text-sm font-bold text-primary dark:text-white flex items-center gap-2">
               <Trash2 className="w-4 h-4 text-red-500" />
-              Reset App Data
+              {t('resetAppData')}
             </h3>
             <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
-              Clear saved bookmarks, mock chat logs, and profile variables.
+              {t('clearPreferencesDesc')}
             </p>
           </div>
           <button
             onClick={handleReset}
             className="px-4 py-2 border border-red-200 text-red-600 dark:border-red-900/30 dark:text-red-400 bg-red-50 dark:bg-red-950/15 rounded-lg text-xs font-bold hover:bg-red-100 dark:hover:bg-red-950/30 transition-colors focus:outline-none"
           >
-            Clear Cache
+            {t('clearCache')}
           </button>
         </div>
 
@@ -145,10 +145,10 @@ export const Settings: React.FC = () => {
           <div>
             <h3 className="text-xs md:text-sm font-bold text-primary dark:text-white flex items-center gap-2">
               <LogOut className="w-4 h-4 text-zinc-550" />
-              Sign Out Account
+              {t('signOutAccount')}
             </h3>
             <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
-              Sign out from Google OAuth session and clear active JWT token.
+              {t('signOutDesc')}
             </p>
           </div>
           <button

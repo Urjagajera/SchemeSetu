@@ -307,7 +307,7 @@ export const AIAssistant: React.FC = () => {
             </div>
             <div>
               <h2 className="font-heading text-sm font-extrabold text-primary dark:text-white">SetuAI</h2>
-              <p className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold uppercase tracking-wider">Scheme Assistant</p>
+              <p className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold uppercase tracking-wider">{t('schemeAssistant')}</p>
             </div>
           </div>
 
@@ -320,7 +320,7 @@ export const AIAssistant: React.FC = () => {
           </button>
 
           <div className="space-y-1.5 overflow-y-auto max-h-[50vh] custom-scrollbar pr-1">
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550 mb-2">History</h3>
+            <h3 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550 mb-2">{t('history')}</h3>
             {conversations.map(conv => (
               <div
                 key={conv.id}
@@ -432,7 +432,7 @@ export const AIAssistant: React.FC = () => {
                   <Bot className="w-4 h-4" />
                 </div>
                 <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-2xl p-4 shadow-sm text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 italic">
-                  {t('typing')}
+                  {t('assistantTyping')}
                 </div>
               </motion.div>
             )}
@@ -452,7 +452,7 @@ export const AIAssistant: React.FC = () => {
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend(inputText)}
                 disabled={isTyping}
-                placeholder="Ask SetuAI about government schemes..."
+                placeholder={t('typeQueryHere')}
                 className="w-full border-none focus:outline-none focus:ring-0 bg-transparent px-4 py-2.5 font-body text-xs md:text-sm text-on-surface dark:text-white outline-none placeholder:text-on-surface-variant/60 dark:placeholder:text-zinc-550"
               />
               <button
@@ -476,7 +476,7 @@ export const AIAssistant: React.FC = () => {
       <aside className="hidden lg:flex flex-col w-72 border-l border-outline-variant dark:border-zinc-800 bg-surface-container-low dark:bg-zinc-900 shrink-0 p-4 transition-colors space-y-4">
         <h3 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550 flex items-center gap-1">
           <HelpCircle className="w-3.5 h-3.5 text-secondary dark:text-sky-400" />
-          Suggested Questions
+          {t('suggestedQuestions')}
         </h3>
         
         <div className="space-y-2 flex-grow overflow-y-auto custom-scrollbar">
@@ -494,15 +494,15 @@ export const AIAssistant: React.FC = () => {
 
         {/* Explore Links */}
         <div className="pt-4 border-t border-outline-variant dark:border-zinc-800 space-y-2.5">
-          <h3 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550">Resources</h3>
+          <h3 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550">{t('resources')}</h3>
           
           <Link to="/search" className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-zinc-850 border border-outline-variant dark:border-zinc-800 rounded-lg text-xs text-secondary dark:text-sky-400 font-bold hover:bg-secondary/5 shadow-sm">
             <Compass className="w-4 h-4" />
-            Browse Schemes
+            {t('searchBtn')}
           </Link>
           <Link to="/eligibility" className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-zinc-850 border border-outline-variant dark:border-zinc-800 rounded-lg text-xs text-secondary dark:text-sky-400 font-bold hover:bg-secondary/5 shadow-sm">
             <ClipboardCheck className="w-4 h-4" />
-            Eligibility Checker
+            {t('eligibility')}
           </Link>
         </div>
       </aside>

@@ -12,7 +12,7 @@ import { Pagination } from '../components/Pagination';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import { EmptyState } from '../components/EmptyState';
 import Sidebar from '../components/Sidebar';
-import { SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal, X } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
 
@@ -36,7 +36,6 @@ export const Search: React.FC = () => {
   // UI responsive filter toggle for mobile screen
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
-  // Filter state
   const [filters, setFilters] = useState<FilterState>({
     category: searchParams.get('category') || '',
     state: searchParams.get('state') || '',
@@ -45,8 +44,9 @@ export const Search: React.FC = () => {
     income: parseInt(searchParams.get('income') || '1000000'),
     age: searchParams.get('age') || '',
     level: searchParams.get('level') || '',
-    sidebarQuery: searchParams.get('q') || '' // search query
-  } as any);
+    sidebarQuery: searchParams.get('q') || '', // search query
+    ministry: searchParams.get('ministry') || ''
+  });
 
   // Sorting
   const [sortOption, setSortOption] = useState('Most Relevant');
@@ -80,7 +80,7 @@ export const Search: React.FC = () => {
       ...prev,
       category: catParam,
       sidebarQuery: qParam
-    } as any));
+    }));
   }, [searchParams]);
 
   // Load Filtered Schemes

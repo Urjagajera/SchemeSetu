@@ -35,12 +35,12 @@ export const DashboardLayout: React.FC = () => {
     return '';
   };
 
-  // Profile settings page disables sidebar collapse control as per Stitch design
-  const isProfilePage = location.pathname === '/profile';
+  // Profile and Settings pages disable sidebar collapse control as per design
+  const isProfileOrSettingsPage = location.pathname === '/profile' || location.pathname === '/settings';
 
   return (
     <div className="flex-1 flex h-[calc(100vh-4rem)] overflow-hidden bg-background dark:bg-zinc-950 transition-colors">
-      <Sidebar activePage={getActivePageId()} hideToggle={isProfilePage} />
+      <Sidebar activePage={getActivePageId()} hideToggle={isProfileOrSettingsPage} />
       
       <main className="flex-1 overflow-y-auto custom-scrollbar flex flex-col justify-between">
         <div className="w-full">
