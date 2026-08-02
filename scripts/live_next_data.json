@@ -1,0 +1,35 @@
+{
+  "props": {
+    "pageProps": {}
+  },
+  "page": "/schemes/[slug]",
+  "query": {},
+  "buildId": "noj80hw488SBNt2Mr25de",
+  "assetPrefix": "https://cdn.myscheme.in",
+  "nextExport": true,
+  "autoExport": true,
+  "isFallback": false,
+  "dynamicIds": [
+    59586
+  ],
+  "locale": "en",
+  "locales": [
+    "en",
+    "hi",
+    "or",
+    "as",
+    "bn",
+    "gu",
+    "kn",
+    "ml",
+    "mr",
+    "pa",
+    "ta",
+    "te",
+    "ur",
+    "ks",
+    "mai"
+  ],
+  "defaultLocale": "en",
+  "scriptLoader": []
+}

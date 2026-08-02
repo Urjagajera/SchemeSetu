@@ -21,7 +21,7 @@ const FARMER_KEYWORDS = [
   'biofloc', 'recirculating aquaculture system'
 ];
 
-const WOMAN_KEYWORDS = ['woman', 'women','widow','remarried','widow'];
+const WOMAN_KEYWORDS = ['woman', 'women', 'widow', 'remarried', 'widow', 'ladies', 'lady'];
 
 function getEnrichedDetailsForSeeding(
   name: string,
@@ -67,7 +67,7 @@ function getEnrichedDetailsForSeeding(
   } else {
     documents.push('Identity & Address Proof');
   }
-  
+
   documents.push('Income Certificate');
 
   if (categoryLower === 'student' || tagsLower.includes('student') || tagsLower.includes('students')) {
@@ -82,7 +82,7 @@ function getEnrichedDetailsForSeeding(
   if (tagsLower.includes('disability') || tagsLower.includes('pwd') || tagsLower.includes('disabled')) {
     documents.push('Disability Certificate (UDID Card)');
   }
-  
+
   documents.push('Active Bank Account Passbook (linked with Aadhaar)');
 
   return {
@@ -93,7 +93,7 @@ function getEnrichedDetailsForSeeding(
 
 async function main() {
   console.log('Starting Scheme Database Seeding...');
-  
+
   const csvPath = path.resolve(__dirname, '../myscheme.csv');
   console.log('Reading CSV from:', csvPath);
   const fileContent = fs.readFileSync(csvPath, 'utf-8');
@@ -161,9 +161,9 @@ async function main() {
     const isFarmer = lowerTags.some(t => FARMER_KEYWORDS.includes(t));
     if (isFarmer) schemeCategories.push('Farmer');
 
-    const isWoman = lowerTags.some(t => WOMAN_KEYWORDS.includes(t)) || 
-                    name.toLowerCase().includes('women') || 
-                    name.toLowerCase().includes('mahila');
+    const isWoman = lowerTags.some(t => WOMAN_KEYWORDS.includes(t)) ||
+      name.toLowerCase().includes('women') ||
+      name.toLowerCase().includes('mahila');
     if (isWoman) schemeCategories.push('Woman');
 
     if (schemeCategories.length === 0) {
