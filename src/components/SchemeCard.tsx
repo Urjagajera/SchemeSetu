@@ -6,6 +6,7 @@ import { BookmarkButton } from './BookmarkButton';
 import { CompareButton } from './CompareButton';
 import { ArrowRight, Building2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { translateScheme } from '../utils/translationUtils';
 
 interface SchemeCardProps {
   scheme: Scheme;
@@ -15,13 +16,14 @@ interface SchemeCardProps {
 }
 
 export const SchemeCard: React.FC<SchemeCardProps> = ({
-  scheme,
+  scheme: rawScheme,
   isBookmarked,
   onToggleBookmark,
   className
 }) => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const navigate = useNavigate();
+  const scheme = translateScheme(rawScheme, language);
 
   const handleCardClick = () => {
     navigate(`/schemes/${scheme.id}`);
@@ -29,7 +31,8 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
 
   // Determine category theme colors
   const getCategoryStyles = (category: string) => {
-    switch (category.toLowerCase()) {
+    // Note: getCategoryStyles matches on English categories internally, so we use rawScheme.category
+    switch (rawScheme.category.toLowerCase()) {
       case 'agriculture':
         return 'bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300';
       case 'healthcare':
@@ -37,15 +40,15 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
       case 'education':
         return 'bg-purple-100 text-purple-800 dark:bg-purple-950/40 dark:text-purple-300';
       case 'housing':
-        return 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300';
+        return 'bg-amber-100 text-amber-850 dark:bg-amber-950/40 dark:text-amber-300';
       case 'employment':
         return 'bg-teal-100 text-teal-800 dark:bg-teal-950/40 dark:text-teal-300';
       case 'women & child':
-        return 'bg-pink-100 text-pink-800 dark:bg-pink-950/40 dark:text-pink-300';
+        return 'bg-pink-100 text-pink-850 dark:bg-pink-950/40 dark:text-pink-300';
       case 'senior citizens':
         return 'bg-slate-100 text-slate-800 dark:bg-slate-900/60 dark:text-slate-300';
       default:
-        return 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300';
+        return 'bg-zinc-100 text-zinc-805 dark:bg-zinc-800 dark:text-zinc-300';
     }
   };
 
@@ -83,7 +86,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
 
           {/* Action buttons (Bookmark & Compare) */}
           <div className="flex items-center gap-1.5 opacity-90 group-hover:opacity-100" onClick={e => e.stopPropagation()}>
-            <CompareButton scheme={scheme} />
+            <CompareButton scheme={rawScheme} />
             <BookmarkButton
               schemeId={scheme.id}
               isBookmarked={isBookmarked}
@@ -129,7 +132,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
         ) : (
           <div className="flex items-center gap-1.5">
             <span className="text-[10px] uppercase font-extrabold px-1.5 py-0.5 rounded bg-green-50 text-green-700 border border-green-200/50 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900/30">
-              {scheme.status || 'Active'}
+              {scheme.status || t('active')}
             </span>
             <span className={cn(
               "text-[10px] font-bold px-1.5 py-0.5 rounded border",
@@ -137,14 +140,14 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
                 ? "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/20 dark:text-red-400 dark:border-red-900/30"
                 : "bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-850 dark:text-zinc-400 dark:border-zinc-800"
             )}>
-              End Date: {scheme.deadline || 'Ongoing'}
+              {t('endDate')} {scheme.deadline === 'Ongoing' ? t('ongoing') : scheme.deadline}
             </span>
           </div>
         )}
 
         {/* View Details Link */}
         <span className="text-xs font-bold text-secondary dark:text-sky-400 flex items-center gap-1 group-hover:underline">
-          {t('viewAllSchemes').split(' ')[0]}
+          {t('view')}
           <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
         </span>
       </div>

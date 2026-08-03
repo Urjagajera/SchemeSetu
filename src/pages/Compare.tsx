@@ -5,15 +5,18 @@ import { useTranslation } from '../contexts/LanguageContext';
 import { Trash2, Plus, ArrowLeftRight, ExternalLink } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
+import { translateScheme } from '../utils/translationUtils';
 
 export const Compare: React.FC = () => {
   const { comparedSchemes, removeFromCompare, clearCompare } = useCompare();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const navigate = useNavigate();
 
+  const translatedSchemes = comparedSchemes.map(s => translateScheme(s, language));
+
   // Slot fillers to make a grid of 3 columns
-  const emptySlotsCount = 3 - comparedSchemes.length;
-  const slots = [...comparedSchemes, ...Array(emptySlotsCount).fill(null)];
+  const emptySlotsCount = 3 - translatedSchemes.length;
+  const slots = [...translatedSchemes, ...Array(emptySlotsCount).fill(null)];
 
   const getCategoryLabel = (c: string) => {
     if (c.toLowerCase() === 'education') return t('scholarships');
@@ -86,7 +89,7 @@ export const Compare: React.FC = () => {
                       <button
                         onClick={() => removeFromCompare(s.id)}
                         className="absolute top-0 right-0 p-1 text-red-500 hover:bg-red-50 dark:hover:bg-zinc-850 rounded focus:outline-none cursor-pointer"
-                        title="Remove"
+                        title={t('remove')}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

@@ -57,57 +57,57 @@ function enrichScheme(scheme: Scheme): Scheme {
     deadline = `${dayStr}-${monthStr}-${year}`;
   }
 
-  // Generate eligibility
+  // Generate eligibility keys
   const eligibility: string[] = [];
   if (isState) {
-    eligibility.push('Must be a permanent resident of Gujarat state.');
+    eligibility.push('residentOfGujarat');
   } else {
-    eligibility.push('Must be a citizen of India.');
+    eligibility.push('citizenOfIndia');
   }
 
   const categoryLower = (scheme.category || '').toLowerCase();
   const tagsLower = (scheme.tags || []).map((t: string) => t.toLowerCase());
 
   if (categoryLower === 'student' || tagsLower.includes('student') || tagsLower.includes('students')) {
-    eligibility.push('Must be currently enrolled in a recognized educational institution.');
-    eligibility.push('Must maintain minimum attendance or pass percentage as prescribed by the institution.');
+    eligibility.push('enrolledInInstitution');
+    eligibility.push('maintainAttendance');
   } else if (categoryLower === 'farmer' || tagsLower.includes('farmer') || tagsLower.includes('farmers') || tagsLower.includes('agriculture')) {
-    eligibility.push('Must be an active farmer (landowner, tenant, or agricultural laborer).');
-    eligibility.push('Must hold a valid farmer identity card or land records.');
+    eligibility.push('activeFarmer');
+    eligibility.push('validFarmerCard');
   } else if (categoryLower === 'woman' || categoryLower === 'women & child' || tagsLower.includes('woman') || tagsLower.includes('women')) {
-    eligibility.push('Applicable exclusively for female candidates/households.');
+    eligibility.push('femaleOnly');
   }
 
   if (tagsLower.includes('disability') || tagsLower.includes('pwd') || tagsLower.includes('disabled')) {
-    eligibility.push('Must possess a disability certificate with 40% or more disability.');
+    eligibility.push('disabilityCertificate');
   }
 
-  eligibility.push('Family annual income must be within the threshold limits (e.g., up to ₹2.5 Lakhs or as applicable).');
+  eligibility.push('incomeLimit');
 
-  // Generate documents list
-  const documents: string[] = ['Aadhaar Card', 'Passport Size Photograph'];
+  // Generate required document keys
+  const documents: string[] = ['aadhaarCard', 'passportPhoto'];
   if (isState) {
-    documents.push('Gujarat Domicile / Residence Proof');
+    documents.push('domicileProof');
   } else {
-    documents.push('Identity & Address Proof');
+    documents.push('identityProof');
   }
   
-  documents.push('Income Certificate');
+  documents.push('incomeCertificate');
 
   if (categoryLower === 'student' || tagsLower.includes('student') || tagsLower.includes('students')) {
-    documents.push('School/College ID Card');
-    documents.push('Previous Year Marksheet / Progress Report');
-    documents.push('Fee Receipt of current academic year');
+    documents.push('schoolId');
+    documents.push('marksheet');
+    documents.push('feeReceipt');
   } else if (categoryLower === 'farmer' || tagsLower.includes('farmer') || tagsLower.includes('farmers') || tagsLower.includes('agriculture')) {
-    documents.push('Land Ownership Documents (7/12 extract)');
-    documents.push('Farmer Identity Card');
+    documents.push('landRecords');
+    documents.push('farmerCard');
   }
 
   if (tagsLower.includes('disability') || tagsLower.includes('pwd') || tagsLower.includes('disabled')) {
-    documents.push('Disability Certificate (UDID Card)');
+    documents.push('disabilityCard');
   }
   
-  documents.push('Active Bank Account Passbook (linked with Aadhaar)');
+  documents.push('bankPassbook');
 
   return {
     ...scheme,

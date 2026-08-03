@@ -234,5 +234,20 @@
   "check1": "Access 500+ central & state schemes",
   "check2": "Check your scheme eligibility instantly",
   "check3": "Get personalized scheme recommendations",
-  "check4": "Download eligibility reports"
+  "check4": "Download eligibility reports",
+  "compareShort": "Compare",
+  "saveShort": "Save",
+  "applyOnOfficialSite": "Apply on Official Site",
+  "actions": "Actions",
+  "remove": "Remove",
+  "schemeNotFound": "Scheme Not Found",
+  "schemeNotFoundDesc": "The welfare program you are looking for does not exist or has been removed.",
+  "browseAllSchemes": "Browse All Schemes",
+  "active": "Active",
+  "endDate": "End Date:",
+  "overallMatchShort": "Overall Match",
+  "ongoing": "Ongoing",
+  "home": "Home",
+  "schemes": "Schemes",
+  "view": "View"
 }

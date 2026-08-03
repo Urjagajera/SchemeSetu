@@ -91,10 +91,33 @@ function getEnrichedDetailsForSeeding(
   };
 }
 
+function slugify(text: string): string {
+  if (!text) return '';
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start
+    .replace(/-+$/, ''); // Trim - from end
+}
+
+function buildDeterministicSlug(authorityName: string, schemeName: string): string {
+  const authSlug = slugify(authorityName || 'general');
+  const nameSlug = slugify(schemeName);
+  return `${authSlug}-${nameSlug}`;
+}
+
 async function main() {
   console.log('Starting Scheme Database Seeding...');
+  
+  // Note: Whenever data is re-seeded, translate-schemes.js and translate-values.js must be re-run,
+  // and their output JSON files regenerated for the mock data client.
+  console.log('NOTICE: Translation files must be regenerated after seeding finishes.');
 
-  const csvPath = path.resolve(__dirname, '../myscheme.csv');
+  const csvPath = path.resolve(__dirname, '../dataset/schemesetu_cleaned_dataset.csv');
   console.log('Reading CSV from:', csvPath);
   const fileContent = fs.readFileSync(csvPath, 'utf-8');
 
@@ -103,6 +126,8 @@ async function main() {
     skip_empty_lines: true,
     trim: true
   });
+
+  console.log(`Parsed ${records.length} records from CSV.`);
 
   // Clear existing scheme relations & schemes
   console.log('Clearing existing scheme-related data...');
@@ -123,29 +148,68 @@ async function main() {
     });
   }
 
-  let totalImported = 0;
-  const uniqueTagsMap = new Map<string, string>(); // name -> id
+  // 1. Pre-extract and seed all unique tags to avoid concurrent upsert race conditions
+  console.log('Extracting all unique tags from CSV...');
+  const allTagNames = new Set<string>();
+  for (const record of records) {
+    for (let i = 1; i <= 15; i++) {
+      const tagVal = record[`raw_tag_${i}`];
+      if (tagVal && tagVal.trim() !== '') {
+        allTagNames.add(tagVal.trim());
+      }
+    }
+  }
 
+  console.log(`Pre-seeding ${allTagNames.size} unique tags to Supabase...`);
+  const uniqueTagsMap = new Map<string, string>(); // name -> id
+  const tagsArray = Array.from(allTagNames);
+  
+  // Format tags data with generated unique IDs for batch creation
+  const tagsData = tagsArray.map((name, idx) => ({
+    id: `tag-${idx}-${Math.random().toString(36).substring(7)}`,
+    name
+  }));
+
+  // Batch insert tags
+  await prisma.tag.createMany({
+    data: tagsData,
+    skipDuplicates: true
+  });
+
+  console.log('Fetching seeded tags to populate in-memory map...');
+  const dbTags = await prisma.tag.findMany();
+  for (const tag of dbTags) {
+    uniqueTagsMap.set(tag.name.toLowerCase(), tag.id);
+  }
+  console.log(`Successfully mapped ${uniqueTagsMap.size} tags.`);
+
+  // 2. Map schemes and relation data in memory
+  console.log('Mapping schemes and relations in memory...');
+  const schemesData: any[] = [];
+  const schemeTagData: any[] = [];
+  const schemeCategoryData: any[] = [];
+
+  const generatedSlugs = new Set<string>();
   let zeroCategoriesCount = 0;
   let oneCategoryCount = 0;
   let multipleCategoriesCount = 0;
 
   for (const record of records) {
-    const sourceUrl = record['block href'];
-    const name = record['block'];
-    const authorityName = record['mt-3'];
-    const description = record['mt-3 2'];
+    const name = record['scheme_name'];
+    const sourceUrl = record['link'];
+    const authorityName = record['authority'];
+    const description = record['description'];
+    const mainCategory = record['main_category']?.toLowerCase() || '';
 
     if (!sourceUrl || !name) continue;
 
     // Set Level
     const level = authorityName === 'Gujarat' ? SchemeLevel.STATE : SchemeLevel.CENTRAL;
 
-    // Handle Tags (bg-transparent through bg-transparent 6)
+    // Handle Tags (raw_tag_1 through raw_tag_15)
     const tagsList: string[] = [];
-    for (let i = 1; i <= 7; i++) {
-      const colKey = i === 1 ? 'bg-transparent' : `bg-transparent ${i}`;
-      const tagVal = record[colKey];
+    for (let i = 1; i <= 15; i++) {
+      const tagVal = record[`raw_tag_${i}`];
       if (tagVal && tagVal.trim() !== '') {
         tagsList.push(tagVal.trim());
       }
@@ -156,14 +220,15 @@ async function main() {
     const lowerTags = tagsList.map(t => t.toLowerCase());
 
     const isStudent = lowerTags.some(t => STUDENT_KEYWORDS.includes(t));
-    if (isStudent) schemeCategories.push('Student');
+    if (isStudent || mainCategory === 'education') schemeCategories.push('Student');
 
     const isFarmer = lowerTags.some(t => FARMER_KEYWORDS.includes(t));
-    if (isFarmer) schemeCategories.push('Farmer');
+    if (isFarmer || mainCategory === 'agriculture') schemeCategories.push('Farmer');
 
     const isWoman = lowerTags.some(t => WOMAN_KEYWORDS.includes(t)) ||
       name.toLowerCase().includes('women') ||
-      name.toLowerCase().includes('mahila');
+      name.toLowerCase().includes('mahila') ||
+      mainCategory === 'women & child development';
     if (isWoman) schemeCategories.push('Woman');
 
     if (schemeCategories.length === 0) {
@@ -177,82 +242,75 @@ async function main() {
     const category = schemeCategories[0] || 'General';
     const enriched = getEnrichedDetailsForSeeding(name, description, level, authorityName, tagsList, category);
 
-    // Create / Upsert Scheme
-    const scheme = await prisma.scheme.upsert({
-      where: { sourceUrl },
-      update: {
-        name,
-        description,
-        level,
-        authorityName,
-        eligibility: enriched.eligibility,
-        documents: enriched.documents
-      },
-      create: {
-        name,
-        sourceUrl,
-        description,
-        level,
-        authorityName,
-        eligibility: enriched.eligibility,
-        documents: enriched.documents
+    // Create deterministic slug ID
+    const baseSlug = buildDeterministicSlug(authorityName, name);
+    let id = baseSlug;
+    if (generatedSlugs.has(id)) {
+      let index = 2;
+      while (generatedSlugs.has(`${baseSlug}-${index}`)) {
+        index++;
       }
+      id = `${baseSlug}-${index}`;
+    }
+    generatedSlugs.add(id);
+
+    // Add Scheme insertion payload
+    schemesData.push({
+      id,
+      name,
+      sourceUrl,
+      description,
+      level,
+      authorityName,
+      eligibility: enriched.eligibility,
+      documents: enriched.documents
     });
 
-    // Upsert Tags and link to Scheme
+    // Add Tag links payload
     for (const tagName of tagsList) {
-      const normalizedTagName = tagName.trim();
-      let tagId = uniqueTagsMap.get(normalizedTagName.toLowerCase());
-
-      if (!tagId) {
-        const tagObj = await prisma.tag.upsert({
-          where: { name: normalizedTagName },
-          update: {},
-          create: { name: normalizedTagName }
-        });
-        tagId = tagObj.id;
-        uniqueTagsMap.set(normalizedTagName.toLowerCase(), tagId);
+      const tagId = uniqueTagsMap.get(tagName.toLowerCase());
+      if (tagId) {
+        schemeTagData.push({ schemeId: id, tagId });
       }
-
-      await prisma.schemeTag.upsert({
-        where: {
-          schemeId_tagId: {
-            schemeId: scheme.id,
-            tagId
-          }
-        },
-        update: {},
-        create: {
-          schemeId: scheme.id,
-          tagId
-        }
-      });
     }
 
-    // Link Categories to Scheme
+    // Add Category links payload
     for (const catName of schemeCategories) {
-      const category = categoriesMap[catName];
-      await prisma.schemeCategory.upsert({
-        where: {
-          schemeId_categoryId: {
-            schemeId: scheme.id,
-            categoryId: category.id
-          }
-        },
-        update: {},
-        create: {
-          schemeId: scheme.id,
-          categoryId: category.id
-        }
-      });
+      const categoryObj = categoriesMap[catName];
+      if (categoryObj) {
+        schemeCategoryData.push({ schemeId: id, categoryId: categoryObj.id });
+      }
     }
-
-    totalImported++;
   }
+
+  // 3. Perform batch inserts
+  console.log(`Inserting ${schemesData.length} schemes into Supabase...`);
+  await prisma.scheme.createMany({
+    data: schemesData,
+    skipDuplicates: true
+  });
+
+  console.log(`Inserting ${schemeTagData.length} tag relations in chunks...`);
+  // Insert in chunks of 5000 to avoid query parameter size limits
+  const CHUNK_SIZE = 5000;
+  for (let i = 0; i < schemeTagData.length; i += CHUNK_SIZE) {
+    const chunk = schemeTagData.slice(i, i + CHUNK_SIZE);
+    await prisma.schemeTag.createMany({
+      data: chunk,
+      skipDuplicates: true
+    });
+    console.log(`  Seeded tag relations chunk ${Math.min(i + CHUNK_SIZE, schemeTagData.length)} / ${schemeTagData.length}`);
+  }
+
+  console.log(`Inserting ${schemeCategoryData.length} category relations...`);
+  await prisma.schemeCategory.createMany({
+    data: schemeCategoryData,
+    skipDuplicates: true
+  });
 
   console.log('Seeding process finished.');
   console.log('================ SUMMARY ================');
-  console.log(`Total Schemes Imported / Upserted: ${totalImported}`);
+  console.log(`Total Schemes Imported / Upserted: ${schemesData.length}`);
   console.log(`Total Unique Tags Upserted: ${uniqueTagsMap.size}`);
   console.log(`Schemes with Zero Categories: ${zeroCategoriesCount}`);
   console.log(`Schemes with One Category: ${oneCategoryCount}`);

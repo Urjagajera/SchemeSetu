@@ -13,7 +13,6 @@ if (!process.env.GROQ_API_KEY) {
       const envContent = fs.readFileSync(envPath, 'utf-8');
       const matches = envContent.match(/^GROQ_API_KEY\s*=\s*(.+)$/m);
       if (matches && matches[1]) {
-        // Strip quotes if any
         let val = matches[1].trim();
         if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
           val = val.substring(1, val.length - 1);
@@ -22,7 +21,7 @@ if (!process.env.GROQ_API_KEY) {
       }
     }
   } catch (err) {
-    // Fail silently here; validation below will throw a clear error if key remains missing
+    // Fail silently here
   }
 }
 
@@ -35,5 +34,52 @@ if (!apiKey || apiKey.trim() === '') {
 }
 
 const groq = new Groq({ apiKey });
+
+// Shared helper to call Groq completions with exponential backoff & rate-limit header parsing
+export async function callGroqWithRetry(params, retries = 3, delay = 2000) {
+  try {
+    return await groq.chat.completions.create(params);
+  } catch (err) {
+    if (retries <= 0) {
+      throw err;
+    }
+
+    const statusCode = err.status || err.statusCode;
+    const isRateLimit = statusCode === 429;
+    const isServerError = statusCode >= 500 && statusCode < 600;
+
+    if (isRateLimit || isServerError) {
+      let waitTime = delay;
+
+      // Extract wait time from headers if available
+      if (err.headers) {
+        const retryAfter = err.headers['retry-after'];
+        if (retryAfter) {
+          waitTime = parseInt(retryAfter, 10) * 1000;
+        } else {
+          const resetTokens = err.headers['x-ratelimit-reset-tokens'];
+          if (resetTokens) {
+            const match = resetTokens.match(/([\d.]+)(ms|s|m)/);
+            if (match) {
+              const val = parseFloat(match[1]);
+              const unit = match[2];
+              if (unit === 'ms') waitTime = val;
+              else if (unit === 's') waitTime = val * 1000;
+              else if (unit === 'm') waitTime = val * 60000;
+            }
+          }
+        }
+      }
+
+      console.warn(
+        `[Groq API Warning] Received status ${statusCode}. Retrying in ${waitTime}ms... (${retries} retries left)`
+      );
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
+      return callGroqWithRetry(params, retries - 1, delay * 2);
+    }
+
+    throw err;
+  }
+}
 
 export default groq;
