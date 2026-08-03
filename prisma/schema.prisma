@@ -21,6 +21,7 @@ model Scheme {
   updatedAt       DateTime @updatedAt
   eligibility     String[]
   documents       String[]
+  translations    SchemeTranslation[]
 }
 
 enum SchemeLevel {
@@ -82,3 +83,28 @@ model Profile {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model SchemeTranslation {
+  id                    String   @id @default(cuid())
+  schemeId              String
+  scheme                Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  languageCode           String   // 'gu', 'hi' — extensible later
+  translatedName        String
+  translatedDescription String   @db.Text
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([schemeId, languageCode])
+}
+
+model ValueTranslation {
+  id               String @id @default(cuid())
+  fieldType        String  // 'authority', 'main_category', 'sector', 'tag', 'gender', 'benefit_type', etc.
+  originalValue    String
+  languageCode     String  // 'gu', 'hi'
+  translatedValue  String
+
+  @@unique([fieldType, originalValue, languageCode])
+}
+
+
