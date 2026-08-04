@@ -28,9 +28,9 @@ export const Search: React.FC = () => {
   // Lists for dropdown selectors
   const [categories, setCategories] = useState<string[]>([]);
   const [ministries, setMinistries] = useState<string[]>([]);
+  const [states, setStates] = useState<string[]>([]);
   
-  // State lists & Occupations
-  const states = ['Gujarat'];
+  // Occupations
   const occupations = ['student', 'farmer', 'entrepreneur', 'senior citizen', 'unemployed', 'other'];
 
   // UI responsive filter toggle for mobile screen
@@ -55,12 +55,15 @@ export const Search: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
 
-  // Load initial static categories and ministries
+  // Load initial categories, states and ministries
   useEffect(() => {
     const loadMetadata = async () => {
       try {
         const cats = await schemeService.getCategories();
         setCategories(cats);
+
+        const sts = await schemeService.getStates();
+        setStates(sts);
         
         const all = await schemeService.getSchemes();
         const mins = Array.from(new Set(all.map(s => s.ministry)));

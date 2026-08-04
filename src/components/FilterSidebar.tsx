@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
 import { X, RefreshCw, Layers, MapPin, User, Coins } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { translateValue } from '../utils/translationUtils';
 
 export interface FilterState {
   category: string;
@@ -36,7 +37,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onClear,
   className
 }) => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
 
   const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onFilterChange({ income: parseInt(e.target.value) });
@@ -57,6 +58,9 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const getCategoryLabel = (c: string) => {
     if (c === '') return t('allCategories');
+    const localized = translateValue('main_category', c, language);
+    if (localized && localized !== c) return localized;
+
     if (c.toLowerCase() === 'education') return t('scholarships');
     if (c.toLowerCase() === 'healthcare') return t('healthInsurance');
     if (c.toLowerCase() === 'agriculture') return t('farmerLoans');
@@ -65,8 +69,17 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   const getStateLabel = (s: string) => {
+    const localized = translateValue('authority', s, language);
+    if (localized && localized !== s) return localized;
+
     const key = `state_${s.replace(/\s+/g, '_').toLowerCase()}`;
     return t(key as any) || s;
+  };
+
+  const getMinistryLabel = (m: string) => {
+    const localized = translateValue('authority', m, language);
+    if (localized && localized !== m) return localized;
+    return m;
   };
 
   const getOccupationLabel = (o: string) => {
@@ -182,7 +195,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           >
             <option value="" className="dark:bg-zinc-900 dark:text-white">{t('allMinistries')}</option>
             {ministries.map(m => (
-              <option key={m} value={m} className="dark:bg-zinc-900 dark:text-white">{m}</option>
+              <option key={m} value={m} className="dark:bg-zinc-900 dark:text-white">{getMinistryLabel(m)}</option>
             ))}
           </select>
         </div>

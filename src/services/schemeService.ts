@@ -193,7 +193,34 @@ function getLocalFeaturedSchemes(): Scheme[] {
 }
 
 function getLocalCategories(): string[] {
-  return ['Student', 'Farmer', 'Woman'];
+  const cats = new Set<string>();
+  SCHEMES.forEach(s => {
+    if (s.categories) {
+      s.categories.forEach(c => cats.add(c));
+    }
+    if (s.category) {
+      cats.add(s.category);
+    }
+  });
+  return Array.from(cats).filter(Boolean).sort();
+}
+
+function getLocalStates(): string[] {
+  const states = new Set<string>();
+  SCHEMES.forEach(s => {
+    if (s.authorityName) {
+      // Filter out common central authority names to keep only actual states/territories
+      const name = s.authorityName.trim();
+      const isCentral = name.toLowerCase().startsWith('ministry') || 
+                        name.toLowerCase().startsWith('department') ||
+                        name.toLowerCase() === 'central government' ||
+                        name.toLowerCase() === 'central';
+      if (!isCentral) {
+        states.add(name);
+      }
+    }
+  });
+  return Array.from(states).sort();
 }
 
 function getLocalEligibleSchemes(profile: UserProfile): Scheme[] {
@@ -237,15 +264,24 @@ function getLocalEligibleSchemes(profile: UserProfile): Scheme[] {
   return results.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
 }
 
+const getActiveLang = (): string => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('schemesetu_lang') || 'en';
+  }
+  return 'en';
+};
+
 export const schemeService = {
   async getSchemes(filters?: { query?: string; category?: string; level?: string; sort?: string }): Promise<Scheme[]> {
     if (isMockMode) {
       return getLocalSchemes(filters);
     }
     try {
-      const response = await axios.get(API_URL, { params: filters });
-      const data = assertJsonArray<any>(response.data, 'getSchemes');
-      return data.map(mapDbSchemeToFrontend);
+      const response = await axios.get(API_URL, {
+        params: { ...filters, lang: getActiveLang() }
+      });
+      const raw = response.data?.data ?? response.data;
+      return assertJsonArray<any>(raw, 'getSchemes');
     } catch (error) {
       console.warn('[schemeService.getSchemes] Backend not available — using local mock data.', (error as Error).message);
       return getLocalSchemes(filters);
@@ -257,9 +293,11 @@ export const schemeService = {
       return getLocalSchemeById(id);
     }
     try {
-      const response = await axios.get(`${API_URL}/${id}`);
-      const data = assertJsonObject<any>(response.data, 'getSchemeById');
-      return mapDbSchemeToFrontend(data);
+      const response = await axios.get(`${API_URL}/${id}`, {
+        params: { lang: getActiveLang() }
+      });
+      const raw = response.data?.data ?? response.data;
+      return raw ? (raw as Scheme) : null;
     } catch (error) {
       console.warn(`[schemeService.getSchemeById] Backend not available — finding scheme "${id}" locally.`, (error as Error).message);
       return getLocalSchemeById(id);
@@ -271,9 +309,11 @@ export const schemeService = {
       return getLocalFeaturedSchemes();
     }
     try {
-      const response = await axios.get(`${API_URL}/featured`);
-      const data = assertJsonArray<any>(response.data, 'getFeaturedSchemes');
-      return data.map(mapDbSchemeToFrontend);
+      const response = await axios.get(`${API_URL}/featured`, {
+        params: { lang: getActiveLang() }
+      });
+      const raw = response.data?.data ?? response.data;
+      return assertJsonArray<any>(raw, 'getFeaturedSchemes');
     } catch (error) {
       console.warn('[schemeService.getFeaturedSchemes] Backend not available — filtering featured schemes locally.', (error as Error).message);
       return getLocalFeaturedSchemes();
@@ -285,8 +325,11 @@ export const schemeService = {
       return getLocalCategories();
     }
     try {
-      const response = await axios.get(`${API_URL}/categories`);
-      return assertJsonArray<string>(response.data, 'getCategories');
+      const response = await axios.get(`${API_URL}/categories`, {
+        params: { lang: getActiveLang() }
+      });
+      const raw = response.data?.data ?? response.data;
+      return assertJsonArray<string>(raw, 'getCategories');
     } catch (error) {
       console.warn('[schemeService.getCategories] Backend not available — deriving categories locally.', (error as Error).message);
       return getLocalCategories();
@@ -298,12 +341,30 @@ export const schemeService = {
       return getLocalEligibleSchemes(profile);
     }
     try {
-      const response = await axios.post(`${API_URL}/eligibility`, profile);
-      const data = assertJsonArray<any>(response.data, 'getEligibleSchemes');
-      return data.map(mapDbSchemeToFrontend);
+      const response = await axios.post(`${API_URL}/eligibility`, profile, {
+        params: { lang: getActiveLang() }
+      });
+      const raw = response.data?.data ?? response.data;
+      return assertJsonArray<any>(raw, 'getEligibleSchemes');
     } catch (error) {
       console.warn('[schemeService.getEligibleSchemes] Backend not available — running local tag-based eligibility.', (error as Error).message);
       return getLocalEligibleSchemes(profile);
+    }
+  },
+
+  async getStates(): Promise<string[]> {
+    if (isMockMode) {
+      return getLocalStates();
+    }
+    try {
+      const response = await axios.get(`${API_URL}/states`, {
+        params: { lang: getActiveLang() }
+      });
+      const raw = response.data?.data ?? response.data;
+      return assertJsonArray<string>(raw, 'getStates');
+    } catch (error) {
+      console.warn('[schemeService.getStates] Backend not available — deriving states locally.', (error as Error).message);
+      return getLocalStates();
     }
   },
 };
