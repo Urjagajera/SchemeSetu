@@ -12,7 +12,15 @@ const querySchema = z.object({
   limit: z.string().optional().transform((val) => (val ? Number(val) : 20)).refine((v) => v > 0 && v <= 100, { message: 'limit must be between 1 and 100' }),
   category: z.string().optional(),
   tag: z.string().optional(),
-  search: z.string().optional()
+  search: z.string().optional(),
+  sort: z.enum([
+    'Most Relevant',
+    'Deadline Approaching',
+    'newest',
+    'oldest',
+    'name_asc',
+    'name_desc'
+  ]).optional().default('Most Relevant')
 });
 
 // ---------- GET /api/schemes/count (lightweight) ----------
@@ -33,7 +41,7 @@ router.get('/', async (req: Request, res: Response) => {
     const errors = parseResult.error.format();
     return res.status(400).json({ success: false, errors });
   }
-  const { page, limit, category, tag, search } = parseResult.data;
+  const { page, limit, category, tag, search, sort } = parseResult.data;
 
   const where: any = {};
   if (search) {
@@ -55,6 +63,19 @@ router.get('/', async (req: Request, res: Response) => {
     };
   }
 
+  // Resolve sort order mapping
+  let orderBy: any = { createdAt: 'desc' };
+  if (sort === 'oldest') {
+    orderBy = { createdAt: 'asc' };
+  } else if (sort === 'name_asc') {
+    orderBy = { name: 'asc' };
+  } else if (sort === 'name_desc') {
+    orderBy = { name: 'desc' };
+  } else if (sort === 'Deadline Approaching') {
+    // Since deadline is not stored in DB, fallback to oldest (asc) to distinguish from Most Relevant (desc)
+    orderBy = { createdAt: 'asc' };
+  }
+
   try {
     const total = await prisma.scheme.count({ where });
     const data = await prisma.scheme.findMany({
@@ -65,7 +86,7 @@ router.get('/', async (req: Request, res: Response) => {
         categories: { select: { category: { select: { id: true, name: true } } } },
         tags: { select: { tag: { select: { id: true, name: true } } } }
       },
-      orderBy: { createdAt: 'desc' }
+      orderBy
     });
 
     const totalPages = Math.ceil(total / limit);
