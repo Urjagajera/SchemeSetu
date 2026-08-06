@@ -53,6 +53,7 @@ export const Search: React.FC = () => {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalSchemes, setTotalSchemes] = useState(0);
   const itemsPerPage = 15;
 
   // Load initial categories, states and ministries
@@ -91,18 +92,21 @@ export const Search: React.FC = () => {
     const loadFiltered = async () => {
       try {
         setLoading(true);
+        const isMockMode = import.meta.env.VITE_USE_MOCK_DATA === 'true';
+
         // Request schemes from service
         const results = await schemeService.getSchemes({
           query: filters.sidebarQuery,
           category: filters.category,
           level: filters.level,
-          sort: sortOption
+          sort: sortOption,
+          ...(isMockMode ? {} : { page: currentPage, limit: itemsPerPage })
         });
 
         // Defensive guard — service layer guarantees arrays now, but be safe
         const safeResults = Array.isArray(results) ? results : [];
 
-        // Run local sub-filtering matching the sidebar criteria
+        // Run local sub-filtering matching the sidebar criteria (primarily for local mock mode fallback)
         const postFiltered = safeResults.filter(s => {
           // Ministry check
           if (filters.ministry && s.ministry !== filters.ministry) return false;
@@ -279,7 +283,11 @@ export const Search: React.FC = () => {
         });
 
         setSchemes(postFiltered);
-        setCurrentPage(1);
+        if (isMockMode) {
+          setTotalSchemes(postFiltered.length);
+        } else {
+          setTotalSchemes((results as any).total ?? postFiltered.length);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -287,7 +295,7 @@ export const Search: React.FC = () => {
       }
     };
     loadFiltered();
-  }, [filters, sortOption]);
+  }, [filters, sortOption, currentPage]);
 
   const handleSearchSubmit = (query: string) => {
     setSearchParams(prev => {
@@ -296,6 +304,7 @@ export const Search: React.FC = () => {
       return prev;
     });
     setFilters(prev => ({ ...prev, sidebarQuery: query } as any));
+    setCurrentPage(1);
   };
 
   const handleFilterChange = (updates: Partial<FilterState>) => {
@@ -311,6 +320,7 @@ export const Search: React.FC = () => {
       }
       return next;
     });
+    setCurrentPage(1);
   };
 
   const handleClearFilters = () => {
@@ -326,13 +336,17 @@ export const Search: React.FC = () => {
     } as any);
     setSearchParams({});
     setSortOption('Most Relevant');
+    setCurrentPage(1);
   };
 
   // Pagination indices
-  const totalPages = Math.ceil(schemes.length / itemsPerPage);
+  const isMockMode = import.meta.env.VITE_USE_MOCK_DATA === 'true';
+  const totalPages = Math.ceil(totalSchemes / itemsPerPage) || 1;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentSchemes = schemes.slice(indexOfFirstItem, indexOfLastItem);
+  const currentSchemes = isMockMode 
+    ? schemes.slice(indexOfFirstItem, indexOfLastItem) 
+    : schemes;
 
   return (
     <div className={cn("flex-grow flex w-full", isAuthenticated ? "h-[calc(100vh-4rem)] overflow-hidden" : "min-h-[calc(100vh-4rem)]")}>
@@ -424,14 +438,17 @@ export const Search: React.FC = () => {
           {/* Sorting panel */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white dark:bg-zinc-900 p-4 border border-outline-variant dark:border-zinc-800 rounded-xl transition-colors">
             <span className="text-xs md:text-sm font-bold text-on-surface-variant dark:text-zinc-400">
-              {loading ? t('searching') : `${schemes.length} ${t('schemesFound')}`}
+              {loading ? t('searching') : `${totalSchemes} ${t('schemesFound')}`}
             </span>
 
             <div className="flex items-center gap-2 self-end sm:self-auto">
               <span className="text-xs text-on-surface-variant dark:text-zinc-500 font-medium">{t('sortBy')}</span>
               <select
                 value={sortOption}
-                onChange={(e) => setSortOption(e.target.value)}
+                onChange={(e) => {
+                  setSortOption(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-zinc-300 text-xs font-semibold focus:ring-secondary focus:border-secondary py-1"
               >
                 <option value="Most Relevant">{t('mostRelevant')}</option>
