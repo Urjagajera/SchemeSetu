@@ -325,10 +325,12 @@ export const schemeService = {
       return getLocalCategories();
     }
     try {
-      const response = await axios.get(`${API_URL}/categories`, {
-        params: { lang: getActiveLang() }
-      });
+      const response = await axios.get(`${API_URL.replace('/schemes', '')}/categories`);
       const raw = response.data?.data ?? response.data;
+      // Backend returns [{ id, name }] — flatten to string[] that FilterSidebar expects
+      if (Array.isArray(raw) && raw.length > 0 && typeof raw[0] === 'object' && 'name' in raw[0]) {
+        return raw.map((c: { id: string; name: string }) => c.name);
+      }
       return assertJsonArray<string>(raw, 'getCategories');
     } catch (error) {
       console.warn('[schemeService.getCategories] Backend not available — deriving categories locally.', (error as Error).message);
