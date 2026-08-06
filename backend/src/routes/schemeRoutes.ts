@@ -1,5 +1,4 @@
-// src/routes/schemeRoutes.ts
-import { Router, Response } from 'express';
+import { Router, Request, Response } from 'express';
 import prisma from '../config/prisma.js';
 import { z } from 'zod';
 import { requireAuth, AuthenticatedRequest } from '../middleware/requireAuth.js';
