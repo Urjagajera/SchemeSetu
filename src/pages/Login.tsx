@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
 
 export const Login: React.FC = () => {
-  const { loginWithGoogle, devLogin, isAuthenticated, user } = useAuth();
+  const { loginWithGoogle, isAuthenticated, user } = useAuth();
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,9 +42,13 @@ export const Login: React.FC = () => {
         client.initialize({
           client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
           callback: async (response: any) => {
-            const success = await loginWithGoogle(response.credential);
-            if (success) {
-              navigate(redirect);
+            const res = await loginWithGoogle(response.credential);
+            if (res.success) {
+              if (res.isNewUser) {
+                navigate('/profile');
+              } else {
+                navigate(redirect);
+              }
             }
           },
           auto_select: false,
@@ -69,10 +73,6 @@ export const Login: React.FC = () => {
     initializeGoogleOAuth();
   }, [loginWithGoogle, navigate, redirect]);
 
-  const handleDevLogin = () => {
-    devLogin();
-    navigate(redirect);
-  };
 
 
 
@@ -220,24 +220,6 @@ export const Login: React.FC = () => {
               </p>
             </div>
           )}
-
-          {/* Dev Bypass Section */}
-          <div className="mt-8 pt-5 border-t border-outline-variant dark:border-zinc-800 text-center">
-            <p className="text-[10px] font-bold font-mono text-on-surface-variant dark:text-zinc-500 mb-3 uppercase tracking-wider">
-              {t('devLoginTitle')}
-            </p>
-            <div className="flex justify-center">
-              <button
-                onClick={handleDevLogin}
-                className="w-full py-2.5 text-xs border border-secondary text-secondary hover:bg-secondary hover:text-white dark:border-sky-500 dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-zinc-950 rounded-lg transition-all font-bold focus:outline-none cursor-pointer"
-              >
-                {t('demoUser')}
-              </button>
-            </div>
-            <p className="text-[10px] text-on-surface-variant dark:text-zinc-500 mt-2">
-              {t('removeDevMsg')}
-            </p>
-          </div>
 
         </div>
       </div>

@@ -80,6 +80,13 @@ model Profile {
   land        String
   education   String
   interests   String[] // profileTags capturing user-selected keywords
+  dob         DateTime?
+  district    String?
+  minority    Boolean @default(false)
+  disability  Boolean @default(false)
+  farmer      Boolean @default(false)
+  widow       Boolean @default(false)
+  veteran     Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

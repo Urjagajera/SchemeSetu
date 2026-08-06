@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 import { UserProfile } from '../types';
 
+axios.defaults.withCredentials = true;
+
 export interface AuthUser {
+  id?: string;
   name: string;
   email: string;
   picture: string;
@@ -13,9 +17,8 @@ interface AuthContextProps {
   user: AuthUser | null;
   profile: UserProfile;
   isAuthenticated: boolean;
-  loginWithGoogle: (credential: string) => Promise<boolean>;
-  logout: () => void;
-  devLogin: () => void;
+  loginWithGoogle: (credential: string) => Promise<{ success: boolean; isNewUser?: boolean }>;
+  logout: () => Promise<void>;
   updateProfile: (newProfile: Partial<UserProfile>) => Promise<boolean>;
 }
 
@@ -77,41 +80,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const loginWithGoogle = async (credential: string): Promise<boolean> => {
-    const payload = decodeJWT(credential);
-    if (!payload) return false;
+  const loginWithGoogle = async (credential: string): Promise<{ success: boolean; isNewUser?: boolean }> => {
+    try {
+      const response = await axios.post('/api/auth/google', { idToken: credential });
+      
+      if (response.data && response.data.success) {
+        const { user: serverUser, isNewUser } = response.data;
+        const citizenUser: AuthUser = {
+          id: serverUser.id,
+          name: serverUser.name || 'Citizen',
+          email: serverUser.email,
+          picture: serverUser.picture || '',
+          sub: serverUser.id,
+          role: 'user'
+        };
 
-    const citizenUser: AuthUser = {
-      name: payload.name || 'Citizen',
-      email: payload.email || '',
-      picture: payload.picture || '',
-      sub: payload.sub || '',
-      role: 'user'
-    };
-
-    setUser(citizenUser);
-    sessionStorage.setItem('schemesetu_user', JSON.stringify(citizenUser));
-    return true;
+        setUser(citizenUser);
+        sessionStorage.setItem('schemesetu_user', JSON.stringify(citizenUser));
+        return { success: true, isNewUser };
+      }
+      return { success: false };
+    } catch (error) {
+      console.error('[Google Login Error]:', error);
+      return { success: false };
+    }
   };
 
-  const devLogin = () => {
-    const citizenUser: AuthUser = {
-      name: 'Rajesh Kumar',
-      email: 'rajesh.kumar@gmail.com',
-      picture: '',
-      sub: 'demo_user',
-      role: 'user'
-    };
-    setUser(citizenUser);
-    sessionStorage.setItem('schemesetu_user', JSON.stringify(citizenUser));
-  };
-
-  const logout = () => {
-    setUser(null);
-    sessionStorage.removeItem('schemesetu_user');
-    localStorage.removeItem('schemesetu_user');
-    if (window.google?.accounts?.id) {
-      window.google.accounts.id.disableAutoSelect();
+  const logout = async () => {
+    try {
+      await axios.post('/api/auth/logout');
+    } catch (error) {
+      console.error('[Logout Error]:', error);
+    } finally {
+      setUser(null);
+      sessionStorage.removeItem('schemesetu_user');
+      localStorage.removeItem('schemesetu_user');
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.disableAutoSelect();
+      }
     }
   };
 
@@ -132,7 +138,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated,
         loginWithGoogle,
         logout,
-        devLogin,
         updateProfile
       }}
     >
