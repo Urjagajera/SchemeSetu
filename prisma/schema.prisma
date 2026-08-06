@@ -22,6 +22,7 @@ model Scheme {
   eligibility     String[]
   documents       String[]
   translations    SchemeTranslation[]
+  savedBy         SavedScheme[]
 }
 
 enum SchemeLevel {
@@ -58,12 +59,13 @@ model SchemeTag {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  profile   Profile?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String?
+  profile      Profile?
+  savedSchemes SavedScheme[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 model Profile {
@@ -89,6 +91,17 @@ model Profile {
   veteran     Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model SavedScheme {
+  id        String   @id @default(cuid())
+  userId    String
+  schemeId  String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scheme    Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  savedAt   DateTime @default(now())
+
+  @@unique([userId, schemeId])
 }
 
 model SchemeTranslation {

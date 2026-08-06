@@ -5,6 +5,7 @@ import profileRoutes from './profileRoutes.js';
 import schemeRoutes from './schemeRoutes.js';
 import categoryRoutes from './categoryRoutes.js';
 import tagRoutes from './tagRoutes.js';
+import bookmarkRoutes from './bookmarkRoutes.js';
 
 const router = Router();
 
@@ -13,5 +14,6 @@ router.use('/profile', profileRoutes);
 router.use('/schemes', schemeRoutes);
 router.use('/categories', categoryRoutes);
 router.use('/tags', tagRoutes);
+router.use('/bookmarks', bookmarkRoutes);
 
 export default router;
