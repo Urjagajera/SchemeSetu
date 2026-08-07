@@ -18,6 +18,8 @@ interface AuthContextProps {
   profile: UserProfile;
   isAuthenticated: boolean;
   loginWithGoogle: (credential: string) => Promise<{ success: boolean; isNewUser?: boolean }>;
+  // TEMP-DEMO-AUTH: remove before production
+  loginAsDemo: () => Promise<{ success: boolean; isNewUser?: boolean }>;
   logout: () => Promise<void>;
   updateProfile: (newProfile: Partial<UserProfile>) => Promise<boolean>;
 }
@@ -106,6 +108,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // TEMP-DEMO-AUTH: remove before production
+  const loginAsDemo = async (): Promise<{ success: boolean; isNewUser?: boolean }> => {
+    try {
+      // TEMP-DEMO-AUTH: remove before production
+      const response = await axios.post('/api/auth/demo-login');
+      
+      // TEMP-DEMO-AUTH: remove before production
+      if (response.data && response.data.success) {
+        // TEMP-DEMO-AUTH: remove before production
+        const { user: serverUser, isNewUser } = response.data;
+        // TEMP-DEMO-AUTH: remove before production
+        const citizenUser: AuthUser = {
+          id: serverUser.id,
+          name: serverUser.name || 'Citizen',
+          email: serverUser.email,
+          picture: serverUser.picture || '',
+          sub: serverUser.id,
+          role: 'user'
+        };
+
+        // TEMP-DEMO-AUTH: remove before production
+        setUser(citizenUser);
+        // TEMP-DEMO-AUTH: remove before production
+        sessionStorage.setItem('schemesetu_user', JSON.stringify(citizenUser));
+        // TEMP-DEMO-AUTH: remove before production
+        return { success: true, isNewUser };
+      }
+      // TEMP-DEMO-AUTH: remove before production
+      return { success: false };
+    } catch (error) {
+      // TEMP-DEMO-AUTH: remove before production
+      console.error('[Demo Login Error]:', error);
+      // TEMP-DEMO-AUTH: remove before production
+      return { success: false };
+    }
+  };
+
   const logout = async () => {
     try {
       await axios.post('/api/auth/logout');
@@ -137,6 +176,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         profile,
         isAuthenticated,
         loginWithGoogle,
+        // TEMP-DEMO-AUTH: remove before production
+        loginAsDemo,
         logout,
         updateProfile
       }}

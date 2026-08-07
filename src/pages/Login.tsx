@@ -7,11 +7,29 @@ import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
 
 export const Login: React.FC = () => {
-  const { loginWithGoogle, isAuthenticated, user } = useAuth();
+  // TEMP-DEMO-AUTH: remove before production
+  const { loginWithGoogle, loginAsDemo, isAuthenticated, user } = useAuth();
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
+
+  // TEMP-DEMO-AUTH: remove before production
+  const [isDemoLoading, setIsDemoLoading] = useState(false);
+
+  // TEMP-DEMO-AUTH: remove before production
+  const handleDemoLogin = async () => {
+    setIsDemoLoading(true);
+    const res = await loginAsDemo();
+    setIsDemoLoading(false);
+    if (res.success) {
+      if (res.isNewUser) {
+        navigate('/profile');
+      } else {
+        navigate(redirect);
+      }
+    }
+  };
 
   // Redirect target
   const redirect = searchParams.get('redirect') || '/dashboard';
@@ -160,6 +178,26 @@ export const Login: React.FC = () => {
                 <div ref={googleButtonRef} id="google-signin-btn" className="w-full flex justify-center"></div>
               </div>
 
+              {/* TEMP-DEMO-AUTH: remove before production */}
+              {import.meta.env.VITE_ENABLE_DEMO_LOGIN === 'true' && (
+                <div className="flex flex-col gap-2 mt-2">
+                  <button
+                    onClick={handleDemoLogin}
+                    disabled={isDemoLoading}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-dashed border-sky-400 dark:border-sky-500 bg-sky-50/50 dark:bg-sky-950/20 text-sky-700 dark:text-sky-400 hover:bg-sky-100/50 dark:hover:bg-sky-950/45 transition-all duration-300 font-semibold text-sm cursor-pointer shadow-sm hover:shadow-md"
+                  >
+                    {isDemoLoading ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
+                    ) : (
+                      <>
+                        <span className="flex h-2 w-2 rounded-full bg-sky-500 animate-pulse" />
+                        Quick Demo Access
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+
               <div className="relative flex items-center gap-3">
                 <div className="flex-grow border-t border-outline-variant dark:border-zinc-800" />
                 <span className="text-[10px] font-bold text-on-surface-variant/70 dark:text-zinc-500 bg-white dark:bg-zinc-900 px-2 uppercase">
@@ -197,6 +235,26 @@ export const Login: React.FC = () => {
                 {/* Re-use ref or placeholder. Render handles automatically */}
                 <div ref={googleButtonRef} className="w-full flex justify-center"></div>
               </div>
+
+              {/* TEMP-DEMO-AUTH: remove before production */}
+              {import.meta.env.VITE_ENABLE_DEMO_LOGIN === 'true' && (
+                <div className="flex flex-col gap-2 mt-2 mb-4">
+                  <button
+                    onClick={handleDemoLogin}
+                    disabled={isDemoLoading}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-dashed border-sky-400 dark:border-sky-500 bg-sky-50/50 dark:bg-sky-950/20 text-sky-700 dark:text-sky-400 hover:bg-sky-100/50 dark:hover:bg-sky-950/45 transition-all duration-300 font-semibold text-sm cursor-pointer shadow-sm hover:shadow-md"
+                  >
+                    {isDemoLoading ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
+                    ) : (
+                      <>
+                        <span className="flex h-2 w-2 rounded-full bg-sky-500 animate-pulse" />
+                        Quick Demo Access
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
 
               {/* Benefits list */}
               <div className="bg-secondary-container/10 dark:bg-zinc-950 rounded-xl p-4 space-y-2.5">

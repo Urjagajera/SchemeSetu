@@ -9,6 +9,61 @@ import { requireAuth, AuthenticatedRequest } from '../middleware/requireAuth.js'
 const router = Router();
 const oauthClient = new OAuth2Client(env.GOOGLE_CLIENT_ID);
 
+// Helper to find/create user and issue session JWT/cookie
+async function createSessionAndSendResponse(
+  email: string,
+  name: string | null,
+  picture: string,
+  res: Response
+) {
+  // Find or create user
+  let user = await prisma.user.findUnique({
+    where: { email },
+    include: { profile: true }
+  });
+
+  let isNewUser = false;
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        email,
+        name
+      },
+      include: { profile: true }
+    });
+    isNewUser = true;
+  } else {
+    isNewUser = !user.profile;
+  }
+
+  // Issue session JWT
+  const token = jwt.sign(
+    { userId: user.id, email: user.email },
+    env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+
+  // Set cookie
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+  });
+
+  return res.json({
+    success: true,
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      picture
+    },
+    isNewUser
+  });
+}
+
 // POST /api/auth/google
 router.post('/google', async (req, res) => {
   const { idToken } = req.body;
@@ -39,52 +94,7 @@ router.post('/google', async (req, res) => {
     const name = payload.name || null;
     const picture = payload.picture || '';
 
-    // Find or create user
-    let user = await prisma.user.findUnique({
-      where: { email },
-      include: { profile: true }
-    });
-
-    let isNewUser = false;
-
-    if (!user) {
-      user = await prisma.user.create({
-        data: {
-          email,
-          name
-        },
-        include: { profile: true }
-      });
-      isNewUser = true;
-    } else {
-      isNewUser = !user.profile;
-    }
-
-    // Issue session JWT
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    // Set cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
-
-    return res.json({
-      success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        picture
-      },
-      isNewUser
-    });
+    return await createSessionAndSendResponse(email, name, picture, res);
   } catch (error: any) {
     console.error('[Google OAuth verification error]:', error.message || error);
     return res.status(401).json({
@@ -140,4 +150,34 @@ router.get('/me', requireAuth, async (req: AuthenticatedRequest, res: Response) 
   }
 });
 
+// TEMP-DEMO-AUTH: remove before production
+router.post('/demo-login', async (req, res) => {
+  // TEMP-DEMO-AUTH: remove before production
+  if (!env.ENABLE_DEMO_LOGIN) {
+    // TEMP-DEMO-AUTH: remove before production
+    return res.status(403).json({
+      success: false,
+      message: 'Demo login is disabled'
+    });
+  }
+
+  try {
+    // TEMP-DEMO-AUTH: remove before production
+    const demoEmail = 'demo.user@schemesetu.in';
+    const demoName = 'Demo User';
+    const demoPicture = 'https://avatar.iran.liara.run/public/33';
+
+    // TEMP-DEMO-AUTH: remove before production
+    return await createSessionAndSendResponse(demoEmail, demoName, demoPicture, res);
+  } catch (error: any) {
+    // TEMP-DEMO-AUTH: remove before production
+    console.error('[Demo Login Error]:', error.message || error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error during demo login'
+    });
+  }
+});
+
 export default router;
+

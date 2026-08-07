@@ -14,7 +14,9 @@ export const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || '',
-  JWT_SECRET: process.env.JWT_SECRET || 'fallback_secret_for_dev_only'
+  JWT_SECRET: process.env.JWT_SECRET || 'fallback_secret_for_dev_only',
+  // TEMP-DEMO-AUTH: remove before production
+  ENABLE_DEMO_LOGIN: process.env.ENABLE_DEMO_LOGIN === 'true'
 };
 
 export default env;
