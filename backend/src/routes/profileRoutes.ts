@@ -1,5 +1,4 @@
-// src/routes/profileRoutes.ts
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import prisma from '../config/prisma.js';
 import { requireAuth, AuthenticatedRequest } from '../middleware/requireAuth.js';
 import { z } from 'zod';
@@ -32,9 +31,8 @@ const baseProfileSchema = z.object({
 });
 
 // CREATE profile – one‑time only
-router.post('/', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
-  const userId = req.user?.userId;
-  if (!userId) return res.status(401).json({ success: false, message: 'Unauthenticated' });
+router.post('/', requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  const userId = req.user!.userId;
 
   // Validate payload
   const parseResult = baseProfileSchema.safeParse(req.body);
@@ -76,27 +74,28 @@ router.post('/', requireAuth, async (req: AuthenticatedRequest, res: Response) =
     });
     res.status(201).json({ success: true, profile });
   } catch (e) {
-    console.error('[Create Profile] error:', e);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    next(e);
   }
 });
 
 // GET own profile
-router.get('/me', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
-  const userId = req.user?.userId;
-  if (!userId) return res.status(401).json({ success: false, message: 'Unauthenticated' });
+router.get('/me', requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user!.userId;
 
-  const profile = await prisma.profile.findUnique({ where: { userId } });
-  if (!profile) {
-    return res.status(404).json({ success: false, message: 'Profile not found' });
+    const profile = await prisma.profile.findUnique({ where: { userId } });
+    if (!profile) {
+      return res.status(404).json({ success: false, message: 'Profile not found' });
+    }
+    return res.json({ success: true, profile });
+  } catch (e) {
+    return next(e);
   }
-  res.json({ success: true, profile });
 });
 
 // PATCH own profile – also allows updating User.name
-router.patch('/me', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
-  const userId = req.user?.userId;
-  if (!userId) return res.status(401).json({ success: false, message: 'Unauthenticated' });
+router.patch('/me', requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  const userId = req.user!.userId;
 
   const parseResult = baseProfileSchema.safeParse(req.body);
   if (!parseResult.success) {
@@ -140,8 +139,7 @@ router.patch('/me', requireAuth, async (req: AuthenticatedRequest, res: Response
     });
     res.json({ success: true, profile: result });
   } catch (e) {
-    console.error('[Patch Profile] error:', e);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    next(e);
   }
 });
 

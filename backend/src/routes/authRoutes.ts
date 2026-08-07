@@ -1,5 +1,5 @@
 // src/routes/authRoutes.ts
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import prisma from '../config/prisma.js';
@@ -65,7 +65,7 @@ async function createSessionAndSendResponse(
 }
 
 // POST /api/auth/google
-router.post('/google', async (req, res) => {
+router.post('/google', async (req, res, next) => {
   const { idToken } = req.body;
 
   if (!idToken) {
@@ -96,11 +96,9 @@ router.post('/google', async (req, res) => {
 
     return await createSessionAndSendResponse(email, name, picture, res);
   } catch (error: any) {
-    console.error('[Google OAuth verification error]:', error.message || error);
-    return res.status(401).json({
-      success: false,
-      message: 'Unauthorized: Invalid or expired ID token'
-    });
+    const authError: any = new Error('Unauthorized: Invalid or expired ID token');
+    authError.status = 401;
+    return next(authError);
   }
 });
 
@@ -118,7 +116,7 @@ router.post('/logout', (req, res) => {
 });
 
 // GET /api/auth/me
-router.get('/me', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+router.get('/me', requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.user!.userId },
@@ -142,16 +140,12 @@ router.get('/me', requireAuth, async (req: AuthenticatedRequest, res: Response) 
       isNewUser: !user.profile
     });
   } catch (error: any) {
-    console.error('[Get current user error]:', error.message || error);
-    return res.status(500).json({
-      success: false,
-      message: 'Internal server error'
-    });
+    return next(error);
   }
 });
 
 // TEMP-DEMO-AUTH: remove before production
-router.post('/demo-login', async (req, res) => {
+router.post('/demo-login', async (req, res, next) => {
   // TEMP-DEMO-AUTH: remove before production
   if (!env.ENABLE_DEMO_LOGIN) {
     // TEMP-DEMO-AUTH: remove before production
@@ -171,11 +165,7 @@ router.post('/demo-login', async (req, res) => {
     return await createSessionAndSendResponse(demoEmail, demoName, demoPicture, res);
   } catch (error: any) {
     // TEMP-DEMO-AUTH: remove before production
-    console.error('[Demo Login Error]:', error.message || error);
-    return res.status(500).json({
-      success: false,
-      message: 'Internal server error during demo login'
-    });
+    return next(error);
   }
 });
 

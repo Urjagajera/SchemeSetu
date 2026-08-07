@@ -3,7 +3,7 @@ import { Scheme, UserProfile } from '../types';
 import { SCHEMES } from '../constants/schemesData';
 
 const API_URL = '/api/schemes';
-const isMockMode = import.meta.env.VITE_USE_MOCK_DATA === 'true';
+import { isMockMode } from '../config/mockMode';
 
 /**
  * Guards against Vite's SPA HTML fallback being mistaken for valid API data.

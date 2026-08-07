@@ -50,11 +50,9 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error('[Global Error Handler]:', err.stack || err.message);
   const status = (err as any).status || 500;
   res.status(status).json({
-    error: {
-      message: status === 500 ? 'Internal Server Error' : err.message,
-      status,
-      ...(env.NODE_ENV === 'development' && { stack: err.stack })
-    }
+    success: false,
+    message: status === 500 ? 'Internal server error' : err.message,
+    ...(env.NODE_ENV === 'development' && { stack: err.stack })
   });
 });
 

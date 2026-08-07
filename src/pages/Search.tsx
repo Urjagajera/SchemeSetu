@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { schemeService } from '../services/schemeService';
+import { isMockMode } from '../config/mockMode';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useBookmarks } from '../hooks/useBookmarks';
 import { useAuth } from '../contexts/AuthContext';
@@ -92,7 +93,6 @@ export const Search: React.FC = () => {
     const loadFiltered = async () => {
       try {
         setLoading(true);
-        const isMockMode = import.meta.env.VITE_USE_MOCK_DATA === 'true';
 
         // Request schemes from service
         const results = await schemeService.getSchemes({
@@ -340,7 +340,6 @@ export const Search: React.FC = () => {
   };
 
   // Pagination indices
-  const isMockMode = import.meta.env.VITE_USE_MOCK_DATA === 'true';
   const totalPages = Math.ceil(totalSchemes / itemsPerPage) || 1;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

@@ -4,8 +4,9 @@
   "description": "SchemeSetu - Express Backend (Phase 2 Read-Only Scope)",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc",
     "postinstall": "prisma generate"
   },
   "dependencies": {

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Scheme, UserProfile } from '../types';
 
 const API_URL = '/api/eligibility';
-const isMockMode = import.meta.env.VITE_USE_MOCK_DATA === 'true';
+import { isMockMode } from '../config/mockMode';
 
 function assertJsonObject<T>(data: unknown, context: string): T {
   if (

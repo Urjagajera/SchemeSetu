@@ -1,7 +1,7 @@
 // src/routes/bookmarkRoutes.ts
 // Saved Schemes API — mounted at /api/bookmarks to match the existing frontend
 // bookmarkService.ts contract. Internally backed by the SavedScheme model (B1).
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import prisma from '../config/prisma.js';
 import { z } from 'zod';
 import { requireAuth, AuthenticatedRequest } from '../middleware/requireAuth.js';
@@ -18,7 +18,7 @@ const postSchema = z.object({
   schemeId: z.string().min(1, 'schemeId is required'),
 });
 
-router.post('/', async (req: AuthenticatedRequest, res: Response) => {
+router.post('/', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const parse = postSchema.safeParse(req.body);
   if (!parse.success) {
     return res.status(400).json({ success: false, errors: parse.error.format() });
@@ -48,14 +48,13 @@ router.post('/', async (req: AuthenticatedRequest, res: Response) => {
     const ids = await getSavedIds(userId);
     return res.json({ success: true, data: ids });
   } catch (e) {
-    console.error('[POST /bookmarks] error:', e);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
+    return next(e);
   }
 });
 
 // ---- DELETE /api/bookmarks/:schemeId — unsave a scheme ----
 // Returns: updated string[] of saved scheme IDs
-router.delete('/:schemeId', async (req: AuthenticatedRequest, res: Response) => {
+router.delete('/:schemeId', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const { schemeId } = req.params;
   const userId = req.user!.userId;
 
@@ -76,21 +75,19 @@ router.delete('/:schemeId', async (req: AuthenticatedRequest, res: Response) => 
     const ids = await getSavedIds(userId);
     return res.json({ success: true, data: ids });
   } catch (e) {
-    console.error('[DELETE /bookmarks/:schemeId] error:', e);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
+    return next(e);
   }
 });
 
 // ---- GET /api/bookmarks — list saved scheme IDs ----
 // Returns: string[] of schemeIds (the frontend fetches full scheme objects separately)
-router.get('/', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const userId = req.user!.userId;
   try {
     const ids = await getSavedIds(userId);
     return res.json(ids);
   } catch (e) {
-    console.error('[GET /bookmarks] error:', e);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
+    return next(e);
   }
 });
 

@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import prisma from '../config/prisma.js';
 import { z } from 'zod';
 import { requireAuth, AuthenticatedRequest } from '../middleware/requireAuth.js';
@@ -6,10 +6,19 @@ import { buildProfileKeywords, scoreScheme } from '../services/eligibilityEngine
 
 const router = Router();
 
-// ---------- Query validation schema ----------
-const querySchema = z.object({
+// ---------- Shared include option ----------
+const schemeIncludes = {
+  categories: { select: { category: { select: { id: true, name: true } } } },
+  tags: { select: { tag: { select: { id: true, name: true } } } }
+};
+
+// ---------- Query validation schemas ----------
+const paginationSchema = z.object({
   page: z.string().optional().transform((val) => (val ? Number(val) : 1)).refine((v) => v > 0, { message: 'page must be a positive integer' }),
   limit: z.string().optional().transform((val) => (val ? Number(val) : 20)).refine((v) => v > 0 && v <= 100, { message: 'limit must be between 1 and 100' }),
+});
+
+const querySchema = paginationSchema.merge(z.object({
   category: z.string().optional(),
   tag: z.string().optional(),
   search: z.string().optional(),
@@ -21,21 +30,22 @@ const querySchema = z.object({
     'name_asc',
     'name_desc'
   ]).optional().default('Most Relevant')
-});
+}));
+
+const recommendedQuerySchema = paginationSchema;
 
 // ---------- GET /api/schemes/count (lightweight) ----------
-router.get('/count', async (_req: Request, res: Response) => {
+router.get('/count', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const total = await prisma.scheme.count();
     return res.json({ total });
   } catch (e) {
-    console.error('[GET /schemes/count] error:', e);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
+    next(e);
   }
 });
 
 // ---------- GET /api/schemes (listing) ----------
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   const parseResult = querySchema.safeParse(req.query);
   if (!parseResult.success) {
     const errors = parseResult.error.format();
@@ -82,10 +92,7 @@ router.get('/', async (req: Request, res: Response) => {
       where,
       skip: (page - 1) * limit,
       take: limit,
-      include: {
-        categories: { select: { category: { select: { id: true, name: true } } } },
-        tags: { select: { tag: { select: { id: true, name: true } } } }
-      },
+      include: schemeIncludes,
       orderBy
     });
 
@@ -96,18 +103,12 @@ router.get('/', async (req: Request, res: Response) => {
       pagination: { page, limit, total, totalPages }
     });
   } catch (e) {
-    console.error('[GET /schemes] error:', e);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
+    next(e);
   }
 });
 
 // ---------- GET /api/schemes/recommended (protected — personalized to authenticated user) ----------
-const recommendedQuerySchema = z.object({
-  page:  z.string().optional().transform(v => (v ? Number(v) : 1)).refine(v => v > 0, { message: 'page must be a positive integer' }),
-  limit: z.string().optional().transform(v => (v ? Number(v) : 20)).refine(v => v > 0 && v <= 100, { message: 'limit must be between 1 and 100' }),
-});
-
-router.get('/recommended', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+router.get('/recommended', requireAuth, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const userId = req.user!.userId;
 
   const parseResult = recommendedQuerySchema.safeParse(req.query);
@@ -144,10 +145,7 @@ router.get('/recommended', requireAuth, async (req: AuthenticatedRequest, res: R
     // Fetch all schemes with categories + tags (no pagination yet — filter in memory, then paginate)
     // For large datasets this should move to DB-side filtering; fine at current scale.
     const allSchemes = await prisma.scheme.findMany({
-      include: {
-        categories: { select: { category: { select: { id: true, name: true } } } },
-        tags:       { select: { tag:      { select: { id: true, name: true } } } },
-      },
+      include: schemeIncludes,
     });
 
     // Score and filter
@@ -172,29 +170,24 @@ router.get('/recommended', requireAuth, async (req: AuthenticatedRequest, res: R
       pagination: { page, limit, total, totalPages },
     });
   } catch (e) {
-    console.error('[GET /schemes/recommended] error:', e);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
+    next(e);
   }
 });
 
 // ---------- GET /api/schemes/:id (detail) ----------
-router.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/:id', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     const scheme = await prisma.scheme.findUnique({
       where: { id },
-      include: {
-        categories: { select: { category: { select: { id: true, name: true } } } },
-        tags: { select: { tag: { select: { id: true, name: true } } } }
-      }
+      include: schemeIncludes
     });
     if (!scheme) {
       return res.status(404).json({ success: false, message: 'Scheme not found' });
     }
     return res.json({ success: true, scheme });
   } catch (e) {
-    console.error('[GET /schemes/:id] error:', e);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
+    next(e);
   }
 });
 
