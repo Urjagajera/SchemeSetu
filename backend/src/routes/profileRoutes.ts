@@ -37,8 +37,8 @@ router.post('/', requireAuth, async (req: AuthenticatedRequest, res: Response, n
   // Validate payload
   const parseResult = baseProfileSchema.safeParse(req.body);
   if (!parseResult.success) {
-    const errors = parseResult.error.format();
-    return res.status(400).json({ success: false, errors });
+    const message = parseResult.error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join('; ');
+    return res.status(400).json({ success: false, message: `Validation failed: ${message}` });
   }
   const data = parseResult.data;
 
@@ -99,8 +99,8 @@ router.patch('/me', requireAuth, async (req: AuthenticatedRequest, res: Response
 
   const parseResult = baseProfileSchema.safeParse(req.body);
   if (!parseResult.success) {
-    const errors = parseResult.error.format();
-    return res.status(400).json({ success: false, errors });
+    const message = parseResult.error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join('; ');
+    return res.status(400).json({ success: false, message: `Validation failed: ${message}` });
   }
   const data = parseResult.data;
 

@@ -48,8 +48,8 @@ router.get('/count', async (_req: Request, res: Response, next: NextFunction) =>
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   const parseResult = querySchema.safeParse(req.query);
   if (!parseResult.success) {
-    const errors = parseResult.error.format();
-    return res.status(400).json({ success: false, errors });
+    const message = parseResult.error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join('; ');
+    return res.status(400).json({ success: false, message: `Validation failed: ${message}` });
   }
   const { page, limit, category, tag, search, sort } = parseResult.data;
 
@@ -113,7 +113,8 @@ router.get('/recommended', requireAuth, async (req: AuthenticatedRequest, res: R
 
   const parseResult = recommendedQuerySchema.safeParse(req.query);
   if (!parseResult.success) {
-    return res.status(400).json({ success: false, errors: parseResult.error.format() });
+    const message = parseResult.error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join('; ');
+    return res.status(400).json({ success: false, message: `Validation failed: ${message}` });
   }
   const { page, limit } = parseResult.data;
 

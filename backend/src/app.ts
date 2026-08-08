@@ -29,6 +29,7 @@ if (env.NODE_ENV !== 'production') {
 // Mount routes
 app.use('/api', apiRouter);
 
+
 // Health check – ping DB
 app.get('/api/health', async (_req: Request, res: Response) => {
   try {
@@ -49,10 +50,12 @@ app.use((_req: Request, res: Response) => {
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error('[Global Error Handler]:', err.stack || err.message);
   const status = (err as any).status || 500;
+  const isDev = process.env.NODE_ENV !== 'production' && env.NODE_ENV !== 'production';
+
   res.status(status).json({
     success: false,
-    message: status === 500 ? 'Internal server error' : err.message,
-    ...(env.NODE_ENV === 'development' && { stack: err.stack })
+    message: status === 500 && !isDev ? 'Internal server error' : err.message,
+    ...(isDev && { stack: err.stack })
   });
 });
 

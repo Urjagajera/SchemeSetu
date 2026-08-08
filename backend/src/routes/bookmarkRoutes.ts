@@ -21,7 +21,8 @@ const postSchema = z.object({
 router.post('/', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const parse = postSchema.safeParse(req.body);
   if (!parse.success) {
-    return res.status(400).json({ success: false, errors: parse.error.format() });
+    const message = parse.error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join('; ');
+    return res.status(400).json({ success: false, message: `Validation failed: ${message}` });
   }
   const { schemeId } = parse.data;
   const userId = req.user!.userId;
