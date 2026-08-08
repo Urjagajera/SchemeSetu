@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useBookmarks } from '../hooks/useBookmarks';
@@ -20,6 +20,15 @@ export const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startYRef = useRef(0);
+  const dragStartXRef = useRef(0);
+  const hasDraggedRef = useRef(false);
+  const resumeTimeoutRef = useRef<any>(null);
+
   useEffect(() => {
     const loadFeatured = async () => {
       try {
@@ -33,6 +42,153 @@ export const Home: React.FC = () => {
     };
     loadFeatured();
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return;
+    
+    const marquee = marqueeRef.current;
+    if (!marquee) return;
+
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+      resumeTimeoutRef.current = null;
+    }
+
+    isDraggingRef.current = true;
+    startXRef.current = e.clientX;
+    startYRef.current = e.clientY;
+    hasDraggedRef.current = false;
+
+    e.currentTarget.setPointerCapture(e.pointerId);
+
+    const style = window.getComputedStyle(marquee);
+    const matrixString = style.transform || style.webkitTransform;
+    let currentX = 0;
+    
+    if (matrixString && matrixString !== 'none') {
+      try {
+        const matrix = new DOMMatrixReadOnly(matrixString);
+        currentX = matrix.m41;
+      } catch (err) {
+        const parts = matrixString.split('(')[1]?.split(')')[0]?.split(',');
+        if (parts && parts.length >= 6) {
+          currentX = parseFloat(parts[4]);
+        }
+      }
+    }
+    
+    dragStartXRef.current = currentX;
+
+    marquee.style.animation = 'none';
+    marquee.style.transform = `translateX(${currentX}px)`;
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+
+    const marquee = marqueeRef.current;
+    if (!marquee) return;
+
+    const dx = e.clientX - startXRef.current;
+    const dy = e.clientY - startYRef.current;
+
+    if (!hasDraggedRef.current && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+      hasDraggedRef.current = true;
+    }
+
+    if (hasDraggedRef.current) {
+      e.preventDefault();
+
+      const newX = dragStartXRef.current + dx;
+      const halfWidth = marquee.scrollWidth / 2;
+
+      let wrappedX = newX;
+      if (halfWidth > 0) {
+        while (wrappedX > 0) {
+          wrappedX -= halfWidth;
+        }
+        while (wrappedX < -halfWidth) {
+          wrappedX += halfWidth;
+        }
+      }
+
+      marquee.style.transform = `translateX(${wrappedX}px)`;
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    e.currentTarget.releasePointerCapture(e.pointerId);
+
+    if (!hasDraggedRef.current) {
+      return;
+    }
+
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+    }
+    resumeTimeoutRef.current = setTimeout(resumeAnimation, 3000);
+  };
+
+  const handlePointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    e.currentTarget.releasePointerCapture(e.pointerId);
+
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+    }
+    resumeTimeoutRef.current = setTimeout(resumeAnimation, 3000);
+  };
+
+  const resumeAnimation = () => {
+    const marquee = marqueeRef.current;
+    if (!marquee) return;
+
+    const halfWidth = marquee.scrollWidth / 2;
+    if (halfWidth <= 0) return;
+
+    const transformStr = marquee.style.transform;
+    let currentX = 0;
+    if (transformStr) {
+      const match = transformStr.match(/translateX\(([-\d.]+)px\)/);
+      if (match) {
+        currentX = parseFloat(match[1]);
+      }
+    }
+
+    let wrappedX = currentX;
+    while (wrappedX > 0) {
+      wrappedX -= halfWidth;
+    }
+    while (wrappedX < -halfWidth) {
+      wrappedX += halfWidth;
+    }
+
+    const progress = -wrappedX / halfWidth;
+    const duration = 25;
+    const delay = -progress * duration;
+
+    marquee.style.transform = '';
+    marquee.style.animation = `marquee ${duration}s linear infinite`;
+    marquee.style.animationDelay = `${delay}s`;
+  };
+
+  const handleClickCapture = (e: React.MouseEvent) => {
+    if (hasDraggedRef.current) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  };
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,7 +226,7 @@ export const Home: React.FC = () => {
       <section className="bg-surface-container-lowest dark:bg-zinc-900 border-b border-outline-variant dark:border-zinc-800 py-8 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard value="500+" label={t('activeSchemes')} />
+            <StatCard value="4500+" label={t('activeSchemes')} />
             <StatCard value="28" label={t('statesCovered')} />
             <StatCard value="9.8 Cr+" label={t('beneficiaries')} />
             <StatCard value="₹2.4L Cr" label={t('disbursed')} />
@@ -90,7 +246,7 @@ export const Home: React.FC = () => {
             </p>
           </div>
           <button
-            onClick={() => navigate('/search')}
+            onClick={() => navigate('/login')}
             className="text-secondary dark:text-sky-400 font-bold flex items-center gap-1 hover:underline text-sm focus:outline-none"
           >
             {t('viewAllSchemes')}
@@ -98,55 +254,37 @@ export const Home: React.FC = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
-          {categories.map((cat) => (
-            <CategoryCard
-              key={cat.value}
-              iconName={cat.icon}
-              label={cat.label}
-              categoryValue={cat.value}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Featured Schemes */}
-      <section className="py-20 bg-surface-container-lowest dark:bg-zinc-900/40 border-y border-outline-variant dark:border-zinc-850/50 w-full transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
-            <div>
-              <h2 className="font-heading text-xl md:text-2xl font-extrabold text-primary dark:text-white">
-                {t('featuredSchemes')}
-              </h2>
-              <p className="font-body text-sm text-on-surface-variant dark:text-zinc-400 mt-1">
-                {t('featuredSub')}
-              </p>
-            </div>
-            <button
-              onClick={() => navigate('/search')}
-              className="text-secondary dark:text-sky-400 font-bold flex items-center gap-1 hover:underline text-sm focus:outline-none"
-            >
-              {t('browseCatalog')}
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-
-          {loading ? (
-            <LoadingSkeleton count={3} />
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredSchemes.map((scheme) => (
-                <SchemeCard
-                  key={scheme.id}
-                  scheme={scheme}
-                  isBookmarked={bookmarks.includes(scheme.id)}
-                  onToggleBookmark={() => toggleBookmark(scheme.id)}
+        <div
+          ref={containerRef}
+          onClickCapture={handleClickCapture}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerCancel}
+          className="w-full overflow-hidden cursor-grab active:cursor-grabbing select-none py-4"
+        >
+          <div
+            ref={marqueeRef}
+            className="animate-marquee flex gap-6"
+          >
+            {/* Duplicated 2x for seamless marquee looping */}
+            {[...categories, ...categories].map((cat, idx) => (
+              <div
+                key={`${cat.value}-${idx}`}
+                className="flex-shrink-0 w-44"
+              >
+                <CategoryCard
+                  iconName={cat.icon}
+                  label={cat.label}
+                  categoryValue={cat.value}
+                  onClick={() => navigate('/login')}
                 />
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
+
 
       {/* How it Works */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
@@ -180,41 +318,11 @@ export const Home: React.FC = () => {
         </div>
 
         <button
-          onClick={() => navigate('/eligibility')}
+          onClick={() => navigate('/login')}
           className="mt-16 bg-primary hover:bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 dark:hover:opacity-90 px-8 py-3.5 rounded-lg font-heading text-sm md:text-base font-bold shadow-md active:scale-95 transition-all focus:outline-none"
         >
           {t('findForMeBtn')}
         </button>
-      </section>
-
-      {/* Newsletter */}
-      <section className="bg-primary-container dark:bg-zinc-900 border-t border-outline-variant dark:border-zinc-800 py-16 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="max-w-lg text-center md:text-left">
-            <h2 className="font-heading text-lg md:text-xl font-bold text-white mb-1.5">
-              {t('newsletterTitle')}
-            </h2>
-            <p className="font-body text-xs md:text-sm text-sky-200 dark:text-zinc-400">
-              {t('newsletterSub')}
-            </p>
-          </div>
-          <form onSubmit={handleSubscribe} className="flex w-full md:w-auto gap-2">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-lg px-4 py-2.5 w-full md:w-72 focus:bg-white focus:text-primary focus:outline-none transition-all border outline-none text-sm"
-              placeholder={t('newsletterEmail')}
-            />
-            <button
-              type="submit"
-              className="bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 px-6 py-2.5 rounded-lg text-sm font-bold hover:opacity-90 transition-colors whitespace-nowrap focus:outline-none"
-            >
-              {t('joinNowBtn')}
-            </button>
-          </form>
-        </div>
       </section>
     </motion.div>
   );

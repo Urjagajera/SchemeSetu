@@ -8,6 +8,7 @@ interface CategoryCardProps {
   label: string;
   categoryValue: string;
   className?: string;
+  onClick?: () => void;
 }
 
 const iconMap: Record<string, keyof typeof Icons> = {
@@ -24,7 +25,8 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   iconName,
   label,
   categoryValue,
-  className
+  className,
+  onClick
 }) => {
   const navigate = useNavigate();
   
@@ -32,8 +34,12 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   const lucideKey = iconMap[iconName] || iconName;
   const LucideIcon = (Icons as any)[lucideKey] || Icons.HelpCircle;
 
-  const handleClick = () => {
-    navigate(`/search?category=${encodeURIComponent(categoryValue)}`);
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      onClick();
+    } else {
+      navigate(`/search?category=${encodeURIComponent(categoryValue)}`);
+    }
   };
 
   return (

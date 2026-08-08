@@ -8,18 +8,14 @@ export const Hero: React.FC = () => {
   const navigate = useNavigate();
 
   const handleSearch = (query: string) => {
-    if (query) {
-      navigate(`/search?q=${encodeURIComponent(query)}`);
-    } else {
-      navigate('/search');
-    }
+    navigate('/login');
   };
 
   const popularTags = [
-    { label: t('scholarships'), path: '/search?category=Education' },
-    { label: t('pensions'), path: '/search?category=Senior Citizens' },
-    { label: t('farmerLoans'), path: '/search?category=Agriculture' },
-    { label: t('healthInsurance'), path: '/search?category=Healthcare' }
+    { label: t('scholarships'), path: '/login' },
+    { label: t('pensions'), path: '/login' },
+    { label: t('farmerLoans'), path: '/login' },
+    { label: t('healthInsurance'), path: '/login' }
   ];
 
   return (

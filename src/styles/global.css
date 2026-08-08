@@ -131,6 +131,21 @@ body {
   animation: fadeInUp 0.25s ease forwards;
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
 /* Status badges */
 .badge-approved  { @apply bg-[#d1fadf] text-[#027a48]; }
 .badge-pending   { @apply bg-[#fff3cd] text-[#856404]; }

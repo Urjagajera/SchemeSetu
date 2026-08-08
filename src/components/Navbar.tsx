@@ -26,13 +26,14 @@ export const Navbar: React.FC = () => {
 
   const isLandingPage = location.pathname === '/';
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
-  const hideNavLinks = isLandingPage || isAuthPage;
 
-  const navLinks = hideNavLinks ? [] : [
-    { name: t('searchBtn'), path: '/search', icon: BookOpen },
-    { name: t('aiAssistant'), path: '/ai', icon: Bot },
-    { name: t('helpDesk'), path: '/help', icon: HelpCircle }
-  ];
+  const navLinks = isAuthPage
+    ? [{ name: 'Dashboard', path: '/', icon: LayoutDashboard }]
+    : (isLandingPage ? [] : [
+        { name: t('searchBtn'), path: '/search', icon: BookOpen },
+        { name: t('aiAssistant'), path: '/ai', icon: Bot },
+        { name: t('helpDesk'), path: '/help', icon: HelpCircle }
+      ]);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-outline-variant bg-white/80 backdrop-blur-md dark:bg-zinc-900/80 dark:border-zinc-800 transition-colors">

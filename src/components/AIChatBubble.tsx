@@ -9,8 +9,8 @@ export const AIChatBubble: React.FC = () => {
   const location = useLocation();
   const { t } = useTranslation();
 
-  // Hide the floating bubble on the chat assistant page itself
-  if (location.pathname === '/ai') return null;
+  // Hide the floating bubble on the chat assistant, login, and register pages
+  if (location.pathname === '/ai' || location.pathname === '/login' || location.pathname === '/register') return null;
 
   return (
     <div className="fixed bottom-6 right-6 z-50">

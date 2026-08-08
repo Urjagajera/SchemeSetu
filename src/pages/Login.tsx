@@ -175,10 +175,7 @@ export const Login: React.FC = () => {
                 </p>
               </div>
 
-              {/* Google Button */}
-              <div className="flex justify-center min-h-[44px]">
-                <div ref={googleButtonRef} id="google-signin-btn" className="w-full flex justify-center"></div>
-              </div>
+
 
               {/* TEMP-DEMO-AUTH: remove before production */}
               <DemoAccessButton onClick={handleDemoLogin} isLoading={isDemoLoading} />
@@ -215,11 +212,7 @@ export const Login: React.FC = () => {
                 </p>
               </div>
 
-              {/* Google Button */}
-              <div className="flex justify-center min-h-[44px]">
-                {/* Re-use ref or placeholder. Render handles automatically */}
-                <div ref={googleButtonRef} className="w-full flex justify-center"></div>
-              </div>
+
 
               {/* TEMP-DEMO-AUTH: remove before production */}
               <DemoAccessButton onClick={handleDemoLogin} isLoading={isDemoLoading} className="mt-2 mb-4" />
