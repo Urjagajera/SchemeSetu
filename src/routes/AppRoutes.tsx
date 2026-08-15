@@ -5,6 +5,7 @@ import DashboardLayout from '../layouts/DashboardLayout';
 import { useAuth } from '../contexts/AuthContext';
 
 // Lazy load pages for premium performance
+const Landing = lazy(() => import('../pages/Landing/MostarLanding'));
 const Home = lazy(() => import('../pages/Home'));
 const Login = lazy(() => import('../pages/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
@@ -38,8 +39,11 @@ export const AppRoutes: React.FC = () => {
         {/* Main Public Layout Shell */}
         <Route element={<MainLayout />}>
           
-          {/* Always Public Views */}
-          <Route path="/" element={<Home />} />
+          {/* Landing Page (new cinematic public landing) */}
+          <Route path="/" element={<Landing />} />
+
+          {/* Legacy public home (moved from /) */}
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Login />} />
 

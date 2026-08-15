@@ -51,11 +51,17 @@
   --color-secondary-fixed: #d3e4ff;
   --color-outline: #74777f;
 
-  --font-heading: "Inter", sans-serif;
-  --font-display: "Inter", sans-serif;
-  --font-display-mobile: "Inter", sans-serif;
-  --font-body: "Inter", sans-serif;
-  --font-small: "Inter", sans-serif;
+  /* Landing page design tokens */
+  --color-saffron: #E8820C;
+  --color-saffron-light: #FDF0E0;
+  --color-sage: #5A7A6A;
+  --color-sage-light: #EAF0EC;
+  --color-navy: #002045;
+  --color-navy-mid: #0D2E5C;
+  --color-ivory: #F8F6F1;
+
+  --font-display: "Outfit", "Inter", sans-serif;
+  --font-display-mobile: "Outfit", "Inter", sans-serif;
 }
 
 /* Base styles and defaults */

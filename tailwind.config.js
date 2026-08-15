@@ -54,14 +54,22 @@ export default {
         "surface":                    "#faf9fd",
         "error-container":            "#ffdad6",
         "secondary-fixed":            "#d3e4ff",
-        "outline":                    "#74777f"
+        "outline":                    "#74777f",
+        // Landing page design tokens
+        "saffron":                    "#E8820C",
+        "saffron-light":              "#FDF0E0",
+        "sage":                       "#5A7A6A",
+        "sage-light":                 "#EAF0EC",
+        "navy":                       "#002045",
+        "navy-mid":                   "#0D2E5C",
+        "ivory":                      "#F8F6F1"
       },
       fontFamily: {
-        heading:        ["Inter", "sans-serif"],
-        display:        ["Inter", "sans-serif"],
-        "display-mobile": ["Inter", "sans-serif"],
-        body:           ["Inter", "sans-serif"],
-        small:          ["Inter", "sans-serif"]
+        heading:          ["Inter", "sans-serif"],
+        display:          ["Outfit", "Inter", "sans-serif"],
+        "display-mobile": ["Outfit", "Inter", "sans-serif"],
+        body:             ["Inter", "sans-serif"],
+        small:            ["Inter", "sans-serif"]
       }
     },
   },

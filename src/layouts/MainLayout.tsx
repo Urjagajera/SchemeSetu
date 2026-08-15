@@ -22,21 +22,23 @@ export const MainLayout: React.FC = () => {
 
   // Some pages like full-page AI chat don't need a double footer or large margins
   const isChatPage = location.pathname === '/ai';
+  const isLandingPage = location.pathname === '/';
 
   return (
-    <div className="min-h-screen bg-background dark:bg-zinc-950 flex flex-col transition-colors pb-16 md:pb-0">
+    <div className={`min-h-screen bg-background dark:bg-zinc-950 flex flex-col transition-colors ${isLandingPage ? '' : 'pb-16 md:pb-0'}`}>
       <Navbar />
       
       <main className="flex-grow flex flex-col relative">
         <Outlet />
       </main>
 
-      {!isChatPage && <Footer />}
+      {!isChatPage && !isLandingPage && <Footer />}
       
-      {/* Floating AI Chat Bubble (hidden on /ai) */}
-      <AIChatBubble />
+      {/* Floating AI Chat Bubble (hidden on /ai and landing page) */}
+      {!isLandingPage && <AIChatBubble />}
 
-      {/* Mobile Bottom Navigation Bar */}
+      {/* Mobile Bottom Navigation Bar — hidden on landing page */}
+      {!isLandingPage && (
       <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-outline-variant dark:border-zinc-800 flex items-center justify-around z-50 px-2 transition-colors">
         {mobileNavItems.map((item) => {
           const Icon = item.icon;
@@ -61,6 +63,7 @@ export const MainLayout: React.FC = () => {
           );
         })}
       </nav>
+      )}
     </div>
   );
 };

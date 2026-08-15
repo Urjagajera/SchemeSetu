@@ -27,6 +27,9 @@ export const Navbar: React.FC = () => {
   const isLandingPage = location.pathname === '/';
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
+  // Landing page owns its own nav overlay (LandingNav). Suppress this bar entirely.
+  if (isLandingPage) return null;
+
   const navLinks = isAuthPage
     ? [{ name: 'Dashboard', path: '/', icon: LayoutDashboard }]
     : (isLandingPage ? [] : [
