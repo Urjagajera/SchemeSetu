@@ -4,7 +4,7 @@ SchemeSetu is a modern government scheme discovery engine that helps citizens di
 
 ---
 
-## 🛠️ Database & Seeding Pipelines
+## Database & Seeding Pipelines
 
 This repository is backed by a PostgreSQL database managed via Prisma. The dataset contains 4,794 real government schemes along with 3 dummy schemes for frontend testing.
 
