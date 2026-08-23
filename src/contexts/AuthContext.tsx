@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { UserProfile } from '../types';
+import { isMockMode } from '../config/mockMode';
 
 axios.defaults.withCredentials = true;
 
@@ -83,6 +84,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const loginWithGoogle = async (credential: string): Promise<{ success: boolean; isNewUser?: boolean }> => {
+    if (isMockMode) {
+      const payload = decodeJWT(credential);
+      const email = payload?.email || 'citizen@schemesetu.in';
+      const name = payload?.name || payload?.given_name || 'Citizen';
+      const picture = payload?.picture || 'https://avatar.iran.liara.run/public/33';
+      const sub = payload?.sub || 'mock-google-user-' + Math.random().toString(36).substring(7);
+
+      const citizenUser: AuthUser = {
+        id: sub,
+        name,
+        email,
+        picture,
+        sub,
+        role: 'user'
+      };
+
+      setUser(citizenUser);
+      sessionStorage.setItem('schemesetu_user', JSON.stringify(citizenUser));
+      const hasStoredProfile = !!localStorage.getItem('schemesetu_profile');
+      return { success: true, isNewUser: !hasStoredProfile };
+    }
+
     try {
       const response = await axios.post('/api/auth/google', { idToken: credential });
       
@@ -110,6 +133,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // TEMP-DEMO-AUTH: remove before production
   const loginAsDemo = async (): Promise<{ success: boolean; isNewUser?: boolean }> => {
+    if (isMockMode) {
+      const citizenUser: AuthUser = {
+        id: 'demo-user-123',
+        name: 'Demo Citizen',
+        email: 'demo.user@schemesetu.in',
+        picture: 'https://avatar.iran.liara.run/public/33',
+        sub: 'demo-user-123',
+        role: 'user'
+      };
+
+      setUser(citizenUser);
+      sessionStorage.setItem('schemesetu_user', JSON.stringify(citizenUser));
+      const hasStoredProfile = !!localStorage.getItem('schemesetu_profile');
+      return { success: true, isNewUser: !hasStoredProfile };
+    }
+
     try {
       // TEMP-DEMO-AUTH: remove before production
       const response = await axios.post('/api/auth/demo-login');
@@ -146,17 +185,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async () => {
-    try {
-      await axios.post('/api/auth/logout');
-    } catch (error) {
-      console.error('[Logout Error]:', error);
-    } finally {
-      setUser(null);
-      sessionStorage.removeItem('schemesetu_user');
-      localStorage.removeItem('schemesetu_user');
-      if (window.google?.accounts?.id) {
-        window.google.accounts.id.disableAutoSelect();
+    if (!isMockMode) {
+      try {
+        await axios.post('/api/auth/logout');
+      } catch (error) {
+        console.error('[Logout Error]:', error);
       }
+    }
+    setUser(null);
+    sessionStorage.removeItem('schemesetu_user');
+    localStorage.removeItem('schemesetu_user');
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.disableAutoSelect();
     }
   };
 

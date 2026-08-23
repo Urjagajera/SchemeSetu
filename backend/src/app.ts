@@ -1,10 +1,8 @@
-// src/app.ts
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import env from './config/env.js';
-import prisma from './config/prisma.js';
 import apiRouter from './routes/index.js';
 
 const app = express();
@@ -29,16 +27,9 @@ if (env.NODE_ENV !== 'production') {
 // Mount routes
 app.use('/api', apiRouter);
 
-
-// Health check – ping DB
-app.get('/api/health', async (_req: Request, res: Response) => {
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-    res.json({ status: 'ok', db: 'connected' });
-  } catch (error) {
-    console.error('[Health Check] DB ping failed:', error);
-    res.json({ status: 'ok', db: 'disconnected' });
-  }
+// Health check
+app.get('/api/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok', mode: 'mock' });
 });
 
 // 404 handler for API endpoints
@@ -50,7 +41,7 @@ app.use((_req: Request, res: Response) => {
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error('[Global Error Handler]:', err.stack || err.message);
   const status = (err as any).status || 500;
-  const isDev = process.env.NODE_ENV !== 'production' && env.NODE_ENV !== 'production';
+  const isDev = env.NODE_ENV !== 'production';
 
   res.status(status).json({
     success: false,

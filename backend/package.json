@@ -1,16 +1,14 @@
 {
   "name": "schemesetu-backend",
   "version": "1.0.0",
-  "description": "SchemeSetu - Express Backend (Phase 2 Read-Only Scope)",
+  "description": "SchemeSetu - Express Backend",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "start": "node dist/server.js",
-    "build": "tsc",
-    "postinstall": "prisma generate"
+    "start": "tsx src/server.ts",
+    "build": "tsc"
   },
   "dependencies": {
-    "@prisma/client": "^5.12.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",

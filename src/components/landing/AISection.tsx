@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
  * Documented in walkthrough.
  */
 
-const fadeUp = {
+const fadeUp: any = {
   hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1,
@@ -22,6 +22,8 @@ const fadeUp = {
     transition: { duration: 0.65, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] },
   }),
 };
+
+
 
 const STEPS = [
   {
