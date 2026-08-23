@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Scheme, UserProfile } from '../types';
-import { SCHEMES } from '../constants/schemesData';
+const SCHEMES: any[] = [];
 
 const API_URL = '/api/schemes';
 import { isMockMode } from '../config/mockMode';
@@ -184,19 +184,19 @@ function getLocalSchemes(filters?: { query?: string; category?: string; level?: 
 }
 
 function getLocalSchemeById(id: string): Scheme | null {
-  const localScheme = SCHEMES.find(s => s.id === id) ?? null;
+  const localScheme = SCHEMES.find((s: any) => s.id === id) ?? null;
   return localScheme ? enrichScheme(localScheme) : null;
 }
 
 function getLocalFeaturedSchemes(): Scheme[] {
-  return SCHEMES.filter(s => s.featured).map(enrichScheme);
+  return SCHEMES.filter((s: any) => s.featured).map(enrichScheme);
 }
 
 function getLocalCategories(): string[] {
   const cats = new Set<string>();
-  SCHEMES.forEach(s => {
+  SCHEMES.forEach((s: any) => {
     if (s.categories) {
-      s.categories.forEach(c => cats.add(c));
+      s.categories.forEach((c: any) => cats.add(c));
     }
     if (s.category) {
       cats.add(s.category);
@@ -207,7 +207,7 @@ function getLocalCategories(): string[] {
 
 function getLocalStates(): string[] {
   const states = new Set<string>();
-  SCHEMES.forEach(s => {
+  SCHEMES.forEach((s: any) => {
     if (s.authorityName) {
       // Filter out common central authority names to keep only actual states/territories
       const name = s.authorityName.trim();
@@ -248,9 +248,9 @@ function getLocalEligibleSchemes(profile: UserProfile): Scheme[] {
 
   const results: Scheme[] = [];
 
-  SCHEMES.forEach(scheme => {
+  SCHEMES.forEach((scheme: any) => {
     let matchCount = 0;
-    scheme.tags.forEach(t => {
+    scheme.tags.forEach((t: any) => {
       if (interests.has(t.toLowerCase())) {
         matchCount++;
       }

@@ -1,5 +1,5 @@
-import schemeTranslations from '../constants/schemeTranslations.json';
-import valueTranslations from '../constants/valueTranslations.json';
+const schemeTranslations: Record<string, any> = {};
+const valueTranslations: Record<string, any> = {};
 import { PHRASES } from '../constants/phrases';
 import { Scheme } from '../types';
 
