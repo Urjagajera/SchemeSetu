@@ -1,5 +1,5 @@
-// Prisma schema — Sprint 3b
-// User, Scheme, and EligibilityCriteria models with array applicationMode.
+// Prisma schema — Sprint 4
+// User, Scheme, EligibilityCriteria, and Category models.
 
 datasource db {
   provider = "postgresql"
@@ -32,6 +32,7 @@ model Scheme {
   applicationProcess   String?              @db.Text // raw CSV "APPLICTION PROCESS" column
   eligibilityRawText   String[] // flattened from CSV eligibility_1..eligibility_15, kept verbatim
   eligibilityCriteria  EligibilityCriteria?
+  categories           Category[]
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
 }
@@ -46,4 +47,14 @@ model EligibilityCriteria {
   incomeMaxAnnual Int? // normalized to ANNUAL
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique // raw OFFERED BY value, e.g. "Ministry Of Finance", "Delhi"
+  level     String // "Central" or "State" — populated during a later ingestion sprint via static lookup, NOT this sprint
+  stateName String? // populated only when level == "State" — null for central ministries
+  schemes   Scheme[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
