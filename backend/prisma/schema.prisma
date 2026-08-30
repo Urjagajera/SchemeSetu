@@ -1,5 +1,5 @@
-// Prisma schema — Sprint 4
-// User, Scheme, EligibilityCriteria, and Category models.
+// Prisma schema — Sprint 5
+// User, Scheme, EligibilityCriteria, Category, and Tag models.
 
 datasource db {
   provider = "postgresql"
@@ -33,6 +33,7 @@ model Scheme {
   eligibilityRawText   String[] // flattened from CSV eligibility_1..eligibility_15, kept verbatim
   eligibilityCriteria  EligibilityCriteria?
   categories           Category[]
+  tags                 Tag[]
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
 }
@@ -54,6 +55,14 @@ model Category {
   name      String   @unique // raw OFFERED BY value, e.g. "Ministry Of Finance", "Delhi"
   level     String // "Central" or "State" — populated during a later ingestion sprint via static lookup, NOT this sprint
   stateName String? // populated only when level == "State" — null for central ministries
+  schemes   Scheme[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique // e.g. "Entrepreneur", "Insurance", "SC/ST", "Women"
   schemes   Scheme[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
