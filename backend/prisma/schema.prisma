@@ -1,5 +1,5 @@
-// Prisma schema — Sprint 5
-// User, Scheme, EligibilityCriteria, Category, and Tag models.
+// Prisma schema — Sprint 6
+// User, Scheme, EligibilityCriteria, Category, Tag, and Bookmark models.
 
 datasource db {
   provider = "postgresql"
@@ -11,13 +11,14 @@ generator client {
 }
 
 model User {
-  id                String   @id @default(uuid())
-  googleId          String   @unique
-  email             String   @unique
+  id                String     @id @default(uuid())
+  googleId          String     @unique
+  email             String     @unique
   name              String?
   profilePictureUrl String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  bookmarks         Bookmark[]
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
 }
 
 model Scheme {
@@ -34,6 +35,7 @@ model Scheme {
   eligibilityCriteria  EligibilityCriteria?
   categories           Category[]
   tags                 Tag[]
+  bookmarks            Bookmark[]
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
 }
@@ -66,4 +68,15 @@ model Tag {
   schemes   Scheme[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String
+  schemeId  String
+  user      User     @relation(fields: [userId], references: [id])
+  scheme    Scheme   @relation(fields: [schemeId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, schemeId]) // a user can only bookmark a given scheme once
 }
