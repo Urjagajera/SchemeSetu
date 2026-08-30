@@ -1,5 +1,5 @@
-// Prisma schema — Sprint 2
-// User model for Google OAuth identity.
+// Prisma schema — Sprint 3
+// User, Scheme, and EligibilityCriteria models.
 
 datasource db {
   provider = "postgresql"
@@ -18,4 +18,32 @@ model User {
   profilePictureUrl String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+}
+
+model Scheme {
+  id                   String               @id @default(uuid())
+  link                 String               @unique // maps to CSV "url" column — stable merge key
+  title                String
+  offeredBy            String // raw CSV "OFFERED BY" text (e.g. "Ministry Of Finance", "Delhi")
+  details              String               @db.Text // raw CSV "DETAILS" column
+  benefits             String[] // flattened from CSV benefit_1..benefit_15
+  documentRequirements String[] // flattened from CSV document_requirement_1..document_requirement_15
+  applicationMode      String? // CSV "MODE FOR APPLY" (e.g. "Online", "Offline", "Online, Offline")
+  applicationProcess   String?              @db.Text // raw CSV "APPLICTION PROCESS" column
+  eligibilityRawText   String[] // flattened from CSV eligibility_1..eligibility_15, kept verbatim
+  eligibilityCriteria  EligibilityCriteria?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+}
+
+model EligibilityCriteria {
+  id              String   @id @default(uuid())
+  schemeId        String   @unique
+  scheme          Scheme   @relation(fields: [schemeId], references: [id])
+  ageMin          Int?
+  ageMax          Int?
+  incomeMinAnnual Int? // rare in the sample data, included for completeness
+  incomeMaxAnnual Int? // normalized to ANNUAL
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
