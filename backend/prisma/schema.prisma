@@ -1,0 +1,11 @@
+// Prisma placeholder schema — Sprint 1
+// NO models yet. Models (User, Scheme, EligibilityCriteria) are Sprint 2's job.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}

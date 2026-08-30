@@ -1,8 +1,7 @@
-// src/server.ts
 import app from './app.js';
+import config from './config/env.js';
+import logger from './utils/logger.js';
 
-const PORT = process.env.PORT || 3001;
-
-app.listen(PORT, () => {
-  console.log(`[Server] Express backend listening on http://localhost:${PORT}`);
+app.listen(config.PORT, () => {
+  logger.info(`[Server] Express backend listening on http://localhost:${config.PORT} (${config.NODE_ENV})`);
 });
