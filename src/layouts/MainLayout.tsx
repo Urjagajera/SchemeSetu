@@ -22,7 +22,7 @@ export const MainLayout: React.FC = () => {
 
   // Some pages like full-page AI chat don't need a double footer or large margins
   const isChatPage = location.pathname === '/ai';
-  const isLandingPage = location.pathname === '/';
+  const isLandingPage = location.pathname === '/home';
 
   return (
     <div className={`min-h-screen bg-background dark:bg-zinc-950 flex flex-col transition-colors ${isLandingPage ? '' : 'pb-16 md:pb-0'}`}>

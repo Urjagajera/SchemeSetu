@@ -24,7 +24,7 @@ export const Navbar: React.FC = () => {
     return location.pathname.startsWith(path);
   };
 
-  const isLandingPage = location.pathname === '/';
+  const isLandingPage = location.pathname === '/home';
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   // Landing page owns its own nav overlay (LandingNav). Suppress this bar entirely.

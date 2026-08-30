@@ -39,11 +39,11 @@ export const AppRoutes: React.FC = () => {
         {/* Main Public Layout Shell */}
         <Route element={<MainLayout />}>
           
-          {/* Landing Page (new cinematic public landing) */}
-          <Route path="/" element={<Landing />} />
+          {/* Landing Page (switched to legacy Home) */}
+          <Route path="/" element={<Home />} />
 
-          {/* Legacy public home (moved from /) */}
-          <Route path="/home" element={<Home />} />
+          {/* Legacy public home (now renders MostarLanding) */}
+          <Route path="/home" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Login />} />
 
