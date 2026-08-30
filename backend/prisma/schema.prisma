@@ -1,5 +1,5 @@
-// Prisma schema — Sprint 3
-// User, Scheme, and EligibilityCriteria models.
+// Prisma schema — Sprint 3b
+// User, Scheme, and EligibilityCriteria models with array applicationMode.
 
 datasource db {
   provider = "postgresql"
@@ -28,7 +28,7 @@ model Scheme {
   details              String               @db.Text // raw CSV "DETAILS" column
   benefits             String[] // flattened from CSV benefit_1..benefit_15
   documentRequirements String[] // flattened from CSV document_requirement_1..document_requirement_15
-  applicationMode      String? // CSV "MODE FOR APPLY" (e.g. "Online", "Offline", "Online, Offline")
+  applicationMode      String[] // was String? — CSV analysis showed 10.6% of rows have multiple values (newline- or "&"-separated in source data); array avoids silently dropping the second value
   applicationProcess   String?              @db.Text // raw CSV "APPLICTION PROCESS" column
   eligibilityRawText   String[] // flattened from CSV eligibility_1..eligibility_15, kept verbatim
   eligibilityCriteria  EligibilityCriteria?
