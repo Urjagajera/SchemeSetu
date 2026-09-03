@@ -345,24 +345,6 @@ SchemeSetu features native multi-language UI support:
 
 ---
 
-## Sprint Roadmap & Status
-
-| Sprint | Description | Status |
-| :---: | :--- | :---: |
-| **Sprint 1** | Express + TypeScript backend scaffold, Pino logger, `/health` endpoint | ✅ Completed |
-| **Sprint 2** | Prisma setup, initial `User`, `Scheme`, `EligibilityCriteria` models | ✅ Completed |
-| **Sprint 3** | Schema refinements, `applicationMode: String[]` multi-value support | ✅ Completed |
-| **Sprint 4** | State & Ministry level classification architecture (`Category` model) | ✅ Completed |
-| **Sprint 5** | Tag model & many-to-many relationship with Scheme | ✅ Completed |
-| **Sprint 6** | User Bookmarks join model with compound unique constraint | ✅ Completed |
-| **Sprint 7** | CSV parser utility, mojibake repair, applicationMode normalization, dry-run suite | ✅ Completed |
-| **Sprint 8** | *Upcoming*: Database batch ingestion runner (migrating CSV schemes to Postgres) | ⏳ In Queue |
-| **Sprint 9** | *Upcoming*: Eligibility numeric rule extraction (Age / Income bounds) | ⏳ Planned |
-| **Sprint 10** | *Upcoming*: Category derivation & Central/State level classification | ⏳ Planned |
-| **Sprint 11** | *Upcoming*: Tag entity population & eligibility text tag extraction | ⏳ Planned |
-
----
-
 ## Available Scripts
 
 ### Root / Frontend

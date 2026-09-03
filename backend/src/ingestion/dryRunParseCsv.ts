@@ -163,5 +163,27 @@ console.log(JSON.stringify(maxDocsScheme, null, 2));
 console.log('\n');
 
 console.log('================================================================================');
+console.log(' SECTION 6: TARGETED VERIFICATION: PMFMPE & MEGHALAYA DAIRY (OVERFLOW-SPLITTING)');
+console.log('================================================================================\n');
+
+const targetedUrls = [
+  'https://www.myscheme.gov.in/schemes/pmfmpe',
+  'https://www.myscheme.gov.in/schemes/mdds',
+];
+
+for (const url of targetedUrls) {
+  const scheme = result.schemes.find((s) => s.link === url);
+  if (scheme) {
+    console.log(`--- [Targeted Verification] "${scheme.title}" (${scheme.link}) ---`);
+    console.log(`Benefits count: ${scheme.benefits.length} | Eligibility items count: ${scheme.eligibilityRawText.length}`);
+    console.log(JSON.stringify(scheme, null, 2));
+    console.log('\n');
+  } else {
+    console.warn(`⚠️ Warning: Targeted scheme not found for URL: ${url}`);
+  }
+}
+
+console.log('================================================================================');
 console.log('                    EXTENDED AUDIT COMPLETE - ZERO WRITES OCCURRED              ');
 console.log('================================================================================');
+

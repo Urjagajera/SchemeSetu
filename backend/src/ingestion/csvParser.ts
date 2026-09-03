@@ -107,7 +107,7 @@ export function parseApplicationMode(raw: string | undefined | null): Applicatio
  * Flattens numbered columns (e.g. tag_1..tag_9, benefit_1..benefit_15) into an ordered array,
  * skipping empty cells and applying mojibake repair.
  *
- * Optionally splits cells on " | " for overflow handling (e.g. document requirements).
+ * Optionally splits cells on " | " for overflow handling (benefits, document requirements, eligibility).
  */
 function extractNumberedColumns(
   row: Record<string, string>,
@@ -223,7 +223,7 @@ export function parseCsv(csvContent: string): ParseResult {
 
     // Numbered columns flattening
     const tags = extractNumberedColumns(row, 'tag_', 1, 9, false, handleMojibake);
-    const benefits = extractNumberedColumns(row, 'benefit_', 1, 15, false, handleMojibake);
+    const benefits = extractNumberedColumns(row, 'benefit_', 1, 15, true, handleMojibake);
     const documentRequirements = extractNumberedColumns(
       row,
       'document_requirement_',
@@ -232,7 +232,7 @@ export function parseCsv(csvContent: string): ParseResult {
       true,
       handleMojibake
     );
-    const eligibilityRawText = extractNumberedColumns(row, 'eligibility_', 1, 15, false, handleMojibake);
+    const eligibilityRawText = extractNumberedColumns(row, 'eligibility_', 1, 15, true, handleMojibake);
 
     // applicationMode parsing & salvage logic
     const rawMode = row['MODE FOR APPLY'] ?? '';
