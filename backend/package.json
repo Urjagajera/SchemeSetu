@@ -7,10 +7,12 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "ingest:dry-run": "tsx src/ingestion/dryRunParseCsv.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "csv-parse": "^7.0.2",
     "dotenv": "^16.6.1",
     "express": "^4.19.2",
     "pino": "^9.0.0",
