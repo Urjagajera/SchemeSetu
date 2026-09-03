@@ -8,7 +8,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
-    "ingest:dry-run": "tsx src/ingestion/dryRunParseCsv.ts"
+    "ingest:dry-run": "tsx src/ingestion/dryRunParseCsv.ts",
+    "ingest:schemes": "tsx src/ingestion/ingestSchemes.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
