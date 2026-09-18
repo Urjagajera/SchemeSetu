@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Scheme, UserProfile } from '../types';
-const SCHEMES: any[] = [];
+import { MOCK_SCHEMES } from '../constants/mockSchemes';
+const SCHEMES: Scheme[] = MOCK_SCHEMES;
 
 const API_URL = '/api/schemes';
 import { isMockMode } from '../config/mockMode';
