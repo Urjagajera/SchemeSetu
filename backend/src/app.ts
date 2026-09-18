@@ -8,6 +8,7 @@ import categoriesRouter from './routes/categories.js';
 import eligibilityRouter from './routes/eligibility.js';
 import chatRouter from './routes/chat.js';
 import bookmarksRouter from './routes/bookmarks.js';
+import authRouter from './routes/auth.js';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/eligibility', eligibilityRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/bookmarks', bookmarksRouter);
+app.use('/api/auth', authRouter);
 
 // ── Error handler (MUST be last) ─────────────────────────────
 app.use(errorHandler);

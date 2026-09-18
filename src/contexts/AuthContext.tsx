@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { UserProfile } from '../types';
-import { isMockMode } from '../config/mockMode';
 
 axios.defaults.withCredentials = true;
 
@@ -18,9 +17,8 @@ interface AuthContextProps {
   user: AuthUser | null;
   profile: UserProfile;
   isAuthenticated: boolean;
+  authLoading: boolean;
   loginWithGoogle: (credential: string) => Promise<{ success: boolean; isNewUser?: boolean }>;
-  // TEMP-DEMO-AUTH: remove before production
-  loginAsDemo: () => Promise<{ success: boolean; isNewUser?: boolean }>;
   logout: () => Promise<void>;
   updateProfile: (newProfile: Partial<UserProfile>) => Promise<boolean>;
 }
@@ -56,6 +54,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   });
 
+  // True while the initial /api/auth/me check (below) is in flight, so callers
+  // can avoid treating "not logged in yet" as "logged out" on first render.
+  const [authLoading, setAuthLoading] = useState(true);
+
   const [profile, setProfile] = useState<UserProfile>(() => {
     try {
       const raw = localStorage.getItem('schemesetu_profile');
@@ -74,41 +76,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [user]);
 
-  const decodeJWT = (credential: string): any => {
-    try {
-      const base64 = credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-      return JSON.parse(atob(base64));
-    } catch {
-      return null;
-    }
-  };
+  // The session cookie is httpOnly (unreadable from JS by design), so on load we
+  // ask the backend whether it's still valid rather than trusting the cached
+  // `user` object in storage — that cache is a display convenience, not proof
+  // of an active session.
+  useEffect(() => {
+    let cancelled = false;
+    axios
+      .get('/api/auth/me')
+      .then((response) => {
+        if (cancelled) return;
+        const serverUser = response.data?.user;
+        if (serverUser) {
+          setUser({
+            id: serverUser.id,
+            name: serverUser.name || 'Citizen',
+            email: serverUser.email,
+            picture: serverUser.picture || '',
+            sub: serverUser.id,
+            role: 'user'
+          });
+        } else {
+          setUser(null);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setUser(null);
+      })
+      .finally(() => {
+        if (!cancelled) setAuthLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const loginWithGoogle = async (credential: string): Promise<{ success: boolean; isNewUser?: boolean }> => {
-    if (isMockMode) {
-      const payload = decodeJWT(credential);
-      const email = payload?.email || 'citizen@schemesetu.in';
-      const name = payload?.name || payload?.given_name || 'Citizen';
-      const picture = payload?.picture || 'https://avatar.iran.liara.run/public/33';
-      const sub = payload?.sub || 'mock-google-user-' + Math.random().toString(36).substring(7);
-
-      const citizenUser: AuthUser = {
-        id: sub,
-        name,
-        email,
-        picture,
-        sub,
-        role: 'user'
-      };
-
-      setUser(citizenUser);
-      sessionStorage.setItem('schemesetu_user', JSON.stringify(citizenUser));
-      const hasStoredProfile = !!localStorage.getItem('schemesetu_profile');
-      return { success: true, isNewUser: !hasStoredProfile };
-    }
-
     try {
       const response = await axios.post('/api/auth/google', { idToken: credential });
-      
+
       if (response.data && response.data.success) {
         const { user: serverUser, isNewUser } = response.data;
         const citizenUser: AuthUser = {
@@ -131,66 +137,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // TEMP-DEMO-AUTH: remove before production
-  const loginAsDemo = async (): Promise<{ success: boolean; isNewUser?: boolean }> => {
-    if (isMockMode) {
-      const citizenUser: AuthUser = {
-        id: 'demo-user-123',
-        name: 'Demo Citizen',
-        email: 'demo.user@schemesetu.in',
-        picture: 'https://avatar.iran.liara.run/public/33',
-        sub: 'demo-user-123',
-        role: 'user'
-      };
-
-      setUser(citizenUser);
-      sessionStorage.setItem('schemesetu_user', JSON.stringify(citizenUser));
-      const hasStoredProfile = !!localStorage.getItem('schemesetu_profile');
-      return { success: true, isNewUser: !hasStoredProfile };
-    }
-
-    try {
-      // TEMP-DEMO-AUTH: remove before production
-      const response = await axios.post('/api/auth/demo-login');
-      
-      // TEMP-DEMO-AUTH: remove before production
-      if (response.data && response.data.success) {
-        // TEMP-DEMO-AUTH: remove before production
-        const { user: serverUser, isNewUser } = response.data;
-        // TEMP-DEMO-AUTH: remove before production
-        const citizenUser: AuthUser = {
-          id: serverUser.id,
-          name: serverUser.name || 'Citizen',
-          email: serverUser.email,
-          picture: serverUser.picture || '',
-          sub: serverUser.id,
-          role: 'user'
-        };
-
-        // TEMP-DEMO-AUTH: remove before production
-        setUser(citizenUser);
-        // TEMP-DEMO-AUTH: remove before production
-        sessionStorage.setItem('schemesetu_user', JSON.stringify(citizenUser));
-        // TEMP-DEMO-AUTH: remove before production
-        return { success: true, isNewUser };
-      }
-      // TEMP-DEMO-AUTH: remove before production
-      return { success: false };
-    } catch (error) {
-      // TEMP-DEMO-AUTH: remove before production
-      console.error('[Demo Login Error]:', error);
-      // TEMP-DEMO-AUTH: remove before production
-      return { success: false };
-    }
-  };
-
   const logout = async () => {
-    if (!isMockMode) {
-      try {
-        await axios.post('/api/auth/logout');
-      } catch (error) {
-        console.error('[Logout Error]:', error);
-      }
+    try {
+      await axios.post('/api/auth/logout');
+    } catch (error) {
+      console.error('[Logout Error]:', error);
     }
     setUser(null);
     sessionStorage.removeItem('schemesetu_user');
@@ -215,9 +166,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         user,
         profile,
         isAuthenticated,
+        authLoading,
         loginWithGoogle,
-        // TEMP-DEMO-AUTH: remove before production
-        loginAsDemo,
         logout,
         updateProfile
       }}

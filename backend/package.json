@@ -17,6 +17,7 @@
     "csv-parse": "^7.0.2",
     "dotenv": "^16.6.1",
     "express": "^4.19.2",
+    "google-auth-library": "^11.1.0",
     "jsonwebtoken": "^9.0.3",
     "pino": "^9.0.0",
     "pino-pretty": "^11.0.0"
