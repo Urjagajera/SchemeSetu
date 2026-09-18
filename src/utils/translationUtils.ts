@@ -9,7 +9,7 @@ import { Scheme } from '../types';
  */
 export function translateSchemeField(
   schemeId: string,
-  field: 'name' | 'description' | 'title' | 'shortDesc',
+  field: 'name' | 'description' | 'shortDesc',
   originalValue: string,
   language: string
 ): string {
@@ -19,7 +19,7 @@ export function translateSchemeField(
   const trans = (schemeTranslations as any)[key];
   if (!trans) return originalValue;
 
-  if (field === 'name' || field === 'title') {
+  if (field === 'name') {
     return trans.translatedName || originalValue;
   }
   if (field === 'description') {
@@ -76,7 +76,6 @@ export function translateScheme(scheme: Scheme, language: string): Scheme {
   return {
     ...scheme,
     name: translatedName,
-    title: translatedName,
     description: translateSchemeField(scheme.id, 'description', scheme.description, language),
     shortDesc: translateSchemeField(scheme.id, 'shortDesc', scheme.description, language),
     authorityName: translateValue('authority', scheme.authorityName, language),

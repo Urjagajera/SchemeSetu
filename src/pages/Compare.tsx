@@ -97,7 +97,7 @@ export const Compare: React.FC = () => {
                         {getCategoryLabel(s.category)}
                       </span>
                       <h4 className="font-heading text-xs md:text-sm font-extrabold leading-snug line-clamp-2">
-                        {s.title}
+                        {s.name}
                       </h4>
                     </div>
                   ) : (

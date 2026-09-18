@@ -51,7 +51,7 @@ const spreadIndices = [0, 470, 940, 1410, 1880, 2350, 2820, 3290, 3760, 4700];
 spreadIndices.forEach((targetIdx, orderIdx) => {
   const actualIdx = Math.min(targetIdx, result.schemes.length - 1);
   const scheme = result.schemes[actualIdx];
-  console.log(`--- [Section 1 - Sample ${orderIdx + 1}/10] Row Index: ${actualIdx} | "${scheme.title}" ---`);
+  console.log(`--- [Section 1 - Sample ${orderIdx + 1}/10] Row Index: ${actualIdx} | "${scheme.name}" ---`);
   console.log(JSON.stringify(scheme, null, 2));
   console.log('\n');
 });
@@ -86,9 +86,9 @@ console.log(`First 2 were displayed in Sprint 7 (SSS and IPSFTSMPPU). Showing sa
 // Get next 5 (indices 2 through 6)
 const next5SalvagedUrls = salvagedUrls.slice(2, 7);
 next5SalvagedUrls.forEach((url, idx) => {
-  const scheme = result.schemes.find((s) => s.link === url);
+  const scheme = result.schemes.find((s) => s.sourceUrl === url);
   if (scheme) {
-    console.log(`--- [Section 2 - Salvaged Sample ${idx + 3}/125] "${scheme.title}" ---`);
+    console.log(`--- [Section 2 - Salvaged Sample ${idx + 3}/125] "${scheme.name}" ---`);
     console.log(JSON.stringify(scheme, null, 2));
     console.log('\n');
   }
@@ -110,7 +110,7 @@ for (const s of result.schemes) {
 }
 
 lakhSchemes.forEach((scheme, idx) => {
-  console.log(`--- [Section 3 - Lakh Sample ${idx + 1}/3] "${scheme.title}" ---`);
+  console.log(`--- [Section 3 - Lakh Sample ${idx + 1}/3] "${scheme.name}" ---`);
   console.log(JSON.stringify(scheme, null, 2));
   console.log('\n');
 });
@@ -129,7 +129,7 @@ if (emptyTagSchemes.length > 0) {
   console.log('\nShowing 2 full examples with empty tags:\n');
   const samplesToShow = emptyTagSchemes.slice(0, 2);
   samplesToShow.forEach((scheme, idx) => {
-    console.log(`--- [Section 4 - Empty Tags Sample ${idx + 1}/2] "${scheme.title}" ---`);
+    console.log(`--- [Section 4 - Empty Tags Sample ${idx + 1}/2] "${scheme.name}" ---`);
     console.log(JSON.stringify(scheme, null, 2));
     console.log('\n');
   });
@@ -153,12 +153,12 @@ const maxDocsScheme = result.schemes.reduce(
 );
 
 console.log(`[Max Eligibility Items] Count: ${maxEligibilityScheme.eligibilityRawText.length} items`);
-console.log(`Scheme: "${maxEligibilityScheme.title}" (${maxEligibilityScheme.link})`);
+console.log(`Scheme: "${maxEligibilityScheme.name}" (${maxEligibilityScheme.sourceUrl})`);
 console.log(JSON.stringify(maxEligibilityScheme, null, 2));
 console.log('\n');
 
 console.log(`[Max Document Requirements] Count: ${maxDocsScheme.documentRequirements.length} items`);
-console.log(`Scheme: "${maxDocsScheme.title}" (${maxDocsScheme.link})`);
+console.log(`Scheme: "${maxDocsScheme.name}" (${maxDocsScheme.sourceUrl})`);
 console.log(JSON.stringify(maxDocsScheme, null, 2));
 console.log('\n');
 
@@ -172,9 +172,9 @@ const targetedUrls = [
 ];
 
 for (const url of targetedUrls) {
-  const scheme = result.schemes.find((s) => s.link === url);
+  const scheme = result.schemes.find((s) => s.sourceUrl === url);
   if (scheme) {
-    console.log(`--- [Targeted Verification] "${scheme.title}" (${scheme.link}) ---`);
+    console.log(`--- [Targeted Verification] "${scheme.name}" (${scheme.sourceUrl}) ---`);
     console.log(`Benefits count: ${scheme.benefits.length} | Eligibility items count: ${scheme.eligibilityRawText.length}`);
     console.log(JSON.stringify(scheme, null, 2));
     console.log('\n');

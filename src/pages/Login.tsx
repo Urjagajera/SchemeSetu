@@ -5,33 +5,13 @@ import { useTranslation } from '../contexts/LanguageContext';
 import { Shield, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
-// TEMP-DEMO-AUTH: remove before production
-import { DemoAccessButton } from '../components/DemoAccessButton';
 
 export const Login: React.FC = () => {
-  // TEMP-DEMO-AUTH: remove before production
-  const { loginWithGoogle, loginAsDemo, isAuthenticated, user } = useAuth();
+  const { loginWithGoogle, isAuthenticated, user } = useAuth();
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-
-  // TEMP-DEMO-AUTH: remove before production
-  const [isDemoLoading, setIsDemoLoading] = useState(false);
-
-  // TEMP-DEMO-AUTH: remove before production
-  const handleDemoLogin = async () => {
-    setIsDemoLoading(true);
-    const res = await loginAsDemo();
-    setIsDemoLoading(false);
-    if (res.success) {
-      if (res.isNewUser) {
-        navigate('/profile');
-      } else {
-        navigate(redirect);
-      }
-    }
-  };
 
   // Redirect target
   const redirect = searchParams.get('redirect') || '/dashboard';
@@ -60,7 +40,7 @@ export const Login: React.FC = () => {
       if (typeof window !== 'undefined' && (window as any).google?.accounts?.id) {
         const client = (window as any).google.accounts.id;
         client.initialize({
-          client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+          client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
           callback: async (response: any) => {
             const res = await loginWithGoogle(response.credential);
             if (res.success) {
@@ -175,11 +155,6 @@ export const Login: React.FC = () => {
                 </p>
               </div>
 
-
-
-              {/* TEMP-DEMO-AUTH: remove before production */}
-              <DemoAccessButton onClick={handleDemoLogin} isLoading={isDemoLoading} />
-
               <div className="relative flex items-center gap-3">
                 <div className="flex-grow border-t border-outline-variant dark:border-zinc-800" />
                 <span className="text-[10px] font-bold text-on-surface-variant/70 dark:text-zinc-500 bg-white dark:bg-zinc-900 px-2 uppercase">
@@ -211,11 +186,6 @@ export const Login: React.FC = () => {
                   {t('joinOver')}
                 </p>
               </div>
-
-
-
-              {/* TEMP-DEMO-AUTH: remove before production */}
-              <DemoAccessButton onClick={handleDemoLogin} isLoading={isDemoLoading} className="mt-2 mb-4" />
 
               {/* Benefits list */}
               <div className="bg-secondary-container/10 dark:bg-zinc-950 rounded-xl p-4 space-y-2.5">
