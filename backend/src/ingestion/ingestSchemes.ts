@@ -3,12 +3,25 @@
  * Database batch ingestion script for SchemeSetu.
  *
  * Reads parsed CSV data from backend/data/final_data_without_process_mode_.csv
- * and performs idempotent upserts into the Scheme table, keyed on `link`.
+ * and performs idempotent upserts into the Scheme table, keyed on `sourceUrl`.
  *
  * IMPORTANT:
- * - Writes ONLY Scheme fields: link, title, offeredBy, details, benefits,
- *   documentRequirements, applicationMode, applicationProcess, eligibilityRawText.
- * - Does NOT touch Category, Tag, or EligibilityCriteria relations.
+ * - Writes Scheme fields (sourceUrl, name, authorityName, description, benefits,
+ *   documentRequirements, applicationMode, applicationProcess, eligibilityRawText)
+ *   AND links Category/Tag relations (see below). Does NOT touch
+ *   EligibilityCriteria — no source data exists for it in this CSV.
+ * - Category = the scheme's authority/ministry grouping, per Category's own
+ *   schema.prisma field comments ("raw OFFERED BY value" / level / stateName) —
+ *   NOT a topical subject area like "Agriculture" or "Education". The source
+ *   CSV has no separate topical-category column (checked: url, OFFERED BY,
+ *   TITLE, tag_1..9, DETAILS, benefit_1..15, eligibility_1..15, MODE FOR APPLY,
+ *   APPLICTION PROCESS, document_requirement_1..15 — that's the complete header
+ *   row), so this is the only schema-consistent, data-supported interpretation.
+ *   One Category per scheme, connected/created from its own authorityName.
+ * - Tag = the genuine topical/demographic signal that does exist in the source
+ *   data: the tag_1..9 columns, already flattened into ParsedScheme.tags by
+ *   csvParser.ts. Many-to-many, one Tag row per distinct tag string across the
+ *   whole dataset.
  * - Supports `--limit=N` (or INGEST_LIMIT env var) for phased rollouts (Phase A: 20 rows, Phase B: all 4,722 rows).
  */
 
@@ -17,6 +30,7 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { parseCsvFile } from './csvParser.js';
 import prisma from '../db/prisma.js';
+import { deriveLevel } from '../utils/schemeLevel.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -78,6 +92,24 @@ async function runIngestion(): Promise<void> {
     const currentIndex = idx + 1;
 
     try {
+      const level = deriveLevel(scheme.authorityName);
+      const categoryLink = {
+        connectOrCreate: {
+          where: { name: scheme.authorityName },
+          create: {
+            name: scheme.authorityName,
+            level,
+            stateName: level === 'State' ? scheme.authorityName : null,
+          },
+        },
+      };
+      const tagLink = {
+        connectOrCreate: scheme.tags.map((tag) => ({
+          where: { name: tag },
+          create: { name: tag },
+        })),
+      };
+
       await prisma.scheme.upsert({
         where: { sourceUrl: scheme.sourceUrl },
         update: {
@@ -89,6 +121,11 @@ async function runIngestion(): Promise<void> {
           applicationMode: scheme.applicationMode,
           applicationProcess: scheme.applicationProcess,
           eligibilityRawText: scheme.eligibilityRawText,
+          // `set: []` first, so a re-run reflects the CSV's current tags/authority
+          // exactly (matching how plain-array fields like `benefits` are fully
+          // overwritten above) rather than only ever accumulating connections.
+          categories: { set: [], ...categoryLink },
+          tags: { set: [], ...tagLink },
         },
         create: {
           sourceUrl: scheme.sourceUrl,
@@ -100,6 +137,8 @@ async function runIngestion(): Promise<void> {
           applicationMode: scheme.applicationMode,
           applicationProcess: scheme.applicationProcess,
           eligibilityRawText: scheme.eligibilityRawText,
+          categories: categoryLink,
+          tags: tagLink,
         },
       });
 
