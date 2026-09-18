@@ -23,10 +23,14 @@ model User {
 
 model Scheme {
   id                   String               @id @default(uuid())
-  link                 String               @unique // maps to CSV "url" column — stable merge key
-  title                String
-  offeredBy            String // raw CSV "OFFERED BY" text (e.g. "Ministry Of Finance", "Delhi")
-  details              String               @db.Text // raw CSV "DETAILS" column
+  // Prisma Client field names below are @map()'d to the original CSV-derived
+  // column names so existing ingested data (4,722 rows) needs no column rename —
+  // only the generated client's property names change to match the frontend's
+  // Scheme type (name/description/authorityName/sourceUrl).
+  sourceUrl            String               @unique @map("link") // maps to CSV "url" column — stable merge key
+  name                 String               @map("title")
+  authorityName        String               @map("offeredBy") // raw CSV "OFFERED BY" text (e.g. "Ministry Of Finance", "Delhi")
+  description          String               @map("details") @db.Text // raw CSV "DETAILS" column
   benefits             String[] // flattened from CSV benefit_1..benefit_15
   documentRequirements String[] // flattened from CSV document_requirement_1..document_requirement_15
   applicationMode      String[] // was String? — CSV analysis showed 10.6% of rows have multiple values (newline- or "&"-separated in source data); array avoids silently dropping the second value
@@ -48,6 +52,21 @@ model EligibilityCriteria {
   ageMax          Int?
   incomeMinAnnual Int? // rare in the sample data, included for completeness
   incomeMaxAnnual Int? // normalized to ANNUAL
+  // Demographic fields below are plain nullable strings, not Prisma enums,
+  // deliberately — matching the existing style of Category.level and
+  // Scheme.applicationMode (a fixed vocabulary tracked in app code, not a
+  // DB enum). Frontend option lists (occupation, social category) change in
+  // UI code, not DB code; a Postgres enum would need an ALTER TYPE migration
+  // for every new option, while a plain String needs none. `state` in
+  // particular can never be a small closed enum (28+ Indian states/UTs, and
+  // the frontend itself doesn't treat it as one — Profile.tsx uses a free
+  // text input for it). Values are not yet populated for any scheme — see
+  // ingestSchemes.ts, which explicitly does not touch this relation.
+  gender          String? // "male" | "female" | "other" — restriction on scheme eligibility, if any
+  category        String? // social category restriction: "general" | "sc" | "st" | "obc"
+  occupation      String? // e.g. "farmer", "student", "entrepreneur" — matches Profile.tsx occupation options
+  state           String? // state/UT residency restriction, null = no state restriction (central scheme)
+  landOwnership   String? // "yes" | "no" — land ownership requirement, if any
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }

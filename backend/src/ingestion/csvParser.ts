@@ -15,11 +15,11 @@ export const VALID_APPLICATION_MODES = ['Online', 'Offline', 'Online - Via CSCs'
 export type ApplicationMode = (typeof VALID_APPLICATION_MODES)[number];
 
 export interface ParsedScheme {
-  link: string;
-  offeredBy: string;
-  title: string;
+  sourceUrl: string;
+  authorityName: string;
+  name: string;
   tags: string[];
-  details: string;
+  description: string;
   benefits: string[];
   eligibilityRawText: string[];
   applicationMode: string[];
@@ -265,11 +265,11 @@ export function parseCsv(csvContent: string): ParseResult {
     }
 
     schemes.push({
-      link,
-      offeredBy,
-      title,
+      sourceUrl: link,
+      authorityName: offeredBy,
+      name: title,
       tags,
-      details,
+      description: details,
       benefits,
       eligibilityRawText,
       applicationMode,
