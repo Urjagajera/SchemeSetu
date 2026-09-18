@@ -12,7 +12,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 // Fail-fast validation: these vars MUST be present at startup.
 // App will NOT silently run with undefined config.
 // ────────────────────────────────────────────────────────────
-const REQUIRED_VARS = ['PORT', 'DATABASE_URL', 'NODE_ENV'] as const;
+const REQUIRED_VARS = ['PORT', 'DATABASE_URL', 'NODE_ENV', 'SESSION_SECRET'] as const;
 
 for (const key of REQUIRED_VARS) {
   if (!process.env[key]) {
@@ -28,6 +28,9 @@ export const config = {
   PORT: parseInt(process.env.PORT as string, 10),
   DATABASE_URL: process.env.DATABASE_URL as string,
   NODE_ENV: process.env.NODE_ENV as 'development' | 'production' | 'test',
+  SESSION_SECRET: process.env.SESSION_SECRET as string,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
 } as const;
 
 export default config;
