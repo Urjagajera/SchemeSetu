@@ -125,7 +125,6 @@ function mapDbSchemeToFrontend(dbScheme: any): Scheme {
   return enrichScheme({
     id: dbScheme.id,
     name: dbScheme.name,
-    title: dbScheme.name,
     description: dbScheme.description,
     shortDesc: dbScheme.description.substring(0, 150) + (dbScheme.description.length > 150 ? '...' : ''),
     level: dbScheme.level === 'STATE' || dbScheme.level === 'State' ? 'State' : 'Central',

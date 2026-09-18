@@ -102,7 +102,7 @@ export const SchemeDetail: React.FC = () => {
         <ChevronRight className="w-3.5 h-3.5" />
         <Link to="/search" className="hover:text-secondary dark:hover:text-sky-400 transition-colors">{t('schemes')}</Link>
         <ChevronRight className="w-3.5 h-3.5" />
-        <span className="text-on-surface dark:text-zinc-300 font-bold max-w-[200px] truncate">{translatedScheme.title}</span>
+        <span className="text-on-surface dark:text-zinc-300 font-bold max-w-[200px] truncate">{translatedScheme.name}</span>
       </nav>
 
       {/* Main Column Grid */}
@@ -139,7 +139,7 @@ export const SchemeDetail: React.FC = () => {
               </div>
 
               <h1 className="font-display text-xl md:text-3xl font-extrabold text-primary dark:text-white leading-tight">
-                {translatedScheme.title}
+                {translatedScheme.name}
               </h1>
 
               <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed">
@@ -235,7 +235,7 @@ export const SchemeDetail: React.FC = () => {
                       {s.category}
                     </span>
                     <h4 className="font-heading text-xs md:text-sm font-bold text-primary dark:text-white mt-1 group-hover:text-secondary dark:group-hover:text-sky-400 transition-colors line-clamp-1">
-                      {s.title}
+                      {s.name}
                     </h4>
                     <p className="text-[11px] text-on-surface-variant dark:text-zinc-500 line-clamp-2 mt-1 leading-snug">
                       {s.shortDesc}

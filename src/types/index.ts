@@ -9,7 +9,6 @@ export interface Scheme {
   categories?: string[];
 
   // Compatibility properties
-  title: string;
   category: string;
   ministry: string;
   benefit: string;

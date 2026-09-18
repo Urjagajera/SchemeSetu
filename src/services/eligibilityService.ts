@@ -74,7 +74,7 @@ function evaluateLocalReport(profile: UserProfile, scheme: Scheme): EligibilityR
 
   return {
     schemeId: scheme.id,
-    schemeTitle: scheme.name || scheme.title,
+    schemeTitle: scheme.name,
     overallMatch,
     isEligible,
     passedCriteria,
