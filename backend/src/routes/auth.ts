@@ -5,6 +5,7 @@ import prisma from '../db/prisma.js';
 import config from '../config/env.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { requireAuth, SESSION_COOKIE_NAME } from '../middleware/requireAuth.js';
+import { authLimiter } from '../middleware/rateLimiters.js';
 
 const router = Router();
 
@@ -39,6 +40,7 @@ function serializeUser(user: { id: string; name: string | null; email: string; p
  */
 router.post(
   '/google',
+  authLimiter,
   asyncHandler(async (req: Request, res: Response) => {
     const { idToken } = req.body as { idToken?: string };
 
@@ -103,6 +105,15 @@ router.post('/logout', (_req: Request, res: Response) => {
  * the frontend to validate/rehydrate auth state on page load (the httpOnly cookie
  * itself is unreadable from JS by design) — see the final report for why this was
  * added.
+ *
+ * Deliberately NOT behind authLimiter (unlike POST /google): this fires on every
+ * page load/refresh via AuthContext's mount effect, not just login attempts.
+ * Reproduced live during verification — sharing the 20-req/15min login-attempt
+ * bucket meant a handful of page reloads could 429 a legitimately logged-in user,
+ * and AuthContext's catch-all treats any error (429 included) as "logged out",
+ * silently bouncing them to /login. This route isn't a credential-verification
+ * surface (requireAuth already rejects anything without a valid signed cookie),
+ * so it doesn't need the same brute-force protection as an actual login attempt.
  */
 router.get(
   '/me',

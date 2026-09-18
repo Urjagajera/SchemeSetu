@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import config from './config/env.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
-import { authLimiter, chatLimiter } from './middleware/rateLimiters.js';
+import { chatLimiter } from './middleware/rateLimiters.js';
 import healthRouter from './routes/health.js';
 import schemesRouter from './routes/schemes.js';
 import categoriesRouter from './routes/categories.js';
@@ -41,7 +41,7 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/eligibility', eligibilityRouter);
 app.use('/api/chat', chatLimiter, chatRouter);
 app.use('/api/bookmarks', bookmarksRouter);
-app.use('/api/auth', authLimiter, authRouter);
+app.use('/api/auth', authRouter);
 
 // ── Error handler (MUST be last) ─────────────────────────────
 app.use(errorHandler);
