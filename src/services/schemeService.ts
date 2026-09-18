@@ -342,9 +342,11 @@ export const schemeService = {
       return getLocalEligibleSchemes(profile);
     }
     try {
-      const response = await axios.get(`${API_URL}/recommended`, {
-        params: { lang: getActiveLang() }
-      });
+      const response = await axios.post(
+        `${API_URL}/recommended`,
+        { profile },
+        { params: { lang: getActiveLang() } }
+      );
       const raw = response.data?.data ?? response.data;
       return assertJsonArray<any>(raw, 'getEligibleSchemes');
     } catch (error) {
