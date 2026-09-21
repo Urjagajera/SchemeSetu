@@ -80,10 +80,14 @@ export function parseCurrencyAmount(rawStr: string): number | null {
     if (!isNaN(num)) return Math.round(num * 10000000);
   }
 
-  // Match comma-separated numbers first: e.g. "2,00,000" or "48,000" or "10,000"
-  const commaMatch = cleaned.match(/[0-9]{1,3}(?:,[0-9]{2,3})+(?:\.[0-9]+)?/);
+  // Match comma-separated numbers: e.g. "2,00,000" or "48,000" or "10,000" — also
+  // tolerates a stray space after the comma ("2, 00,000", "6, 500"), a real
+  // formatting artifact confirmed in the source CSV (e.g. "Financial Assistance
+  // To Destitute Children Scheme", "Bina Mulya Samajik Suraksha Yojana") that
+  // otherwise silently fails to match and returns null instead of the real number.
+  const commaMatch = cleaned.match(/[0-9]{1,3}(?:,\s{0,2}[0-9]{2,3})+(?:\.[0-9]+)?/);
   if (commaMatch) {
-    const sanitized = commaMatch[0].replace(/,/g, '');
+    const sanitized = commaMatch[0].replace(/[,\s]/g, '');
     const num = parseFloat(sanitized);
     if (!isNaN(num)) return Math.round(num);
   }
@@ -105,6 +109,22 @@ export function parseCurrencyAmount(rawStr: string): number | null {
 /**
  * Extracts ageMin and ageMax from eligibilityRawText sentences.
  * Strictly avoids non-age numeric criteria (years of service, Ph.D. dissertations, etc.)
+ *
+ * Boundary convention (explicit product decision, applied uniformly): every
+ * "ceiling" phrasing — "below X", "under X", "less than X", "should not exceed X",
+ * "maximum age X", "should not have completed the age of X" — sets ageMax = X
+ * (inclusive), not X-1. This trades strict grammatical precision for one
+ * consistent rule across every pattern, rather than a different cutoff
+ * convention per phrasing.
+ *
+ * Audit note: an earlier version of this function `return`ed as soon as any
+ * range pattern matched a sentence, which silently abandoned the rest of that
+ * scheme's sentences — confirmed live: "The applicant should not exceed 55
+ * years of age." parses correctly to max=55 in isolation, but was dropped
+ * entirely at the scheme level because an earlier sentence matched a range
+ * first. This version never returns early; it keeps scanning every sentence
+ * and only ever fills a field (min/max) once, via null-guards, so a later
+ * sentence can still supply whatever the first match didn't.
  */
 export function extractAge(sentences: string[]): AgeExtractionResult {
   const result: AgeExtractionResult = {
@@ -113,6 +133,11 @@ export function extractAge(sentences: string[]): AgeExtractionResult {
     matchedSentences: [],
     ruleMatched: null,
     logs: [],
+  };
+
+  const recordMatch = (sentence: string, rule: string) => {
+    if (!result.matchedSentences.includes(sentence)) result.matchedSentences.push(sentence);
+    result.ruleMatched = result.ruleMatched ? `${result.ruleMatched}+${rule}` : rule;
   };
 
   for (const sentence of sentences) {
@@ -127,135 +152,129 @@ export function extractAge(sentences: string[]): AgeExtractionResult {
       continue;
     }
 
-    // Pattern 1: Age range between X and Y
-    // e.g. "aged between 18 years (completed) and 70 years (age nearer birthday)"
-    // e.g. "between 18 and 58 years of age"
-    // e.g. "The age limit of the applicant should be between 18 and 55 years."
-    const rangeBetweenMatch = trimmed.match(
-      /(?:(?:aged?|applicant\s+should\s+be|age\s+limit\s+.*?should\s+be)\s+between|in\s+the\s+age\s+group\s+of)\s+(\d{1,2})\s*(?:years?)?(?:\s*\([^\)]+\))?\s*(?:and|to|-)\s*(\d{1,2})\s*years?(?:\s*of\s*age)?/i
-    );
-    if (rangeBetweenMatch) {
-      const min = parseInt(rangeBetweenMatch[1], 10);
-      const max = parseInt(rangeBetweenMatch[2], 10);
-      if (min >= 1 && min <= 100 && max >= min && max <= 100) {
-        result.min = min;
-        result.max = max;
-        result.matchedSentences.push(trimmed);
-        result.ruleMatched = 'range_between';
-        result.logs.push(`Matched age range: ${min}-${max} from: "${trimmed}"`);
-        return result;
-      }
-    }
+    // The looser patterns below (bare "X to Y years", hyphenated "X-Y years", a
+    // bare "less than X years") need an explicit age anchor somewhere in the
+    // sentence, or they'd false-positive on any unrelated numeric range (loan
+    // tenures, grant durations, etc.). The stricter patterns already require
+    // "age"/"years of age" as part of the match itself, so this gate is a
+    // second, cheap safety net specifically for the loose ones.
+    const hasAgeAnchor = /\b(?:age|aged)\b/i.test(trimmed);
+    if (!hasAgeAnchor) continue;
 
-    // Pattern 2: "above X years and below Y years of age"
-    // e.g. "She/he should be above 20 years and below 35 years of age"
-    const rangeAboveBelowMatch = trimmed.match(
-      /(?:above|at\s+least)\s+(\d{1,2})\s*years?(?:\s*of\s*age)?\s*and\s*(?:below|under)\s+(\d{1,2})\s*years?(?:\s*of\s*age)?/i
-    );
-    if (rangeAboveBelowMatch) {
-      const min = parseInt(rangeAboveBelowMatch[1], 10);
-      const max = parseInt(rangeAboveBelowMatch[2], 10);
-      if (min >= 1 && min <= 100 && max >= min && max <= 100) {
-        result.min = min;
-        result.max = max;
-        result.matchedSentences.push(trimmed);
-        result.ruleMatched = 'range_above_below';
-        result.logs.push(`Matched age range (above-below): ${min}-${max} from: "${trimmed}"`);
-        return result;
-      }
-    }
-
-    // Pattern 3: "minimum age ... is X years and maximum is Y years"
-    // e.g. "The minimum age of joining APY is 18 years and maximum is 40 years."
-    const minMaxMatch = trimmed.match(
-      /minimum\s+age(?:\s+of\s+joining(?:\s+[A-Z]+)?|\s+limit)?\s+is\s+(\d{1,2})\s*years?\s+and\s+maximum\s+(?:is)?\s+(\d{1,2})\s*years?/i
-    );
-    if (minMaxMatch) {
-      const min = parseInt(minMaxMatch[1], 10);
-      const max = parseInt(minMaxMatch[2], 10);
-      if (min >= 1 && min <= 100 && max >= min && max <= 100) {
-        result.min = min;
-        result.max = max;
-        result.matchedSentences.push(trimmed);
-        result.ruleMatched = 'min_max_phrase';
-        result.logs.push(`Matched age min-max phrase: ${min}-${max} from: "${trimmed}"`);
-        return result;
-      }
-    }
-
-    // Pattern 4: Standalone Minimum Age
-    // e.g. "The age of the applicant must be at least 18 years."
-    // e.g. "The applicant should not be less than 60 (sixty) years of age"
-    // e.g. "The applicant should be 21 years of age or above."
-    // e.g. "The applicant should be above 18 years of age"
-    if (result.min === null) {
-      const minMatch1 = trimmed.match(
-        /(?:age\s+.*?must\s+be\s+at\s+least|minimum\s+age\s+(?:of|is)?|should\s+not\s+be\s+less\s+than)\s+(\d{1,2})(?:\s*\([a-z]+\))?\s*years?(?:\s*of\s*age)?/i
+    // ── RANGE PATTERNS (set both min and max from one sentence) ──────────────
+    if (result.min === null && result.max === null) {
+      // "aged between 18 and 70 years" / "age limit ... between 18 and 55" / "in the age group of 18 to 35"
+      const rangeBetween = trimmed.match(
+        /(?:(?:aged?|applicant\s+should\s+be|age\s+limit\s+.*?should\s+be|age\s+.*?should\s+be)\s+between|in\s+the\s+age\s+group\s+of|age\s+group\s+of)\s+(\d{1,2})\s*(?:years?)?(?:\s*\([^)]+\))?\s*(?:and|to|-)\s*(\d{1,2})\s*years?(?:\s*of\s*age|\s*old)?/i
       );
-      if (minMatch1) {
-        const val = parseInt(minMatch1[1], 10);
-        if (val >= 1 && val <= 100) {
-          result.min = val;
-          result.matchedSentences.push(trimmed);
-          result.ruleMatched = (result.ruleMatched ? result.ruleMatched + '+min' : 'min_only');
-          result.logs.push(`Matched age min: ${val} from: "${trimmed}"`);
+      // "above 20 years and below 35 years of age"
+      const rangeAboveBelow = trimmed.match(
+        /(?:above|at\s+least)\s+(\d{1,2})\s*years?(?:\s*of\s*age)?\s*and\s*(?:below|under)\s+(\d{1,2})\s*years?(?:\s*of\s*age)?/i
+      );
+      // "minimum age ... is 18 years and maximum is 40 years"
+      const rangeMinMax = trimmed.match(
+        /minimum\s+age(?:\s+of\s+joining(?:\s+[A-Z]+)?|\s+limit)?\s+is\s+(\d{1,2})\s*years?\s+and\s+maximum\s+(?:is)?\s+(\d{1,2})\s*years?/i
+      );
+      // Bare "16 to 45 years [old]" / "18-60 years" / "18-35 years age group" — the
+      // hasAgeAnchor gate above is what makes this safe to keep loose.
+      const rangeBare = trimmed.match(
+        /\b(\d{1,2})\s*(?:to|-)\s*(\d{1,2})\s*years?(?:\s*of\s*age|\s*old|\s*age\s*group)?\b/i
+      );
+
+      for (const m of [rangeBetween, rangeAboveBelow, rangeMinMax, rangeBare]) {
+        if (!m) continue;
+        const min = parseInt(m[1], 10);
+        const max = parseInt(m[2], 10);
+        if (min >= 1 && min <= 100 && max >= min && max <= 100) {
+          result.min = min;
+          result.max = max;
+          recordMatch(trimmed, 'range');
+          result.logs.push(`Matched age range: ${min}-${max} from: "${trimmed}"`);
+          break;
         }
-      } else {
-        const minMatch2 = trimmed.match(
-          /(?:applicant\s+should\s+be|should\s+be|must\s+be)\s+(\d{1,2})\s*years?(?:\s*of\s*age)?\s*(?:or\s+above|and\s+above|\+)/i
-        );
-        if (minMatch2) {
-          const val = parseInt(minMatch2[1], 10);
+      }
+    }
+
+    // ── STANDALONE MIN ────────────────────────────────────────────────────────
+    // "not completed the age of X" is a MAX (checked in the max block below) —
+    // must not also fall through to the bare "completed the age of X" MIN
+    // pattern here, hence the explicit negative guard on that one pattern.
+    if (result.min === null) {
+      const minPatterns: RegExp[] = [
+        /(?:age\s+.*?must\s+be\s+at\s+least|minimum\s+age\s+(?:of|is)?|should\s+not\s+be\s+less\s+than|not\s+be\s+less\s+than)\s+(\d{1,2})(?:\s*\([a-z]+\))?\s*years?(?:\s*of\s*age)?/i,
+        /(?:applicant\s+should\s+be|should\s+be|must\s+be)\s+(\d{1,2})\s*years?(?:\s*of\s*age)?\s*(?:or\s+above|and\s+above|or\s+more|or\s+older|\+)/i,
+        /(?:applicant\s+should\s+be|should\s+be|must\s+be)\s+above\s+(\d{1,2})\s*years?\s+of\s+age/i,
+        /\battained\s+the\s+age\s+of\s+(\d{1,2})\s*years?/i,
+        // Bare "above X years of age" as a MIN — but NOT when the sentence
+        // itself flips it into a ceiling, e.g. "Faculty above 50 years of age
+        // is not eligible to apply" (confirmed real case: rgisfm) actually
+        // means max=50, and is already caught by the dedicated MAX pattern
+        // above. Without this exclusion both patterns fire on the same
+        // substring and produce a contradictory min=max=50.
+        /\babove\s+(\d{1,2})\s*years?\s+of\s+age\b(?!\s*[).]*\s*(?:(?:is|are|shall|will|would)?\s*not\s+(?:be\s+)?eligible|ineligible)\b)/i,
+      ];
+
+      for (const pat of minPatterns) {
+        const m = trimmed.match(pat);
+        if (m) {
+          const val = parseInt(m[1], 10);
           if (val >= 1 && val <= 100) {
             result.min = val;
-            result.matchedSentences.push(trimmed);
-            result.ruleMatched = (result.ruleMatched ? result.ruleMatched + '+min' : 'min_only');
-            result.logs.push(`Matched age min (or above): ${val} from: "${trimmed}"`);
+            recordMatch(trimmed, 'min');
+            result.logs.push(`Matched age min: ${val} from: "${trimmed}"`);
+            break;
           }
-        } else {
-          const minMatch3 = trimmed.match(
-            /(?:applicant\s+should\s+be|should\s+be|must\s+be)\s+above\s+(\d{1,2})\s*years?\s+of\s+age/i
-          );
-          if (minMatch3) {
-            const val = parseInt(minMatch3[1], 10);
-            if (val >= 1 && val <= 100) {
-              result.min = val;
-              result.matchedSentences.push(trimmed);
-              result.ruleMatched = (result.ruleMatched ? result.ruleMatched + '+min' : 'min_only');
-              result.logs.push(`Matched age min (above X): ${val} from: "${trimmed}"`);
-            }
+        }
+      }
+
+      // "completed the age of X years" (has reached X) — only a MIN when NOT
+      // preceded by "not"/"should not have", which flips it to a MAX instead.
+      if (result.min === null && !/\bnot\s+(?:have\s+)?completed\b/i.test(trimmed)) {
+        const completedMin = trimmed.match(/\bcompleted\s+the\s+age\s+of\s+(\d{1,2})\s*years?/i);
+        if (completedMin) {
+          const val = parseInt(completedMin[1], 10);
+          if (val >= 1 && val <= 100) {
+            result.min = val;
+            recordMatch(trimmed, 'min_completed');
+            result.logs.push(`Matched age min (completed the age of X): ${val} from: "${trimmed}"`);
           }
         }
       }
     }
 
-    // Pattern 5: Standalone Maximum Age
-    // e.g. "The age of the applicant should not be greater than 50 years."
-    // e.g. "Faculty above 50 years of age is not eligible" -> max = 50
-    // e.g. "upper age limit is 45 years"
+    // ── STANDALONE MAX (every boundary phrasing treated inclusive: ageMax = X) ─
     if (result.max === null) {
-      const maxMatch1 = trimmed.match(
-        /(?:age\s+.*?should\s+not\s+be\s+greater\s+than|maximum\s+age\s+(?:of|is)?|upper\s+age\s+limit\s+(?:of|is)?|should\s+not\s+exceed)\s+(\d{1,2})\s*years?(?:\s*of\s*age)?/i
-      );
-      if (maxMatch1) {
-        const val = parseInt(maxMatch1[1], 10);
-        if (val >= 1 && val <= 100) {
-          result.max = val;
-          if (!result.matchedSentences.includes(trimmed)) result.matchedSentences.push(trimmed);
-          result.ruleMatched = (result.ruleMatched ? result.ruleMatched + '+max' : 'max_only');
-          result.logs.push(`Matched age max: ${val} from: "${trimmed}"`);
-        }
-      } else {
-        const maxMatch2 = trimmed.match(
-          /(?:faculty|applicant|person)\s+above\s+(\d{1,2})\s*years?\s+of\s+age\s+is\s+not\s+eligible/i
-        );
-        if (maxMatch2) {
-          const val = parseInt(maxMatch2[1], 10);
+      const maxPatterns: RegExp[] = [
+        /(?:age\s+.*?should\s+not\s+be\s+greater\s+than|maximum\s+age\s+(?:of|is)?|upper\s+age\s+limit\s+(?:of|is)?|should\s+not\s+exceed|should\s+not\s+exceed\s+age|not\s+be\s+greater\s+than)\s+(\d{1,2})\s*years?(?:\s*of\s*age)?/i,
+        /(?:faculty|applicant|person)\s+above\s+(\d{1,2})\s*years?\s+of\s+age\s+is\s+not\s+eligible/i,
+        /(?:should\s+be|must\s+be|is|are|age\s+should\s+be|age\s+is|applicant.{0,20}should\s+be)\s+(?:less\s+than|below|under)\s+(\d{1,2})\s*years?(?:\s*of\s*age)?/i,
+        /\b(?:less\s+than|below|under)\s+(\d{1,2})\s*years?\s+of\s+age\b/i,
+        /\bup\s*to\s+(\d{1,2})\s*years?\s+of\s+age\b/i,
+      ];
+
+      for (const pat of maxPatterns) {
+        const m = trimmed.match(pat);
+        if (m) {
+          const val = parseInt(m[1], 10);
           if (val >= 1 && val <= 100) {
             result.max = val;
-            if (!result.matchedSentences.includes(trimmed)) result.matchedSentences.push(trimmed);
-            result.ruleMatched = (result.ruleMatched ? result.ruleMatched + '+max' : 'max_only');
-            result.logs.push(`Matched age max (exclusion clause): ${val} from: "${trimmed}"`);
+            recordMatch(trimmed, 'max');
+            result.logs.push(`Matched age max: ${val} from: "${trimmed}"`);
+            break;
+          }
+        }
+      }
+
+      // "should not have completed the age of X years" (hasn't turned X yet) —
+      // inclusive convention applied: ageMax = X, same as every other ceiling.
+      if (result.max === null && /\bnot\s+(?:have\s+)?completed\s+the\s+age\s+of\s+(\d{1,2})\s*years?/i.test(trimmed)) {
+        const notCompleted = trimmed.match(/\bnot\s+(?:have\s+)?completed\s+the\s+age\s+of\s+(\d{1,2})\s*years?/i);
+        if (notCompleted) {
+          const val = parseInt(notCompleted[1], 10);
+          if (val >= 1 && val <= 100) {
+            result.max = val;
+            recordMatch(trimmed, 'max_not_completed');
+            result.logs.push(`Matched age max (not completed the age of X): ${val} from: "${trimmed}"`);
           }
         }
       }
@@ -353,7 +372,14 @@ export function extractIncome(sentences: string[], schemeLink?: string): IncomeE
     // 2. Currency symbol followed by decimal/int + lakh/crore: Rs. 3.50 lakh or ₹2 Lakh
     // 3. Currency symbol followed by plain int: ₹4000
     // 4. Number + lakh/crore without currency symbol: 2 lakh or 3.50 lakh
-    const currencyPattern = /(?:(?:₹|Rs\.?|INR)\s*(?:[0-9]{1,3}(?:,[0-9]{2,3})+(?:\.[0-9]+)?|[0-9]+(?:\.[0-9]+)?\s*(?:lakhs?|lacs?|crores?)|[0-9]{3,}(?:\.[0-9]+)?)|[0-9]+(?:\.[0-9]+)?\s*(?:lakhs?|lacs?|crores?))\s*(?:\/-)?/gi;
+    // NOTE: this comma-group sub-pattern is a duplicate of the one in
+    // parseCurrencyAmount() — the two must stay in sync. The `\s{0,2}` here
+    // fixes the same real "₹2, 00,000" / "₹ 6, 500" spacing artifact fixed
+    // there; fixing only parseCurrencyAmount's copy left this one (which runs
+    // first, to even find a candidate substring in the sentence) still
+    // failing to match those sentences at all, so parseCurrencyAmount's fix
+    // never got a chance to run on them.
+    const currencyPattern = /(?:(?:₹|Rs\.?|INR)\s*(?:[0-9]{1,3}(?:,\s{0,2}[0-9]{2,3})+(?:\.[0-9]+)?|[0-9]+(?:\.[0-9]+)?\s*(?:lakhs?|lacs?|crores?)|[0-9]{3,}(?:\.[0-9]+)?)|[0-9]+(?:\.[0-9]+)?\s*(?:lakhs?|lacs?|crores?))\s*(?:\/-)?/gi;
     const matches = trimmed.match(currencyPattern);
 
     if (matches && matches.length > 0) {
