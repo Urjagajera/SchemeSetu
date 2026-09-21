@@ -9,7 +9,8 @@
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
     "ingest:dry-run": "tsx src/ingestion/dryRunParseCsv.ts",
-    "ingest:schemes": "tsx src/ingestion/ingestSchemes.ts"
+    "ingest:schemes": "tsx src/ingestion/ingestSchemes.ts",
+    "ingest:eligibility": "tsx src/ingestion/ingestEligibility.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
