@@ -47,6 +47,14 @@ export const AppRoutes: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Login />} />
 
+          {/* Eligibility Checker: public regardless of auth state. It's a stateless
+              check — Eligibility.tsx already branches internally on isAuthenticated
+              (auto-evaluating the saved profile when logged in, otherwise showing the
+              guest wizard) and doesn't persist anything by itself; only saving/
+              bookmarking a result requires login, enforced by requireAuth on the
+              backend's /api/bookmarks route, not by gating this page. */}
+          <Route path="/eligibility" element={<Eligibility />} />
+
           {/* Conditional Protected Views */}
           {isAuthenticated ? (
             <>
@@ -54,7 +62,6 @@ export const AppRoutes: React.FC = () => {
               <Route path="/schemes/:id" element={<SchemeDetail />} />
               <Route path="/help" element={<Help />} />
               <Route path="/ai" element={<AIAssistant />} />
-              <Route path="/eligibility" element={<Eligibility />} />
 
               {/* Secure Citizen Dashboard Layout Shell */}
               <Route element={<DashboardLayout />}>
@@ -71,7 +78,6 @@ export const AppRoutes: React.FC = () => {
               <Route path="/schemes/:id" element={<Navigate to="/login?redirect=/search" replace />} />
               <Route path="/help" element={<Navigate to="/login?redirect=/help" replace />} />
               <Route path="/ai" element={<Navigate to="/login?redirect=/ai" replace />} />
-              <Route path="/eligibility" element={<Navigate to="/login?redirect=/eligibility" replace />} />
               <Route path="/dashboard" element={<Navigate to="/login?redirect=/dashboard" replace />} />
               <Route path="/bookmarks" element={<Navigate to="/login?redirect=/bookmarks" replace />} />
               <Route path="/compare" element={<Navigate to="/login?redirect=/compare" replace />} />

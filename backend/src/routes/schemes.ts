@@ -4,6 +4,7 @@ import prisma from '../db/prisma.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { deriveLevel, levelWhereClause } from '../utils/schemeLevel.js';
 import { serializeScheme } from '../utils/serializeScheme.js';
+import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
 
 const router = Router();
 
@@ -104,56 +105,99 @@ router.get(
 );
 
 /**
- * GET /api/schemes/recommended
- * Called by schemeService.getEligibleSchemes(profile) — but as written today that
- * function never actually sends `profile` to this endpoint (only `lang`); see the
- * final report. Accepts profile signal via query params for forward-compatibility
- * (tags=comma,separated, occupation, gender, farmer) so it works once the frontend
- * is fixed to send them; with none of those params (today's reality) it falls back
- * to a plain paginated list, matching the "no real match signal available" case.
+ * POST /api/schemes/recommended
+ * Body: { profile: UserProfile } — was GET with only `lang` as a query param, which
+ * meant schemeService.getEligibleSchemes(profile) never actually sent the profile it
+ * was given (fixed in the same commit as this route change — see schemeService.ts).
+ * POST+body matches how POST /api/eligibility/report already takes a profile, per
+ * the fix instructions.
+ *
+ * Scoring, per scheme, in priority order:
+ *   1. Has an EligibilityCriteria row? That's authoritative — must pass every
+ *      applicable check (age/income/gender/category/occupation/state/landOwnership)
+ *      or it's excluded. Same comparison logic as /api/eligibility/report.
+ *   2. No criteria row, but the scheme has tags AND the profile has interest
+ *      signals? Included only on tag overlap, scored by overlap count.
+ *   3. Neither — the honest state of the data today, since ingestSchemes.ts
+ *      doesn't populate Category/Tag or EligibilityCriteria — included by
+ *      default (nothing to disqualify it on) with score 0.
+ * A real, always-available signal doesn't wait on that data: State-level schemes
+ * are pre-filtered to the profile's own state (Central schemes always pass
+ * through), so two profiles with different `state` values get different result
+ * sets today even before Category/Tag ingestion lands.
  */
-router.get(
+router.post(
   '/recommended',
   asyncHandler(async (req: Request, res: Response) => {
-    const { tags: tagsParam, occupation, gender, farmer } = req.query as Record<string, string | undefined>;
+    const { profile } = req.body as { profile?: IncomingProfile };
 
-    const interestTags = new Set<string>(
-      (tagsParam ?? '')
-        .split(',')
-        .map((t) => t.trim().toLowerCase())
-        .filter(Boolean),
-    );
-    if (occupation) interestTags.add(occupation.toLowerCase());
-    if (gender?.toLowerCase() === 'female') {
-      interestTags.add('woman');
-      interestTags.add('women');
-    }
-    if (farmer?.toLowerCase() === 'yes') {
-      interestTags.add('farmer');
-      interestTags.add('agriculture');
-    }
-
-    if (interestTags.size === 0) {
-      const rows = await prisma.scheme.findMany({
-        include: { tags: true, categories: true },
-        orderBy: { name: 'asc' },
-        take: DEFAULT_LIMIT,
-      });
-      res.json({ data: rows.map((s) => serializeScheme(s)) });
+    if (!profile) {
+      res.status(400).json({ error: { message: 'profile is required', status: 400 } });
       return;
     }
 
+    const interestTags = buildInterestTags(profile);
+    const age = parseInt(profile.age ?? '', 10);
+    const income = parseInt(profile.income ?? '', 10);
+
+    const where: Prisma.SchemeWhereInput = profile.state
+      ? { OR: [levelWhereClause('Central') ?? {}, { authorityName: { equals: profile.state, mode: 'insensitive' } }] }
+      : {};
+
     const rows = await prisma.scheme.findMany({
-      where: { tags: { some: { name: { in: Array.from(interestTags), mode: 'insensitive' } } } },
-      include: { tags: true, categories: true },
+      where,
+      include: { tags: true, categories: true, eligibilityCriteria: true },
     });
 
     const scored = rows
       .map((s) => {
-        const matchScore = s.tags.filter((t) => interestTags.has(t.name.toLowerCase())).length;
-        return { s, matchScore };
+        const criteria = s.eligibilityCriteria;
+        let structuredChecked = 0;
+        let structuredPassed = 0;
+
+        if (criteria) {
+          const checks: boolean[] = [];
+          if (criteria.ageMin !== null && !isNaN(age)) checks.push(age >= criteria.ageMin);
+          if (criteria.ageMax !== null && !isNaN(age)) checks.push(age <= criteria.ageMax);
+          if (criteria.incomeMinAnnual !== null && !isNaN(income)) checks.push(income >= criteria.incomeMinAnnual);
+          if (criteria.incomeMaxAnnual !== null && !isNaN(income)) checks.push(income <= criteria.incomeMaxAnnual);
+          const stringChecks: Array<[string | null, string | undefined]> = [
+            [criteria.gender, profile.gender],
+            [criteria.category, profile.category],
+            [criteria.occupation, profile.occupation],
+            [criteria.state, profile.state],
+            [criteria.landOwnership, profile.land],
+          ];
+          for (const [criteriaValue, profileValue] of stringChecks) {
+            if (criteriaValue !== null && profileValue) {
+              checks.push(criteriaValue.toLowerCase() === profileValue.toLowerCase());
+            }
+          }
+          structuredChecked = checks.length;
+          structuredPassed = checks.filter(Boolean).length;
+        }
+
+        const tagNames = s.tags.map((t) => t.name.toLowerCase());
+        const tagMatchCount = tagNames.filter((t) => interestTags.has(t)).length;
+
+        let include: boolean;
+        let matchScore: number;
+        if (structuredChecked > 0) {
+          include = structuredPassed === structuredChecked;
+          matchScore = structuredPassed;
+        } else if (tagNames.length > 0 && interestTags.size > 0) {
+          include = tagMatchCount > 0;
+          matchScore = tagMatchCount;
+        } else {
+          include = true;
+          matchScore = 0;
+        }
+
+        return { s, matchScore, include };
       })
-      .sort((a, b) => b.matchScore - a.matchScore);
+      .filter((r) => r.include)
+      .sort((a, b) => b.matchScore - a.matchScore)
+      .slice(0, DEFAULT_LIMIT);
 
     res.json({ data: scored.map(({ s, matchScore }) => serializeScheme(s, matchScore)) });
   }),
