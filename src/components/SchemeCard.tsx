@@ -97,7 +97,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
 
         {/* Title */}
         <h3 className="font-heading text-base md:text-lg font-bold text-primary dark:text-white mb-2 leading-snug group-hover:text-secondary dark:group-hover:text-sky-400 transition-colors line-clamp-2">
-          {scheme.title}
+          {scheme.name}
         </h3>
 
         {/* Ministry */}

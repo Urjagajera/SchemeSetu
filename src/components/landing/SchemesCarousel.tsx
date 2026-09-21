@@ -37,12 +37,12 @@ const SchemeCardLanding: React.FC<{ scheme: Scheme; onClick: () => void; index: 
       <button
         onClick={onClick}
         className="group w-full h-full flex flex-col bg-white rounded-2xl border border-outline-variant hover:border-saffron/40 hover:shadow-lg transition-all p-6 text-left focus:outline-none focus:ring-2 focus:ring-saffron active:scale-[0.98]"
-        aria-label={`View details for ${scheme.title || scheme.name}`}
+        aria-label={`View details for ${scheme.name}`}
       >
         <CategoryPill label={scheme.category || 'General'} />
 
         <h3 className="font-display text-base font-bold text-navy mt-4 mb-2 line-clamp-2 leading-snug group-hover:text-saffron transition-colors">
-          {scheme.title || scheme.name}
+          {scheme.name}
         </h3>
 
         <p className="font-body text-xs text-on-surface-variant leading-relaxed line-clamp-3 flex-grow">

@@ -79,11 +79,11 @@ async function runIngestion(): Promise<void> {
 
     try {
       await prisma.scheme.upsert({
-        where: { link: scheme.link },
+        where: { sourceUrl: scheme.sourceUrl },
         update: {
-          title: scheme.title,
-          offeredBy: scheme.offeredBy,
-          details: scheme.details,
+          name: scheme.name,
+          authorityName: scheme.authorityName,
+          description: scheme.description,
           benefits: scheme.benefits,
           documentRequirements: scheme.documentRequirements,
           applicationMode: scheme.applicationMode,
@@ -91,10 +91,10 @@ async function runIngestion(): Promise<void> {
           eligibilityRawText: scheme.eligibilityRawText,
         },
         create: {
-          link: scheme.link,
-          title: scheme.title,
-          offeredBy: scheme.offeredBy,
-          details: scheme.details,
+          sourceUrl: scheme.sourceUrl,
+          name: scheme.name,
+          authorityName: scheme.authorityName,
+          description: scheme.description,
           benefits: scheme.benefits,
           documentRequirements: scheme.documentRequirements,
           applicationMode: scheme.applicationMode,
@@ -107,7 +107,7 @@ async function runIngestion(): Promise<void> {
 
       // Log every row for small batches (<= 50) or periodic milestones for large batches
       if (schemesToIngest.length <= 50) {
-        console.log(`[${currentIndex}/${schemesToIngest.length}] Upserted: "${scheme.title}" (${scheme.link})`);
+        console.log(`[${currentIndex}/${schemesToIngest.length}] Upserted: "${scheme.name}" (${scheme.sourceUrl})`);
       } else if (currentIndex % 250 === 0 || currentIndex === schemesToIngest.length) {
         const batchElapsed = ((Date.now() - startTime) / 1000).toFixed(1);
         console.log(`[Progress] ${currentIndex}/${schemesToIngest.length} schemes upserted (${batchElapsed}s elapsed)...`);
@@ -115,8 +115,8 @@ async function runIngestion(): Promise<void> {
     } catch (err: unknown) {
       errorCount++;
       const errorMessage = err instanceof Error ? err.message : String(err);
-      errors.push({ link: scheme.link, error: errorMessage });
-      console.error(`❌ [Error at index ${currentIndex}] Failed to upsert ${scheme.link}: ${errorMessage}`);
+      errors.push({ link: scheme.sourceUrl, error: errorMessage });
+      console.error(`❌ [Error at index ${currentIndex}] Failed to upsert ${scheme.sourceUrl}: ${errorMessage}`);
     }
   }
 

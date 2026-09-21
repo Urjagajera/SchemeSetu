@@ -148,12 +148,18 @@ cp .env.example .env
 Configure the variables as needed:
 ```env
 VITE_USE_MOCK_DATA="true"
-CLIENT_URL=http://localhost:5173
-PORT=3001
-VITE_ENABLE_DEMO_LOGIN=true
+VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id.apps.googleusercontent.com
 # Optional Groq API key if using AI chatbot features
 GROQ_API_KEY=your_groq_api_key_here
 ```
+
+`CLIENT_URL` and `PORT` are backend-only variables (see below) — Vite only
+exposes `VITE_`-prefixed variables to frontend code, so they don't belong here.
+
+Login always goes through the real backend (`POST /api/auth/google`), which
+verifies the Google ID token server-side — `VITE_USE_MOCK_DATA` only affects
+scheme/eligibility/bookmark data, not authentication. There is no demo/guest
+login anymore.
 
 #### Backend Environment (`/backend/.env`):
 Navigate to the `backend/` directory and create its `.env` file:
@@ -163,11 +169,19 @@ cd backend
 cp .env.example .env
 ```
 
-Edit `backend/.env` with your PostgreSQL database credentials:
+Edit `backend/.env` with your PostgreSQL database credentials and auth secrets:
 ```env
 PORT=3001
 NODE_ENV=development
 DATABASE_URL="postgresql://postgres:your_password@localhost:5432/schemesetu?schema=public"
+CLIENT_URL=http://localhost:5173
+
+# Signs the session cookie — generate with:
+#   node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+SESSION_SECRET=
+
+# Must match the frontend's VITE_GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_ID=
 ```
 
 ---
