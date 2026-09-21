@@ -396,23 +396,6 @@ export function extractIncome(sentences: string[], schemeLink?: string): IncomeE
     }
   }
 
-  // Check for the Post Matric ST Scholarship sanity test case
-  // The user prompt specifically designates post-st as the test case stating ₹2,00,00,000/year to be skipped for sanity.
-  if (schemeLink === 'https://www.myscheme.gov.in/schemes/post-st') {
-    // Flag the ₹2,00,00,000 outlier specified by user requirements
-    const outlierAmount = 20000000;
-    const sentence = sentences.find((s) => s.includes('income from all sources')) || 'Scholarships will be paid to the students whose parents/guardians income from all sources does not exceed ceiling';
-    result.skippedForSanity.push({
-      amount: outlierAmount,
-      sentence,
-      reason: `Parsed annual income ₹${outlierAmount} (2 Crore) exceeds sanity bound of ₹${SANITY_BOUND_ANNUAL_INCOME} (50 Lakh)`,
-    });
-    result.logs.push(
-      `SKIPPED FOR SANITY: Post Matric ST Scholarship designated as ₹2,00,00,000 (2 Crore) outlier per sprint specification, exceeding ₹50,00,000 sanity bound. incomeMaxAnnual left null.`
-    );
-    return result;
-  }
-
   result.candidatesConsidered = candidates;
 
   // Process Max Income Candidates
@@ -490,37 +473,6 @@ export function parseEligibilityForScheme(
   title: string,
   eligibilityRawText: string[]
 ): ParsedEligibility {
-  // Check for PMFMPE requirement: "(PMFMPE — no age/income criteria at all — should result in NO EligibilityCriteria row created)"
-  if (link === 'https://www.myscheme.gov.in/schemes/pmfmpe') {
-    const ageResult: AgeExtractionResult = {
-      min: null,
-      max: null,
-      matchedSentences: [],
-      ruleMatched: null,
-      logs: ['PMFMPE classified as enterprise/institutional scheme with turnover criteria (Rs 1-5 crore). No personal eligibility criteria row created.'],
-    };
-    const incomeResult: IncomeExtractionResult = {
-      minAnnual: null,
-      maxAnnual: null,
-      matchedSentences: [],
-      ruleMatched: null,
-      skippedForSanity: [],
-      multipleIncomesFound: false,
-      candidatesConsidered: [],
-      logs: ['Turnover criteria (Rs. 1 crore / Rs. 5 crore) rejected as corporate metrics, not personal income.'],
-    };
-    return {
-      ageMin: null,
-      ageMax: null,
-      incomeMinAnnual: null,
-      incomeMaxAnnual: null,
-      hasAnyCriteria: false,
-      ageResult,
-      incomeResult,
-      logs: [...ageResult.logs, ...incomeResult.logs],
-    };
-  }
-
   const ageResult = extractAge(eligibilityRawText);
   const incomeResult = extractIncome(eligibilityRawText, link);
 
