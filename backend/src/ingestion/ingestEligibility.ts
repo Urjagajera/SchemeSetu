@@ -12,8 +12,13 @@
  * - Respects sanity bound (<= 50 lakh) and lower-ceiling rule for dual incomes.
  */
 
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import prisma from '../db/prisma.js';
 import { parseEligibilityForScheme, ParsedEligibility } from './parseEligibility.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const PHASE_A_LINKS = [
   'https://www.myscheme.gov.in/schemes/sui',
@@ -43,6 +48,19 @@ export interface IngestionReportItem {
   eligibilityCriteriaId?: string;
 }
 
+export interface DualCeilingExclusion {
+  schemeId: string;
+  link: string;
+  title: string;
+  distinctCeilings: number[];
+  // Best-effort only — the sentence immediately preceding each ceiling amount in
+  // the raw text, when it's short enough to look like a category heading (e.g.
+  // "For Scheduled Caste"). NOT a verified category parse; a future schema fix
+  // should read fullRawText and confirm by hand, not trust this field blindly.
+  candidates: Array<{ valueAnnual: number; sourceSentence: string; likelyCategoryLabel: string | null }>;
+  fullRawText: string[];
+}
+
 export interface IngestionRunSummary {
   phase: 'A' | 'B';
   totalSchemesEvaluated: number;
@@ -50,6 +68,7 @@ export interface IngestionRunSummary {
   rowsSkippedNoCriteria: number;
   skippedForSanityList: Array<{ link: string; title: string; amount: number; sentence: string; reason: string }>;
   multipleIncomesResolvedList: Array<{ link: string; title: string; chosen: number; candidates: number[]; sentence: string }>;
+  dualCeilingExclusions: DualCeilingExclusion[];
   items: IngestionReportItem[];
 }
 
@@ -81,6 +100,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
     rowsSkippedNoCriteria: 0,
     skippedForSanityList: [],
     multipleIncomesResolvedList: [],
+    dualCeilingExclusions: [],
     items: [],
   };
 
@@ -120,6 +140,32 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
           reason: s.reason,
         });
       }
+    }
+
+    // Track dual-ceiling exclusions (2+ distinct income ceilings — likely
+    // category-segmented eligibility). Product decision: don't apply "use lower
+    // figure" to these; leave both income fields null and log for a future
+    // category-aware criteria model instead of guessing.
+    if (parsed.dualCeilingExcluded) {
+      const maxCandidates = parsed.incomeResult.candidatesConsidered.filter((c) => c.type === 'max');
+      const candidateDetails = maxCandidates.map((c) => {
+        const idx = scheme.eligibilityRawText.indexOf(c.sourceSentence);
+        const preceding = idx > 0 ? scheme.eligibilityRawText[idx - 1].trim() : null;
+        // Best-effort heuristic only: a short preceding line often turns out to be a
+        // category heading ("For Scheduled Caste"), but this is NOT a verified parse —
+        // treat it as a hint for manual review, not ground truth.
+        const likelyCategoryLabel = preceding && preceding.length <= 60 ? preceding : null;
+        return { valueAnnual: c.valueAnnual, sourceSentence: c.sourceSentence, likelyCategoryLabel };
+      });
+
+      summary.dualCeilingExclusions.push({
+        schemeId: scheme.id,
+        link: scheme.sourceUrl,
+        title: scheme.name,
+        distinctCeilings: parsed.incomeResult.dualCeilingDistinctValues,
+        candidates: candidateDetails,
+        fullRawText: scheme.eligibilityRawText,
+      });
     }
 
     // Track multiple incomes resolved
@@ -189,7 +235,16 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
   console.log(`  Skipped (No Criteria):    ${summary.rowsSkippedNoCriteria}`);
   console.log(`  Sanity Skips:             ${summary.skippedForSanityList.length}`);
   console.log(`  Multiple Incomes Resolved: ${summary.multipleIncomesResolvedList.length}`);
+  console.log(`  Dual-Ceiling Excluded:    ${summary.dualCeilingExclusions.length}`);
   console.log('────────────────────────────────────────────────────────────────────────────────\n');
+
+  if (summary.dualCeilingExclusions.length > 0) {
+    const reportDir = path.join(__dirname, '..', '..', 'reports');
+    fs.mkdirSync(reportDir, { recursive: true });
+    const reportPath = path.join(reportDir, `dual-ceiling-exclusions-phase-${phase}.json`);
+    fs.writeFileSync(reportPath, JSON.stringify(summary.dualCeilingExclusions, null, 2));
+    console.log(`Wrote ${summary.dualCeilingExclusions.length} dual-ceiling exclusions to ${reportPath}\n`);
+  }
 
   return summary;
 }

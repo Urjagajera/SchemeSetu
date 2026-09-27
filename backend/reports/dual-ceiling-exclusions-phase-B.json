@@ -1,0 +1,2640 @@
+[
+  {
+    "schemeId": "e2178742-6450-453b-8624-8fab7f15c193",
+    "link": "https://www.myscheme.gov.in/schemes/mgs",
+    "title": "Marriage Grant Scheme",
+    "distinctCeilings": [
+      46080,
+      56460
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 56460,
+        "sourceSentence": "The annual income of the applicant in urban areas should not exceed Rs. 56,460/- and in rural areas Rs. 46,080/-.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 46080,
+        "sourceSentence": "The annual income of the applicant in urban areas should not exceed Rs. 56,460/- and in rural areas Rs. 46,080/-.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "To the daughters of poor individuals of other backward classes (excluding minorities in backward classes).",
+      "The annual income of the applicant in urban areas should not exceed Rs. 56,460/- and in rural areas Rs. 46,080/-.",
+      "The age of the girl and boy must be 18 years and 21 years or more respectively.",
+      "Applicants of other backward classes will have to enter the serial number of the online Caste Certificate issued by the Tehsil in their online application form.",
+      "Priority will be provided to the destitute woman after the death of the husband or widow applicant and they will not be needing a caste certificate.",
+      "Marriage grants will be allowed up to a maximum of 02 daughters from a family."
+    ]
+  },
+  {
+    "schemeId": "1c4bb023-9d96-4756-a2d8-0ac69f4908a8",
+    "link": "https://www.myscheme.gov.in/schemes/drfdamt",
+    "title": "Distress Relief Fund For The Differently Abled (Medical Treatment)",
+    "distinctCeilings": [
+      20000,
+      22375
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 20000,
+        "sourceSentence": "Those differently-abled persons whose annual income does not exceed (₹20,000/- in Rural areas and ₹22,375/- in Urban areas) shall be eligible for financial assistance.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 22375,
+        "sourceSentence": "Those differently-abled persons whose annual income does not exceed (₹20,000/- in Rural areas and ₹22,375/- in Urban areas) shall be eligible for financial assistance.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a native and resident of Kerala State.",
+      "The disabled person or who has become handicapped due to an accident is eligible to apply under the scheme for their medical treatment, including surgery.",
+      "Those differently-abled persons whose annual income does not exceed (₹20,000/- in Rural areas and ₹22,375/- in Urban areas) shall be eligible for financial assistance.",
+      "Physically handicapped persons shall include the following disabilities/categories:",
+      "a. Blind",
+      "b. Deaf and Dumb",
+      "c. Orthopedically Handicapped",
+      "d. Mentally Challenged",
+      "e. Persons in the Below Poverty Line (BPL) category having 40 % disability or more."
+    ]
+  },
+  {
+    "schemeId": "8988140f-eb85-4c84-b7d6-c1c0f43b1507",
+    "link": "https://www.myscheme.gov.in/schemes/ggssnc-goa",
+    "title": "Government of Goa State Scholarship to NDA Cadets",
+    "distinctCeilings": [
+      180000,
+      450000,
+      2160000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 180000,
+        "sourceSentence": "The income limit of the cadet’s parents/ guardians shall not exceed ₹ 15,000/- per month (₹ 1,80,000 per annum).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 2160000,
+        "sourceSentence": "The income limit of the cadet’s parents/ guardians shall not exceed ₹ 15,000/- per month (₹ 1,80,000 per annum).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 450000,
+        "sourceSentence": "In case the cadet is SC/ST/OBC, the income limit of the cadet’s parents/ guardians shall not exceed ₹ 37,500/- per month (₹ 4,50,000 per annum).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 5400000,
+        "sourceSentence": "In case the cadet is SC/ST/OBC, the income limit of the cadet’s parents/ guardians shall not exceed ₹ 37,500/- per month (₹ 4,50,000 per annum).",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The cadet should have been born in Goa and/or domiciled in Goa for a period of at least 15 years.",
+      "The income limit of the cadet’s parents/ guardians shall not exceed ₹ 15,000/- per month (₹ 1,80,000 per annum).",
+      "In case the cadet is SC/ST/OBC, the income limit of the cadet’s parents/ guardians shall not exceed ₹ 37,500/- per month (₹ 4,50,000 per annum).",
+      "The cadet should not be receiving financial assistance/scholarship/freeship from any other source."
+    ]
+  },
+  {
+    "schemeId": "6d7b6536-015e-4541-8ee4-a5e4627b0bde",
+    "link": "https://www.myscheme.gov.in/schemes/gwwh",
+    "title": "Government Working Women’s Hostel",
+    "distinctCeilings": [
+      180000,
+      300000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 300000,
+        "sourceSentence": "If the applicant is in Chennai, the income of the applicant should not exceed ₹25000/- per month.",
+        "likelyCategoryLabel": "The applicant should be a working woman."
+      },
+      {
+        "valueAnnual": 180000,
+        "sourceSentence": "If the applicant is in a district other than Chennai, the income of the applicant should not exceed ₹15000/- per month.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a working woman.",
+      "If the applicant is in Chennai, the income of the applicant should not exceed ₹25000/- per month.",
+      "If the applicant is in a district other than Chennai, the income of the applicant should not exceed ₹15000/- per month."
+    ]
+  },
+  {
+    "schemeId": "d73cf944-351f-49ab-9db1-2bd418d58513",
+    "link": "https://www.myscheme.gov.in/schemes/pmatcs",
+    "title": "Post Matric and Top Class Scholarship",
+    "distinctCeilings": [
+      25000,
+      600000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 25000,
+        "sourceSentence": "The maximum annual income of the guardian should be ₹2,50,00/- for post-matric and ₹6,00,000/- for top class.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "The maximum annual income of the guardian should be ₹2,50,00/- for post-matric and ₹6,00,000/- for top class.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant Should be studying in graduate/post-graduate courses.",
+      "The maximum annual income of the guardian should be ₹2,50,00/- for post-matric and ₹6,00,000/- for top class.",
+      "The applicant has 40 percent or more disability."
+    ]
+  },
+  {
+    "schemeId": "70a0ce93-9e18-4da9-9169-3ee0842ecdd8",
+    "link": "https://www.myscheme.gov.in/schemes/cs",
+    "title": "Charmashilpa Scheme",
+    "distinctCeilings": [
+      25000,
+      30000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 30000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/ in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      },
+      {
+        "valueAnnual": 25000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/ in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be leather artisans/Artisans SHGs/Co-operative societies.",
+      "The applicant should belongs to sub-castes Arundathiyar, Chammadiya, Chamar, Chambar, Chamagar, Madar, Madig, Madiga, Mini Madig, Jambavalu, Haralayya, Machigar, Mochigar, Mochi, muchi, Telugu Mochi, kamaati mocha, Rohidas, Dhor, kakkayya, Kankayya, Samagara, Samagar, Aadhi Anddra, Aadhi Dravida, Aadhi Karnataka among schedule castes.",
+      "The age of the applicant should be 18 years.",
+      "The applicant's annual family income should not exceed ₹30,000/ in rural areas and ₹25,000/- in urban areas.",
+      "The applicant or their family members must not have received benefits from other schemes, except training programs.",
+      "The applicant's family members should not be employed in government or semi-government organizations."
+    ]
+  },
+  {
+    "schemeId": "8410ae1e-cb52-4ff5-a89c-96f55ba7730f",
+    "link": "https://www.myscheme.gov.in/schemes/msym",
+    "title": "Mahila Samridhi Yojana (Maharashtra)",
+    "distinctCeilings": [
+      98000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98000,
+        "sourceSentence": "For the NSFDC Scheme, the applicant's annual income should be below ₹98,000 for rural areas and ₹1,20,000 for urban areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "For the NSFDC Scheme, the applicant's annual income should be below ₹98,000 for rural areas and ₹1,20,000 for urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a female.",
+      "The applicant should belong to the Charmakar Community.",
+      "The applicant's age should be between 18 and 50 years.",
+      "The applicant should be a permanent resident of Maharashtra.",
+      "The applicant must have knowledge of the business for which the loan is being applied.",
+      "For the 50% Subsidy Scheme and Margin Money, the applicant's annual income must be below the poverty line.",
+      "For the NSFDC Scheme, the applicant's annual income should be below ₹98,000 for rural areas and ₹1,20,000 for urban areas.",
+      "Relaxation/Preference/Priority",
+      "Widows and divorcees are given priority."
+    ]
+  },
+  {
+    "schemeId": "c008b9c8-23da-4ada-9e68-72ab88668d7d",
+    "link": "https://www.myscheme.gov.in/schemes/sessct",
+    "title": "Self-Employment Scheme for Scheduled Castes and Tribes",
+    "distinctCeilings": [
+      15975,
+      21206
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 15975,
+        "sourceSentence": "The applicant annual income must not exceed ₹15,975/- in rural areas and ₹21,206/- in urban areas.",
+        "likelyCategoryLabel": "The applicant must be living below the poverty line."
+      },
+      {
+        "valueAnnual": 21206,
+        "sourceSentence": "The applicant annual income must not exceed ₹15,975/- in rural areas and ₹21,206/- in urban areas.",
+        "likelyCategoryLabel": "The applicant must be living below the poverty line."
+      }
+    ],
+    "fullRawText": [
+      "The applicant must belong to a Scheduled Castes and Tribes community.",
+      "The applicant must be living below the poverty line.",
+      "The applicant annual income must not exceed ₹15,975/- in rural areas and ₹21,206/- in urban areas.",
+      "The applicant must not be a defaulter of any bank or financial institution.",
+      "The applicant must not have availed any subsidy from any government scheme earlier.",
+      "The applicant must possess a commercial driving license."
+    ]
+  },
+  {
+    "schemeId": "8bb58036-ce54-474c-aaa8-554881261e58",
+    "link": "https://www.myscheme.gov.in/schemes/sctalentpool",
+    "title": "Scholarship to SC students studying in selected schools under Talentpool Scheme",
+    "distinctCeilings": [
+      200000,
+      300000,
+      600000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "The applicant's parents' income limit should not exceed ₹6,00,000/-. (whose income is between ₹2,00,000/- and ₹3,00,000/-, are eligible for 50% assistance).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 200000,
+        "sourceSentence": "The applicant's parents' income limit should not exceed ₹6,00,000/-. (whose income is between ₹2,00,000/- and ₹3,00,000/-, are eligible for 50% assistance).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 300000,
+        "sourceSentence": "The applicant's parents' income limit should not exceed ₹6,00,000/-. (whose income is between ₹2,00,000/- and ₹3,00,000/-, are eligible for 50% assistance).",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should belong to the Scheduled Caste.",
+      "The applicant should from Standard 5 and Standard 10.",
+      "The applicant should be studying in a school selected under the Talent Pool Scheme.",
+      "The applicant's parents' income limit should not exceed ₹6,00,000/-. (whose income is between ₹2,00,000/- and ₹3,00,000/-, are eligible for 50% assistance).",
+      "The applicant must be a student."
+    ]
+  },
+  {
+    "schemeId": "ab50e1e4-9bb3-44d2-8a88-02034b9b828e",
+    "link": "https://www.myscheme.gov.in/schemes/fasuw-ecw",
+    "title": "Funeral Assistance Scheme for Unorganized Workers (Except Construction Workers)",
+    "distinctCeilings": [
+      120000,
+      150000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant must have an annual income not exceeding ₹1,20,000/- (One Lakh Twenty Thousand Rupees), if residing in rural areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 150000,
+        "sourceSentence": "The applicant must have an annual income not exceeding ₹1,50,000/- (One Lakh Fifty Thousand Rupees), if residing in urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be an heir of a deceased e-Shram card holder from the unorganized sector.",
+      "The applicant must be a resident of Gujarat.",
+      "The applicant must apply within 3 (three) months from the date of death of the deceased worker.",
+      "The deceased worker must have between 16 to 70 years of age at the time of death.",
+      "The applicant must have an annual income not exceeding ₹1,20,000/- (One Lakh Twenty Thousand Rupees), if residing in rural areas.",
+      "The applicant must have an annual income not exceeding ₹1,50,000/- (One Lakh Fifty Thousand Rupees), if residing in urban areas.",
+      "Only one heir per deceased worker is eligible to receive the assistance.",
+      "Priority Order for Heirs",
+      "The legal heirs of the deceased shall be considered in the following order of priority:",
+      "Husband or Wife.",
+      "Children (Son/Daughter) - in absence of spouse.",
+      "Parents - in absence of spouse and children.",
+      "Grandchildren (Grandson/Granddaughter) - in absence of spouse, children and parents.",
+      "Unmarried, widowed or abandoned sisters - in absence of spouse, children, parents and grandchildren.",
+      "Other heirs declared under Indian Succession Act, 1925 - in absence of all above categories."
+    ]
+  },
+  {
+    "schemeId": "8100b177-19cf-40ee-8c14-f889babaad4c",
+    "link": "https://www.myscheme.gov.in/schemes/ss90cf",
+    "title": "Sponsorship Scheme (90% Centrally Funded)",
+    "distinctCeilings": [
+      72000,
+      96000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 72000,
+        "sourceSentence": "Children up to 18 years of age belonging to families with an annual income of up to ₹72,000/- in rural areas and ₹96,000/- in urban areas.",
+        "likelyCategoryLabel": "The child/beneficiary must be a resident of Uttarakhand."
+      },
+      {
+        "valueAnnual": 96000,
+        "sourceSentence": "Children up to 18 years of age belonging to families with an annual income of up to ₹72,000/- in rural areas and ₹96,000/- in urban areas.",
+        "likelyCategoryLabel": "The child/beneficiary must be a resident of Uttarakhand."
+      }
+    ],
+    "fullRawText": [
+      "The child/beneficiary must be a resident of Uttarakhand.",
+      "Children up to 18 years of age belonging to families with an annual income of up to ₹72,000/- in rural areas and ₹96,000/- in urban areas.",
+      "Children who have lost both parents/guardians.",
+      "Children covered under the PM CARES scheme,  children belonging to families that have lost their primary breadwinner.",
+      "Children in conflict with the law (CCL).",
+      "Child labor victims, child trafficking victims, children affected by child marriage, POCSO victims, children registered on the Bal Swaraj Portal, as well as other children in need of care and protection."
+    ]
+  },
+  {
+    "schemeId": "88ff0122-bb37-4579-858c-371c141fcced",
+    "link": "https://www.myscheme.gov.in/schemes/mcmlfas",
+    "title": "Merit Cum Means Linked Financial Assistance Scheme",
+    "distinctCeilings": [
+      250000,
+      600000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 250000,
+        "sourceSentence": "Category 2: Not covered under category 1 but whose family income is up to ₹2.50 Lakh p.a.\t60%\t50%",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 250000,
+        "sourceSentence": "Category 3: Family income above ₹2.50 Lakh p.a.but not exceeding ₹6 Lakh p.a\t60%\t25%",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "Category 3: Family income above ₹2.50 Lakh p.a.but not exceeding ₹6 Lakh p.a\t60%\t25%",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The eligibility criteria for applying under this scheme shall be as follows:",
+      "(1) The student should have been enrolled on an undergraduate programme in any of the Delhi State Public Universities or colleges/ institutes affiliated with Delhi State Public Universities.",
+      "(2) The student should fulfil the income/ economic and academic performance criteria as specified for each category mentioned below",
+      "Eligibility (Gross Annual Family Income of Student from all Sources)\tQualifying Aggregate Percentage (Marks in All Subjects)\tPercentage of Financial Assistance",
+      "Category 1: Beneficiary under National Food Security Scheme & possess the Card issued under the Scheme\t60%\t100%",
+      "Category 2: Not covered under category 1 but whose family income is up to ₹2.50 Lakh p.a.\t60%\t50%",
+      "Category 3: Family income above ₹2.50 Lakh p.a.but not exceeding ₹6 Lakh p.a\t60%\t25%",
+      "A relaxation of 5% in the qualifying aggregate percentage of marks will be allowed to SC/ST Category students."
+    ]
+  },
+  {
+    "schemeId": "2914680d-5ba0-4a2a-b85e-9b163bea090f",
+    "link": "https://www.myscheme.gov.in/schemes/mpkskkn-da",
+    "title": "Madhya Pradesh Kalakar Evam Sahityakar Kalyan Kosh Niyam- Death Assistance",
+    "distinctCeilings": [
+      120000,
+      240000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant’s (husband/wife) monthly income should not exceed ₹10,000/-.",
+        "likelyCategoryLabel": "The applicant should be a resident of Madhya Pradesh."
+      },
+      {
+        "valueAnnual": 240000,
+        "sourceSentence": "The family’s monthly income should not exceed ₹20,000/-.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be the legal heir or dependent of the deceased artist or litterateur.",
+      "The deceased should have been an artist or litterateur of Madhya Pradesh.",
+      "The applicant should be a resident of Madhya Pradesh.",
+      "The applicant’s (husband/wife) monthly income should not exceed ₹10,000/-.",
+      "The family’s monthly income should not exceed ₹20,000/-.",
+      "Families of government employees are not eligible."
+    ]
+  },
+  {
+    "schemeId": "272fea72-70cc-475f-8612-31dee46ed4d2",
+    "link": "https://www.myscheme.gov.in/schemes/fatha",
+    "title": "Financial Assistance to Helpless Artists",
+    "distinctCeilings": [
+      7200,
+      86400
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 7200,
+        "sourceSentence": "The applicant must have a monthly income of less than ₹600/- (₹7,200/- annually).",
+        "likelyCategoryLabel": "The applicant must be 60 years of age or above."
+      },
+      {
+        "valueAnnual": 86400,
+        "sourceSentence": "The applicant must have a monthly income of less than ₹600/- (₹7,200/- annually).",
+        "likelyCategoryLabel": "The applicant must be 60 years of age or above."
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be a resident of Gujarat.",
+      "The applicant must be an artist who has made significant contributions in the field of art and literature.",
+      "The applicant must be 60 years of age or above.",
+      "The applicant must have a monthly income of less than ₹600/- (₹7,200/- annually).",
+      "The applicant must be physically disabled.",
+      "The applicant must be in poor economic condition."
+    ]
+  },
+  {
+    "schemeId": "487d95e8-b7f5-43a2-9bf0-a9c70688c0ce",
+    "link": "https://www.myscheme.gov.in/schemes/ndfadc",
+    "title": "National Disabled Finance and Development Corporation",
+    "distinctCeilings": [
+      300000,
+      500000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 300000,
+        "sourceSentence": "The applicant should have an annual income of less than ₹3,00,000 in rural areas or ₹5,00,000 in urban areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 500000,
+        "sourceSentence": "The applicant should have an annual income of less than ₹3,00,000 in rural areas or ₹5,00,000 in urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a resident of Himachal Pradesh.",
+      "The applicant should be an unemployed Person with Disability.",
+      "The applicant should have a disability of 40% or more, certified by a competent authority.",
+      "The applicant should have an annual income of less than ₹3,00,000 in rural areas or ₹5,00,000 in urban areas."
+    ]
+  },
+  {
+    "schemeId": "d33c405f-5cc7-4ec3-b25b-3fc089987ef4",
+    "link": "https://www.myscheme.gov.in/schemes/faaadp",
+    "title": "Financial Assistance For Aids And Appliances For Disabled Persons",
+    "distinctCeilings": [
+      18000,
+      24000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 18000,
+        "sourceSentence": "For financial assistance of 100% of the cost of the aids and appliances, the monthly income of the applicant should be less than ₹1,500/-.",
+        "likelyCategoryLabel": "The percentage of the disability should be 40% or above."
+      },
+      {
+        "valueAnnual": 18000,
+        "sourceSentence": "For financial assistance of 50% of the cost of the aids and appliances, the monthly income of the applicant should be between ₹1,500/- to ₹2,000/-.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 24000,
+        "sourceSentence": "For financial assistance of 50% of the cost of the aids and appliances, the monthly income of the applicant should be between ₹1,500/- to ₹2,000/-.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a citizen of India.",
+      "The applicant should be a permanent resident of Maharashtra State.",
+      "The applicant should be a Person with Disability (Visually Handicapped, Low Vision, Hearing Impaired, Orthopedically Handicapped, etc).",
+      "The percentage of the disability should be 40% or above.",
+      "For financial assistance of 100% of the cost of the aids and appliances, the monthly income of the applicant should be less than ₹1,500/-.",
+      "For financial assistance of 50% of the cost of the aids and appliances, the monthly income of the applicant should be between ₹1,500/- to ₹2,000/-."
+    ]
+  },
+  {
+    "schemeId": "429e0aad-8160-4689-8d8d-e0ab81dd988a",
+    "link": "https://www.myscheme.gov.in/schemes/ostf",
+    "title": "Odisha State Treatment Fund",
+    "distinctCeilings": [
+      40000,
+      60000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 40000,
+        "sourceSentence": "It is applicable to persons below the poverty line, person with annual family income not exceeding Rs.40,000/- in rural area and Rs.60,000/- in urban areas. Either BPL card / AAY card or annual income certificate issued by concerned Tahasildar will be accepted for determining the eligibility.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 60000,
+        "sourceSentence": "It is applicable to persons below the poverty line, person with annual family income not exceeding Rs.40,000/- in rural area and Rs.60,000/- in urban areas. Either BPL card / AAY card or annual income certificate issued by concerned Tahasildar will be accepted for determining the eligibility.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "It is applicable to persons below the poverty line, person with annual family income not exceeding Rs.40,000/- in rural area and Rs.60,000/- in urban areas. Either BPL card / AAY card or annual income certificate issued by concerned Tahasildar will be accepted for determining the eligibility.",
+      "Rastriya Swasthya Bima Yojana (RSBY) card holder is also eligible under this scheme.",
+      "An unknown accident victim, patients duly referred from registered destitute home / orphanage / mental asylum / Child care Institutions are also eligible for assistance under the scheme subject to citing sufficient reason thereof for recommending the patient under the scheme.",
+      "Assistance will be available only to patients undergoing treatment as in-patient in any of the Govt./Empanelled private hospitals. However this will not restrict : Cancer patients from getting chemo in Govt. Day Care Centre without being formally admitted & Patients who have undergone kidney transplantation at Govt. Hospitals from getting post-operative care including supply of free medicines and investigation up to 6 months from the date discharge."
+    ]
+  },
+  {
+    "schemeId": "2417bf30-e055-42e7-a3a1-7021c0456172",
+    "link": "https://www.myscheme.gov.in/schemes/ghcsscp",
+    "title": "Grant of House Construction Subsidy to Scheduled Caste People",
+    "distinctCeilings": [
+      24000,
+      200000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 200000,
+        "sourceSentence": "The annual income of the applicant should not exceed ₹2,00,000/-.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 24000,
+        "sourceSentence": "The annual income of the applicant should not exceed ₹24,000/-.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a citizen of India.",
+      "The applicant should be a native or a permanent resident of the Union Territory of Pondicherry.",
+      "The applicant should not possess a house.",
+      "The applicant should be from Scheduled Caste or from Other Economically Backward Class.",
+      "For Scheduled Caste",
+      "The applicant should have a house site of an area of 450 sq.ft to build the house.",
+      "The annual income of the applicant should not exceed ₹2,00,000/-.",
+      "For Other Economically Backward Class",
+      "The applicant should have a house site granted by Adi Dravidar Welfare Department.",
+      "The annual income of the applicant should not exceed ₹24,000/-."
+    ]
+  },
+  {
+    "schemeId": "96f21e75-4fe2-45a8-958d-e7855a25be66",
+    "link": "https://www.myscheme.gov.in/schemes/cels-s",
+    "title": "Comprehensive Educational Loan Scheme - Sikkim",
+    "distinctCeilings": [
+      250000,
+      500000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 250000,
+        "sourceSentence": "The applicant's family annual income should not exceed ₹2,50,000/- for studies within India and ₹5,00,000/- for studies abroad.",
+        "likelyCategoryLabel": "The applicant should be a student."
+      },
+      {
+        "valueAnnual": 500000,
+        "sourceSentence": "The applicant's family annual income should not exceed ₹2,50,000/- for studies within India and ₹5,00,000/- for studies abroad.",
+        "likelyCategoryLabel": "The applicant should be a student."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a student.",
+      "The applicant's family annual income should not exceed ₹2,50,000/- for studies within India and ₹5,00,000/- for studies abroad.",
+      "The institution where the applicant wants to study, whether in India or abroad, must be recognized by the relevant authority in India.",
+      "Only one member per family shall be considered for the benefit, except in the case of Below Poverty Line (BPL) families.",
+      "Only members of Below Poverty Line (BPL) families will be considered for the study in Sikkim.",
+      "Note: Children of Government/Public Sector Undertaking employees are also eligible."
+    ]
+  },
+  {
+    "schemeId": "5ff60cb6-0712-4382-aae5-f3d0b3224814",
+    "link": "https://www.myscheme.gov.in/schemes/els-cl2mc",
+    "title": "Education Loan Scheme- Credit Line 2 for Minority Community",
+    "distinctCeilings": [
+      98001,
+      120001,
+      800000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98001,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001 to ₹8,00,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 16 and 32 years."
+      },
+      {
+        "valueAnnual": 800000,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001 to ₹8,00,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 16 and 32 years."
+      },
+      {
+        "valueAnnual": 120001,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001 to ₹8,00,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 16 and 32 years."
+      },
+      {
+        "valueAnnual": 800000,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001 to ₹8,00,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 16 and 32 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Haryana.",
+      "The age of the applicant should be between 16 and 32 years.",
+      "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001 to ₹8,00,000/- (Urban Area).",
+      "The applicant should belong to a minority community, i.e., Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains.",
+      "The applicant should have obtained admission to any professional and technical course approved by an appropriate agency such as AICTE, Medical Council of India, UGC, etc., in a duly accredited/recognized institute.",
+      "The applicant must have secured a minimum of 50% marks in the qualifying exam i.e., the exam whose qualification is a pre-requisite for the course.",
+      "The applicant should have a Parivaar Pehchan Patra (PPP ID)."
+    ]
+  },
+  {
+    "schemeId": "b4c6f86c-9f0f-4d38-906a-32af5a388f7d",
+    "link": "https://www.myscheme.gov.in/schemes/ipshaaciec",
+    "title": "Investment Promotion Scheme (IPS) For Handicraft Artisans: Assistance For Capital Investment To Uplift The Economic Condition Of Artisans/ Persons",
+    "distinctCeilings": [
+      200000,
+      250000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 200000,
+        "sourceSentence": "Applicant’s annual income should be upto ₹2,00,000/- for rural areas and upto ₹2,50,000/- in urban areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 250000,
+        "sourceSentence": "Applicant’s annual income should be upto ₹2,00,000/- for rural areas and upto ₹2,50,000/- in urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a Handloom and Handicrafts artisan.",
+      "The applicant should be a resident of the U.T. of Dadra and Nagar Haveli & Daman and Diu.",
+      "The applicant should be above 18 years of age.",
+      "The applicant should belong to the SC/ST/OBC/EWS communities.",
+      "The applicant should be engaged in 27 different activities, as mentioned in the Official Guidelines (Refer page no. 47 & 48 of the document).",
+      "Applicant’s annual income should be upto ₹2,00,000/- for rural areas and upto ₹2,50,000/- in urban areas."
+    ]
+  },
+  {
+    "schemeId": "d2b61207-4bcc-46cc-bf21-c55a447d922a",
+    "link": "https://www.myscheme.gov.in/schemes/cbts",
+    "title": "Community Based Training Scheme",
+    "distinctCeilings": [
+      96000,
+      103000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 103000,
+        "sourceSentence": "The annual income of the applicant's family from all sources should be less than ₹1,03,000/- in urban areas and less than ₹96,000/- in rural areas.",
+        "likelyCategoryLabel": "The applicant's age should be between 18 to 35 years."
+      },
+      {
+        "valueAnnual": 96000,
+        "sourceSentence": "The annual income of the applicant's family from all sources should be less than ₹1,03,000/- in urban areas and less than ₹96,000/- in rural areas.",
+        "likelyCategoryLabel": "The applicant's age should be between 18 to 35 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should belong to the religious minority community of the state.",
+      "The applicant should be a permanent resident of Karnataka.",
+      "The applicant's age should be between 18 to 35 years.",
+      "The annual income of the applicant's family from all sources should be less than ₹1,03,000/- in urban areas and less than ₹96,000/- in rural areas.",
+      "The selected applicants should compulsorily complete the training.",
+      "The applicant must have a minimum qualification of SSLC.",
+      "The applicant should not have previously taken training in any schemes of the state or central government."
+    ]
+  },
+  {
+    "schemeId": "bd79359c-ca9e-4538-bcf9-b3b36a6c9b78",
+    "link": "https://www.myscheme.gov.in/schemes/sdtk",
+    "title": "Skill Development Training Karnataka",
+    "distinctCeilings": [
+      25000,
+      30000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 30000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      },
+      {
+        "valueAnnual": 25000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be leather artisans.",
+      "The applicant should belongs to sub-castes Arundathiyar, Chammadiya, Chamar, Chambar, Chamagar, Madar, Madig, Madiga, Mini Madig, Jambavalu, Haralayya, Machigar, Mochigar, Mochi, muchi, Telugu Mochi, kamaati mocha, Rohidas, Dhor, kakkayya, Kankayya, Samagara, Samagar, Aadhi Anddra, Aadhi Dravida, Aadhi Karnataka among schedule castes.",
+      "The age of the applicant should be 18 years.",
+      "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+      "The applicant or their family members must not have received benefits from other schemes, except training programs.",
+      "The applicant's family members should not be employed in government or semi-government organizations."
+    ]
+  },
+  {
+    "schemeId": "ec379918-cf76-4943-bc76-ad187da60a7a",
+    "link": "https://www.myscheme.gov.in/schemes/ssmm",
+    "title": "Swavalambi/Sanchari Marata Malige",
+    "distinctCeilings": [
+      25000,
+      30000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 30000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      },
+      {
+        "valueAnnual": 25000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be leather artisans.",
+      "The applicant should belongs to sub-castes Arundathiyar, Chammadiya, Chamar, Chambar, Chamagar, Madar, Madig, Madiga, Mini Madig, Jambavalu, Haralayya, Machigar, Mochigar, Mochi, muchi, Telugu Mochi, kamaati mocha, Rohidas, Dhor, kakkayya, Kankayya, Samagara, Samagar, Aadhi Anddra, Aadhi Dravida, Aadhi Karnataka among scheduled castes.",
+      "The age of the applicant should be 18 years.",
+      "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+      "The applicant or their family members must not have received benefits from other schemes, except training programs.",
+      "The applicant's family members should not be employed in government or semi-government organizations."
+    ]
+  },
+  {
+    "schemeId": "faedf27b-1537-4df9-831c-c14e436d6cfc",
+    "link": "https://www.myscheme.gov.in/schemes/ptstgk",
+    "title": "Providing Tin stalls to Gatai Kamgar",
+    "distinctCeilings": [
+      40000,
+      50000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 40000,
+        "sourceSentence": "If the applicant resides in a rural area, his/her total household income should be less than ₹40,000.",
+        "likelyCategoryLabel": "The applicant should be a resident of Maharashtra."
+      },
+      {
+        "valueAnnual": 50000,
+        "sourceSentence": "If the applicant resides in an urban area, his/her total household income should be less than ₹50,000.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be from a Scheduled Caste.",
+      "The applicant should be a resident of Maharashtra.",
+      "If the applicant resides in a rural area, his/her total household income should be less than ₹40,000.",
+      "If the applicant resides in an urban area, his/her total household income should be less than ₹50,000.",
+      "The applicant should be 18 years or above in age.",
+      "The place where the applicant asking for the stall must be provided on rent/ lease/purchased/official free hand by Gram panchayat, Municipality, Cantonment Board or Municipal corporation or must be of own property of the applicant."
+    ]
+  },
+  {
+    "schemeId": "da0db088-6b43-4080-ba0d-d9f189c4523b",
+    "link": "https://www.myscheme.gov.in/schemes/svstdpc",
+    "title": "Swami Vivekanand Scholarship for Technical Diploma in Professional Courses",
+    "distinctCeilings": [
+      120000,
+      150000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant’s family annual income should not exceed ₹1,20,000 in rural areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 150000,
+        "sourceSentence": "The applicant’s family annual income should not exceed ₹1,50,000 in urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a resident of Gujarat.",
+      "The applicant should be a student.",
+      "The applicant should belong to the Scheduled Tribe (ST) category.",
+      "The applicant should be enrolled in a state government industrial training institute (ITI), or a government-recognized Private ITI, or a recognized one-year professional course.",
+      "The applicant’s family annual income should not exceed ₹1,20,000 in rural areas.",
+      "The applicant’s family annual income should not exceed ₹1,50,000 in urban areas."
+    ]
+  },
+  {
+    "schemeId": "3c72eb5e-a01a-47c2-8a15-55288cc4a687",
+    "link": "https://www.myscheme.gov.in/schemes/rta2009",
+    "title": "Right to Education Act 2009 - Uttarakhand",
+    "distinctCeilings": [
+      55000,
+      80000,
+      450000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 55000,
+        "sourceSentence": "Children from weaker sections: Those whose parents/guardians have an annual income of ₹55,000/- or less, or are BPL card holders.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 450000,
+        "sourceSentence": "Children from disadvantaged classes: SC, ST, and children belonging to the non-creamy layer of OBC, with a family annual income of up to ₹4.5 lakh.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 450000,
+        "sourceSentence": "Children dependent on disabled parents or parents affected by leprosy, with a family annual income of less than ₹4.5 lakh.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 80000,
+        "sourceSentence": "Children dependent on a divorced or widowed mother, with an annual family income of less than ₹80,000/-.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "Children from the following categories will be eligible for admission up to Class 8 in private schools:",
+      "Children from weaker sections: Those whose parents/guardians have an annual income of ₹55,000/- or less, or are BPL card holders.",
+      "Children from disadvantaged classes: SC, ST, and children belonging to the non-creamy layer of OBC, with a family annual income of up to ₹4.5 lakh.",
+      "Orphan children.",
+      "Children with physical disabilities.",
+      "Children living with HIV/AIDS or those dependent on parents who are HIV/AIDS positive.",
+      "Children dependent on disabled parents or parents affected by leprosy, with a family annual income of less than ₹4.5 lakh.",
+      "Children dependent on a divorced or widowed mother, with an annual family income of less than ₹80,000/-."
+    ]
+  },
+  {
+    "schemeId": "9f095302-4019-4d1f-ad49-66505ff24c22",
+    "link": "https://www.myscheme.gov.in/schemes/mpkskkn-d",
+    "title": "Madhya Pradesh Kalakar Evam Sahityakar Kalyan Kosh Niyam- Disability Assistance",
+    "distinctCeilings": [
+      120000,
+      240000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant’s monthly income from all sources, including spouse income, should not exceed ₹10,000.",
+        "likelyCategoryLabel": "The applicant should be 21 years of age or above."
+      },
+      {
+        "valueAnnual": 240000,
+        "sourceSentence": "The total monthly family income, including dependents, should not exceed ₹20,000.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a resident of Madhya Pradesh.",
+      "The applicant should be a physically disabled artist or litterateur.",
+      "The applicant should be 21 years of age or above.",
+      "The applicant’s monthly income from all sources, including spouse income, should not exceed ₹10,000.",
+      "The total monthly family income, including dependents, should not exceed ₹20,000.",
+      "NOTE: Income limits are revised annually with a 6 percent increase for eligibility calculation.",
+      "Exclusions\nThe applicant should not be a government employee.\nThe applicant should not be employed in autonomous or semi-government institutions."
+    ]
+  },
+  {
+    "schemeId": "ac264cd3-1569-4ccf-b908-b988c0ba9a96",
+    "link": "https://www.myscheme.gov.in/schemes/bsg",
+    "title": "Bankable Scheme",
+    "distinctCeilings": [
+      120000,
+      150000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 150000,
+        "sourceSentence": "The applicant's annual income must not exceed ₹1,50,000/- (if residing in urban area) and ₹1,20,000/- (if residing in rural area).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant's annual income must not exceed ₹1,50,000/- (if residing in urban area) and ₹1,20,000/- (if residing in rural area).",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be from a scheduled caste.",
+      "The applicant must be a permanent resident of Gujarat.",
+      "The applicant's age must be between 18 to 60 years.",
+      "The applicant must be unemployed.",
+      "The applicant must be capable of undertaking business activity.",
+      "The applicant must not be a defaulter of any financial institution.",
+      "The applicant's annual income must not exceed ₹1,50,000/- (if residing in urban area) and ₹1,20,000/- (if residing in rural area)."
+    ]
+  },
+  {
+    "schemeId": "7f395ae7-2569-4b82-8b06-c179a5cadd66",
+    "link": "https://www.myscheme.gov.in/schemes/btus",
+    "title": "Bank Tie-Up Scheme",
+    "distinctCeilings": [
+      67649,
+      88756
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 67649,
+        "sourceSentence": "The annual income of the family of the applicant (from all sources) should be ₹ 67,649/- per annum (for rural areas); ₹ 88,756/- per annum (for urban areas).",
+        "likelyCategoryLabel": "The applicant should be from the Scheduled Caste category."
+      },
+      {
+        "valueAnnual": 88756,
+        "sourceSentence": "The annual income of the family of the applicant (from all sources) should be ₹ 67,649/- per annum (for rural areas); ₹ 88,756/- per annum (for urban areas).",
+        "likelyCategoryLabel": "The applicant should be from the Scheduled Caste category."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a citizen of India.",
+      "The applicant should be a domicile / permanent resident of the state of Punjab.",
+      "The applicant should be from Below Poverty Line (BPL).",
+      "The applicant should be from the Scheduled Caste category.",
+      "The annual income of the family of the applicant (from all sources) should be ₹ 67,649/- per annum (for rural areas); ₹ 88,756/- per annum (for urban areas).",
+      "The applicant should not already be availing the benefits of the scheme."
+    ]
+  },
+  {
+    "schemeId": "14544d6f-12c3-4f21-b023-42af3692accb",
+    "link": "https://www.myscheme.gov.in/schemes/alaes",
+    "title": "Artificial Limbs/Assistive Equipments Scheme",
+    "distinctCeilings": [
+      46080,
+      56460
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 46080,
+        "sourceSentence": "The annual income of the applicant or his family is within the definition of the poverty line (currently fixed at Rs. 46,080/- in rural areas and Rs. 56,460/- per family per year in urban areas) will be eligible for the grant.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 56460,
+        "sourceSentence": "The annual income of the applicant or his family is within the definition of the poverty line (currently fixed at Rs. 46,080/- in rural areas and Rs. 56,460/- per family per year in urban areas) will be eligible for the grant.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "Any person with a disability of any age who is the resident of Uttar Pradesh.",
+      "Such person with disability, whose minimum disability is 40% and should be certified by Competent Authority of State Government.",
+      "In the state of mental retardation, the state of the blocked or incomplete development of the mind which is specially characterized by abnormalities of growth, which has been certified by the competent authority.",
+      "Medical Officer has recommended for the artificial limbs / accessories required for Person with Disabilities.",
+      "Such person with disabilities who are not benefited by the Indian Government/State Government/Local Bodies in last three years for equipment. However, for the regular students of any educational institution this limit will be for one year.",
+      "The annual income of the applicant or his family is within the definition of the poverty line (currently fixed at Rs. 46,080/- in rural areas and Rs. 56,460/- per family per year in urban areas) will be eligible for the grant."
+    ]
+  },
+  {
+    "schemeId": "61819ae5-58d9-47c9-9fda-79f51bf591c7",
+    "link": "https://www.myscheme.gov.in/schemes/igsccy",
+    "title": "Indira Gandhi Shehri Credit Card Yojana",
+    "distinctCeilings": [
+      180000,
+      600000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 180000,
+        "sourceSentence": "To get the benefit of this scheme, the monthly income of the applicant should be Rs 15,000/- or less.",
+        "likelyCategoryLabel": "The age of the applicant should be between 18 to 40 years."
+      },
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "The monthly income of the applicant's family should be Rs. 50,000 or less.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be a permanent resident of Rajasthan.",
+      "The age of the applicant should be between 18 to 40 years.",
+      "To get the benefit of this scheme, the monthly income of the applicant should be Rs 15,000/- or less.",
+      "The monthly income of the applicant's family should be Rs. 50,000 or less.",
+      "All those small traders who have been provided with a certificate or identity card by the urban body are also eligible for this scheme.",
+      "Traders left out in the survey or beneficiary Wonder with a recommendation letter from Town Vending Committee will also be eligible for this scheme.",
+      "The vendors selected during the survey will also be eligible for this scheme. (To whom a certificate or identity card has not been issued)"
+    ]
+  },
+  {
+    "schemeId": "2d097e90-07be-4f45-9bc5-948c446636dc",
+    "link": "https://www.myscheme.gov.in/schemes/psftj",
+    "title": "Pension Scheme for the Journalists",
+    "distinctCeilings": [
+      20000,
+      50000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 20000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹20,000/-.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 50000,
+        "sourceSentence": "In any year when the applicant was employed, their income should not exceed ₹50,000/-.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a retired journalist.",
+      "The age of the applicant should be 58 years or above.",
+      "The applicant should have worked full-time for 20 years in one of the posts of teacher, assistant teacher, reporter, photographer, proofreader, or news correspondent.",
+      "10 years of journalism experience is sufficient if the applicant is terminally ill or physically disabled.",
+      "The applicant's annual family income should not exceed ₹20,000/-.",
+      "The applicant received gratuity and pension from previous companies should not exceed ₹30,000/-.",
+      "In any year when the applicant was employed, their income should not exceed ₹50,000/-."
+    ]
+  },
+  {
+    "schemeId": "ab13ab5c-ac79-4af0-83d7-a40f2f14cb80",
+    "link": "https://www.myscheme.gov.in/schemes/tls-cl1mc",
+    "title": "Term Loan Scheme- Credit Line 1 for Minority Community",
+    "distinctCeilings": [
+      98000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98000,
+        "sourceSentence": "The annual family income of the applicant should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 18 and 55 years."
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The annual family income of the applicant should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 18 and 55 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Haryana.",
+      "The age of the applicant should be between 18 and 55 years.",
+      "The annual family income of the applicant should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+      "The applicant should belong to a minority community, i.e., Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains.",
+      "The applicant should have a Parivar Pehchan Patra (PPP ID)."
+    ]
+  },
+  {
+    "schemeId": "a56c2d0b-61e1-4478-9a86-173fc6716636",
+    "link": "https://www.myscheme.gov.in/schemes/msymc",
+    "title": "Mahila Samiriddhi Yojana for Minority Community",
+    "distinctCeilings": [
+      98000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98000,
+        "sourceSentence": "The annual family income of applicant should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The annual family income of applicant should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Haryana.",
+      "The age of the applicant should be between 16 to 45 years.",
+      "The applicant should be a woman.",
+      "The applicant should belong to Minority Community i.e. Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains.",
+      "The annual family income of applicant should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+      "The applicant should have relevant educational/technical/vocational qualifications/experience and background to avail the loan benefits under this scheme.",
+      "The applicant should have Pariwar Pehchan Patra (PPP ID)."
+    ]
+  },
+  {
+    "schemeId": "f1f052f6-0d46-416c-816d-8b21d4ad9ddb",
+    "link": "https://www.myscheme.gov.in/schemes/vpls",
+    "title": "Vrutti Protsaha Loan Scheme",
+    "distinctCeilings": [
+      81000,
+      103000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 103000,
+        "sourceSentence": "The annual income of the applicant's family from all sources should be less than ₹1,03,000/- in urban areas and less than ₹81,000/- in rural areas.",
+        "likelyCategoryLabel": "The age limit should be between 18 to 55 years."
+      },
+      {
+        "valueAnnual": 81000,
+        "sourceSentence": "The annual income of the applicant's family from all sources should be less than ₹1,03,000/- in urban areas and less than ₹81,000/- in rural areas.",
+        "likelyCategoryLabel": "The age limit should be between 18 to 55 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should belong to a religious minority community as defined in the Government Order.",
+      "The applicant should be a permanent resident of Karnataka.",
+      "The age limit should be between 18 to 55 years.",
+      "The annual income of the applicant's family from all sources should be less than ₹1,03,000/- in urban areas and less than ₹81,000/- in rural areas.",
+      "No member of the applicant's family shall be an employee of the State/Central/ Government PSU.",
+      "The applicant and family members should not have availed of benefits under any other scheme (Excluding the Arivu Scheme) of the KMDCL in the last 5 years."
+    ]
+  },
+  {
+    "schemeId": "904e22ad-5f35-4f29-8515-7fa9aa567ad5",
+    "link": "https://www.myscheme.gov.in/schemes/tls",
+    "title": "Term Loan Scheme",
+    "distinctCeilings": [
+      98000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98000,
+        "sourceSentence": "Income should be below ₹98,000 for rural areas.",
+        "likelyCategoryLabel": "For the NSFDC Scheme:"
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "Income should be below ₹1,20,000 for urban areas.",
+        "likelyCategoryLabel": "Income should be below ₹98,000 for rural areas."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Maharashtra.",
+      "The applicant should belong to the Charmakar Community.",
+      "The applicant's age should be between 18 and 50 years.",
+      "For the 50% Subsidy Scheme and Margin Money, the applicant's annual income should be below the poverty line.",
+      "The applicant should be able to provide an Income and Caste Certificate from an authorized government officer.",
+      "The applicant should have knowledge of the business for which they are applying for the loan.",
+      "For the NSFDC Scheme:",
+      "Income should be below ₹98,000 for rural areas.",
+      "Income should be below ₹1,20,000 for urban areas."
+    ]
+  },
+  {
+    "schemeId": "6e40e8c8-62bc-4547-8a91-0b82e6b5619f",
+    "link": "https://www.myscheme.gov.in/schemes/sssscm",
+    "title": "Scholarship Scheme of Sainik School Chhingchhip, Mizoram",
+    "distinctCeilings": [
+      600000,
+      1200000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 1200000,
+        "sourceSentence": "For Scheduled Caste (SC) and Scheduled Tribe (ST): The income of the parent/guardian should not exceed ₹1,00,000/- (One lakh) per month.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "For General Category: The income of the parent/guardian should not exceed ₹50,000/- (Fifty Thousand) per month.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should belong to Mizoram State only.",
+      "The applicant must qualify in the Annual Entrance examination conducted by the All India Sainik School Society.",
+      "The applicant must be admitted to Sainik School Chhingchhip, Mizoram.",
+      "The applicant must not be covered under any other Scholarship scheme.",
+      "The applicant must submit Income certificates/salary certificates at the time of admission for the grant of scholarship.",
+      "For Scheduled Caste (SC) and Scheduled Tribe (ST): The income of the parent/guardian should not exceed ₹1,00,000/- (One lakh) per month.",
+      "For General Category: The income of the parent/guardian should not exceed ₹50,000/- (Fifty Thousand) per month.",
+      "The applicant must not be more than one child of the same parents’/guardians eligible for the said scheme.",
+      "*The scholarship will be discontinued if the cadet is found medically unfit for entry into the National Defence Academy.",
+      "*The scholarship will be cancelled and the amount recovered if the student is found to have obtained the scholarship by false statements, and the student will be blacklisted forever.",
+      "*The student is liable to refund the scholarship amount if they discontinue the studies for which the scholarship was awarded during the course of the year."
+    ]
+  },
+  {
+    "schemeId": "448d8b1d-4db6-4bcd-b57e-87546d9c8a29",
+    "link": "https://www.myscheme.gov.in/schemes/giah",
+    "title": "Grant In Aid Hostels",
+    "distinctCeilings": [
+      120000,
+      150000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant’s family annual income must be up to ₹1,20,000/- for rural area.",
+        "likelyCategoryLabel": "The applicant must be studying in standard 5th to 12th."
+      },
+      {
+        "valueAnnual": 150000,
+        "sourceSentence": "The applicant’s family annual income must be up to ₹1,50,000/- for urban area.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "For the Student",
+      "The applicant must be a student.",
+      "The applicant must be from a Scheduled Tribe.",
+      "The applicant must be studying in standard 5th to 12th.",
+      "The applicant’s family annual income must be up to ₹1,20,000/- for rural area.",
+      "The applicant’s family annual income must be up to ₹1,50,000/- for urban area.",
+      "For the Institution",
+      "The applicant must be a voluntary institution.",
+      "The applicant must be registered under one of the following acts: Public Trusts Act 1950, Societies Registration Act 1860",
+      "The applicant organization must have a bank balance (liquidity/working capital) certificate showing an amount exceeding ₹15,000/-.",
+      "The building must be suitable and equipped with complete facilities, including water and electricity, and available at the demanded site for the hostel.",
+      "Preference/Priority",
+      "Preference must be given to selecting hostels only in places where there is currently no hostel facility.",
+      "Priority should be given to backward and remote areas during hostel selection."
+    ]
+  },
+  {
+    "schemeId": "ab342df3-6b4f-4c67-bfd6-250e53306c5b",
+    "link": "https://www.myscheme.gov.in/schemes/lopssc",
+    "title": "Livelihood Opportunity Promotion Scheme (Scheduled Caste)",
+    "distinctCeilings": [
+      105600,
+      129840
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 105600,
+        "sourceSentence": "The applicant’s annual income must not exceed ₹1,05,600/- for rural areas and ₹1,29,840/- for urban areas.",
+        "likelyCategoryLabel": "The applicant’s age must be between 18 and 50 years."
+      },
+      {
+        "valueAnnual": 129840,
+        "sourceSentence": "The applicant’s annual income must not exceed ₹1,05,600/- for rural areas and ₹1,29,840/- for urban areas.",
+        "likelyCategoryLabel": "The applicant’s age must be between 18 and 50 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be a permanent resident of Uttarakhand.",
+      "The applicant must belong to the Scheduled Caste category.",
+      "The applicant’s age must be between 18 and 50 years.",
+      "The applicant’s annual income must not exceed ₹1,05,600/- for rural areas and ₹1,29,840/- for urban areas."
+    ]
+  },
+  {
+    "schemeId": "5e5b5296-6a7e-49cd-8f20-d468aa0d9190",
+    "link": "https://www.myscheme.gov.in/schemes/mpkskkn-diancal",
+    "title": "Madhya Pradesh Kalakar Evam Sahityakar Kalyan Kosh Niyam- Serious Illness / Accident / Calamity Assistance",
+    "distinctCeilings": [
+      120000,
+      240000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant’s (husband/wife) monthly income should not exceed ₹10,000.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 240000,
+        "sourceSentence": "The total family income should not exceed ₹20,000 per month.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be an artist or a litterateur.",
+      "The applicant should be a resident of Madhya Pradesh.",
+      "The applicant should be suffering from a serious or long-term illness, accident, or calamity.",
+      "The applicant’s (husband/wife) monthly income should not exceed ₹10,000.",
+      "The total family income should not exceed ₹20,000 per month.",
+      "The writer/artist's fully dependent spouse, fully dependent parents, dependent minor brothers and sisters, dependent minor children, dependent widowed daughter, and dependent differently-abled brothers and sisters are eligible to get assistance."
+    ]
+  },
+  {
+    "schemeId": "d258b02d-e7e5-4380-ab40-9ad50f13646c",
+    "link": "https://www.myscheme.gov.in/schemes/spmfaeew",
+    "title": "Scheme to Provide Monthly Financial Assistance to Elderly and Eligible Writers",
+    "distinctCeilings": [
+      120000,
+      150000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant’s annual family income must be below ₹1,20,000 in rural areas and below ₹1,50,000 in urban areas, certified by the Mamlatdar.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 150000,
+        "sourceSentence": "The applicant’s annual family income must be below ₹1,20,000 in rural areas and below ₹1,50,000 in urban areas, certified by the Mamlatdar.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be 60 years or older.",
+      "The applicant must have made a significant literary contribution (e.g., authored books, received awards, or provided literary service).",
+      "The applicant must belong to one of the recognized language academies: Gujarati, Hindi, Sanskrit, Sindhi, Urdu, or Kutchi.",
+      "The applicant’s annual family income must be below ₹1,20,000 in rural areas and below ₹1,50,000 in urban areas, certified by the Mamlatdar.",
+      "The applicant must not be receiving any pension.",
+      "The applicant must not already be receiving financial support under similar schemes."
+    ]
+  },
+  {
+    "schemeId": "8f8f9ef2-cf14-434a-b97c-b71647fd6701",
+    "link": "https://www.myscheme.gov.in/schemes/dsmfc",
+    "title": "Distribution of Sewing Machines at Free of Cost",
+    "distinctCeilings": [
+      40000,
+      60000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 40000,
+        "sourceSentence": "Annual income should not exceed ₹40,000/- in rural areas and ₹60,000/- in urban areas.",
+        "likelyCategoryLabel": "The beneficiary should possess tailoring knowledge."
+      },
+      {
+        "valueAnnual": 60000,
+        "sourceSentence": "Annual income should not exceed ₹40,000/- in rural areas and ₹60,000/- in urban areas.",
+        "likelyCategoryLabel": "The beneficiary should possess tailoring knowledge."
+      }
+    ],
+    "fullRawText": [
+      "The beneficiary should be a resident of Tamil Nadu.",
+      "The beneficiary should belong to Backward Classes (BC)/ Most Backward Classes (MBC)/ and Denotified Communities (DNCs).",
+      "The beneficiary should possess tailoring knowledge.",
+      "Annual income should not exceed ₹40,000/- in rural areas and ₹60,000/- in urban areas.",
+      "The beneficiary should be between 20-45 years of age."
+    ]
+  },
+  {
+    "schemeId": "3d8cd9f5-d52f-422c-96be-98eeee264767",
+    "link": "https://www.myscheme.gov.in/schemes/upoaps",
+    "title": "Uttar Pradesh Old Age Pension Scheme",
+    "distinctCeilings": [
+      46080,
+      56460
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 46080,
+        "sourceSentence": "Applicant should be below poverty line or his/her annual income should be upto for Rural Areas Rs. 46,080/- and Urban Areas Rs. 56,460/-.",
+        "likelyCategoryLabel": "Age should be between 60 to 150."
+      },
+      {
+        "valueAnnual": 56460,
+        "sourceSentence": "Applicant should be below poverty line or his/her annual income should be upto for Rural Areas Rs. 46,080/- and Urban Areas Rs. 56,460/-.",
+        "likelyCategoryLabel": "Age should be between 60 to 150."
+      }
+    ],
+    "fullRawText": [
+      "Eligibility",
+      "Age should be between 60 to 150.",
+      "Applicant should be below poverty line or his/her annual income should be upto for Rural Areas Rs. 46,080/- and Urban Areas Rs. 56,460/-."
+    ]
+  },
+  {
+    "schemeId": "244e0da6-0475-416a-8870-6edb6c3f1aff",
+    "link": "https://www.myscheme.gov.in/schemes/tfefvs",
+    "title": "Tuition Fees And Examination Fees To Vjnt Students",
+    "distinctCeilings": [
+      100000,
+      450000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 100000,
+        "sourceSentence": "Reimbursement will be sanctioned to the students, whose parents' income is between ₹ 1,00,000 to ₹ 4,50,000.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 450000,
+        "sourceSentence": "Reimbursement will be sanctioned to the students, whose parents' income is between ₹ 1,00,000 to ₹ 4,50,000.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "He should belong to the Vimukta Jatis & Nomadic Tribes(VJNT) category.",
+      "Reimbursement will be sanctioned to the students, whose parents' income is between ₹ 1,00,000 to ₹ 4,50,000."
+    ]
+  },
+  {
+    "schemeId": "f0752fb8-00db-4dd8-bd92-249266ce3203",
+    "link": "https://www.myscheme.gov.in/schemes/tlscl2mc",
+    "title": "Term Loan Scheme- Credit Line 2 for Minority Community",
+    "distinctCeilings": [
+      98001,
+      120001,
+      800000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98001,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- and ₹8,00,000/- in rural areas and between ₹1,20,001/- and ₹8,00,000/- in urban areas.",
+        "likelyCategoryLabel": "The applicant should be between 18 and 55 years of age."
+      },
+      {
+        "valueAnnual": 800000,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- and ₹8,00,000/- in rural areas and between ₹1,20,001/- and ₹8,00,000/- in urban areas.",
+        "likelyCategoryLabel": "The applicant should be between 18 and 55 years of age."
+      },
+      {
+        "valueAnnual": 120001,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- and ₹8,00,000/- in rural areas and between ₹1,20,001/- and ₹8,00,000/- in urban areas.",
+        "likelyCategoryLabel": "The applicant should be between 18 and 55 years of age."
+      },
+      {
+        "valueAnnual": 800000,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- and ₹8,00,000/- in rural areas and between ₹1,20,001/- and ₹8,00,000/- in urban areas.",
+        "likelyCategoryLabel": "The applicant should be between 18 and 55 years of age."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Haryana.",
+      "The applicant should be between 18 and 55 years of age.",
+      "The annual family income of the applicant should be between ₹98,001/- and ₹8,00,000/- in rural areas and between ₹1,20,001/- and ₹8,00,000/- in urban areas.",
+      "The applicant should belong to a minority community, i.e., Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains.",
+      "The applicant should have a Parivar Pehchan Patra (PPP ID)."
+    ]
+  },
+  {
+    "schemeId": "c8efe33b-356c-4c3f-a31d-31137f888671",
+    "link": "https://www.myscheme.gov.in/schemes/els-cl1mc",
+    "title": "Education Loan Scheme- Credit Line 1 for Minority Community",
+    "distinctCeilings": [
+      98000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98000,
+        "sourceSentence": "The annual family income of the applicant should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+        "likelyCategoryLabel": "The applicant should be between 16 and 32 years old."
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The annual family income of the applicant should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+        "likelyCategoryLabel": "The applicant should be between 16 and 32 years old."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Haryana.",
+      "The applicant should be between 16 and 32 years old.",
+      "The annual family income of the applicant should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+      "The applicant should belong to a minority community, i.e. Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains.",
+      "The applicant should have obtained admission to any professional and technical course approved by an appropriate agency such as AICTE, Medical Council of India, UGC, etc., in a duly accredited/recognized institute.",
+      "The applicant must have secured a minimum of 50% marks in the qualifying exam i.e., the exam whose qualification is a pre-requisite for the course.",
+      "The applicant should have a Parivaar Pehchan Patra (PPP ID)."
+    ]
+  },
+  {
+    "schemeId": "7826c1e7-370e-4ca4-af60-1ec01ab8d156",
+    "link": "https://www.myscheme.gov.in/schemes/cts-maharashtra",
+    "title": "Craftsman Training Scheme - Maharashtra",
+    "distinctCeilings": [
+      250000,
+      800000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 800000,
+        "sourceSentence": "The annual income of parents should not exceed ₹8,00,000/-.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 250000,
+        "sourceSentence": "SC trainees with an annual income of less than ₹2,50,000/- are also eligible for the Post Matric Scholarship.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a resident of Maharashtra state.",
+      "The applicant should belong to Scheduled Castes, Scheduled Tribes, Freed Castes and Nomadic Tribes, Other Backward Classes, Special Backward Classes, Minority Communities and Open Category economically backward",
+      "The annual income of parents should not exceed ₹8,00,000/-.",
+      "Only two siblings within a family are eligible for this benefit.",
+      "The trainee should maintain an average of 80% attendance.",
+      "The trainee should be passing the first year to enroll in a 2-year trade.",
+      "SC trainees with an annual income of less than ₹2,50,000/- are also eligible for the Post Matric Scholarship.",
+      "Trainees suspended or found non-eligible for the All India Trade Test (AITT) will not qualify.",
+      "Trainees who have left the GITI are not eligible from their date of departure.",
+      "Trainees in PITI are ineligible for this scheme."
+    ]
+  },
+  {
+    "schemeId": "9fbda28b-f937-4f6c-a49f-43999d3ea512",
+    "link": "https://www.myscheme.gov.in/schemes/mcf",
+    "title": "Micro Credit Finance",
+    "distinctCeilings": [
+      98000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98000,
+        "sourceSentence": "For the NSFDC Scheme, the annual income should be ₹98,000 for rural areas and ₹1,20,000 for urban areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "For the NSFDC Scheme, the annual income should be ₹98,000 for rural areas and ₹1,20,000 for urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should belong to the Charmakar Community.",
+      "The applicant should be between 18 to 50 years of age.",
+      "The applicant should be a permanent resident of Maharashtra.",
+      "The applicant should belong to a Below Poverty Line (BPL) category.",
+      "The applicant should be able to provide an Income and Caste Certificate from an authorized government officer.",
+      "The applicant must have knowledge of the business for which they are applying for the loan.",
+      "For the 50% Subsidy Scheme and Margin Money, the annual income must be below the poverty line.",
+      "For the NSFDC Scheme, the annual income should be ₹98,000 for rural areas and ₹1,20,000 for urban areas."
+    ]
+  },
+  {
+    "schemeId": "4c96931c-d1f2-467c-bedf-e3aa91573505",
+    "link": "https://www.myscheme.gov.in/schemes/gspsg",
+    "title": "Ganga Swarupa Pension Scheme",
+    "distinctCeilings": [
+      120000,
+      150000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant’s annual income must not exceed ₹1,20,000/- in rural areas and ₹1,50,000/- in urban areas.",
+        "likelyCategoryLabel": "The applicant must be aged 18 years or above."
+      },
+      {
+        "valueAnnual": 150000,
+        "sourceSentence": "The applicant’s annual income must not exceed ₹1,20,000/- in rural areas and ₹1,50,000/- in urban areas.",
+        "likelyCategoryLabel": "The applicant must be aged 18 years or above."
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be a resident of Gujarat.",
+      "The applicant must be a widowed woman.",
+      "The applicant must be aged 18 years or above.",
+      "The applicant’s annual income must not exceed ₹1,20,000/- in rural areas and ₹1,50,000/- in urban areas."
+    ]
+  },
+  {
+    "schemeId": "29bdb0d5-4387-4b72-9627-966fb2843c73",
+    "link": "https://www.myscheme.gov.in/schemes/bls",
+    "title": "Big Loan Scheme",
+    "distinctCeilings": [
+      120000,
+      600000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The annual family income of the applicant under Scheduled Castes, Other Backward Classes, and Minority categories should not exceed ₹1,20,000/- per annum.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "For the creamy layer of the Minority category, the maximum income ceiling is ₹6,00,000/- per annum.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Delhi.",
+      "The applicant’s age should be between 18 and 50 years.",
+      "The applicant should be from one of the following target groups - Scheduled Castes, Other Backward Classes, Minorities, Safai Karamcharis, and Persons with Disabilities.",
+      "The annual family income of the applicant under Scheduled Castes, Other Backward Classes, and Minority categories should not exceed ₹1,20,000/- per annum.",
+      "For the creamy layer of the Minority category, the maximum income ceiling is ₹6,00,000/- per annum.",
+      "There is no income limit under Persons with Disabilities and Safai Karamchari categories.",
+      "The applicant should not have been declared a defaulter under any scheme of DSFDC, Nationalized Bank, Financial Institution, or Co-operative Bank.",
+      "The applicant should possess knowledge and experience as per the requirement of the scheme.",
+      "The applicant must have valid permissions like SSI Certificate, Pollution Control Certificate, or any other required permissions for setting up the Business/Industry (Manufacturing Unit) if required on a case-to-case basis.",
+      "The loan is provided for setting up of Income Generating Activities under the permissible non-polluting trades approved in Delhi. However for manufacturing units, the work place should be in approved industrial area."
+    ]
+  },
+  {
+    "schemeId": "d4e61925-c949-4010-b04a-d68add0d3f07",
+    "link": "https://www.myscheme.gov.in/schemes/aldspsl",
+    "title": "Union Territory of Lakshadweep Pension Scheme for Abandoned Ladies/Destitute",
+    "distinctCeilings": [
+      18000,
+      216000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 18000,
+        "sourceSentence": "The applicant should either have no source of income or a nominal income not exceeding ₹1,500/- per month (₹18,000/- per annum).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 216000,
+        "sourceSentence": "The applicant should either have no source of income or a nominal income not exceeding ₹1,500/- per month (₹18,000/- per annum).",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of the Union Territory of Lakshadweep.",
+      "The applicant should be a divorced, abandoned, or destitute woman.",
+      "The applicant should not have remarried after separation or abandonment.",
+      "The applicant should either have no source of income or a nominal income not exceeding ₹1,500/- per month (₹18,000/- per annum).",
+      "The applicant should not be a beneficiary of any other similar pension scheme provided by the government."
+    ]
+  },
+  {
+    "schemeId": "21672cb8-cfb2-4a16-aee4-feb6bac73398",
+    "link": "https://www.myscheme.gov.in/schemes/lopsd",
+    "title": "Livelihood Opportunity Promotion Scheme (Disabled)",
+    "distinctCeilings": [
+      160000,
+      200000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 200000,
+        "sourceSentence": "The applicant’s annual family income must not exceed ₹2,00,000 in urban areas and ₹1,60,000/- in rural areas.",
+        "likelyCategoryLabel": "The applicant must possess a minimum of 40% disability."
+      },
+      {
+        "valueAnnual": 160000,
+        "sourceSentence": "The applicant’s annual family income must not exceed ₹2,00,000 in urban areas and ₹1,60,000/- in rural areas.",
+        "likelyCategoryLabel": "The applicant must possess a minimum of 40% disability."
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be a permanent resident of Uttarakhand.",
+      "The applicant must possess a minimum of 40% disability.",
+      "The applicant’s annual family income must not exceed ₹2,00,000 in urban areas and ₹1,60,000/- in rural areas.",
+      "The applicant’s age must be between 18 and 50 years."
+    ]
+  },
+  {
+    "schemeId": "a9f3f6e2-03c8-4667-a672-5e68923bc084",
+    "link": "https://www.myscheme.gov.in/schemes/iofhs",
+    "title": "Issuance of Free House Sites",
+    "distinctCeilings": [
+      40000,
+      60000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 40000,
+        "sourceSentence": "Annual income should not exceed ₹40,000/- in rural areas and ₹60,000/- in urban areas.",
+        "likelyCategoryLabel": "The beneficiary should not own any house or house site."
+      },
+      {
+        "valueAnnual": 60000,
+        "sourceSentence": "Annual income should not exceed ₹40,000/- in rural areas and ₹60,000/- in urban areas.",
+        "likelyCategoryLabel": "The beneficiary should not own any house or house site."
+      }
+    ],
+    "fullRawText": [
+      "The beneficiary should be a resident of Tamil Nadu.",
+      "The beneficiary should belong to Backward Classes (BC)/ Most Backward Classes (MBC)/ and Denotified Communities (DNCs).",
+      "The beneficiary should not own any house or house site.",
+      "Annual income should not exceed ₹40,000/- in rural areas and ₹60,000/- in urban areas."
+    ]
+  },
+  {
+    "schemeId": "927099c6-7ef5-4f12-805a-d62f067655a9",
+    "link": "https://www.myscheme.gov.in/schemes/safaew-bcew",
+    "title": "Financial Assistance for Education to the Wards of Beedi/Cine/IOMC/LSDM Workers – Pre & Post-Matric",
+    "distinctCeilings": [
+      96000,
+      1200000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 96000,
+        "sourceSentence": "c)   Cine workers - \"An amount not exceeding Rs.8,000/- per month where such amount is paid monthly or an amount not exceeding Rs.1,00,000/- where it is paid by way of lump sum or instalments; as remuneration of a cine worker for the purpose of this Act.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 1200000,
+        "sourceSentence": "c)   Cine workers - \"An amount not exceeding Rs.8,000/- per month where such amount is paid monthly or an amount not exceeding Rs.1,00,000/- where it is paid by way of lump sum or instalments; as remuneration of a cine worker for the purpose of this Act.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "Either of the parents of the students should be Beedi, Iron Ore Manganese & Chrome Ore Mines, Limestone & Dolomite Mines, Cine worker with at least six months service. This also includes Contract/Gharkhata (Home Based) workers also.",
+      "Total monthly Income of the Worker's family from all sources should not exceed as under:",
+      "Beedi Workers: Rs.10,000/-",
+      "Mine Workers:",
+      "a)   The Mine workers doing manual, unskilled, highly skilled and clerical work are eligible for availing all facilities under different welfare schemes of Labour Welfare Organization irrespective of the wages paid to them.",
+      "b)   The persons employed in supervisory and managerial capacity are eligible for availing the facilities under different welfare schemes subject to the wage limit of Rs.10,000/- per month.",
+      "facilities under different welfare schemes of Labour Welfare Organization irrespective of the wages paid to them.",
+      "c)   Cine workers - \"An amount not exceeding Rs.8,000/- per month where such amount is paid monthly or an amount not exceeding Rs.1,00,000/- where it is paid by way of lump sum or instalments; as remuneration of a cine worker for the purpose of this Act.",
+      "The Applicant must have passed the last qualifying examination in first attempt. However, Students promoted to the next class are also eligible to apply for the above scholarships.",
+      "Candidates for the award of scholarships should have taken regular admission for studies at recognized institutions in India in any course of general or technical education, including medical, engineering and agricultural studies.",
+      "The Educational Institute must be Government/Government Recognized Institute.",
+      "The Scholar should have separate bank account. In case of Joint Account, the first name should be of the Scholar.",
+      "More than one child of the same worker also should furnish separate bank account number.",
+      "Each Scholar is required to furnish separate Mobile Number."
+    ]
+  },
+  {
+    "schemeId": "4d807482-3bf5-45ab-827e-d33cfc4a8d11",
+    "link": "https://www.myscheme.gov.in/schemes/dpyup",
+    "title": "Divyang Pension Yojana",
+    "distinctCeilings": [
+      46080,
+      56460
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 46080,
+        "sourceSentence": "The annual income of the applicant or his family is within the definition of the poverty line (currently fixed at Rs. 46,080/- in rural areas and Rs. 56,460/- per family per year in urban areas) will be eligible for the grant.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 56460,
+        "sourceSentence": "The annual income of the applicant or his family is within the definition of the poverty line (currently fixed at Rs. 46,080/- in rural areas and Rs. 56,460/- per family per year in urban areas) will be eligible for the grant.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The age of the applicant should be 18 years or more.",
+      "Applicant must be a permanent resident of Uttar Pradesh.",
+      "Should have a minimum of 40 percent disability.",
+      "The person getting pension/grant/assistance under the applicant's old age pension, widow pension, socialist pension or any other similar scheme and the person receiving free maintenance in government institutions/homes should not be eligible.",
+      "The annual income of the applicant or his family is within the definition of the poverty line (currently fixed at Rs. 46,080/- in rural areas and Rs. 56,460/- per family per year in urban areas) will be eligible for the grant."
+    ]
+  },
+  {
+    "schemeId": "cea6cdf4-131c-4490-8367-18bb8dfdfdf8",
+    "link": "https://www.myscheme.gov.in/schemes/mksyodisha",
+    "title": "Mukhyamantri Kalakar Sahayata Yojana",
+    "distinctCeilings": [
+      50000,
+      60000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 50000,
+        "sourceSentence": "The annual income of the artist shall not exceed ₹50,000/- only for the artists belonging to the Rural Area and ₹60,000/- only for the artists belonging to the Urban Area or as may further be determined by the Government from time to time.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 60000,
+        "sourceSentence": "The annual income of the artist shall not exceed ₹50,000/- only for the artists belonging to the Rural Area and ₹60,000/- only for the artists belonging to the Urban Area or as may further be determined by the Government from time to time.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "An artist in order to be eligible for the assistance shall be of a minimum of 50 years of age in the case of males and 40 years and above in the case of female artists.",
+      "The annual income of the artist shall not exceed ₹50,000/- only for the artists belonging to the Rural Area and ₹60,000/- only for the artists belonging to the Urban Area or as may further be determined by the Government from time to time.",
+      "An artist covered under this scheme will not be eligible for similar benefits under any other scheme of the Government.",
+      "Note: Each year in the month of April, the beneficiary shall furnish his/her Life Certificate in the prescribed Form signed by any Member of Parliament/Member of the Legislative Assembly/any Gazetted Government Officer /Chairman of ULBs/Chairman of any Panchayat Samiti.",
+      "Cancellation of Pension:",
+      "On his/her death",
+      "On the satisfaction of the Government that information furnished to the District Level Selection Committee in pursuance was either erroneous, false or inconclusive (or)",
+      "On the determination by the Government that the beneficiary has indulged in activities prejudicial to the public interest or public order (or)",
+      "On his/her ceasing to have the eligibility",
+      "Non-submission of Life Certificate within the prescribed date line during each year."
+    ]
+  },
+  {
+    "schemeId": "2310c7fa-bd70-432f-b0a6-78e38d84ea0a",
+    "link": "https://www.myscheme.gov.in/schemes/sasseceie",
+    "title": "Scheme for Award of Scholarships to School or College-Going Children of Employees/Industrial Employees in Various Establishments",
+    "distinctCeilings": [
+      42000,
+      240000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 240000,
+        "sourceSentence": "The total income of the applicant from the salary should not exceed ₹20,000 per month, including all allowances and perks but exclusive of bonus.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 42000,
+        "sourceSentence": "Children of Workers With Income, From All Sources, Not Exceeding ₹3,500 Per Month.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "For the Worker",
+      "The applicant should be a regular worker.",
+      "The applicant should be employed in an industrial establishment for at least six months.",
+      "The industrial establishment should be covered under the Goa, Daman & Diu Labour Welfare Fund Act, 1986.",
+      "The applicant should be performing any skilled or unskilled, manual or clerical labour, other than in a position of supervision or management.",
+      "The total income of the applicant from the salary should not exceed ₹20,000 per month, including all allowances and perks but exclusive of bonus.",
+      "For the Child",
+      "The child of the applicant should be enrolled in a recognized institution in India.",
+      "The child of the applicant should be pursuing general or technical education, including medical, engineering and agricultural studies.",
+      "The child of the applicant should have qualified for promotion in the last annual examination with at least 45% marks.",
+      "Preference/Relaxation/Reservation/Priority",
+      "10% of the total number of scholarships fixed for each group shall be reserved for the following -",
+      "Children of Workers With Income, From All Sources, Not Exceeding ₹3,500 Per Month.",
+      "Children Belonging to Other Backward Communities.",
+      "Physically Handicapped Children.",
+      "NOTE 1: Students who are pursuing research work or higher learning in the same professional or academic line shall be eligible for the scholarship, i.e., Doctor of Philosophy (PhD) or Master of Philosophy (M. Phi.) after completing Postgraduate (P.G.) Courses, Doctor of Medicine (M.D.) or Master of Surgery (M.S.) after Bachelor of Medicine, Bachelor of Surgery (M.B.B.S.).",
+      "NOTE 2: Students who receive a scholarship or stipend from any other source will be granted a scholarship to the extent the fund’s scholarship exceeds the other scholarship or stipend."
+    ]
+  },
+  {
+    "schemeId": "28797f5d-0e8c-4fb9-b18a-0fe5d7d9354a",
+    "link": "https://www.myscheme.gov.in/schemes/tls-delhi",
+    "title": "Transport Loan Scheme",
+    "distinctCeilings": [
+      120000,
+      600000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The annual family income of the applicants (under Scheduled Caste, Other Backward Classes & Minority category) from all sources should not exceed ₹1,20,000/- per annum.",
+        "likelyCategoryLabel": "The applicant’s age should be between 18 to 45 years."
+      },
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "For the creamy layer of the Minority category, the maximum income ceiling is ₹6,00,000/- per annum.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be from one of the following target groups - Scheduled Castes, Other Backward Classes, Minorities, and Safai Karamcharis.",
+      "The applicant should be a permanent resident of Delhi.",
+      "The applicant’s age should be between 18 to 45 years.",
+      "The annual family income of the applicants (under Scheduled Caste, Other Backward Classes & Minority category) from all sources should not exceed ₹1,20,000/- per annum.",
+      "For the creamy layer of the Minority category, the maximum income ceiling is ₹6,00,000/- per annum.",
+      "There is no income limit prescribed under the Safai Karamchari category.",
+      "Bonafide valid commercial driving licence & badge required (Light Motor Vehicle).",
+      "The applicant should have not been declared as a defaulter under any scheme of DSFDC, Nationalized Bank, Financial Institution, or Co-operative Bank etc."
+    ]
+  },
+  {
+    "schemeId": "a1597a21-691f-4d0e-8cec-2db8825ba436",
+    "link": "https://www.myscheme.gov.in/schemes/rttsc",
+    "title": "Reimbursement of Tuition Fee and Transport Facility to Scheduled Castes Students Studying in Technical Institutions in Haryana",
+    "distinctCeilings": [
+      250000,
+      350000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 250000,
+        "sourceSentence": "The applicant’s annual parental income should be between ₹2.5 lakh and ₹3.5 lakh for tuition fee reimbursement.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 350000,
+        "sourceSentence": "The applicant’s annual parental income should be between ₹2.5 lakh and ₹3.5 lakh for tuition fee reimbursement.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a Scheduled Caste student of Haryana.",
+      "The student should be enrolled in an AICTE-approved Diploma, Undergraduate, or Postgraduate technical course, including Diploma from Polytechnics, D-Pharmacy, B-Pharmacy, B.Tech., M.E., M.Tech., Ph.D. in Engineering subjects, MBA, or MCA.",
+      "The applicant should be pursuing an AICTE-approved course in a government, private, or aided technical institution approved by the Technical Education Department, Haryana.",
+      "The applicant should be admitted through centralized counselling.",
+      "The applicant’s annual parental income should be between ₹2.5 lakh and ₹3.5 lakh for tuition fee reimbursement.",
+      "The applicant should not be residing in a campus hostel to be eligible for transport facility reimbursement."
+    ]
+  },
+  {
+    "schemeId": "d5f9e5c5-6a40-4f70-9a09-b3cfb486a66d",
+    "link": "https://www.myscheme.gov.in/schemes/oaspsl",
+    "title": "Union Territory of Lakshadweep Pension Scheme for Old Age",
+    "distinctCeilings": [
+      18000,
+      216000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 18000,
+        "sourceSentence": "The applicant’s monthly income should not exceed ₹1,500/- (₹18,000 per annum).",
+        "likelyCategoryLabel": "The applicant should be above 60 years of age."
+      },
+      {
+        "valueAnnual": 216000,
+        "sourceSentence": "The applicant’s monthly income should not exceed ₹1,500/- (₹18,000 per annum).",
+        "likelyCategoryLabel": "The applicant should be above 60 years of age."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of the Union Territory of Lakshadweep.",
+      "The applicant should be above 60 years of age.",
+      "The applicant’s monthly income should not exceed ₹1,500/- (₹18,000 per annum).",
+      "The applicant should not have any source of income.",
+      "The applicant should not be a beneficiary of any other similar pension scheme provided by the government.",
+      "Note: Priority is given to applicants who do not have financial support from family members."
+    ]
+  },
+  {
+    "schemeId": "a457473d-56e8-48e1-a1ce-f901969389ce",
+    "link": "https://www.myscheme.gov.in/schemes/cmhyu",
+    "title": "Mukhyamantri Hunar Yojana",
+    "distinctCeilings": [
+      350000,
+      450000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 350000,
+        "sourceSentence": "The annual family income should not exceed ₹3,50,000/- in rural areas and ₹4,50,000/- in urban areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 450000,
+        "sourceSentence": "The annual family income should not exceed ₹3,50,000/- in rural areas and ₹4,50,000/- in urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be a permanent resident of Uttarakhand.",
+      "The applicant must be a man or woman belonging to a minority community (Muslim, Sikh, Christian, Parsi, Buddhist, or Jain).",
+      "The age of the applicant should be between 18 and 45 years.",
+      "The applicant must have completed education either from a Government school or from a Madrasa.",
+      "For traditional training courses such as sewing, embroidery, plumbing, electronics, knitting, etc., the applicant must be at least Class 5 pass or literate.",
+      "For Information Technology courses (Computer Hardware, Software, Networking, Accounting, etc.), the applicant must have passed at least High School.",
+      "The annual family income should not exceed ₹3,50,000/- in rural areas and ₹4,50,000/- in urban areas."
+    ]
+  },
+  {
+    "schemeId": "8361d80a-7971-4a22-9b37-e388b68d7446",
+    "link": "https://www.myscheme.gov.in/schemes/mcms-ugsvb-aass",
+    "title": "Merit·cum·Means Scholarships For Under Graduate Studies In Various Branches Of Agriculture And Animal Science Subjects",
+    "distinctCeilings": [
+      500,
+      100000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 100000,
+        "sourceSentence": "The applicant should be from a family whose parents' annual income does not exceed ₹1,00,000 to be eligible for the scholarship.",
+        "likelyCategoryLabel": "MEANS TEST"
+      },
+      {
+        "valueAnnual": 100000,
+        "sourceSentence": "The applicant should be aware that if their parents' income exceeds ₹1,00,000 per annum, they will not be eligible for the scholarship but may receive a national prize of ₹500 and a certificate of merit.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 500,
+        "sourceSentence": "The applicant should be aware that if their parents' income exceeds ₹1,00,000 per annum, they will not be eligible for the scholarship but may receive a national prize of ₹500 and a certificate of merit.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should have domiciled in India.",
+      "The applicant should be a student who meets the Means Test condition as defined in the scheme guidelines.",
+      "The applicant should have secured at least 60% marks or equivalent grade points in the qualifying examination.",
+      "The applicant should be considered on inter-se merit in case of a tie, with preference given to those with higher marks in science subjects.",
+      "The applicant should pursue undergraduate studies in Agriculture, Agricultural Engineering, Home Science, Dairy, or Animal Husbandry.",
+      "MEANS TEST",
+      "The applicant should be from a family whose parents' annual income does not exceed ₹1,00,000 to be eligible for the scholarship.",
+      "The applicant should note that there is no provision for a half scholarship under this scheme.",
+      "The applicant should be aware that if their parents' income exceeds ₹1,00,000 per annum, they will not be eligible for the scholarship but may receive a national prize of ₹500 and a certificate of merit."
+    ]
+  },
+  {
+    "schemeId": "b04dbc24-c6a6-4d3a-9b89-16f53deee281",
+    "link": "https://www.myscheme.gov.in/schemes/vay",
+    "title": "Vikramaditya Yojna",
+    "distinctCeilings": [
+      54000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The annual family income of the applicant should not exceed INR 1,20,000 (for higher education) and INR 54,000 (for graduation).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 54000,
+        "sourceSentence": "The annual family income of the applicant should not exceed INR 1,20,000 (for higher education) and INR 54,000 (for graduation).",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant must belong to the General category.",
+      "He/she must have scored at least 60% or more marks in the Class 12 examination.",
+      "The annual family income of the applicant should not exceed INR 1,20,000 (for higher education) and INR 54,000 (for graduation)."
+    ]
+  },
+  {
+    "schemeId": "4ccd329a-c522-447a-8747-e03b0d3ee190",
+    "link": "https://www.myscheme.gov.in/schemes/cmhap",
+    "title": "Chief Minister Housing Assistance Programme",
+    "distinctCeilings": [
+      100000,
+      100001,
+      200000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 100000,
+        "sourceSentence": "The applicant should belong to the Economically Weaker Section (annual income up to ₹1,00,000) or the Low Income Group (income between ₹1,00,001 and ₹2,00,000).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 100001,
+        "sourceSentence": "The applicant should belong to the Economically Weaker Section (annual income up to ₹1,00,000) or the Low Income Group (income between ₹1,00,001 and ₹2,00,000).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 200000,
+        "sourceSentence": "The applicant should belong to the Economically Weaker Section (annual income up to ₹1,00,000) or the Low Income Group (income between ₹1,00,001 and ₹2,00,000).",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a bona fide resident of the State of Meghalaya.",
+      "The applicant should belong to the Economically Weaker Section (annual income up to ₹1,00,000) or the Low Income Group (income between ₹1,00,001 and ₹2,00,000).",
+      "The applicant should be 18 years of age or above.",
+      "The applicant should not have any other member from the same family living under the same roof as a beneficiary under the same scheme.",
+      "The applicant should not own a pucca house in their or any family member's name.",
+      "The applicant should possess their own land (for construction in case of a dwelling house).",
+      "The applicant should submit the EPIC (Electors' Photo Identity Card) or any other valid document as proof of residence.",
+      "The applicant should not have received any previous housing loan or financial aid from any other government source in their or their spouse’s name.",
+      "The applicant should construct the house personally and not through a contractor.",
+      "Exclusions\nHouseholds owning any pucca house in Meghalaya.\nHouseholds that received a prior housing loan/advance from the government."
+    ]
+  },
+  {
+    "schemeId": "1ad7e6fe-c697-4d76-b610-880fc28a0c1a",
+    "link": "https://www.myscheme.gov.in/schemes/nhs-west-bengal",
+    "title": "NIJASHAREE HOUSING SCHEME",
+    "distinctCeilings": [
+      180000,
+      360000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 180000,
+        "sourceSentence": "Monthly family income should be ₹15,000 or less for the Lower Income Group (LIG).",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 360000,
+        "sourceSentence": "Monthly family income should be ₹30,000 or less for the Middle Income Group (MIG).",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "Monthly family income should be ₹15,000 or less for the Lower Income Group (LIG).",
+      "Monthly family income should be ₹30,000 or less for the Middle Income Group (MIG).",
+      "The beneficiary should not have any pucca house/flat in his/her name, or in the name of any family (family includes spouse, unmarried sons or daughters) member in the state.",
+      "The applicant must be an inhabitant of the same district in which the project is to be implemented.",
+      "One applicant can apply for one flat only for his/her family. Any person allotted with a flat in the scheme cannot apply for the same scheme in another project in his/her district.",
+      "Note 01: The selection of beneficiaries and allotment of flats will be done through a transparent lottery in the respective district/sub-division.",
+      "Note 02: The waiting list of the eligible applicants, consisting of 20% of the total flats under each category (i.e. LIG and MIG), will be prepared in case the number of applicants is more than the number of flats in a particular project."
+    ]
+  },
+  {
+    "schemeId": "fb62b8f7-d9c1-4bf3-8ff4-ad87a5f0dd0d",
+    "link": "https://www.myscheme.gov.in/schemes/pmay-u",
+    "title": "Pradhan Mantri Awas Yojana - Urban",
+    "distinctCeilings": [
+      300000,
+      300001,
+      600000,
+      600001,
+      1200000,
+      1200001,
+      1800000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 300000,
+        "sourceSentence": "a)    Economically Weaker Section (EWS): households with annual income up to ₹3,00,000.",
+        "likelyCategoryLabel": "1. The family identifies as one of the following -"
+      },
+      {
+        "valueAnnual": 300001,
+        "sourceSentence": "b)    Low Income Group (LIG): households with annual income between ₹3,00,001 and ₹6,00,000.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "b)    Low Income Group (LIG): households with annual income between ₹3,00,001 and ₹6,00,000.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 600001,
+        "sourceSentence": "c)    Middle Income Group-1 (MIG-1): households with annual income between ₹6,00,001 and ₹12,00,000.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 1200000,
+        "sourceSentence": "c)    Middle Income Group-1 (MIG-1): households with annual income between ₹6,00,001 and ₹12,00,000.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 1200001,
+        "sourceSentence": "d)    Middle Income Group-2 (MIG-2): households with annual income between ₹12,00,001 and ₹18,00,000.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 1800000,
+        "sourceSentence": "d)    Middle Income Group-2 (MIG-2): households with annual income between ₹12,00,001 and ₹18,00,000.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "1. The family identifies as one of the following -",
+      "a)    Economically Weaker Section (EWS): households with annual income up to ₹3,00,000.",
+      "b)    Low Income Group (LIG): households with annual income between ₹3,00,001 and ₹6,00,000.",
+      "c)    Middle Income Group-1 (MIG-1): households with annual income between ₹6,00,001 and ₹12,00,000.",
+      "d)    Middle Income Group-2 (MIG-2): households with annual income between ₹12,00,001 and ₹18,00,000.",
+      "2. The applicant or his/her family members must not own a pucca house in any part of the country.",
+      "3. The family must comprise of husband/wife and unmarried children.",
+      "4. The town/city in which the family resides must be covered under the scheme.",
+      "5. The family MUST NOT have previously availed the benefits of any housing-related schemes set up by the Government of India."
+    ]
+  },
+  {
+    "schemeId": "974f1652-e2c7-41d6-aaaf-74ae0691f394",
+    "link": "https://www.myscheme.gov.in/schemes/ma",
+    "title": "Mukhyamantri Amrutum Yojana",
+    "distinctCeilings": [
+      400000,
+      600000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 400000,
+        "sourceSentence": "The annual income of the family is up to ₹4,00,000/-",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "Senior Citizens with families of a total annual income of up to ₹6,00,000/-",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The individuals and families listed in the BPL list by the State Government are eligible under the MA Yojana. Furthermore, each family member should be present when enrolled under the scheme. However, families that belong marginally above the poverty line can be under the MA Vatsalya Yojana if they follow these criteria –",
+      "The annual income of the family is up to ₹4,00,000/-",
+      "Any member(s) who are Accredited Social Health Activist (ASHA) workers",
+      "Any member(s) who have accredited reporters",
+      "Class-3 and Class-4 employees employed on a fixed payroll by the State Government",
+      "Senior Citizens with families of a total annual income of up to ₹6,00,000/-"
+    ]
+  },
+  {
+    "schemeId": "afaa2cf2-5f48-46f9-9c92-f0e091c184d4",
+    "link": "https://www.myscheme.gov.in/schemes/pmpy",
+    "title": "Palak Mata-Pita Yojana",
+    "distinctCeilings": [
+      27000,
+      36000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 27000,
+        "sourceSentence": "The applicant must have an annual family income not exceeding ₹27,000/- in rural areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 36000,
+        "sourceSentence": "The applicant must have an annual family income not exceeding ₹36,000/- in urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be a close relative, guardian, or foster parent taking care of the child.",
+      "The applicant must be caring for a child aged between 0 to 18 years.",
+      "The applicant must be taking care of a child whose both parents are deceased, or whose father is deceased and mother has remarried.",
+      "The applicant must ensure that the child between 3 to 6 years is enrolled in an Anganwadi center.",
+      "The applicant must ensure that the child above 6 years is enrolled in a school for compulsory education.",
+      "The applicant must submit a certificate from the school or institution every year confirming the child’s ongoing education.",
+      "The applicant must have an annual family income not exceeding ₹27,000/- in rural areas.",
+      "The applicant must have an annual family income not exceeding ₹36,000/- in urban areas."
+    ]
+  },
+  {
+    "schemeId": "b4574eb8-fb32-4d20-97a2-2636c26ba987",
+    "link": "https://www.myscheme.gov.in/schemes/rpsy",
+    "title": "Rashtriya Parivar Sahayata Yojana",
+    "distinctCeilings": [
+      46080,
+      56460
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 46080,
+        "sourceSentence": "The annual family income should not exceed ₹46,080 in rural areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 56460,
+        "sourceSentence": "The annual family income should not exceed ₹56,460 in urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The scheme is applicable in case of the death of the primary earning head of the family (male or female).",
+      "The deceased earning member should be above 18 years and below 60 years of age at the time of death.",
+      "The annual family income should not exceed ₹46,080 in rural areas.",
+      "The annual family income should not exceed ₹56,460 in urban areas.",
+      "The applicant must be a permanent resident of Uttar Pradesh."
+    ]
+  },
+  {
+    "schemeId": "19ca29c0-e2d4-4310-83ed-9b3e59cddc5f",
+    "link": "https://www.myscheme.gov.in/schemes/dbjrlcwscs",
+    "title": "Dr. Babu Jagjivan Ram Living cum work shed Construction Scheme",
+    "distinctCeilings": [
+      32000,
+      87600
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 32000,
+        "sourceSentence": "The applicant's annual income should not exceed ₹32,000/- in rural areas and ₹87,600/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      },
+      {
+        "valueAnnual": 87600,
+        "sourceSentence": "The applicant's annual income should not exceed ₹32,000/- in rural areas and ₹87,600/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be leather artisans.",
+      "The applicant should belongs to sub-castes Arundathiyar, Chammadiya, Chamar, Chambar, Chamagar, Madar, Madig, Madiga, Mini Madig, Jambavalu, Haralayya, Machigar, Mochigar, Mochi, muchi, Telugu Mochi, kamaati mocha, Rohidas, Dhor, kakkayya, Kankayya, Samagara, Samagar, Aadhi Anddra, Aadhi Dravida, Aadhi Karnataka among schedule castes.",
+      "The age of the applicant should be 18 years.",
+      "The applicant's annual income should not exceed ₹32,000/- in rural areas and ₹87,600/- in urban areas.",
+      "The applicant or their family members must not have received benefits from other schemes, except Training/Paaduke kuteera schemes.",
+      "The applicant's family members should not be employed in government or semi-government organizations."
+    ]
+  },
+  {
+    "schemeId": "14e59c94-6ba5-4232-89f6-090d7b3e0056",
+    "link": "https://www.myscheme.gov.in/schemes/mfs-cl2mc",
+    "title": "Micro Finance Scheme- Credit Line 2 for Minority Community",
+    "distinctCeilings": [
+      98001,
+      120001,
+      800000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98001,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001/- to ₹8,00,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 18 and 55 years."
+      },
+      {
+        "valueAnnual": 800000,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001/- to ₹8,00,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 18 and 55 years."
+      },
+      {
+        "valueAnnual": 120001,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001/- to ₹8,00,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 18 and 55 years."
+      },
+      {
+        "valueAnnual": 800000,
+        "sourceSentence": "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001/- to ₹8,00,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 18 and 55 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Haryana.",
+      "The age of the applicant should be between 18 and 55 years.",
+      "The annual family income of the applicant should be between ₹98,001/- to ₹8,00,000/- (Rural Area) and ₹1,20,001/- to ₹8,00,000/- (Urban Area).",
+      "The applicant should belong to a minority community, i.e., Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains.",
+      "In an SHG 75% of members can be from Minority Communities and the remaining 25% members may be from other weaker sections like SC/Handicapped/Minorities etc. in very exceptional cases, groups with up to 60% members belonging to Minority Communities will also be eligible.",
+      "The applicant should have a Parivar Pehchan Patra (PPP ID)."
+    ]
+  },
+  {
+    "schemeId": "92394dd5-6a14-4200-ae58-b7aba392c14a",
+    "link": "https://www.myscheme.gov.in/schemes/mfs-cl1mc",
+    "title": "Micro Finance Scheme- Credit Line 1 for Minority Community",
+    "distinctCeilings": [
+      98000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 18 and 55 years."
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+        "likelyCategoryLabel": "The age of the applicant should be between 18 and 55 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Haryana.",
+      "The age of the applicant should be between 18 and 55 years.",
+      "The applicant's annual family income should not exceed ₹98,000/- (Rural Area) and ₹1,20,000/- (Urban Area).",
+      "The applicant should belong to a minority community, i.e., Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains.",
+      "In an SHG 75% of members can be from Minority Communities and the remaining 25% members may be from other weaker sections like SC/Handicapped/Minorities etc. in very exceptional cases, groups with up to 60% members belonging to Minority Communities will also be eligible.",
+      "The applicant should have a Parivar Pehchan Patra (PPP ID)."
+    ]
+  },
+  {
+    "schemeId": "6c1ffd41-5023-4cf1-9c54-fb80647b0d3d",
+    "link": "https://www.myscheme.gov.in/schemes/kssk",
+    "title": "Kayaka Spoorthi Scheme Karnataka",
+    "distinctCeilings": [
+      25000,
+      30000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 30000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      },
+      {
+        "valueAnnual": 25000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      }
+    ],
+    "fullRawText": [
+      "A Self-Help Group must have at least 10 female artisans to be eligible.",
+      "The applicant should belongs to sub-castes Arundathiyar, Chammadiya, Chamar, Chambar, Chamagar, Madar, Madig, Madiga, Mini Madig, Jambavalu, Haralayya, Machigar, Mochigar, Mochi, muchi, Telugu Mochi, kamaati mocha, Rohidas, Dhor, kakkayya, Kankayya, Samagara, Samagar, Aadhi Anddra, Aadhi Dravida, Aadhi Karnataka among schedule castes.",
+      "The age of the applicant should be 18 years.",
+      "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+      "The applicant or their family members must not have received benefits from other schemes, except training programs.",
+      "The applicant's family members should not be employed in government or semi-government organizations."
+    ]
+  },
+  {
+    "schemeId": "c15e8207-9c7e-42d0-b7be-fb717586c791",
+    "link": "https://www.myscheme.gov.in/schemes/fmaguj",
+    "title": "Free Medical Assistance (Gujarat)",
+    "distinctCeilings": [
+      27000,
+      35000,
+      600000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 600000,
+        "sourceSentence": "The applicant's family income must be less than or equal to ₹6,00,000/-.",
+        "likelyCategoryLabel": "The applicant should belong to a Scheduled Tribe."
+      },
+      {
+        "valueAnnual": 27000,
+        "sourceSentence": "For HIV/AIDS patients, the annual income limit is ₹27,000/- for rural areas and ₹35,000/- for urban areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 35000,
+        "sourceSentence": "For HIV/AIDS patients, the annual income limit is ₹27,000/- for rural areas and ₹35,000/- for urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should belong to Gujarat.",
+      "The applicant should belong to a Scheduled Tribe.",
+      "The applicant's family income must be less than or equal to ₹6,00,000/-.",
+      "For HIV/AIDS patients, the annual income limit is ₹27,000/- for rural areas and ₹35,000/- for urban areas."
+    ]
+  },
+  {
+    "schemeId": "6651b5aa-a4e4-443c-959d-bdc3df072f84",
+    "link": "https://www.myscheme.gov.in/schemes/dibafc",
+    "title": "Distribution of Iron Boxes at Free of Cost",
+    "distinctCeilings": [
+      40000,
+      60000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 40000,
+        "sourceSentence": "Annual income should not exceed ₹40,000/- in rural areas and ₹60,000/- in urban areas.",
+        "likelyCategoryLabel": "The beneficiary should be engaged in washing work."
+      },
+      {
+        "valueAnnual": 60000,
+        "sourceSentence": "Annual income should not exceed ₹40,000/- in rural areas and ₹60,000/- in urban areas.",
+        "likelyCategoryLabel": "The beneficiary should be engaged in washing work."
+      }
+    ],
+    "fullRawText": [
+      "The beneficiary should be a resident of Tamil Nadu.",
+      "The beneficiary should belong to Backward Classes (BC)/ Most Backward Classes (MBC)/ and Denotified Communities (DNCs).",
+      "The beneficiary should be engaged in washing work.",
+      "Annual income should not exceed ₹40,000/- in rural areas and ₹60,000/- in urban areas."
+    ]
+  },
+  {
+    "schemeId": "546ba143-0958-4223-946b-187e8952acdd",
+    "link": "https://www.myscheme.gov.in/schemes/mkym",
+    "title": "Mahila Kisan Yojana (Maharashtra)",
+    "distinctCeilings": [
+      98000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98000,
+        "sourceSentence": "For the NSFDC Scheme, the income limit is ₹98,000 for rural areas and ₹1,20,000 for urban areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "For the NSFDC Scheme, the income limit is ₹98,000 for rural areas and ₹1,20,000 for urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Maharashtra.",
+      "The applicant should be a female.",
+      "The applicant should belong to the Charmakar Community.",
+      "The applicant's age should be between 18 to 50 years.",
+      "The applicant must have knowledge of the business for which they are applying for a loan.",
+      "The applicant must have her own name, or joint name with her husband, or her husband's name (with affidavit) on the 7/12 land extract for agricultural project loans.",
+      "For the 50% Subsidy Scheme and Margin Money, her annual income must be below the poverty line.",
+      "For the NSFDC Scheme, the income limit is ₹98,000 for rural areas and ₹1,20,000 for urban areas."
+    ]
+  },
+  {
+    "schemeId": "2711b3ad-5ff3-48f9-bde8-3069d3f15f16",
+    "link": "https://www.myscheme.gov.in/schemes/lvsh",
+    "title": "Laghu Vyavassay Scheme",
+    "distinctCeilings": [
+      150000,
+      300000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 150000,
+        "sourceSentence": "The income ceiling is atleast 50% of the beneficiaries having annual family income upto ₹1,50,000/- and balance 50% of the beneficiaries having annual family income upto ₹3,00,000/-.",
+        "likelyCategoryLabel": "The applicant should be in the age group of 18 to 45 years."
+      },
+      {
+        "valueAnnual": 300000,
+        "sourceSentence": "The income ceiling is atleast 50% of the beneficiaries having annual family income upto ₹1,50,000/- and balance 50% of the beneficiaries having annual family income upto ₹3,00,000/-.",
+        "likelyCategoryLabel": "The applicant should be in the age group of 18 to 45 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of Haryana.",
+      "The applicant should be from a Scheduled Caste.",
+      "The applicant should be in the age group of 18 to 45 years.",
+      "The income ceiling is atleast 50% of the beneficiaries having annual family income upto ₹1,50,000/- and balance 50% of the beneficiaries having annual family income upto ₹3,00,000/-."
+    ]
+  },
+  {
+    "schemeId": "b3774f17-c217-42a0-8056-768e257aba10",
+    "link": "https://www.myscheme.gov.in/schemes/dlsk",
+    "title": "Direct Loan Scheme Karnataka",
+    "distinctCeilings": [
+      25000,
+      30000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 30000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      },
+      {
+        "valueAnnual": 25000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be leather artisans.",
+      "The applicant should belongs to sub-castes Arundathiyar, Chammadiya, Chamar, Chambar, Chamagar, Madar, Madig, Madiga, Mini Madig, Jambavalu, Haralayya, Machigar, Mochigar, Mochi, muchi, Telugu Mochi, kamaati mocha, Rohidas, Dhor, kakkayya, Kankayya, Samagara, Samagar, Aadhi Anddra, Aadhi Dravida, Aadhi Karnataka among scheduled castes.",
+      "The age of the applicant should be 18 years.",
+      "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+      "The applicant or their family members must not have received benefits from other schemes, except training programs.",
+      "The applicant's family members should not be employed in government or semi-government organizations."
+    ]
+  },
+  {
+    "schemeId": "71678efe-1546-492e-ab72-d65c9f0043ea",
+    "link": "https://www.myscheme.gov.in/schemes/pksk",
+    "title": "Padhuke Kuteera Scheme Karnataka",
+    "distinctCeilings": [
+      25000,
+      30000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 30000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      },
+      {
+        "valueAnnual": 25000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be leather artisans.",
+      "The applicant should belongs to sub-castes Arundathiyar, Chammadiya, Chamar, Chambar, Chamagar, Madar, Madig, Madiga, Mini Madig, Jambavalu, Haralayya, Machigar, Mochigar, Mochi, muchi, Telugu Mochi, kamaati mocha, Rohidas, Dhor, kakkayya, Kankayya, Samagara, Samagar, Aadhi Anddra, Aadhi Dravida, Aadhi Karnataka among scheduled castes.",
+      "The age of the applicant should be 18 years.",
+      "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+      "The applicant or their family members must not have received benefits from other schemes, except training programs.",
+      "The applicant's family members should not be employed in government or semi-government organizations."
+    ]
+  },
+  {
+    "schemeId": "b520f004-d9e0-432e-bd9d-8a81936fb56b",
+    "link": "https://www.myscheme.gov.in/schemes/hpmfd",
+    "title": "Schemes Of HP Minorities Finance & Development Corporation",
+    "distinctCeilings": [
+      98000,
+      120000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 98000,
+        "sourceSentence": "Individuals belonging to minority communities (Sikhs, Muslims, Christians, Buddhists, Jains and Parsis) in the age group of 18 years to 55 years whose annual income is Rs.98,000/- (rural areas) and Rs.1,20,000/- (urban areas) be less than.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 120000,
+        "sourceSentence": "Individuals belonging to minority communities (Sikhs, Muslims, Christians, Buddhists, Jains and Parsis) in the age group of 18 years to 55 years whose annual income is Rs.98,000/- (rural areas) and Rs.1,20,000/- (urban areas) be less than.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "Individuals belonging to minority communities (Sikhs, Muslims, Christians, Buddhists, Jains and Parsis) in the age group of 18 years to 55 years whose annual income is Rs.98,000/- (rural areas) and Rs.1,20,000/- (urban areas) be less than."
+    ]
+  },
+  {
+    "schemeId": "77bf237f-5263-4565-896a-06d84100a008",
+    "link": "https://www.myscheme.gov.in/schemes/sgsscst",
+    "title": "Shilpi Gram Scheme (Scheduled Caste / Scheduled Tribe)",
+    "distinctCeilings": [
+      105600,
+      129840
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 105600,
+        "sourceSentence": "The applicant's annual income should not exceed ₹1,05,600 in rural areas and ₹1,29,840 in urban areas.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 129840,
+        "sourceSentence": "The applicant's annual income should not exceed ₹1,05,600 in rural areas and ₹1,29,840 in urban areas.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant must be a permanent resident of Uttarakhand.",
+      "The applicant must belong to a Scheduled Caste or Scheduled Tribe community.",
+      "The applicant's annual income should not exceed ₹1,05,600 in rural areas and ₹1,29,840 in urban areas."
+    ]
+  },
+  {
+    "schemeId": "1aee186f-38c7-4a3b-8338-2c7f3087ffab",
+    "link": "https://www.myscheme.gov.in/schemes/supk",
+    "title": "Skill Upgradation Program Karnataka",
+    "distinctCeilings": [
+      25000,
+      30000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 30000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      },
+      {
+        "valueAnnual": 25000,
+        "sourceSentence": "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+        "likelyCategoryLabel": "The age of the applicant should be 18 years."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be leather artisans.",
+      "The applicant should belongs to sub-castes Arundathiyar, Chammadiya, Chamar, Chambar, Chamagar, Madar, Madig, Madiga, Mini Madig, Jambavalu, Haralayya, Machigar, Mochigar, Mochi, muchi, Telugu Mochi, kamaati mocha, Rohidas, Dhor, kakkayya, Kankayya, Samagara, Samagar, Aadhi Anddra, Aadhi Dravida, Aadhi Karnataka among schedule castes.",
+      "The applicant should have passed a Secondary School Leaving Certificate (SSLC)/Pre-University Courses (PUC)/Degree to apply for the program.",
+      "The age of the applicant should be 18 years.",
+      "The applicant's annual family income should not exceed ₹30,000/- in rural areas and ₹25,000/- in urban areas.",
+      "The applicant or their family members must not have received benefits from other schemes, except training programs.",
+      "The applicant's family members should not be employed in government or semi-government organizations."
+    ]
+  },
+  {
+    "schemeId": "448a34ab-c618-4279-902f-a5910b4f7d91",
+    "link": "https://www.myscheme.gov.in/schemes/ueas",
+    "title": "Unemployment Allowance for the Educated Unemployed Youth Scheme",
+    "distinctCeilings": [
+      300000,
+      1000000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 300000,
+        "sourceSentence": "The annual family income from all sources including that of the spouse should not exceed ₹3,00,000/- or the family should not have residential or commercial property exceeding ₹10.00 Lakhs in value or agriculture land in excess of 2 hectares.",
+        "likelyCategoryLabel": null
+      },
+      {
+        "valueAnnual": 1000000,
+        "sourceSentence": "The annual family income from all sources including that of the spouse should not exceed ₹3,00,000/- or the family should not have residential or commercial property exceeding ₹10.00 Lakhs in value or agriculture land in excess of 2 hectares.",
+        "likelyCategoryLabel": null
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be domicile of Haryana.",
+      "Applicants are eligible if they have passed the 10+2 examination, completed a 2-year certificate/diploma after Matric from a Haryana-recognized Board/University, hold a Graduate degree or higher, or completed a 3-year certificate/diploma or above after the 10+2 examination.",
+      "The applicant should be registered with any Employment Exchange in the State continuously for a minimum period of 3 years or more as on 1st November of each year.",
+      "The annual family income from all sources including that of the spouse should not exceed ₹3,00,000/- or the family should not have residential or commercial property exceeding ₹10.00 Lakhs in value or agriculture land in excess of 2 hectares.",
+      "The applicant should be in the age group of 21-35 years.",
+      "The applicant should not be a student/trainee/apprentice.",
+      "The applicant should not be employed/self-employed.",
+      "The applicant should not be a dismissed Government employee.",
+      "The applicant should not have been convicted of any offense resulting in imprisonment for a period of six months or more.",
+      "The applicant should not be registered in the Saksham Yuva Scheme of the Employment Department.",
+      "Note:",
+      "\"Family” means a group of individuals who share ties of blood, marriage, or adoption; a group residing together and consisting of parents, children, and other relatives by blood or marriage; a group of individuals residing together who have consented to an arrangement similar to ties of blood or marriage.",
+      "\"Family Income” means the gross annual income of the family where the eligible applicant is associated as a family member.",
+      "In case of a married female, in-Laws ration card is mandatory (Joint and Separate)."
+    ]
+  },
+  {
+    "schemeId": "c47504ae-1f29-4b8a-95d9-8c30f6dbd1b5",
+    "link": "https://www.myscheme.gov.in/schemes/wspsl",
+    "title": "Union Territory of Lakshadweep Pension Scheme for Widows",
+    "distinctCeilings": [
+      18000,
+      216000
+    ],
+    "candidates": [
+      {
+        "valueAnnual": 18000,
+        "sourceSentence": "The applicant should have only nominal income, not exceeding ₹1,500/- per month (₹18,000/- per annum).",
+        "likelyCategoryLabel": "The applicant should not have remarried."
+      },
+      {
+        "valueAnnual": 216000,
+        "sourceSentence": "The applicant should have only nominal income, not exceeding ₹1,500/- per month (₹18,000/- per annum).",
+        "likelyCategoryLabel": "The applicant should not have remarried."
+      }
+    ],
+    "fullRawText": [
+      "The applicant should be a permanent resident of the Union Territory of Lakshadweep.",
+      "The applicant should be a widow.",
+      "The applicant should not have remarried.",
+      "The applicant should have only nominal income, not exceeding ₹1,500/- per month (₹18,000/- per annum).",
+      "The applicant should not be a beneficiary of any other similar pension scheme provided by the government."
+    ]
+  }
+]

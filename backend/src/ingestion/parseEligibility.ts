@@ -44,6 +44,12 @@ export interface IncomeExtractionResult {
   multipleIncomesFound: boolean;
   candidatesConsidered: IncomeCandidate[];
   logs: string[];
+  // True when the scheme has 2+ DISTINCT max-income figures (not just the same
+  // threshold restated in different units). This usually means category-segmented
+  // eligibility (e.g. a lower ceiling for one caste/category group and a higher one
+  // for another) rather than one true number — see dualCeilingExcluded doc below.
+  dualCeilingExcluded: boolean;
+  dualCeilingDistinctValues: number[];
 }
 
 export interface ParsedEligibility {
@@ -55,6 +61,7 @@ export interface ParsedEligibility {
   ageResult: AgeExtractionResult;
   incomeResult: IncomeExtractionResult;
   logs: string[];
+  dualCeilingExcluded: boolean;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -308,6 +315,8 @@ export function extractIncome(sentences: string[], schemeLink?: string): IncomeE
     multipleIncomesFound: false,
     candidatesConsidered: [],
     logs: [],
+    dualCeilingExcluded: false,
+    dualCeilingDistinctValues: [],
   };
 
   const candidates: IncomeCandidate[] = [];
@@ -451,12 +460,22 @@ export function extractIncome(sentences: string[], schemeLink?: string): IncomeE
       result.multipleIncomesFound = true;
       const uniqueValues = Array.from(new Set(saneCandidates.map((c) => c.valueAnnual))).sort((a, b) => a - b);
       if (uniqueValues.length > 1) {
-        // Locked rule: Choose LOWER figure
-        result.maxAnnual = uniqueValues[0];
-        const chosen = saneCandidates.find((c) => c.valueAnnual === result.maxAnnual)!;
-        result.matchedSentences.push(chosen.sourceSentence);
+        // Updated product decision: 2+ DISTINCT max-income figures on one scheme
+        // usually mean category-segmented eligibility (e.g. Scheduled Caste
+        // capped at one figure, Other Economically Backward Class at a lower
+        // one) rather than the same threshold restated in different units.
+        // Confirmed real case: "Grant of House Construction Subsidy to
+        // Scheduled Caste People" has SC capped at ₹2,00,000 and EBC capped at
+        // ₹24,000 — picking "the lower figure" for the whole scheme silently
+        // gives SC applicants the wrong ceiling. The current schema has one
+        // incomeMaxAnnual per scheme, which can't represent two different
+        // groups' ceilings, so rather than guess, we leave both income fields
+        // null here and let ingestEligibility.ts log this scheme separately
+        // for a future category-aware criteria model.
+        result.dualCeilingExcluded = true;
+        result.dualCeilingDistinctValues = uniqueValues;
         result.logs.push(
-          `Multiple distinct incomeMaxAnnual figures found: [${uniqueValues.map((v) => '₹' + v).join(', ')}]. Selected LOWER ceiling: ₹${result.maxAnnual} from "${chosen.sourceSentence}".`
+          `EXCLUDED from automatic income parsing: found ${uniqueValues.length} distinct incomeMaxAnnual figures [${uniqueValues.map((v) => '₹' + v).join(', ')}], which looks like category-segmented eligibility rather than one true ceiling. Leaving incomeMinAnnual/incomeMaxAnnual null and logging for a future schema fix instead of guessing.`
         );
       } else {
         result.maxAnnual = uniqueValues[0];
@@ -466,8 +485,10 @@ export function extractIncome(sentences: string[], schemeLink?: string): IncomeE
     }
   }
 
-  // Process Min Income Candidates
-  const minCandidates = candidates.filter((c) => c.type === 'min');
+  // Process Min Income Candidates — skipped entirely when the scheme was
+  // excluded above: the decision is to leave BOTH income fields null for a
+  // dual-ceiling scheme, not just maxAnnual.
+  const minCandidates = result.dualCeilingExcluded ? [] : candidates.filter((c) => c.type === 'min');
   if (minCandidates.length > 0) {
     for (const cand of minCandidates) {
       if (cand.valueAnnual > SANITY_BOUND_ANNUAL_INCOME) {
@@ -519,5 +540,6 @@ export function parseEligibilityForScheme(
     ageResult,
     incomeResult,
     logs,
+    dualCeilingExcluded: incomeResult.dualCeilingExcluded,
   };
 }
