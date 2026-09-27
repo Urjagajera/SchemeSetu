@@ -118,13 +118,14 @@ router.get(
  *      or it's excluded. Same comparison logic as /api/eligibility/report.
  *   2. No criteria row, but the scheme has tags AND the profile has interest
  *      signals? Included only on tag overlap, scored by overlap count.
- *   3. Neither — the honest state of the data today, since ingestSchemes.ts
- *      doesn't populate Category/Tag or EligibilityCriteria — included by
- *      default (nothing to disqualify it on) with score 0.
- * A real, always-available signal doesn't wait on that data: State-level schemes
- * are pre-filtered to the profile's own state (Central schemes always pass
- * through), so two profiles with different `state` values get different result
- * sets today even before Category/Tag ingestion lands.
+ *   3. Neither (no criteria row and no tag overlap) — included by default
+ *      (nothing to disqualify it on) with score 0. Since the Phase B ingestion
+ *      run, 1,341 of 4,722 schemes have a real EligibilityCriteria row and go
+ *      through path 1; the rest fall into path 2 or 3 depending on tags.
+ * A real, always-available signal doesn't wait on structured criteria being
+ * present: State-level schemes are pre-filtered to the profile's own state
+ * (Central schemes always pass through), so two profiles with different
+ * `state` values get different result sets regardless of path 1/2/3 above.
  */
 router.post(
   '/recommended',

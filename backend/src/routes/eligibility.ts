@@ -16,9 +16,11 @@ const router = Router();
  * comparisons (age/income/gender/category/occupation/state/landOwnership) are
  * authoritative when a scheme HAS criteria on file; tag-matching remains the
  * fallback signal used when a scheme has no EligibilityCriteria row at all.
- * Today EligibilityCriteria is unpopulated for every scheme (ingestSchemes.ts
- * doesn't touch it), so every scheme currently falls into the tag-matching
- * fallback path — this is expected, not a bug in this route.
+ * Since the Phase B ingestion run, 1,341 of 4,722 schemes have a real
+ * EligibilityCriteria row (age and/or income; gender/category/occupation/
+ * state/landOwnership are schema fields but nothing populates them yet), so
+ * those 1,341 now go through the structured comparison path below and the
+ * rest still fall into the tag-matching fallback.
  */
 router.post(
   '/report',
