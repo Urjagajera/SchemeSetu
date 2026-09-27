@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -54,6 +54,19 @@ export const Profile: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>(profile.interests || profile.profileTags || []);
   const [newTagInput, setNewTagInput] = useState('');
 
+  // Same class of bug as the form's `values` fix above, for this separately-
+  // managed piece of state: useState's initializer only runs once at mount,
+  // so without this, selectedTags would stay stuck on whatever profile was
+  // at that instant even after the real server data loads. Not applying the
+  // same keepDirtyValues-style protection here — accepted narrow edge case:
+  // if profile updates while the user has already started toggling tags but
+  // before saving, their in-progress tag edits could get overwritten. Only
+  // happens in the split-second window right after page load; flagging it
+  // rather than building separate dirty-tracking for this one field.
+  useEffect(() => {
+    setSelectedTags(profile.interests || profile.profileTags || []);
+  }, [profile]);
+
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter(t => t !== tag));
@@ -88,7 +101,19 @@ export const Profile: React.FC = () => {
     formState: { errors, isSubmitting }
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
-    defaultValues: {
+    // `values` (not `defaultValues`) so the form stays in sync when `profile`
+    // loads asynchronously from GET /api/profile. defaultValues is a
+    // mount-time-only snapshot — it doesn't react to profile updating after
+    // the initial render, so with a plain profile.age fallback here, loading
+    // this page right after logging in could show default placeholder values
+    // in the form while the real server data was still in flight, and
+    // hitting Save at that moment would silently overwrite real saved data
+    // with those placeholders. Confirmed live: reloading immediately after a
+    // save showed stale defaults for a moment before the real data settled.
+    // keepDirtyValues stops this reactive sync from clobbering an in-progress
+    // edit if profile happens to update while the user is mid-form (e.g. the
+    // background fetch resolving right as they start typing).
+    values: {
       name: user?.name || '',
       age: profile.age || '',
       dob: profile.dob || '1998-05-15',
@@ -105,7 +130,8 @@ export const Profile: React.FC = () => {
       widow: profile.widow || 'no',
       veteran: profile.veteran || 'no',
       land: profile.land || 'yes'
-    }
+    },
+    resetOptions: { keepDirtyValues: true }
   });
 
   const onSubmit = async (values: ProfileFormValues) => {

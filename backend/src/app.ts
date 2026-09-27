@@ -13,6 +13,7 @@ import eligibilityRouter from './routes/eligibility.js';
 import chatRouter from './routes/chat.js';
 import bookmarksRouter from './routes/bookmarks.js';
 import authRouter from './routes/auth.js';
+import profileRouter from './routes/profile.js';
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/api/eligibility', eligibilityRouter);
 app.use('/api/chat', chatLimiter, chatRouter);
 app.use('/api/bookmarks', bookmarksRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/profile', profileRouter);
 
 // ── Error handler (MUST be last) ─────────────────────────────
 app.use(errorHandler);

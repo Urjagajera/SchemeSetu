@@ -17,6 +17,7 @@ model User {
   name              String?
   profilePictureUrl String?
   bookmarks         Bookmark[]
+  profile           Profile?
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
 }
@@ -87,6 +88,43 @@ model Tag {
   schemes   Scheme[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Server-side home for what used to live only in the frontend's
+// localStorage 'schemesetu_profile' key (src/contexts/AuthContext.tsx) — that
+// was a single browser-scoped value shared across every account signed in on
+// that browser, a live correctness bug, not just a "doesn't sync across
+// devices" gap. Fields mirror UserProfile (src/types/index.ts) exactly, kept
+// as plain nullable strings (age, income included) rather than parsed to
+// Int, matching the raw string values the frontend form actually submits —
+// same style as EligibilityCriteria's demographic fields above. `name` is
+// deliberately NOT duplicated here; the profile form's name field updates
+// User.name directly instead (confirmed choice, not an oversight). interests
+// and profileTags on the frontend type are always identical in current
+// usage (Profile.tsx writes the same array to both), so this stores ONE
+// array and the API mirrors it into both response keys.
+model Profile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  age         String?
+  dob         String?
+  gender      String?
+  occupation  String?
+  education   String?
+  income      String?
+  category    String?
+  state       String?
+  district    String?
+  minority    String?
+  disability  String?
+  farmer      String?
+  widow       String?
+  veteran     String?
+  land        String?
+  profileTags String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Bookmark {
