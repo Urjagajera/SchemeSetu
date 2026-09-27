@@ -93,6 +93,57 @@ router.post(
   }),
 );
 
+// DEV-ONLY: remove before production — demo login bypass.
+const DEMO_USER_EMAIL = 'demo@schemesetu.dev';
+const DEMO_USER_GOOGLE_ID = 'demo-user-local-dev-only';
+
+/**
+ * POST /api/auth/demo-login
+ * DEV-ONLY: remove before production — demo login bypass.
+ *
+ * Logs straight into a fixed seeded test account without any real Google
+ * credential, so development can test the app quickly. Gated by TWO
+ * independent checks, both required, checked before anything else in the
+ * handler: NODE_ENV must not be "production" (fails closed — env.ts makes
+ * NODE_ENV a required startup var, so there's no silent "unset -> defaults
+ * open" failure mode), AND ENABLE_DEMO_LOGIN must be explicitly "true" (so
+ * this stays dead even in a non-production environment nobody explicitly
+ * opted in on, e.g. a staging box that happens to run with
+ * NODE_ENV=development). Either check failing returns a plain 404, same as
+ * a route that doesn't exist, rather than a 403 that would confirm to a
+ * prober that something is being deliberately blocked here.
+ *
+ * The demo user's bookmarks are wiped on every successful call, before the
+ * session is issued — per explicit product decision, this account never
+ * accumulates test data across sessions; every demo login starts clean.
+ */
+router.post(
+  '/demo-login',
+  asyncHandler(async (req: Request, res: Response) => {
+    if (config.NODE_ENV === 'production' || !config.ENABLE_DEMO_LOGIN) {
+      res.status(404).json({ error: { message: 'Not found', status: 404 } });
+      return;
+    }
+
+    const user = await prisma.user.upsert({
+      where: { googleId: DEMO_USER_GOOGLE_ID },
+      update: {},
+      create: {
+        googleId: DEMO_USER_GOOGLE_ID,
+        email: DEMO_USER_EMAIL,
+        name: 'Demo User',
+        profilePictureUrl: null,
+      },
+    });
+
+    // Wipe accumulated test data before every demo session — see doc comment above.
+    await prisma.bookmark.deleteMany({ where: { userId: user.id } });
+
+    setSessionCookie(res, user.id);
+    res.json({ success: true, user: serializeUser(user), isNewUser: false });
+  }),
+);
+
 /** POST /api/auth/logout — idempotent; clears the session cookie regardless of whether one was present. */
 router.post('/logout', (_req: Request, res: Response) => {
   res.clearCookie(SESSION_COOKIE_NAME);

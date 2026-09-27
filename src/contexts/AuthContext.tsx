@@ -19,6 +19,12 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   authLoading: boolean;
   loginWithGoogle: (credential: string) => Promise<{ success: boolean; isNewUser?: boolean }>;
+  // DEV-ONLY: remove before production — demo login bypass.
+  // Optional (not just internally guarded): kept out of the context value object
+  // entirely in a production build via the conditional spread below, so Rollup
+  // can actually tree-shake the implementation out of the bundle instead of
+  // just leaving it present-but-inert.
+  loginWithDemoAccount?: () => Promise<{ success: boolean }>;
   logout: () => Promise<void>;
   updateProfile: (newProfile: Partial<UserProfile>) => Promise<boolean>;
 }
@@ -144,6 +150,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  // DEV-ONLY: remove before production — demo login bypass.
+  // The import.meta.env.DEV check here is a second, redundant guard: the real
+  // gate is the backend 404ing this in production regardless of what the
+  // frontend does (see POST /api/auth/demo-login), but there's no reason for
+  // this function to even attempt the request if the button that calls it
+  // shouldn't exist in this build in the first place.
+  const loginWithDemoAccount = useCallback(async (): Promise<{ success: boolean }> => {
+    if (!import.meta.env.DEV) return { success: false };
+    try {
+      const response = await axios.post('/api/auth/demo-login');
+      if (response.data && response.data.success) {
+        const { user: serverUser } = response.data;
+        const demoUser: AuthUser = {
+          id: serverUser.id,
+          name: serverUser.name || 'Citizen',
+          email: serverUser.email,
+          picture: serverUser.picture || '',
+          sub: serverUser.id,
+          role: 'user'
+        };
+        setUser(demoUser);
+        sessionStorage.setItem('schemesetu_user', JSON.stringify(demoUser));
+        return { success: true };
+      }
+      return { success: false };
+    } catch (error) {
+      console.error('[Demo Login Error]:', error);
+      return { success: false };
+    }
+  }, []);
+
   const logout = async () => {
     try {
       await axios.post('/api/auth/logout');
@@ -175,6 +212,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated,
         authLoading,
         loginWithGoogle,
+        // DEV-ONLY: remove before production — demo login bypass.
+        // Only spread into the context value at all when import.meta.env.DEV is
+        // true. Vite replaces that with the literal `false` in a production
+        // build, which lets the bundler's dead-code elimination remove not just
+        // this spread but the loginWithDemoAccount definition itself, instead of
+        // leaving an unreachable-but-present function in the shipped bundle.
+        ...(import.meta.env.DEV ? { loginWithDemoAccount } : {}),
         logout,
         updateProfile
       }}

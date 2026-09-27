@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
 
 export const Login: React.FC = () => {
-  const { loginWithGoogle, isAuthenticated, user } = useAuth();
+  const { loginWithGoogle, loginWithDemoAccount, isAuthenticated, user } = useAuth();
   const { t, language, setLanguage } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -96,6 +96,18 @@ export const Login: React.FC = () => {
     };
   }, [loginWithGoogle, navigate, redirect]);
 
+  // DEV-ONLY: remove before production — demo login bypass.
+  // Optional chaining because loginWithDemoAccount is typed optional (absent
+  // entirely from the context value in a production build) — the button that
+  // calls this is itself only rendered under the same import.meta.env.DEV
+  // check, so in practice this is only ever invoked when the function exists.
+  const handleDemoLogin = async () => {
+    const res = await loginWithDemoAccount?.();
+    if (res?.success) {
+      navigate(redirect);
+    }
+  };
+
   const signupBenefits = [
     t('check1') || 'Access 500+ central & state schemes',
     t('check2') || 'Check your scheme eligibility instantly',
@@ -174,6 +186,22 @@ export const Login: React.FC = () => {
           {/* Google Identity Services renders its button here once, shared by both
               tabs below so it never unmounts on tab switch (see the effect above). */}
           <div ref={googleButtonRef} className="flex justify-center my-6" />
+
+          {/* DEV-ONLY: remove before production — demo login bypass.
+              import.meta.env.DEV is a Vite build-time constant: in a production
+              build this whole block is dead-code-eliminated out of the bundle,
+              not just hidden at runtime. The backend independently 404s the
+              route this calls in production regardless, so this is belt and
+              braces, not the actual gate. */}
+          {import.meta.env.DEV && (
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="w-full flex justify-center items-center gap-2 py-2.5 px-4 mb-6 rounded-lg border border-dashed border-amber-400 dark:border-amber-600 bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-400 text-xs font-bold hover:bg-amber-100 dark:hover:bg-amber-950/50 transition-colors"
+            >
+              Demo Login (dev only)
+            </button>
+          )}
 
           {/* Tab Views */}
           {activeTab === 'login' ? (

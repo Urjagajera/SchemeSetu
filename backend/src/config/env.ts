@@ -31,6 +31,13 @@ export const config = {
   SESSION_SECRET: process.env.SESSION_SECRET as string,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
+  // DEV-ONLY: remove before production — demo login bypass.
+  // Optional on purpose (not in REQUIRED_VARS): must be explicitly set to the
+  // literal string "true" for POST /api/auth/demo-login to do anything. This is
+  // the second, independent gate on top of NODE_ENV !== 'production' — the route
+  // 404s unless BOTH hold, so demo login stays dead even in an environment where
+  // NODE_ENV happens to be "development" but nobody actually opted into it.
+  ENABLE_DEMO_LOGIN: process.env.ENABLE_DEMO_LOGIN === 'true',
 } as const;
 
 export default config;
