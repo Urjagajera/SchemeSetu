@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [master]
+    branches: [master, ci-debug-diagnostic]
 
 jobs:
   frontend:
@@ -42,5 +42,14 @@ jobs:
       # Reads prisma/schema.prisma only — no DB connection, no env vars required.
       - run: npx prisma generate
       - run: npm run typecheck
-      - run: npm test
+      # TEMPORARY diagnostic split (this branch only, never merged to master):
+      # one step per test file, verbose reporter, to isolate which file/case
+      # fails in CI when logs can't be viewed without GitHub sign-in.
+      - run: npx vitest run src/ingestion/mojibake.test.ts --reporter=verbose
+      - run: npx vitest run src/ingestion/csvParser.test.ts --reporter=verbose
+      - run: npx vitest run src/ingestion/parseEligibility.test.ts --reporter=verbose
+      - run: npx vitest run src/middleware/requireAuth.test.ts --reporter=verbose
+      - run: npx vitest run src/routes/auth.test.ts --reporter=verbose
+      - run: npx vitest run src/ingestion/ingestEligibility.test.ts --reporter=verbose
+      - run: npx vitest run src/ingestion/ingestSchemes.test.ts --reporter=verbose
       - run: npm run build
