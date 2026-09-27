@@ -36,12 +36,15 @@ export function repairMojibake(text: string): string {
     // Double quotes corruption (UTF-8 \xE2\x80\x9C, \xE2\x80\x9D)
     .replace(/â€œ/g, '“')
     .replace(/â€\u009d/g, '”')
-    .replace(/â€/g, '”')
     // Windows-1252 orphaned Euro + 0x9D quote corruption
     .replace(/€\u009d/g, '”')
-    // Em and En dashes (UTF-8 \xE2\x80\x94, \xE2\x80\x93)
+    // Em and En dashes (UTF-8 \xE2\x80\x94, \xE2\x80\x93) and ellipsis
+    // (UTF-8 \xE2\x80\xA6) — MUST run before the generic "â€" fallback
+    // below: â€ is a literal prefix of all three of these patterns, so the
+    // generic rule would otherwise consume it first and leave the trailing
+    // character (”, “, or ¦) unrepaired, silently no-opping all three.
     .replace(/â€”/g, '—')
     .replace(/â€“/g, '–')
-    // Ellipsis (UTF-8 \xE2\x80\xA6)
-    .replace(/â€¦/g, '…');
+    .replace(/â€¦/g, '…')
+    .replace(/â€/g, '”');
 }
