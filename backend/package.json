@@ -11,7 +11,8 @@
     "ingest:dry-run": "tsx src/ingestion/dryRunParseCsv.ts",
     "ingest:schemes": "tsx src/ingestion/ingestSchemes.ts",
     "ingest:eligibility": "tsx src/ingestion/ingestEligibility.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

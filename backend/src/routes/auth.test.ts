@@ -40,8 +40,9 @@ function buildApp() {
   return app;
 }
 
-function extractSessionCookieValue(setCookieHeader: string[] | undefined): string | undefined {
-  const raw = (setCookieHeader ?? []).find((c) => c.startsWith(`${SESSION_COOKIE_NAME}=`));
+function extractSessionCookieValue(setCookieHeader: string | string[] | undefined): string | undefined {
+  const values = Array.isArray(setCookieHeader) ? setCookieHeader : setCookieHeader ? [setCookieHeader] : [];
+  const raw = values.find((c) => c.startsWith(`${SESSION_COOKIE_NAME}=`));
   if (!raw) return undefined;
   return raw.split(';')[0].split('=').slice(1).join('=');
 }
