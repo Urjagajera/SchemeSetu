@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { UserProfile } from '../types';
 
@@ -111,7 +111,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
-  const loginWithGoogle = async (credential: string): Promise<{ success: boolean; isNewUser?: boolean }> => {
+  // useCallback keeps this reference stable across AuthProvider re-renders (e.g.
+  // when authLoading flips after the /api/auth/me check settles). Login.tsx's
+  // Google Identity Services effect depends on this function; without a stable
+  // reference, every AuthProvider re-render re-ran google.accounts.id.initialize()
+  // and renderButton() — confirmed live via the GSI SDK's own console warning
+  // ("initialize() is called multiple times... unexpected behavior") and a
+  // duplicate button iframe showing up after just switching tabs once.
+  const loginWithGoogle = useCallback(async (credential: string): Promise<{ success: boolean; isNewUser?: boolean }> => {
     try {
       const response = await axios.post('/api/auth/google', { idToken: credential });
 
@@ -135,7 +142,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('[Google Login Error]:', error);
       return { success: false };
     }
-  };
+  }, []);
 
   const logout = async () => {
     try {

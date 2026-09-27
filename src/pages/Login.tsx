@@ -21,6 +21,12 @@ export const Login: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(isRegisterPath ? 'signup' : 'login');
 
   const googleButtonRef = useRef<HTMLDivElement>(null);
+  // True once client.renderButton() has actually been called. Guards against
+  // React StrictMode's dev-only double-invoke of the effect below re-issuing a
+  // second renderButton() call before the first one's iframe finishes its own
+  // async insertion — confirmed live that without this, two stacked "Continue
+  // with Google" buttons could end up in the same container.
+  const hasRenderedButtonRef = useRef(false);
 
   // Sync tab with route path
   useEffect(() => {
@@ -34,9 +40,22 @@ export const Login: React.FC = () => {
     }
   }, [isAuthenticated, navigate, redirect]);
 
-  // Initialize and Render Google Sign-In Button (Simulated Google Auth client bindings)
+  // Initialize and render the real Google Identity Services button exactly
+  // once. The container div below is intentionally rendered in ONE fixed
+  // location shared by both the login and signup tab views (not inside the
+  // per-tab ternary) so it never unmounts when switching tabs — Google's
+  // renderButton() doesn't necessarily nest its iframe as a plain child of the
+  // given container (it appears to position it independently), so clearing
+  // and re-rendering into a freshly-mounted container on every tab switch left
+  // the previous tab's iframe stranded in the live DOM with no way to remove
+  // it from here, producing two visible buttons after one tab switch —
+  // confirmed live via screenshot. Rendering once into a container that's
+  // always mounted avoids the problem entirely instead of trying to clean up
+  // after it.
   useEffect(() => {
+    let cancelled = false;
     const initializeGoogleOAuth = () => {
+      if (cancelled || hasRenderedButtonRef.current) return;
       if (typeof window !== 'undefined' && (window as any).google?.accounts?.id) {
         const client = (window as any).google.accounts.id;
         client.initialize({
@@ -55,7 +74,8 @@ export const Login: React.FC = () => {
           cancel_on_tap_outside: true,
         });
 
-        if (googleButtonRef.current) {
+        if (googleButtonRef.current && !hasRenderedButtonRef.current) {
+          hasRenderedButtonRef.current = true;
           client.renderButton(googleButtonRef.current, {
             type: 'standard',
             shape: 'rectangular',
@@ -71,10 +91,10 @@ export const Login: React.FC = () => {
       }
     };
     initializeGoogleOAuth();
+    return () => {
+      cancelled = true;
+    };
   }, [loginWithGoogle, navigate, redirect]);
-
-
-
 
   const signupBenefits = [
     t('check1') || 'Access 500+ central & state schemes',
@@ -143,6 +163,18 @@ export const Login: React.FC = () => {
             </button>
           </div>
 
+          <div className="relative flex items-center gap-3">
+            <div className="flex-grow border-t border-outline-variant dark:border-zinc-800" />
+            <span className="text-[10px] font-bold text-on-surface-variant/70 dark:text-zinc-500 bg-white dark:bg-zinc-900 px-2 uppercase">
+              secure oauth 2.0
+            </span>
+            <div className="flex-grow border-t border-outline-variant dark:border-zinc-800" />
+          </div>
+
+          {/* Google Identity Services renders its button here once, shared by both
+              tabs below so it never unmounts on tab switch (see the effect above). */}
+          <div ref={googleButtonRef} className="flex justify-center my-6" />
+
           {/* Tab Views */}
           {activeTab === 'login' ? (
             <div className="space-y-6">
@@ -153,14 +185,6 @@ export const Login: React.FC = () => {
                 <p className="text-xs text-on-surface-variant dark:text-zinc-400 mt-1">
                   {t('welcomeSub')}
                 </p>
-              </div>
-
-              <div className="relative flex items-center gap-3">
-                <div className="flex-grow border-t border-outline-variant dark:border-zinc-800" />
-                <span className="text-[10px] font-bold text-on-surface-variant/70 dark:text-zinc-500 bg-white dark:bg-zinc-900 px-2 uppercase">
-                  secure oauth 2.0
-                </span>
-                <div className="flex-grow border-t border-outline-variant dark:border-zinc-800" />
               </div>
 
               {/* Trust Badge */}
