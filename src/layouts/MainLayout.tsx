@@ -7,6 +7,7 @@ import { Home, Search, Bot, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
 import { cn } from '../utils/cn';
+import { DataSourceBanner } from '../components/DataSourceBanner';
 
 export const MainLayout: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -26,6 +27,7 @@ export const MainLayout: React.FC = () => {
 
   return (
     <div className={`min-h-screen bg-background dark:bg-zinc-950 flex flex-col transition-colors ${isLandingPage ? '' : 'pb-16 md:pb-0'}`}>
+      {!isLandingPage && <DataSourceBanner />}
       <Navbar />
       
       <main className="flex-grow flex flex-col relative">
