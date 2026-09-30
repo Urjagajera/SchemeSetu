@@ -4,12 +4,16 @@ import { X, RefreshCw, Layers, MapPin, User, Coins } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { translateValue } from '../utils/translationUtils';
 
+/** Slider position that means "any income" (no income filter). */
+const INCOME_FILTER_OFF_AT = 1000000;
+
 export interface FilterState {
   category: string;
   state: string;
   occupation: string;
   gender: string;
-  income: number;
+  /** Annual income ceiling in rupees; null means no income filter. */
+  income: number | null;
   age: string;
   level: string;
   sidebarQuery: string;
@@ -40,7 +44,9 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const { t, language } = useTranslation();
 
   const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onFilterChange({ income: parseInt(e.target.value) });
+    const value = parseInt(e.target.value);
+    // The slider's far end means "any income" — same as not filtering at all.
+    onFilterChange({ income: value >= INCOME_FILTER_OFF_AT ? null : value });
   };
 
   const genders = [
@@ -270,14 +276,14 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             min="100000"
             max="1000000"
             step="50000"
-            value={filters.income}
+            value={filters.income ?? INCOME_FILTER_OFF_AT}
             onChange={handleIncomeChange}
             className="w-full h-1.5 bg-surface-container-highest dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-secondary dark:accent-sky-400"
           />
           <div className="flex justify-between text-xs text-on-surface-variant dark:text-zinc-500 font-bold">
             <span>₹1L</span>
             <span className="text-secondary dark:text-sky-400">
-              {filters.income >= 1000000 ? '₹10L+' : `₹${(filters.income / 100000).toFixed(1)}L`}
+              {filters.income === null ? t('anyIncome') : `₹${(filters.income / 100000).toFixed(1)}L`}
             </span>
           </div>
         </div>

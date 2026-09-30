@@ -42,7 +42,7 @@ export const Search: React.FC = () => {
     state: searchParams.get('state') || '',
     occupation: searchParams.get('occupation') || '',
     gender: searchParams.get('gender') || '',
-    income: parseInt(searchParams.get('income') || '1000000'),
+    income: searchParams.get('income') ? parseInt(searchParams.get('income') as string) : null,
     age: searchParams.get('age') || '',
     level: searchParams.get('level') || '',
     sidebarQuery: searchParams.get('q') || '', // search query
@@ -335,7 +335,7 @@ export const Search: React.FC = () => {
       state: '',
       occupation: '',
       gender: '',
-      income: 1000000,
+      income: null,
       age: '',
       level: '',
       sidebarQuery: ''

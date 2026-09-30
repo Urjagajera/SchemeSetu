@@ -103,6 +103,7 @@
   "ministryLabel": "Ministry",
   "ageLabel": "Age (Beneficiary)",
   "incomeLabel": "Annual Income (Up to)",
+  "anyIncome": "Any",
   "refineSearch": "Refine Search",
   "applyFilters": "Apply Filters",
   "schemesFound": "schemes found",
