@@ -6,6 +6,9 @@ const mockPrisma = vi.hoisted(() => ({
   scheme: { findMany: vi.fn(), count: vi.fn() },
 }));
 
+// errorHandler -> config/env.ts exits the process when PORT/DATABASE_URL/etc. are
+// missing, which is the case on CI (no .env). Same stand-in auth.test.ts uses.
+vi.mock('../config/env.js', () => ({ default: { NODE_ENV: 'test' } }));
 vi.mock('../db/prisma.js', () => ({ default: mockPrisma }));
 
 const { default: schemesRouter } = await import('./schemes.js');
