@@ -94,7 +94,11 @@ export const SchemeDetail: React.FC = () => {
   const eligibilityItems = translatedScheme?.eligibilityRawText ?? [];
   const documentItems = translatedScheme?.documentRequirements ?? [];
   const applicationModes = translatedScheme?.applicationMode ?? [];
-  const applicationProcess = translatedScheme?.applicationProcess?.trim() || '';
+  // The source text opens with its own "Application Process" heading line, which just
+  // repeats the section title above it, so drop that one line and keep the rest verbatim.
+  const applicationProcess = (translatedScheme?.applicationProcess ?? '')
+    .replace(/^\s*application process\s*:?\s*\n/i, '')
+    .trim();
 
   if (!translatedScheme) {
     return (
