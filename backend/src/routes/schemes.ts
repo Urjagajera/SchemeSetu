@@ -25,6 +25,9 @@ function parsePagination(req: Request): { page: number; limit: number; skip: num
  *   query    — free-text search across name/description/authorityName
  *   category — Category.name (join is empty until Category ingestion runs — see report)
  *   level    — "Central" | "State", derived from authorityName (see schemeLevel.ts)
+ *   ministry — exact authorityName match (case-insensitive); feeds the Ministry dropdown
+ *   state    — keeps central schemes plus state-level schemes of that one state, same
+ *              rule the frontend's mock-mode filter uses
  *   sort     — only "Deadline Approaching" is a known value client-side, but deadlines
  *              are a frontend-only synthetic field (schemeService.ts enrichScheme()) with
  *              no DB column to sort by, so sort is accepted but not applied server-side.
@@ -33,7 +36,7 @@ function parsePagination(req: Request): { page: number; limit: number; skip: num
 router.get(
   '/',
   asyncHandler(async (req: Request, res: Response) => {
-    const { query, category, level } = req.query as Record<string, string | undefined>;
+    const { query, category, level, ministry, state } = req.query as Record<string, string | undefined>;
     const { limit, skip } = parsePagination(req);
 
     const where: Prisma.SchemeWhereInput = {
@@ -49,6 +52,15 @@ router.get(
           : {},
         category ? { categories: { some: { name: { equals: category, mode: 'insensitive' } } } } : {},
         levelWhereClause(level) ?? {},
+        ministry ? { authorityName: { equals: ministry, mode: 'insensitive' } } : {},
+        state
+          ? {
+              OR: [
+                levelWhereClause('central') ?? {},
+                { authorityName: { equals: state, mode: 'insensitive' } },
+              ],
+            }
+          : {},
       ],
     };
 
@@ -101,6 +113,25 @@ router.get(
       new Set(rows.map((r) => r.authorityName.trim()).filter((name) => deriveLevel(name) === 'State')),
     ).sort();
     res.json({ data: states });
+  }),
+);
+
+/**
+ * GET /api/schemes/ministries
+ * Every distinct authorityName across the whole table, for the Search page's
+ * Ministry dropdown. The dropdown used to be built client-side from the first
+ * page of GET /api/schemes, so it only ever listed the authorities of the first
+ * 20 schemes.
+ */
+router.get(
+  '/ministries',
+  asyncHandler(async (_req: Request, res: Response) => {
+    const rows = await prisma.scheme.findMany({
+      select: { authorityName: true },
+      distinct: ['authorityName'],
+    });
+    const ministries = Array.from(new Set(rows.map((r) => r.authorityName.trim()).filter(Boolean))).sort();
+    res.json({ data: ministries });
   }),
 );
 
