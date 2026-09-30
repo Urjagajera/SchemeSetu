@@ -41,23 +41,6 @@ function assertJsonObject<T>(data: unknown, context: string): T {
 function enrichScheme(scheme: Scheme): Scheme {
   const isState = scheme.level === 'STATE' || scheme.level === 'State' || scheme.authorityName?.toLowerCase() === 'gujarat';
 
-  // Generate stable deadline
-  let deadline = scheme.deadline;
-  if (!deadline || deadline === 'Ongoing') {
-    let hash = 0;
-    const idStr = scheme.id || '';
-    for (let i = 0; i < idStr.length; i++) {
-      hash = idStr.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const days = Math.abs(hash % 28) + 1;
-    const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-    const monthStr = months[Math.abs(hash >> 4) % 12];
-    const years = [2026, 2027];
-    const year = years[Math.abs(hash >> 8) % 2];
-    const dayStr = days < 10 ? `0${days}` : `${days}`;
-    deadline = `${dayStr}-${monthStr}-${year}`;
-  }
-
   // Generate eligibility keys
   const eligibility: string[] = [];
   if (isState) {
@@ -112,7 +95,6 @@ function enrichScheme(scheme: Scheme): Scheme {
 
   return {
     ...scheme,
-    deadline,
     eligibility,
     documents
   };
@@ -139,10 +121,7 @@ function mapDbSchemeToFrontend(dbScheme: any): Scheme {
     categoryColor: 'zinc-100',
     categoryTextColor: 'zinc-800',
     benefit: 'Refer to official portal',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: 'N/A',
-    disbursed: 'N/A',
     matchScore: dbScheme.matchScore
   });
 }

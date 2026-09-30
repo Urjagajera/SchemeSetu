@@ -12,13 +12,9 @@ export interface Scheme {
   category: string;
   ministry: string;
   benefit: string;
-  deadline: string;
-  deadlineUrgent?: boolean;
   shortDesc: string;
   applyUrl: string;
   featured: boolean;
-  totalBeneficiaries: string;
-  disbursed: string;
   matchScore?: number;
   eligibility?: string[];
   documents?: string[];

@@ -8,9 +8,7 @@ import { Scheme } from '../types';
  * A representative sample (~36 schemes), not the full ~4,722-row real dataset
  * — this exists so frontend dev doesn't require Postgres running. Content is
  * illustrative/simplified for demo purposes, based on well-known public Indian
- * government scheme names, not verbatim official text. `deadline` is
- * deliberately left as 'Ongoing' on every entry — enrichScheme() in
- * schemeService.ts replaces that with its own generated placeholder date.
+ * government scheme names, not verbatim official text.
  */
 export const MOCK_SCHEMES: Scheme[] = [
   // ── Agriculture ─────────────────────────────────────────────
@@ -28,10 +26,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Agriculture'],
     category: 'Agriculture',
     benefit: '₹6,000 per year in 3 installments',
-    deadline: 'Ongoing',
     featured: true,
-    totalBeneficiaries: '11 Crore+',
-    disbursed: '₹2.8 Lakh Cr+',
   },
   {
     id: 'mock-pmfby',
@@ -47,10 +42,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Agriculture'],
     category: 'Agriculture',
     benefit: 'Crop loss compensation, low premium (1.5%-5%)',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '5.5 Crore+',
-    disbursed: '₹1.5 Lakh Cr+',
   },
   {
     id: 'mock-kcc',
@@ -66,10 +58,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Agriculture'],
     category: 'Agriculture',
     benefit: 'Credit up to ₹3 Lakh at 4% interest',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '7 Crore+',
-    disbursed: '₹8 Lakh Cr+',
   },
   {
     id: 'mock-soil-health',
@@ -85,10 +74,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Agriculture'],
     category: 'Agriculture',
     benefit: 'Free soil testing every 2 years',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '22 Crore+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-pmksy',
@@ -104,10 +90,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Agriculture'],
     category: 'Agriculture',
     benefit: 'Subsidy on micro-irrigation equipment',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '2 Crore+',
-    disbursed: '₹90,000 Cr+',
   },
 
   // ── Healthcare ──────────────────────────────────────────────
@@ -125,10 +108,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Healthcare'],
     category: 'Healthcare',
     benefit: '₹5 Lakh/year cashless hospital cover',
-    deadline: 'Ongoing',
     featured: true,
-    totalBeneficiaries: '12 Crore+ families',
-    disbursed: '₹1 Lakh Cr+',
   },
   {
     id: 'mock-janani-suraksha',
@@ -144,10 +124,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Healthcare'],
     category: 'Healthcare',
     benefit: '₹1,400 (rural) / ₹1,000 (urban) cash assistance',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '1 Crore+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-pmsma',
@@ -163,10 +140,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Healthcare'],
     category: 'Healthcare',
     benefit: 'Free antenatal checkups',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '4 Crore+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-nhm',
@@ -182,10 +156,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Healthcare'],
     category: 'Healthcare',
     benefit: 'Access to subsidized public healthcare',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: 'N/A',
-    disbursed: '₹36,000 Cr+',
   },
 
   // ── Education ───────────────────────────────────────────────
@@ -203,10 +174,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Education'],
     category: 'Education',
     benefit: '₹12,000 per year',
-    deadline: 'Ongoing',
     featured: true,
-    totalBeneficiaries: '10 Lakh+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-postmatric-sc',
@@ -222,10 +190,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Education'],
     category: 'Education',
     benefit: 'Tuition fees + maintenance allowance',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '60 Lakh+',
-    disbursed: '₹6,000 Cr+',
   },
   {
     id: 'mock-yasasvi',
@@ -241,10 +206,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Education'],
     category: 'Education',
     benefit: 'Up to ₹1.25 Lakh per year',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '15 Lakh+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-bbbp',
@@ -260,10 +222,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Education', 'Women & Child'],
     category: 'Education',
     benefit: 'Awareness + district-level support programs',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: 'N/A',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-sukanya',
@@ -279,10 +238,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Women & Child'],
     category: 'Women & Child',
     benefit: 'Fixed high interest rate savings (~8%)',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '3 Crore+ accounts',
-    disbursed: 'N/A',
   },
 
   // ── Housing ─────────────────────────────────────────────────
@@ -300,10 +256,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Housing'],
     category: 'Housing',
     benefit: 'Interest subsidy up to ₹2.67 Lakh',
-    deadline: 'Ongoing',
     featured: true,
-    totalBeneficiaries: '1.2 Crore+',
-    disbursed: '₹2 Lakh Cr+',
   },
   {
     id: 'mock-pmay-gramin',
@@ -319,10 +272,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Housing'],
     category: 'Housing',
     benefit: '₹1.2 Lakh (plain areas) / ₹1.3 Lakh (hilly)',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '2.9 Crore+',
-    disbursed: '₹1.8 Lakh Cr+',
   },
   {
     id: 'mock-clss',
@@ -338,10 +288,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Housing'],
     category: 'Housing',
     benefit: 'Interest subsidy on home loans',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '25 Lakh+',
-    disbursed: 'N/A',
   },
 
   // ── Employment / Entrepreneur ───────────────────────────────
@@ -359,10 +306,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Employment'],
     category: 'Employment',
     benefit: 'Loans up to ₹10 Lakh, no collateral',
-    deadline: 'Ongoing',
     featured: true,
-    totalBeneficiaries: '40 Crore+',
-    disbursed: '₹23 Lakh Cr+',
   },
   {
     id: 'mock-standup-india',
@@ -378,10 +322,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Employment'],
     category: 'Employment',
     benefit: 'Loans from ₹10 Lakh to ₹1 Crore',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '2 Lakh+',
-    disbursed: '₹40,000 Cr+',
   },
   {
     id: 'mock-pmegp',
@@ -397,10 +338,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Employment'],
     category: 'Employment',
     benefit: 'Subsidy 15-35% of project cost',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '80 Lakh+',
-    disbursed: '₹25,000 Cr+',
   },
   {
     id: 'mock-atal-innovation',
@@ -416,10 +354,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Employment', 'Education'],
     category: 'Employment',
     benefit: 'Grants up to ₹10 Crore for incubation centres',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '10,000+ Tinkering Labs',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-pmkvy',
@@ -435,10 +370,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Employment'],
     category: 'Employment',
     benefit: 'Free training + certification + ₹8,000 reward',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '1.4 Crore+',
-    disbursed: 'N/A',
   },
 
   // ── Women & Child ───────────────────────────────────────────
@@ -456,10 +388,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Women & Child'],
     category: 'Women & Child',
     benefit: '₹5,000 in installments',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '3.5 Crore+',
-    disbursed: '₹13,000 Cr+',
   },
   {
     id: 'mock-ujjwala',
@@ -475,10 +404,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Women & Child'],
     category: 'Women & Child',
     benefit: 'Free LPG connection + first refill',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '10 Crore+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-mahila-shakti',
@@ -494,10 +420,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Women & Child'],
     category: 'Women & Child',
     benefit: 'Skill training + convergence support',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: 'N/A',
-    disbursed: 'N/A',
   },
 
   // ── Senior Citizens / Pension ───────────────────────────────
@@ -515,10 +438,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Senior Citizens'],
     category: 'Senior Citizens',
     benefit: '₹1,000-₹5,000 monthly pension',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '6 Crore+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-pmvvy',
@@ -534,10 +454,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Senior Citizens'],
     category: 'Senior Citizens',
     benefit: 'Assured ~7.4% annual return',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '7 Lakh+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-ignoaps',
@@ -553,10 +470,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Senior Citizens'],
     category: 'Senior Citizens',
     benefit: '₹200-₹500 monthly pension',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '3 Crore+',
-    disbursed: 'N/A',
   },
 
   // ── Insurance ───────────────────────────────────────────────
@@ -574,10 +488,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Insurance'],
     category: 'Insurance',
     benefit: '₹2 Lakh life cover at ₹436/year',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '20 Crore+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-pmsby',
@@ -593,10 +504,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Insurance'],
     category: 'Insurance',
     benefit: '₹2 Lakh cover at ₹20/year',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '35 Crore+',
-    disbursed: 'N/A',
   },
 
   // ── Disability ──────────────────────────────────────────────
@@ -614,10 +522,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Disability'],
     category: 'Disability',
     benefit: 'Free/subsidized assistive aids',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '15 Lakh+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-accessible-india',
@@ -633,10 +538,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Disability'],
     category: 'Disability',
     benefit: 'Accessibility infrastructure upgrades',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: 'N/A',
-    disbursed: 'N/A',
   },
 
   // ── State schemes ───────────────────────────────────────────
@@ -654,10 +556,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Education'],
     category: 'Education',
     benefit: 'Tuition fee assistance up to ₹50,000',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '5 Lakh+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-mh-jan-arogya',
@@ -673,10 +572,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Healthcare'],
     category: 'Healthcare',
     benefit: '₹1.5 Lakh cashless cover per family',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '2 Crore+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-up-kanya-sumangala',
@@ -692,10 +588,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Women & Child'],
     category: 'Women & Child',
     benefit: '₹25,000 total across 6 installments',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '25 Lakh+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-rj-bhamashah',
@@ -711,10 +604,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Healthcare'],
     category: 'Healthcare',
     benefit: '₹3 Lakh cashless cover per family',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '1 Crore+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-ka-vidyasiri',
@@ -730,10 +620,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Education'],
     category: 'Education',
     benefit: '₹15,500 - ₹20,000 per year',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '2 Lakh+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-wb-kanyashree',
@@ -749,10 +636,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Women & Child', 'Education'],
     category: 'Women & Child',
     benefit: 'Annual scholarship + one-time grant at 18',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '80 Lakh+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-tn-amma-twowheeler',
@@ -768,10 +652,7 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Employment'],
     category: 'Employment',
     benefit: '50% subsidy, up to ₹25,000',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '70,000+',
-    disbursed: 'N/A',
   },
   {
     id: 'mock-dl-tirth-yatra',
@@ -787,9 +668,6 @@ export const MOCK_SCHEMES: Scheme[] = [
     categories: ['Senior Citizens'],
     category: 'Senior Citizens',
     benefit: 'Free travel, lodging, and meals',
-    deadline: 'Ongoing',
     featured: false,
-    totalBeneficiaries: '1 Lakh+',
-    disbursed: 'N/A',
   },
 ];

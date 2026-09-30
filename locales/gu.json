@@ -112,9 +112,6 @@
   "applyFilters": "ફિલ્ટર્સ લાગુ કરો",
   "schemesFound": "યોજનાઓ મળી",
   "searching": "શોધી રહ્યું...",
-  "sortBy": "દ્વારા ગોઠવો:",
-  "mostRelevant": "સૌથી પ્રાસંગિક",
-  "deadlineApproaching": "છેલ્લી તારીખ નજીક",
   "searchCatalogTitle": "યોજનાઓની શોધ",
   "searchCatalogDesc": "તમારા ફિલ્ટર્સ સાથે સુસંગત સક્રિય કેન્દ્રીય અને રાજ્ય કાર્યક્રમોને શોધો.",
   "noSchemesMatchedTitle": "કોઈ યોજનાઓ તમારી શોધ સાથે મેળ ખાતી નથી",
@@ -245,10 +242,8 @@
   "schemeNotFoundDesc": "તમે જે કલ્યાણકારી કાર્યક્રમની શોધ કરી રહ્યા છો તે અસ્તિત્વમાં નથી અથવા તેને દૂર કરવામાં આવ્યો છે.",
   "browseAllSchemes": "તમામ યોજનાઓ બ્રાઉઝ કરો",
   "active": "સક્રિય",
-  "endDate": "અંતિમ તારીખ:",
   "overallMatchShort": "સમગ્ર મેળ",
   "view": "જુઓ",
-  "ongoing": "ચાલુ",
   "home": "ગૃહ",
   "schemes": "યોજનાઓ"
 }
