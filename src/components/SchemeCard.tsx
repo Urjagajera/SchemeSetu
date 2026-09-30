@@ -52,19 +52,6 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
     }
   };
 
-  const isDeadlineUrgent = (s: Scheme) => {
-    if (s.deadlineUrgent) return true;
-    const dl = s.deadline.toLowerCase();
-    if (dl.includes('ends in')) {
-      const match = dl.match(/\d+/);
-      if (match) {
-        const days = parseInt(match[0]);
-        if (days <= 7) return true;
-      }
-    }
-    return false;
-  };
-
   return (
     <div
       onClick={handleCardClick}
@@ -133,14 +120,6 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
           <div className="flex items-center gap-1.5">
             <span className="text-[10px] uppercase font-extrabold px-1.5 py-0.5 rounded bg-green-50 text-green-700 border border-green-200/50 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900/30">
               {scheme.status || t('active')}
-            </span>
-            <span className={cn(
-              "text-[10px] font-bold px-1.5 py-0.5 rounded border",
-              isDeadlineUrgent(scheme)
-                ? "bg-red-50 text-red-700 border-red-200 dark:bg-red-950/20 dark:text-red-400 dark:border-red-900/30"
-                : "bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-850 dark:text-zinc-400 dark:border-zinc-800"
-            )}>
-              {t('endDate')} {scheme.deadline === 'Ongoing' ? t('ongoing') : scheme.deadline}
             </span>
           </div>
         )}

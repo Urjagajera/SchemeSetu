@@ -8,7 +8,7 @@ import { Scheme } from '../../types';
 /**
  * Scene 4 — Scheme Discovery.
  * Horizontally scrollable scheme cards. Data from the real schemeService.
- * Uses actual Scheme fields: title, shortDesc, category, benefit, deadline.
+ * Uses actual Scheme fields: title, shortDesc, category, benefit.
  * Fields that don't exist in the type are never fabricated.
  */
 
@@ -50,13 +50,7 @@ const SchemeCardLanding: React.FC<{ scheme: Scheme; onClick: () => void; index: 
         </p>
 
         <div className="mt-5 pt-4 border-t border-outline-variant flex items-center justify-between">
-          <div>
-            {scheme.deadline && (
-              <p className="text-[10px] text-on-surface-variant uppercase tracking-wider">
-                Deadline: <span className="font-semibold text-navy">{scheme.deadline}</span>
-              </p>
-            )}
-          </div>
+          <div />
           <span className="text-saffron opacity-0 group-hover:opacity-100 transition-opacity">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
               <path d="M3 8h10M9 4l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
