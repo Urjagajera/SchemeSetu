@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import prisma from '../db/prisma.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
+import { profileMatchesCriteria, describeCriteriaValue, CriteriaStringField } from '../utils/criteriaMatch.js';
 
 const router = Router();
 
@@ -16,11 +17,12 @@ const router = Router();
  * comparisons (age/income/gender/category/occupation/state/landOwnership) are
  * authoritative when a scheme HAS criteria on file; tag-matching remains the
  * fallback signal used when a scheme has no EligibilityCriteria row at all.
- * Since the Phase B ingestion run, 1,341 of 4,722 schemes have a real
- * EligibilityCriteria row (age and/or income; gender/category/occupation/
- * state/landOwnership are schema fields but nothing populates them yet), so
- * those 1,341 now go through the structured comparison path below and the
- * rest still fall into the tag-matching fallback.
+ * Schemes with a real EligibilityCriteria row (age, income, and now gender and
+ * social category, parsed at ingestion) go through the structured comparison path
+ * below; the rest still fall into the tag-matching fallback. gender and category
+ * are stored as comma-separated sets, so they pass on set membership
+ * (utils/criteriaMatch.ts); occupation/state/landOwnership are not populated yet
+ * and stay plain equality.
  */
 router.post(
   '/report',
@@ -72,7 +74,7 @@ router.post(
         else failedCriteria.push(`Annual income must not exceed ₹${criteria.incomeMaxAnnual}`);
       }
 
-      const stringChecks: Array<[keyof typeof criteria, string | undefined, string]> = [
+      const stringChecks: Array<[CriteriaStringField, string | undefined, string]> = [
         ['gender', profile.gender, 'Gender'],
         ['category', profile.category, 'Social category'],
         ['occupation', profile.occupation, 'Occupation'],
@@ -83,10 +85,11 @@ router.post(
         const criteriaValue = criteria[field] as string | null;
         if (criteriaValue !== null && profileValue) {
           structuredChecked++;
-          if (criteriaValue.toLowerCase() === profileValue.toLowerCase()) {
-            passedCriteria.push(`${label} matches (${criteriaValue})`);
+          const wanted = describeCriteriaValue(field, criteriaValue);
+          if (profileMatchesCriteria(field, criteriaValue, profileValue)) {
+            passedCriteria.push(`${label} matches (${wanted})`);
           } else {
-            failedCriteria.push(`${label} must be "${criteriaValue}"`);
+            failedCriteria.push(`${label} must be ${wanted}`);
           }
         }
       }

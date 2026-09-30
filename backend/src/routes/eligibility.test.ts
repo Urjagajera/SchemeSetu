@@ -1,0 +1,99 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import express from 'express';
+import request from 'supertest';
+
+const mockPrisma = vi.hoisted(() => ({
+  scheme: { findUnique: vi.fn() },
+}));
+
+// errorHandler -> config/env.ts exits the process when required vars are missing (CI has no .env).
+vi.mock('../config/env.js', () => ({ default: { NODE_ENV: 'test' } }));
+vi.mock('../db/prisma.js', () => ({ default: mockPrisma }));
+
+const { default: eligibilityRouter } = await import('./eligibility.js');
+const { errorHandler } = await import('../middleware/errorHandler.js');
+
+function buildApp() {
+  const app = express();
+  app.use(express.json());
+  app.use('/api/eligibility', eligibilityRouter);
+  app.use(errorHandler);
+  return app;
+}
+
+function schemeWith(criteria: Record<string, unknown>) {
+  return {
+    id: 'scheme-1',
+    name: 'Test Scheme',
+    tags: [],
+    eligibilityCriteria: {
+      ageMin: null,
+      ageMax: null,
+      incomeMinAnnual: null,
+      incomeMaxAnnual: null,
+      gender: null,
+      category: null,
+      occupation: null,
+      state: null,
+      landOwnership: null,
+      ...criteria,
+    },
+  };
+}
+
+async function report(criteria: Record<string, unknown>, profile: Record<string, string>) {
+  mockPrisma.scheme.findUnique.mockResolvedValue(schemeWith(criteria));
+  const res = await request(buildApp()).post('/api/eligibility/report').send({ profile, schemeId: 'scheme-1' });
+  return res.body;
+}
+
+describe('POST /api/eligibility/report: gender and category set membership', () => {
+  beforeEach(() => mockPrisma.scheme.findUnique.mockReset());
+
+  it('passes a female profile on a female-only scheme and fails a male one', async () => {
+    const pass = await report({ gender: 'female' }, { gender: 'female' });
+    expect(pass.isEligible).toBe(true);
+    expect(pass.passedCriteria).toContain('Gender matches (female)');
+
+    const fail = await report({ gender: 'female' }, { gender: 'male' });
+    expect(fail.isEligible).toBe(false);
+    expect(fail.failedCriteria).toContain('Gender must be female');
+  });
+
+  it('passes either SC or ST on an "sc,st" scheme and fails general and OBC', async () => {
+    expect((await report({ category: 'sc,st' }, { category: 'sc' })).isEligible).toBe(true);
+    expect((await report({ category: 'sc,st' }, { category: 'st' })).isEligible).toBe(true);
+
+    const fail = await report({ category: 'sc,st' }, { category: 'general' });
+    expect(fail.isEligible).toBe(false);
+    expect(fail.failedCriteria).toContain('Social category must be SC or ST');
+    expect((await report({ category: 'sc,st' }, { category: 'obc' })).isEligible).toBe(false);
+  });
+
+  it('requires BOTH gates on a scheme with gender and category', async () => {
+    const criteria = { gender: 'female', category: 'sc' };
+    expect((await report(criteria, { gender: 'female', category: 'sc' })).isEligible).toBe(true);
+    expect((await report(criteria, { gender: 'female', category: 'st' })).isEligible).toBe(false);
+    expect((await report(criteria, { gender: 'male', category: 'sc' })).isEligible).toBe(false);
+  });
+
+  it('counts the new gates in the match percentage together with age', async () => {
+    const body = await report(
+      { ageMin: 18, gender: 'female', category: 'sc,st' },
+      { age: '30', gender: 'female', category: 'general' },
+    );
+    expect(body.isEligible).toBe(false);
+    expect(body.overallMatch).toBe(67); // age and gender passed, category failed: 2 of 3
+  });
+
+  it('matches profile gender "other" to a transgender-only scheme', async () => {
+    expect((await report({ gender: 'transgender' }, { gender: 'other' })).isEligible).toBe(true);
+    expect((await report({ gender: 'transgender' }, { gender: 'female' })).isEligible).toBe(false);
+  });
+
+  it('skips a gate the profile cannot answer instead of failing it', async () => {
+    const body = await report({ gender: 'female', ageMin: 18 }, { age: '30' });
+    expect(body.isEligible).toBe(true);
+    expect(body.failedCriteria).toEqual([]);
+  });
+});

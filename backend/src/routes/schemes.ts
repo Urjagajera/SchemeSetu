@@ -5,6 +5,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { deriveLevel, levelWhereClause } from '../utils/schemeLevel.js';
 import { serializeScheme } from '../utils/serializeScheme.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
+import { profileMatchesCriteria, CriteriaStringField } from '../utils/criteriaMatch.js';
 
 const router = Router();
 
@@ -190,16 +191,16 @@ router.post(
           if (criteria.ageMax !== null && !isNaN(age)) checks.push(age <= criteria.ageMax);
           if (criteria.incomeMinAnnual !== null && !isNaN(income)) checks.push(income >= criteria.incomeMinAnnual);
           if (criteria.incomeMaxAnnual !== null && !isNaN(income)) checks.push(income <= criteria.incomeMaxAnnual);
-          const stringChecks: Array<[string | null, string | undefined]> = [
-            [criteria.gender, profile.gender],
-            [criteria.category, profile.category],
-            [criteria.occupation, profile.occupation],
-            [criteria.state, profile.state],
-            [criteria.landOwnership, profile.land],
+          const stringChecks: Array<[CriteriaStringField, string | null, string | undefined]> = [
+            ['gender', criteria.gender, profile.gender],
+            ['category', criteria.category, profile.category],
+            ['occupation', criteria.occupation, profile.occupation],
+            ['state', criteria.state, profile.state],
+            ['landOwnership', criteria.landOwnership, profile.land],
           ];
-          for (const [criteriaValue, profileValue] of stringChecks) {
+          for (const [field, criteriaValue, profileValue] of stringChecks) {
             if (criteriaValue !== null && profileValue) {
-              checks.push(criteriaValue.toLowerCase() === profileValue.toLowerCase());
+              checks.push(profileMatchesCriteria(field, criteriaValue, profileValue));
             }
           }
           structuredChecked = checks.length;
