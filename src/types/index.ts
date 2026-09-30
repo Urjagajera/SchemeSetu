@@ -22,6 +22,14 @@ export interface Scheme {
   matchScore?: number;
   eligibility?: string[];
   documents?: string[];
+
+  // Real CSV-sourced detail fields, returned by GET /api/schemes/:id. Absent in
+  // mock mode, where the demo catalogue doesn't carry them.
+  benefits?: string[];
+  eligibilityRawText?: string[];
+  documentRequirements?: string[];
+  applicationMode?: string[];
+  applicationProcess?: string | null;
   categoryColor?: string;
   categoryTextColor?: string;
   image?: string;

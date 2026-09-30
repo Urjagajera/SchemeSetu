@@ -8,22 +8,40 @@ import { Scheme } from '../types';
 import { BookmarkButton } from '../components/BookmarkButton';
 import { CompareButton } from '../components/CompareButton';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
-import { 
-  ArrowLeft, 
-  ChevronRight, 
-  Clock, 
-  Building2, 
-  Coins, 
-  Users2, 
-  Receipt, 
-  CheckCircle, 
+import {
+  ArrowLeft,
+  ChevronRight,
+  Building2,
+  Coins,
+  CheckCircle,
+  ClipboardList,
+  FileText,
   AlertCircle,
   ExternalLink
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { cn } from '../utils/cn';
 
 import { translateScheme } from '../utils/translationUtils';
+
+const DetailSection: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
+  <section className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm transition-colors">
+    <h2 className="flex items-center gap-2 font-heading text-sm md:text-base font-extrabold text-primary dark:text-white mb-3">
+      <span className="text-secondary dark:text-sky-400">{icon}</span>
+      {title}
+    </h2>
+    {children}
+  </section>
+);
+
+const BulletList: React.FC<{ items: string[] }> = ({ items }) => (
+  <ul className="list-disc pl-5 space-y-2 marker:text-secondary dark:marker:text-sky-400">
+    {items.map((item, i) => (
+      <li key={i} className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed whitespace-pre-line break-words">
+        {item}
+      </li>
+    ))}
+  </ul>
+);
 
 export const SchemeDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -69,6 +87,14 @@ export const SchemeDetail: React.FC = () => {
 
   const translatedScheme = scheme ? translateScheme(scheme, language) : null;
   const translatedRelated = related.map(s => translateScheme(s, language));
+
+  // Real API data arrives as arrays; mock mode has none of these fields, so fall
+  // back to its single benefit string there and show nothing for the rest.
+  const benefitItems = translatedScheme?.benefits ?? (translatedScheme?.benefit ? [translatedScheme.benefit] : []);
+  const eligibilityItems = translatedScheme?.eligibilityRawText ?? [];
+  const documentItems = translatedScheme?.documentRequirements ?? [];
+  const applicationModes = translatedScheme?.applicationMode ?? [];
+  const applicationProcess = translatedScheme?.applicationProcess?.trim() || '';
 
   if (!translatedScheme) {
     return (
@@ -129,13 +155,6 @@ export const SchemeDetail: React.FC = () => {
                 <span className="bg-surface-container dark:bg-zinc-800 text-on-surface-variant dark:text-zinc-400 px-3 py-0.5 rounded-full text-[10px] font-bold">
                   {translatedScheme.level} Scheme
                 </span>
-                <span className={cn(
-                  "flex items-center gap-1 text-[10px] font-bold px-3 py-0.5 rounded-full",
-                  translatedScheme.deadlineUrgent ? "text-red-600 bg-red-50 dark:bg-red-950/20" : "text-secondary bg-secondary-container/20 dark:bg-zinc-850 dark:text-sky-400"
-                )}>
-                  <Clock className="w-3 h-3" />
-                  {translatedScheme.deadline === 'Ongoing' ? t('ongoing') : translatedScheme.deadline}
-                </span>
               </div>
 
               <h1 className="font-display text-xl md:text-3xl font-extrabold text-primary dark:text-white leading-tight">
@@ -165,21 +184,47 @@ export const SchemeDetail: React.FC = () => {
             </div>
           </div>
 
-          {/* Benefits summary values banner */}
-          <div className="bg-primary dark:bg-zinc-900 border dark:border-zinc-800 rounded-xl p-6 grid grid-cols-3 gap-4 text-white text-center transition-colors">
-            <div className="space-y-1">
-              <p className="text-[10px] uppercase font-bold text-sky-200 tracking-wider">{t('benefitAmount')}</p>
-              <p className="font-display text-sm md:text-lg font-bold truncate">{translatedScheme.benefit.split('(')[0]}</p>
-            </div>
-            <div className="border-x border-white/10 dark:border-zinc-800 space-y-1">
-              <p className="text-[10px] uppercase font-bold text-sky-200 tracking-wider">{t('beneficiaries')}</p>
-              <p className="font-display text-sm md:text-lg font-bold">{translatedScheme.totalBeneficiaries}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-[10px] uppercase font-bold text-sky-200 tracking-wider">{t('disbursed')}</p>
-              <p className="font-display text-sm md:text-lg font-bold">{translatedScheme.disbursed}</p>
-            </div>
-          </div>
+          {/* Benefits: every benefit listed in the source data, not just the first */}
+          {benefitItems.length > 0 && (
+            <DetailSection icon={<Coins className="w-4 h-4" />} title={t('schemeBenefits')}>
+              <BulletList items={benefitItems} />
+            </DetailSection>
+          )}
+
+          {/* Eligibility */}
+          {eligibilityItems.length > 0 && (
+            <DetailSection icon={<CheckCircle className="w-4 h-4" />} title={t('schemeEligibility')}>
+              <BulletList items={eligibilityItems} />
+            </DetailSection>
+          )}
+
+          {/* How to apply: mode(s) plus the step-by-step process text */}
+          {(applicationModes.length > 0 || applicationProcess) && (
+            <DetailSection icon={<ClipboardList className="w-4 h-4" />} title={t('howToApply')}>
+              {applicationModes.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  <span className="text-xs font-bold text-on-surface-variant dark:text-zinc-400">{t('applicationModeLabel')}:</span>
+                  {applicationModes.map((mode) => (
+                    <span key={mode} className="bg-secondary-container/20 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-3 py-0.5 rounded-full text-[11px] font-bold">
+                      {mode}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {applicationProcess && (
+                <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed whitespace-pre-line break-words">
+                  {applicationProcess}
+                </p>
+              )}
+            </DetailSection>
+          )}
+
+          {/* Documents required */}
+          {documentItems.length > 0 && (
+            <DetailSection icon={<FileText className="w-4 h-4" />} title={t('documentsRequired')}>
+              <BulletList items={documentItems} />
+            </DetailSection>
+          )}
 
         </div>
 
