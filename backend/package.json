@@ -11,6 +11,7 @@
     "ingest:dry-run": "tsx src/ingestion/dryRunParseCsv.ts",
     "ingest:schemes": "tsx src/ingestion/ingestSchemes.ts",
     "ingest:eligibility": "tsx src/ingestion/ingestEligibility.ts",
+    "ingest:demographics-dry-run": "tsx src/ingestion/dryRunDemographics.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
