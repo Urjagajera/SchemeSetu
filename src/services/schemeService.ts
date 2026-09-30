@@ -183,6 +183,10 @@ function getLocalSchemes(filters?: { query?: string; category?: string; level?: 
   return result;
 }
 
+function getLocalMinistries(): string[] {
+  return Array.from(new Set(SCHEMES.map((s: any) => s.authorityName).filter(Boolean))).sort() as string[];
+}
+
 function getLocalSchemeById(id: string): Scheme | null {
   const localScheme = SCHEMES.find((s: any) => s.id === id) ?? null;
   return localScheme ? enrichScheme(localScheme) : null;
@@ -271,20 +275,56 @@ const getActiveLang = (): string => {
   return 'en';
 };
 
+export interface SchemeListFilters {
+  query?: string;
+  category?: string;
+  level?: string;
+  sort?: string;
+  ministry?: string;
+  state?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface SchemeListResult {
+  data: Scheme[];
+  /** Total schemes matching the filters across ALL pages — not just data.length. */
+  total: number;
+}
+
+function localSchemeList(filters?: SchemeListFilters): SchemeListResult {
+  const data = getLocalSchemes(filters);
+  return { data, total: data.length };
+}
+
 export const schemeService = {
-  async getSchemes(filters?: { query?: string; category?: string; level?: string; sort?: string }): Promise<Scheme[]> {
+  async getSchemes(filters?: SchemeListFilters): Promise<SchemeListResult> {
     if (isMockMode) {
-      return getLocalSchemes(filters);
+      return localSchemeList(filters);
     }
     try {
       const response = await axios.get(API_URL, {
         params: { ...filters, lang: getActiveLang() }
       });
-      const raw = response.data?.data ?? response.data;
-      return assertJsonArray<any>(raw, 'getSchemes');
+      const data = assertJsonArray<any>(response.data?.data ?? response.data, 'getSchemes') as Scheme[];
+      const total = typeof response.data?.total === 'number' ? response.data.total : data.length;
+      return { data, total };
     } catch (error) {
       console.warn('[schemeService.getSchemes] Backend not available — using local mock data.', (error as Error).message);
-      return getLocalSchemes(filters);
+      return localSchemeList(filters);
+    }
+  },
+
+  async getMinistries(): Promise<string[]> {
+    if (isMockMode) {
+      return getLocalMinistries();
+    }
+    try {
+      const response = await axios.get(`${API_URL}/ministries`);
+      return assertJsonArray<string>(response.data?.data ?? response.data, 'getMinistries');
+    } catch (error) {
+      console.warn('[schemeService.getMinistries] Backend not available — deriving ministries locally.', (error as Error).message);
+      return getLocalMinistries();
     }
   },
 

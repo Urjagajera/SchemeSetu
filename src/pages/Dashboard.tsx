@@ -55,8 +55,8 @@ export const Dashboard: React.FC = () => {
       try {
         setLoading(true);
         // Load trending
-        const allSchemes = await schemeService.getSchemes();
-        setTrending(allSchemes.slice(0, 3));
+        const allSchemes = await schemeService.getSchemes({ limit: 3 });
+        setTrending(allSchemes.data.slice(0, 3));
 
         // Load recommended
         const eligible = await schemeService.getEligibleSchemes(profile);

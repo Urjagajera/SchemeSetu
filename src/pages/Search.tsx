@@ -67,9 +67,7 @@ export const Search: React.FC = () => {
         const sts = await schemeService.getStates();
         setStates(sts);
         
-        const all = await schemeService.getSchemes();
-        const mins = Array.from(new Set(all.map(s => s.ministry)));
-        setMinistries(mins);
+        setMinistries(await schemeService.getMinistries());
       } catch (err) {
         console.error(err);
       }
@@ -100,11 +98,18 @@ export const Search: React.FC = () => {
           category: filters.category,
           level: filters.level,
           sort: sortOption,
-          ...(isMockMode ? {} : { page: currentPage, limit: itemsPerPage })
+          ...(isMockMode
+            ? {}
+            : {
+                ministry: filters.ministry,
+                state: filters.state,
+                page: currentPage,
+                limit: itemsPerPage,
+              })
         });
 
         // Defensive guard — service layer guarantees arrays now, but be safe
-        const safeResults = Array.isArray(results) ? results : [];
+        const safeResults = Array.isArray(results.data) ? results.data : [];
 
         // Run local sub-filtering matching the sidebar criteria (primarily for local mock mode fallback)
         const postFiltered = safeResults.filter(s => {
@@ -286,7 +291,8 @@ export const Search: React.FC = () => {
         if (isMockMode) {
           setTotalSchemes(postFiltered.length);
         } else {
-          setTotalSchemes((results as any).total ?? postFiltered.length);
+          // Real total across every page, straight from the API — not this page's length.
+          setTotalSchemes(results.total);
         }
       } catch (err) {
         console.error(err);

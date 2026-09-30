@@ -21,9 +21,10 @@ export const Bookmarks: React.FC = () => {
       try {
         setLoading(true);
         if (bookmarks.length > 0) {
-          const list = await schemeService.getSchemes();
-          const filtered = list.filter(s => bookmarks.includes(s.id));
-          setSavedSchemes(filtered);
+          // Fetch each saved scheme by id. The old approach filtered the first page of
+          // the full list, which silently dropped any bookmark outside the first 20.
+          const found = await Promise.all(bookmarks.map(id => schemeService.getSchemeById(id)));
+          setSavedSchemes(found.filter((s): s is Scheme => s !== null));
         } else {
           setSavedSchemes([]);
         }

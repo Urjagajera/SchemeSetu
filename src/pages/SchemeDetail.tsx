@@ -47,7 +47,7 @@ export const SchemeDetail: React.FC = () => {
         if (data) {
           // Fetch related
           const catalog = await schemeService.getSchemes({ category: data.category });
-          setRelated(catalog.filter(s => s.id !== data.id).slice(0, 3));
+          setRelated(catalog.data.filter(s => s.id !== data.id).slice(0, 3));
         }
       } catch (err) {
         console.error(err);
