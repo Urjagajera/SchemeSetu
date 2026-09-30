@@ -2,10 +2,13 @@
  * parseEligibility.ts
  * Pure, testable parsing functions to extract structured eligibility criteria
  * (ageMin, ageMax, incomeMinAnnual, incomeMaxAnnual) from Scheme.eligibilityRawText.
+ * Gender and social category are extracted by parseDemographics.ts and combined
+ * in parseEligibilityForScheme() below.
  *
  * Locked Design Rules:
- * 1. Only extract age and income. Non-numeric or unrelated numeric criteria (years of service,
- *    Ph.D. counts, turnover, project outlay, etc.) stay in raw text only.
+ * 1. Only extract age and income here. Non-numeric or unrelated numeric criteria (years of service,
+ *    Ph.D. counts, turnover, project outlay, etc.) stay in raw text only. (Gender and category
+ *    live in parseDemographics.ts, which follows its own stricter precision-over-recall rules.)
  * 2. Income normalized to ANNUAL. If monthly, multiply by 12 UNLESS an explicit annual figure
  *    is also present in the sentence (prefer explicit annual and log comparison).
  * 3. Handle decimal Lakh (1 Lakh = 100,000) and Crore (1 Crore = 10,000,000).
@@ -13,6 +16,14 @@
  * 5. Sanity bound: If annual figure > 50,00,00,000 (50 lakh), skip and log as data error.
  * 6. EligibilityCriteria row created ONLY if at least one field is non-null.
  */
+
+import {
+  extractGender,
+  extractCategory,
+  DemographicExtractionResult,
+  Gender,
+  SocialCategory,
+} from './parseDemographics.js';
 
 export interface AgeExtractionResult {
   min: number | null;
@@ -57,9 +68,15 @@ export interface ParsedEligibility {
   ageMax: number | null;
   incomeMinAnnual: number | null;
   incomeMaxAnnual: number | null;
+  /** Lowercase comma-separated set, e.g. "female"; null = no gender restriction. */
+  gender: string | null;
+  /** Lowercase comma-separated set, e.g. "sc,st"; null = no category restriction. */
+  category: string | null;
   hasAnyCriteria: boolean;
   ageResult: AgeExtractionResult;
   incomeResult: IncomeExtractionResult;
+  genderResult: DemographicExtractionResult<Gender>;
+  categoryResult: DemographicExtractionResult<SocialCategory>;
   logs: string[];
   dualCeilingExcluded: boolean;
 }
@@ -522,12 +539,16 @@ export function parseEligibilityForScheme(
 ): ParsedEligibility {
   const ageResult = extractAge(eligibilityRawText);
   const incomeResult = extractIncome(eligibilityRawText, link);
+  const genderResult = extractGender(eligibilityRawText);
+  const categoryResult = extractCategory(eligibilityRawText);
 
   const hasAnyCriteria =
     ageResult.min !== null ||
     ageResult.max !== null ||
     incomeResult.minAnnual !== null ||
-    incomeResult.maxAnnual !== null;
+    incomeResult.maxAnnual !== null ||
+    genderResult.value !== null ||
+    categoryResult.value !== null;
 
   const logs = [...ageResult.logs, ...incomeResult.logs];
 
@@ -536,9 +557,13 @@ export function parseEligibilityForScheme(
     ageMax: ageResult.max,
     incomeMinAnnual: incomeResult.minAnnual,
     incomeMaxAnnual: incomeResult.maxAnnual,
+    gender: genderResult.value,
+    category: categoryResult.value,
     hasAnyCriteria,
     ageResult,
     incomeResult,
+    genderResult,
+    categoryResult,
     logs,
     dualCeilingExcluded: incomeResult.dualCeilingExcluded,
   };

@@ -66,6 +66,8 @@ export interface IngestionRunSummary {
   totalSchemesEvaluated: number;
   rowsCreatedOrUpdated: number;
   rowsSkippedNoCriteria: number;
+  genderRestricted: number;
+  categoryRestricted: number;
   skippedForSanityList: Array<{ link: string; title: string; amount: number; sentence: string; reason: string }>;
   multipleIncomesResolvedList: Array<{ link: string; title: string; chosen: number; candidates: number[]; sentence: string }>;
   dualCeilingExclusions: DualCeilingExclusion[];
@@ -98,6 +100,8 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
     totalSchemesEvaluated: 0,
     rowsCreatedOrUpdated: 0,
     rowsSkippedNoCriteria: 0,
+    genderRestricted: 0,
+    categoryRestricted: 0,
     skippedForSanityList: [],
     multipleIncomesResolvedList: [],
     dualCeilingExclusions: [],
@@ -194,14 +198,21 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
           ageMax: parsed.ageMax,
           incomeMinAnnual: parsed.incomeMinAnnual,
           incomeMaxAnnual: parsed.incomeMaxAnnual,
+          gender: parsed.gender,
+          category: parsed.category,
         },
         update: {
           ageMin: parsed.ageMin,
           ageMax: parsed.ageMax,
           incomeMinAnnual: parsed.incomeMinAnnual,
           incomeMaxAnnual: parsed.incomeMaxAnnual,
+          // Always written, even when null, so a re-run clears values the parser no longer produces.
+          gender: parsed.gender,
+          category: parsed.category,
         },
       });
+      if (parsed.gender !== null) summary.genderRestricted++;
+      if (parsed.category !== null) summary.categoryRestricted++;
       rowAction = 'CREATED';
       criteriaId = upserted.id;
       summary.rowsCreatedOrUpdated++;
@@ -215,7 +226,12 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
     }
 
     const allMatchedSentences = Array.from(
-      new Set([...parsed.ageResult.matchedSentences, ...parsed.incomeResult.matchedSentences])
+      new Set([
+        ...parsed.ageResult.matchedSentences,
+        ...parsed.incomeResult.matchedSentences,
+        ...parsed.genderResult.matchedSentences,
+        ...parsed.categoryResult.matchedSentences,
+      ])
     );
 
     summary.items.push({
@@ -233,6 +249,8 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
   console.log(`  Total Evaluated:          ${summary.totalSchemesEvaluated}`);
   console.log(`  Eligibility Rows Written: ${summary.rowsCreatedOrUpdated}`);
   console.log(`  Skipped (No Criteria):    ${summary.rowsSkippedNoCriteria}`);
+  console.log(`  Gender restricted:        ${summary.genderRestricted}`);
+  console.log(`  Category restricted:      ${summary.categoryRestricted}`);
   console.log(`  Sanity Skips:             ${summary.skippedForSanityList.length}`);
   console.log(`  Multiple Incomes Resolved: ${summary.multipleIncomesResolvedList.length}`);
   console.log(`  Dual-Ceiling Excluded:    ${summary.dualCeilingExclusions.length}`);

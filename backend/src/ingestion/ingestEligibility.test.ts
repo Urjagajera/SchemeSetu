@@ -134,3 +134,69 @@ describe('ingestEligibility.runIngestion — upsert idempotency', () => {
     expect(secondRunSummary.dualCeilingExclusions).toEqual(firstRunSummary.dualCeilingExclusions);
   });
 });
+
+describe('ingestEligibility.runIngestion — gender and category', () => {
+  const DEMOGRAPHIC_SCHEMES = [
+    {
+      id: 'scheme-girls-sc',
+      sourceUrl: 'https://example.com/schemes/girls-sc',
+      name: 'Kanya Saksharta style scheme (demographics only)',
+      eligibilityRawText: [
+        'The applicant should be a girl student.',
+        'The girl student should belong to the Scheduled Caste category.',
+      ],
+    },
+    {
+      id: 'scheme-age-and-st',
+      sourceUrl: 'https://example.com/schemes/age-and-st',
+      name: 'Age plus category scheme',
+      eligibilityRawText: [
+        'The minimum age of joining is 18 years and maximum is 40 years.',
+        'The applicant must belong to the Scheduled Tribe category.',
+      ],
+    },
+    {
+      id: 'scheme-tier-only',
+      sourceUrl: 'https://example.com/schemes/tier-only',
+      name: 'Mentions SC/ST and women only as benefit tiers',
+      eligibilityRawText: ['Women, SC, and ST beneficiaries are eligible for 60% assistance of the unit cost.'],
+    },
+  ];
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.scheme.findMany.mockResolvedValue(DEMOGRAPHIC_SCHEMES);
+    mockPrisma.eligibilityCriteria.upsert.mockImplementation(({ where }: { where: { schemeId: string } }) =>
+      Promise.resolve({ id: `criteria-for-${where.schemeId}` }),
+    );
+    mockPrisma.eligibilityCriteria.deleteMany.mockResolvedValue({ count: 0 });
+  });
+
+  it('creates a row for a scheme whose only criteria are gender and category', async () => {
+    const summary = await runIngestion('B');
+    const call = mockPrisma.eligibilityCriteria.upsert.mock.calls
+      .map((c) => c[0])
+      .find((c) => c.where.schemeId === 'scheme-girls-sc');
+    expect(call).toBeDefined();
+    expect(call.create).toMatchObject({ gender: 'female', category: 'sc', ageMin: null, incomeMaxAnnual: null });
+    expect(call.update).toMatchObject({ gender: 'female', category: 'sc' });
+    expect(summary.items.find((i) => i.link.endsWith('/girls-sc'))!.rowAction).toBe('CREATED');
+  });
+
+  it('keeps age and adds category on the same row for a scheme that has both', async () => {
+    await runIngestion('B');
+    const calls = mockPrisma.eligibilityCriteria.upsert.mock.calls.map((c) => c[0]);
+    const call = calls.find((c) => c.where.schemeId === 'scheme-age-and-st');
+    expect(call.create).toMatchObject({ ageMin: 18, ageMax: 40, category: 'st', gender: null });
+    // one upsert per scheme keyed on schemeId: no second row for the same scheme
+    expect(calls.filter((c) => c.where.schemeId === 'scheme-age-and-st')).toHaveLength(1);
+  });
+
+  it('does not create a row (and cleans up any old one) when a scheme only mentions groups as benefit tiers', async () => {
+    const summary = await runIngestion('B');
+    expect(mockPrisma.eligibilityCriteria.upsert.mock.calls.map((c) => c[0].where.schemeId)).not.toContain('scheme-tier-only');
+    expect(mockPrisma.eligibilityCriteria.deleteMany).toHaveBeenCalledWith({ where: { schemeId: 'scheme-tier-only' } });
+    expect(summary.genderRestricted).toBe(1);
+    expect(summary.categoryRestricted).toBe(2);
+  });
+});
