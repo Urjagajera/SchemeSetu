@@ -170,16 +170,6 @@ function getLocalSchemes(filters?: { query?: string; category?: string; level?: 
     result = result.filter(s => s.level.toLowerCase() === lvlLower);
   }
 
-  if (filters?.sort) {
-    if (filters.sort === 'Deadline Approaching') {
-      result.sort((a, b) => {
-        if (a.deadlineUrgent && !b.deadlineUrgent) return -1;
-        if (!a.deadlineUrgent && b.deadlineUrgent) return 1;
-        return a.deadline.localeCompare(b.deadline);
-      });
-    }
-  }
-
   return result;
 }
 
@@ -279,7 +269,6 @@ export interface SchemeListFilters {
   query?: string;
   category?: string;
   level?: string;
-  sort?: string;
   ministry?: string;
   state?: string;
   page?: number;

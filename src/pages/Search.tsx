@@ -49,9 +49,6 @@ export const Search: React.FC = () => {
     ministry: searchParams.get('ministry') || ''
   });
 
-  // Sorting
-  const [sortOption, setSortOption] = useState('Most Relevant');
-
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalSchemes, setTotalSchemes] = useState(0);
@@ -97,7 +94,6 @@ export const Search: React.FC = () => {
           query: filters.sidebarQuery,
           category: filters.category,
           level: filters.level,
-          sort: sortOption,
           ...(isMockMode
             ? {}
             : {
@@ -301,7 +297,7 @@ export const Search: React.FC = () => {
       }
     };
     loadFiltered();
-  }, [filters, sortOption, currentPage]);
+  }, [filters, currentPage]);
 
   const handleSearchSubmit = (query: string) => {
     setSearchParams(prev => {
@@ -341,7 +337,6 @@ export const Search: React.FC = () => {
       sidebarQuery: ''
     } as any);
     setSearchParams({});
-    setSortOption('Most Relevant');
     setCurrentPage(1);
   };
 
@@ -446,20 +441,6 @@ export const Search: React.FC = () => {
               {loading ? t('searching') : `${totalSchemes} ${t('schemesFound')}`}
             </span>
 
-            <div className="flex items-center gap-2 self-end sm:self-auto">
-              <span className="text-xs text-on-surface-variant dark:text-zinc-500 font-medium">{t('sortBy')}</span>
-              <select
-                value={sortOption}
-                onChange={(e) => {
-                  setSortOption(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-zinc-300 text-xs font-semibold focus:ring-secondary focus:border-secondary py-1"
-              >
-                <option value="Most Relevant">{t('mostRelevant')}</option>
-                <option value="Deadline Approaching">{t('deadlineApproaching')}</option>
-              </select>
-            </div>
           </div>
 
           {/* Catalog view */}

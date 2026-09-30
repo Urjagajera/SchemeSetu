@@ -28,9 +28,6 @@ function parsePagination(req: Request): { page: number; limit: number; skip: num
  *   ministry — exact authorityName match (case-insensitive); feeds the Ministry dropdown
  *   state    — keeps central schemes plus state-level schemes of that one state, same
  *              rule the frontend's mock-mode filter uses
- *   sort     — only "Deadline Approaching" is a known value client-side, but deadlines
- *              are a frontend-only synthetic field (schemeService.ts enrichScheme()) with
- *              no DB column to sort by, so sort is accepted but not applied server-side.
  *   page, limit — pagination (only sent by Search.tsx in non-mock mode)
  */
 router.get(
