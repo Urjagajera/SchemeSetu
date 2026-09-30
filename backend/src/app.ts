@@ -17,6 +17,9 @@ import profileRouter from './routes/profile.js';
 
 const app = express();
 
+// Disable ETags so dynamic API endpoints always return 200 OK with fresh data instead of 304 Not Modified
+app.set('etag', false);
+
 // ── Middleware (order matters) ───────────────────────────────
 app.use(helmet());           // Security headers (CSP/HSTS/etc — this is a JSON API, no HTML to break)
 app.use(
@@ -34,6 +37,14 @@ app.use(
 app.use(express.json());     // Parse JSON request bodies
 app.use(cookieParser());     // Parse the session cookie for requireAuth
 app.use(requestLogger);      // Log every request: method, path, status, duration
+
+// Prevent client/proxy caching of dynamic API routes
+app.use('/api', (_req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+});
 
 // ── Routes ───────────────────────────────────────────────────
 app.use('/health', healthRouter);
