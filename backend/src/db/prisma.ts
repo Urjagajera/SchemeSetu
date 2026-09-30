@@ -8,12 +8,10 @@ declare global {
   var __prisma: PrismaClient | undefined;
 }
 
-const isDebugQueries = process.env.PRISMA_LOG_QUERIES === 'true';
-
 const prisma: PrismaClient =
   global.__prisma ??
   new PrismaClient({
-    log: isDebugQueries ? ['query', 'warn', 'error'] : ['warn', 'error'],
+    log: config.NODE_ENV === 'development' ? ['query', 'warn', 'error'] : ['error'],
   });
 
 if (config.NODE_ENV !== 'production') {

@@ -14,36 +14,19 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
-    watch: {
-      ignored: [
-        '**/backend/**',
-        '**/reports/**',
-        '**/.git/**',
-        '**/node_modules/**',
-      ],
-    },
     /**
      * Proxy /api/* to the Express backend (port 3001) in development.
-     * When the backend is not running, the proxy returns a graceful 503
-     * without polluting the terminal with unhandled ECONNREFUSED stack traces.
+     * When the backend is not running, the proxy will fail and the
+     * axios service layer will catch the error and fall back to mock data.
+     * This prevents Vite's SPA HTML fallback from being returned to API calls.
      */
     proxy: {
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true,
         secure: false,
-        configure: (proxy) => {
-          proxy.on('error', (err, _req, res) => {
-            // Gracefully handle backend being offline or restarting
-            if (res && 'writeHead' in res && typeof res.writeHead === 'function' && !res.headersSent) {
-              res.writeHead(503, { 'Content-Type': 'application/json' });
-              res.end(JSON.stringify({
-                error: 'Backend unavailable on port 3001',
-                code: 'ECONNREFUSED',
-              }));
-            }
-          });
-        },
+        // If the backend is not running, the request will fail fast
+        // instead of getting a 200 HTML response from Vite's SPA router.
       },
     },
   },

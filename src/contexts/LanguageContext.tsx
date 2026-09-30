@@ -1,15 +1,38 @@
-import { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { TRANSLATIONS } from '../constants/translations';
 
-export type Language = 'en' | 'hi' | 'gu';
+type Language = 'en' | 'hi' | 'gu';
 
-export interface LanguageContextProps {
+interface LanguageContextProps {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: keyof typeof TRANSLATIONS['en']) => string;
 }
 
-export const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem('schemesetu_lang');
+    return (saved === 'hi' || saved === 'en' || saved === 'gu') ? saved : 'en';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    localStorage.setItem('schemesetu_lang', lang);
+  };
+
+  const t = (key: keyof typeof TRANSLATIONS['en']): string => {
+    const dictionary = TRANSLATIONS[language] || TRANSLATIONS['en'];
+    return dictionary[key] || TRANSLATIONS['en'][key] || String(key);
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
 
 export const useTranslation = () => {
   const context = useContext(LanguageContext);
