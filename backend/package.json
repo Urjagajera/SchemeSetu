@@ -12,6 +12,7 @@
     "ingest:schemes": "tsx src/ingestion/ingestSchemes.ts",
     "ingest:eligibility": "tsx src/ingestion/ingestEligibility.ts",
     "ingest:demographics-dry-run": "tsx src/ingestion/dryRunDemographics.ts",
+    "ingest:state-dry-run": "tsx src/ingestion/dryRunState.ts",
     "translate:vocabulary": "tsx src/translation/buildVocabulary.ts",
     "translate:cards": "tsx src/translation/translateCards.ts",
     "test": "vitest run",
