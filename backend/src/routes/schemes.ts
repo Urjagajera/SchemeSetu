@@ -5,6 +5,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { deriveLevel, levelWhereClause } from '../utils/schemeLevel.js';
 import { serializeScheme } from '../utils/serializeScheme.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
+import { buildDemographicWhere } from '../utils/demographicFilters.js';
 import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
 
 const router = Router();
@@ -29,12 +30,14 @@ function parsePagination(req: Request): { page: number; limit: number; skip: num
  *   ministry — exact authorityName match (case-insensitive); feeds the Ministry dropdown
  *   state    — keeps central schemes plus state-level schemes of that one state, same
  *              rule the frontend's mock-mode filter uses
+ *   gender, socialCategory, age, income — who the scheme is for, from the stored criteria
+ *              ("schemes available to me": unrestricted schemes always stay); see utils/demographicFilters.ts
  *   page, limit — pagination (only sent by Search.tsx in non-mock mode)
  */
 router.get(
   '/',
   asyncHandler(async (req: Request, res: Response) => {
-    const { query, category, level, ministry, state } = req.query as Record<string, string | undefined>;
+    const { query, category, level, ministry, state, gender, socialCategory, age, income } = req.query as Record<string, string | undefined>;
     const { limit, skip } = parsePagination(req);
 
     const where: Prisma.SchemeWhereInput = {
@@ -59,6 +62,7 @@ router.get(
               ],
             }
           : {},
+        ...buildDemographicWhere({ gender, socialCategory, age, income }),
       ],
     };
 
