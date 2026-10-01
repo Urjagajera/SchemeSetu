@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { EligibilityReport } from '../services/eligibilityService';
 import { CheckCircle2, AlertTriangle, HelpCircle, ExternalLink } from 'lucide-react';
 import { useTranslation } from '../contexts/LanguageContext';
@@ -12,6 +13,10 @@ interface EligibilityCardProps {
 
 export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyUrl, className }) => {
   const { t } = useTranslation();
+
+  // Nothing could be checked (every criterion on file is unanswered): a percentage would be meaningless.
+  const unverified = report.unverifiedCriteria ?? [];
+  const cannotJudge = unverified.length > 0 && report.passedCriteria.length === 0 && report.failedCriteria.length === 0;
 
   const getPercentageColor = (pct: number) => {
     if (pct === 100) return 'text-green-600 border-green-200 bg-green-50 dark:bg-green-950/20 dark:text-green-400';
@@ -38,10 +43,12 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
         {/* Match Percentage Dial */}
         <div className={cn(
           "px-4 py-2 border rounded-full font-display text-base font-extrabold flex items-center gap-1.5 whitespace-nowrap",
-          getPercentageColor(report.overallMatch)
+          cannotJudge
+            ? 'text-zinc-500 border-zinc-200 bg-zinc-50 dark:bg-zinc-900 dark:text-zinc-400 dark:border-zinc-700'
+            : getPercentageColor(report.overallMatch)
         )}>
           <span>{t('overallMatch')}:</span>
-          <span>{report.overallMatch}%</span>
+          <span>{cannotJudge ? '—' : `${report.overallMatch}%`}</span>
         </div>
       </div>
 
@@ -84,11 +91,30 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
               ))}
             </ul>
           ) : (
+            unverified.length > 0 ? (
+            <p className="text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 italic">{t('nothingRulesOut')}</p>
+          ) : (
             <p className="text-xs md:text-sm text-green-700 dark:text-green-400 italic">No missing requirements. You are fully eligible!</p>
+          )
           )}
         </div>
 
       </div>
+
+      {/* Criteria on file that the profile couldn't answer yet */}
+      {report.unverifiedCriteria && report.unverifiedCriteria.length > 0 && (
+        <div className="rounded-lg border border-amber-200 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/30 p-4 space-y-1.5">
+          <h4 className="font-heading text-sm font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
+            <HelpCircle className="w-4 h-4" />
+            {t('couldNotCheckHeading')} ({report.unverifiedCriteria.length})
+          </h4>
+          <p className="text-xs md:text-sm text-amber-900 dark:text-amber-200">
+            {t('couldNotCheckHelp')}{' '}
+            <span className="font-semibold">{report.unverifiedCriteria.join(', ')}</span>.{' '}
+            <Link to="/profile" className="underline font-bold">{t('updateProfileBtn')}</Link>
+          </p>
+        </div>
+      )}
 
       {/* Explanations & Suggestions */}
       {(report.reasons.length > 0 || report.suggestions.length > 0) && (

@@ -116,20 +116,20 @@ export const Profile: React.FC = () => {
     values: {
       name: user?.name || '',
       age: profile.age || '',
-      dob: profile.dob || '1998-05-15',
-      gender: profile.gender || 'male',
-      occupation: profile.occupation || 'farmer',
-      education: profile.education || 'graduate',
-      income: profile.income || '300000',
-      category: profile.category || 'general',
-      state: profile.state || 'Uttar Pradesh',
-      district: profile.district || 'Lucknow',
-      minority: profile.minority || 'no',
-      disability: profile.disability || 'no',
-      farmer: profile.farmer || 'yes',
-      widow: profile.widow || 'no',
-      veteran: profile.veteran || 'no',
-      land: profile.land || 'yes'
+      dob: profile.dob || '',
+      gender: profile.gender || '',
+      occupation: profile.occupation || '',
+      education: profile.education || '',
+      income: profile.income || '',
+      category: profile.category || '',
+      state: profile.state || '',
+      district: profile.district || '',
+      minority: profile.minority || '',
+      disability: profile.disability || '',
+      farmer: profile.farmer || '',
+      widow: profile.widow || '',
+      veteran: profile.veteran || '',
+      land: profile.land || ''
     },
     resetOptions: { keepDirtyValues: true }
   });
@@ -268,6 +268,7 @@ export const Profile: React.FC = () => {
                     {...register('gender')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -290,6 +291,7 @@ export const Profile: React.FC = () => {
                   {...register('education')}
                   className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                 >
+                  <option value="">Select…</option>
                   <option value="below 10th">Below Class X</option>
                   <option value="10th">Class X</option>
                   <option value="12th">Class XII</option>
@@ -315,6 +317,7 @@ export const Profile: React.FC = () => {
                     {...register('occupation')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="farmer">Farmer / Agriculturist</option>
                     <option value="student">Student / Intern</option>
                     <option value="entrepreneur">Entrepreneur / Small MSME Owner</option>
@@ -342,6 +345,7 @@ export const Profile: React.FC = () => {
                     {...register('farmer')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>
@@ -353,6 +357,7 @@ export const Profile: React.FC = () => {
                     {...register('land')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>
@@ -393,6 +398,7 @@ export const Profile: React.FC = () => {
                     {...register('land')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="rural">Rural (Village)</option>
                     <option value="urban">Urban (City / Town)</option>
                   </select>
@@ -415,6 +421,7 @@ export const Profile: React.FC = () => {
                     {...register('category')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="general">General (Unreserved)</option>
                     <option value="sc">Scheduled Caste (SC)</option>
                     <option value="st">Scheduled Tribe (ST)</option>
@@ -428,6 +435,7 @@ export const Profile: React.FC = () => {
                     {...register('minority')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>
@@ -439,6 +447,7 @@ export const Profile: React.FC = () => {
                     {...register('disability')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>
@@ -450,6 +459,7 @@ export const Profile: React.FC = () => {
                     {...register('widow')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>
@@ -461,6 +471,7 @@ export const Profile: React.FC = () => {
                     {...register('veteran')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
+                    <option value="">Select…</option>
                     <option value="yes">Yes</option>
                     <option value="no">No</option>
                   </select>

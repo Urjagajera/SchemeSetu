@@ -26,6 +26,9 @@ export interface Scheme {
   documentRequirements?: string[];
   applicationMode?: string[];
   applicationProcess?: string | null;
+
+  /** Criteria on file for this scheme that the user's profile couldn't answer (empty fields), e.g. ["Gender"]. */
+  unverifiedCriteria?: string[];
   categoryColor?: string;
   categoryTextColor?: string;
   image?: string;

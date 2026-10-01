@@ -26,6 +26,8 @@ export interface EligibilityReport {
   isEligible: boolean;
   passedCriteria: string[];
   failedCriteria: string[];
+  /** Criteria on file the profile couldn't answer; they never count against the user. */
+  unverifiedCriteria?: string[];
   reasons: string[];
   suggestions: string[];
 }

@@ -97,6 +97,13 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
         <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 mb-4 line-clamp-3 leading-relaxed">
           {scheme.shortDesc}
         </p>
+
+        {/* Criteria the profile couldn't answer: never a reason to hide the scheme, just a nudge */}
+        {scheme.unverifiedCriteria && scheme.unverifiedCriteria.length > 0 && (
+          <p className="text-[11px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 rounded px-2 py-1 mb-3">
+            {t('unverifiedNote')} {scheme.unverifiedCriteria.join(', ')}
+          </p>
+        )}
       </div>
 
       {/* Bottom section */}

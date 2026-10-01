@@ -29,23 +29,26 @@ interface AuthContextProps {
   updateProfile: (newProfile: Partial<UserProfile>) => Promise<boolean>;
 }
 
+// An unset profile is genuinely unknown: every field is empty. The backend and the Dashboard
+// treat '' as "not provided" (no gating, no "complete" credit), so nothing here may pretend to
+// know the user's age, gender, caste, occupation, etc.
 const DEFAULT_PROFILE: UserProfile = {
-  age: '28',
-  gender: 'male',
-  state: 'Uttar Pradesh',
-  category: 'general',
-  occupation: 'farmer',
-  income: '300000',
-  residence: 'rural',
-  land: 'yes',
-  education: 'graduate',
-  minority: 'no',
-  disability: 'no',
-  farmer: 'yes',
-  widow: 'no',
-  veteran: 'no',
-  interests: ['Farmer', 'Agriculture'],
-  profileTags: ['Farmer', 'Agriculture']
+  age: '',
+  gender: '',
+  state: '',
+  category: '',
+  occupation: '',
+  income: '',
+  residence: '',
+  land: '',
+  education: '',
+  minority: '',
+  disability: '',
+  farmer: '',
+  widow: '',
+  veteran: '',
+  interests: [],
+  profileTags: []
 };
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);

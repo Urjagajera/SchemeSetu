@@ -36,16 +36,17 @@ export const Eligibility: React.FC = () => {
 
   // Guest Wizard State
   const [step, setStep] = useState(1);
+  // Nothing is pre-answered: an unanswered question is "unknown" and never gates a scheme.
   const [guestProfile, setGuestProfile] = useState<UserProfile>({
-    age: '25',
-    gender: 'female',
-    state: 'Uttar Pradesh',
-    category: 'general',
-    occupation: 'student',
-    income: '200000',
-    residence: 'urban',
-    land: 'no',
-    education: 'graduate'
+    age: '',
+    gender: '',
+    state: '',
+    category: '',
+    occupation: '',
+    income: '',
+    residence: '',
+    land: '',
+    education: ''
   });
 
   const [wizardSubmitted, setWizardSubmitted] = useState(false);
@@ -103,6 +104,20 @@ export const Eligibility: React.FC = () => {
       return t(key as any) || o;
     };
 
+    // One entry per profile field shown below; anything the user hasn't filled in reads "Not set".
+    const hasText = (v?: string) => !!v && v.trim() !== '';
+    const incomeNumber = parseInt(loggedInProfile.income ?? '', 10);
+    const summaryItems: Array<{ label: string; value: string; set: boolean }> = [
+      { label: t('ageLabel'), set: hasText(loggedInProfile.age), value: `${loggedInProfile.age} ${t('years') || 'yrs'}` },
+      { label: t('genderLabel'), set: hasText(loggedInProfile.gender), value: t((loggedInProfile.gender ?? '').toLowerCase() as any) || (loggedInProfile.gender ?? '').toUpperCase() },
+      { label: t('occupationLabel'), set: hasText(loggedInProfile.occupation), value: getOccupationLabel(loggedInProfile.occupation ?? '') },
+      { label: t('incomeLabel'), set: !isNaN(incomeNumber), value: `₹${incomeNumber.toLocaleString()}` },
+      { label: t('residence') || 'Residence', set: hasText(loggedInProfile.residence), value: t((loggedInProfile.residence ?? '').toLowerCase() as any) || (loggedInProfile.residence ?? '') },
+      { label: t('stateLabel'), set: hasText(loggedInProfile.state), value: getStateLabel(loggedInProfile.state ?? '') },
+      { label: t('socialCategory') || 'Social Category', set: hasText(loggedInProfile.category), value: (loggedInProfile.category ?? '').toUpperCase() },
+      { label: t('education') || 'Education', set: hasText(loggedInProfile.education), value: loggedInProfile.education ?? '' },
+    ].map(i => (i.set ? i : { ...i, value: t('notSet') }));
+
     return (
       <div className="flex h-[calc(100vh-4rem)] overflow-hidden bg-background dark:bg-zinc-950 transition-colors w-full">
         <Sidebar activePage="eligibility" />
@@ -136,22 +151,19 @@ export const Eligibility: React.FC = () => {
         <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 shadow-sm transition-colors space-y-4">
           <h2 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white flex items-center justify-between">
             <span>{t('profileSummary')}</span>
-            <span className="bg-[#d1fadf] text-[#027a48] px-3 py-0.5 rounded-full text-[10px] font-bold">
-              {t('profileComplete')}
-            </span>
+            {summaryItems.some(i => !i.set) ? (
+              <Link to="/profile" className="bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300 px-3 py-0.5 rounded-full text-[10px] font-bold hover:underline">
+                {t('profileIncomplete')}
+              </Link>
+            ) : (
+              <span className="bg-[#d1fadf] text-[#027a48] px-3 py-0.5 rounded-full text-[10px] font-bold">
+                {t('profileComplete')}
+              </span>
+            )}
           </h2>
-          
+
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {[
-              { label: t('ageLabel'), value: `${loggedInProfile.age} ${t('years') || 'yrs'}` },
-              { label: t('genderLabel'), value: t(loggedInProfile.gender.toLowerCase() as any) || loggedInProfile.gender.toUpperCase() },
-              { label: t('occupationLabel'), value: getOccupationLabel(loggedInProfile.occupation) },
-              { label: t('incomeLabel'), value: `₹${parseInt(loggedInProfile.income).toLocaleString()}` },
-              { label: t('residence') || 'Residence', value: t(loggedInProfile.residence.toLowerCase() as any) || loggedInProfile.residence },
-              { label: t('stateLabel'), value: getStateLabel(loggedInProfile.state) },
-              { label: t('socialCategory') || 'Social Category', value: loggedInProfile.category.toUpperCase() },
-              { label: t('education') || 'Education', value: loggedInProfile.education }
-            ].map((item, idx) => (
+            {summaryItems.map((item, idx) => (
               <div key={idx} className="bg-surface-container-low dark:bg-zinc-950 p-2.5 rounded-lg text-xs">
                 <p className="text-[10px] text-on-surface-variant dark:text-zinc-550 font-semibold">{item.label}</p>
                 <p className="font-bold text-primary dark:text-white mt-0.5 truncate">{item.value}</p>
@@ -384,6 +396,7 @@ export const Eligibility: React.FC = () => {
                   onChange={(e) => handleInputChange('state', e.target.value)}
                   className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-850 dark:text-white text-sm focus:ring-secondary focus:border-secondary py-2.5 px-3"
                 >
+                  <option value="">Select…</option>
                   {states.map(s => (
                     <option key={s} value={s}>{s}</option>
                   ))}
@@ -399,6 +412,7 @@ export const Eligibility: React.FC = () => {
                   onChange={(e) => handleInputChange('occupation', e.target.value)}
                   className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-850 dark:text-white text-sm focus:ring-secondary focus:border-secondary py-2.5 px-3"
                 >
+                  <option value="">Select…</option>
                   {occupations.map(o => (
                     <option key={o} value={o}>{o.charAt(0).toUpperCase() + o.slice(1)}</option>
                   ))}
