@@ -102,6 +102,15 @@ describe('translateText: validated, with fallback', () => {
     const r = await translator(llm).translateText(src, hi);
     expect(r).toMatchObject({ ok: true, value: fixed, model: FALLBACK });
   });
+
+  it('prioritizes the fallback model for Gujarati to ensure high native-script quality', async () => {
+    const gu = LANGUAGES.gu;
+    const GU_TEXT = 'અરજી પ્રક્રિયા અને નોંધણી માટે વિગતો ભરો.';
+    const { llm, calls } = fakeLlm({ [FALLBACK]: [GU_TEXT] });
+    const r = await translator(llm).translateText(EN, gu);
+    expect(r).toMatchObject({ ok: true, value: GU_TEXT, model: FALLBACK, attempts: 1 });
+    expect(calls[0].model).toBe(FALLBACK);
+  });
 });
 
 describe('translateText: long text is chunked and only the bad chunk is retried', () => {

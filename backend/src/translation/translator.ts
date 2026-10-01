@@ -29,7 +29,7 @@ export interface FieldResult {
   error?: string;
 }
 
-const MAX_CHUNK_CHARS = 2500;
+const MAX_CHUNK_CHARS = 1800;
 const MAX_ITEMS_PER_CALL = 25;
 const MAX_TOKENS = 8000;
 
@@ -105,6 +105,7 @@ function systemPrompt(lang: LanguageConfig, glossary: GlossaryRequirement[], lis
     '- Keep well-known acronyms (SC, ST, OBC, BPL, PwD, PAN, Aadhaar, KYC, NGO, MSME, etc.) and official portal or website names as written.',
     '- Do not add, remove, explain or summarise anything.',
     `- You must translate ALL of it into ${lang.name}. Never return the English unchanged, however long the content is.`,
+    `- Translate procedural words like "Application Process", "Offline", "Online", "STEP 1", "STEP 2", "Step", "Note:" into ${lang.name} (for example in Gujarati: "અરજી પ્રક્રિયા", "ઓનલાઇન", "ઓફલાઇન", "પગલું 1", "નોંધ:"). Do not leave English steps or headings untranslated.`,
   ];
   if (hint) lines.push(`- ${hint}`);
   if (glossary.length > 0) {
@@ -135,8 +136,16 @@ function parseItems(text: string): unknown {
 // ───────────── the translator ─────────────
 
 export function createTranslator(opts: TranslatorOptions) {
-  const chain: Array<{ model: string; effort?: 'low' | 'medium' }> = [{ model: opts.primaryModel, effort: 'low' }];
-  if (opts.fallbackModel && opts.fallbackModel !== opts.primaryModel) chain.push({ model: opts.fallbackModel });
+  function getChain(lang?: LanguageConfig): Array<{ model: string; effort?: 'low' | 'medium' }> {
+    // For Gujarati, Qwen (fallbackModel) is calibrated to produce 100% natural Gujarati script,
+    // whereas gpt-oss-120b frequently skips procedural steps and returns English unchanged.
+    if (lang?.code === 'gu' && opts.fallbackModel && opts.fallbackModel !== opts.primaryModel) {
+      return [{ model: opts.fallbackModel }, { model: opts.primaryModel, effort: 'low' }];
+    }
+    const chain: Array<{ model: string; effort?: 'low' | 'medium' }> = [{ model: opts.primaryModel, effort: 'low' }];
+    if (opts.fallbackModel && opts.fallbackModel !== opts.primaryModel) chain.push({ model: opts.fallbackModel });
+    return chain;
+  }
 
   interface Attempt<T> {
     ok: boolean;
@@ -150,9 +159,11 @@ export function createTranslator(opts: TranslatorOptions) {
   async function runChain<T>(
     buildRequest: (step: { model: string; effort?: 'low' | 'medium' }) => LlmRequest,
     check: (text: string) => { ok: boolean; value?: T; reasons: string[] },
+    lang?: LanguageConfig,
   ): Promise<Attempt<T>> {
     const reasons: string[] = [];
     let calls = 0;
+    const chain = getChain(lang);
     for (const step of chain) {
       calls++;
       try {
@@ -191,6 +202,7 @@ export function createTranslator(opts: TranslatorOptions) {
           const v = validateText(chunk.text, text, lang, glossary);
           return { ok: v.ok, value: text, reasons: v.reasons };
         },
+        lang,
       );
       attempts += r.calls;
       if (!r.ok) return { ok: false, attempts, error: r.reasons.join(' | ') };
@@ -226,6 +238,7 @@ export function createTranslator(opts: TranslatorOptions) {
           const v = validateList(group, parsed, lang, glossary);
           return { ok: v.ok, value: parsed as string[], reasons: v.reasons };
         },
+        lang,
       );
       attempts += r.calls;
       if (!r.ok) return { ok: false, attempts, error: r.reasons.join(' | ') };
