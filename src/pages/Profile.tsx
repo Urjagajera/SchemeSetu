@@ -34,6 +34,7 @@ const profileSchema = z.object({
   category: z.string().min(1, 'Social category is required'),
   state: z.string().min(1, 'State is required'),
   district: z.string().min(1, 'District is required'),
+  residence: z.string().min(1, 'Residence area type is required'),
   minority: z.string().min(1, 'Minority status is required'),
   disability: z.string().min(1, 'Disability status is required'),
   farmer: z.string().min(1, 'Farmer status is required'),
@@ -124,6 +125,7 @@ export const Profile: React.FC = () => {
       category: profile.category || '',
       state: profile.state || '',
       district: profile.district || '',
+      residence: profile.residence || '',
       minority: profile.minority || '',
       disability: profile.disability || '',
       farmer: profile.farmer || '',
@@ -395,7 +397,7 @@ export const Profile: React.FC = () => {
                 <div className="space-y-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">Residence Area Type</label>
                   <select
-                    {...register('land')}
+                    {...register('residence')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
                     <option value="">Select…</option>
@@ -557,6 +559,15 @@ export const Profile: React.FC = () => {
                 </div>
               </div>
 
+            </div>
+          )}
+
+          {/* Fields that blocked the save. The selects have no inline message of their own, so without this
+              a blank "Select…" would make Save do nothing, silently. */}
+          {Object.keys(errors).length > 0 && (
+            <div role="alert" className="rounded-lg border border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900/40 text-red-700 dark:text-red-400 text-xs font-semibold px-4 py-3">
+              Please complete these before saving:{' '}
+              {Object.values(errors).map((e) => e?.message).filter(Boolean).join(' · ')}
             </div>
           )}
 
