@@ -1,5 +1,41 @@
 import { describe, it, expect } from 'vitest';
-import { profileMatchesCriteria, describeCriteriaValue } from './criteriaMatch.js';
+import { profileMatchesCriteria, describeCriteriaValue, evaluateCriteria, unverifiedLabels, CriteriaRow } from './criteriaMatch.js';
+
+const row = (over: Partial<CriteriaRow>): CriteriaRow => ({
+  ageMin: null, ageMax: null, incomeMinAnnual: null, incomeMaxAnnual: null,
+  gender: null, category: null, occupation: null, state: null, landOwnership: null,
+  ...over,
+});
+
+describe('evaluateCriteria: unknown is neither passed nor failed', () => {
+  it('reports one "unknown" per field the profile cannot answer, even with both age bounds', () => {
+    const results = evaluateCriteria(row({ ageMin: 18, ageMax: 40, gender: 'female' }), {});
+    expect(results.map((r) => [r.label, r.status])).toEqual([
+      ['Age', 'unknown'],
+      ['Gender', 'unknown'],
+    ]);
+    expect(unverifiedLabels(results)).toEqual(['Age', 'Gender']);
+  });
+
+  it('treats empty strings, whitespace and non-numeric age/income as unset', () => {
+    const results = evaluateCriteria(
+      row({ ageMin: 18, incomeMaxAnnual: 200000, category: 'sc' }),
+      { age: '', income: 'n/a', category: '   ' },
+    );
+    expect(unverifiedLabels(results)).toEqual(['Age', 'Annual income', 'Social category']);
+    expect(results.every((r) => r.status === 'unknown')).toBe(true);
+  });
+
+  it('still evaluates the answered criteria next to unanswered ones', () => {
+    const results = evaluateCriteria(row({ ageMin: 18, gender: 'female', category: 'sc,st' }), { age: '30', category: 'general' });
+    const byLabel = Object.fromEntries(results.map((r) => [r.label, r.status]));
+    expect(byLabel).toEqual({ Age: 'passed', Gender: 'unknown', 'Social category': 'failed' });
+  });
+
+  it('returns nothing for a row with no criteria', () => {
+    expect(evaluateCriteria(row({}), { gender: 'male' })).toEqual([]);
+  });
+});
 
 describe('profileMatchesCriteria: set membership for gender and category', () => {
   it('passes when the profile value is in the set', () => {

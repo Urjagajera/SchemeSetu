@@ -91,9 +91,40 @@ describe('POST /api/eligibility/report: gender and category set membership', () 
     expect((await report({ gender: 'transgender' }, { gender: 'female' })).isEligible).toBe(false);
   });
 
-  it('skips a gate the profile cannot answer instead of failing it', async () => {
+  it('skips a gate the profile cannot answer instead of failing it, and says what is missing', async () => {
     const body = await report({ gender: 'female', ageMin: 18 }, { age: '30' });
     expect(body.isEligible).toBe(true);
     expect(body.failedCriteria).toEqual([]);
+    expect(body.unverifiedCriteria).toEqual(['Gender']);
+  });
+});
+
+describe('POST /api/eligibility/report: an unset profile is "unknown", never an exclusion', () => {
+  beforeEach(() => mockPrisma.scheme.findUnique.mockReset());
+
+  it('an empty profile is not ineligible for a female-only SC-only scheme, and the unknowns are listed', async () => {
+    const body = await report({ gender: 'female', category: 'sc' }, {});
+    expect(body.isEligible).toBe(true);
+    expect(body.failedCriteria).toEqual([]);
+    expect(body.unverifiedCriteria).toEqual(['Gender', 'Social category']);
+    expect(body.reasons.join(' ')).toMatch(/Gender, Social category/);
+  });
+
+  it('empty-string and whitespace values count as unset, not as a value to compare', async () => {
+    const body = await report({ gender: 'female', category: 'sc', ageMin: 18 }, { gender: '', category: '  ', age: '' });
+    expect(body.isEligible).toBe(true);
+    expect(body.unverifiedCriteria).toEqual(['Age', 'Gender', 'Social category']);
+  });
+
+  it('a known value still fails while an unknown one is only noted', async () => {
+    const body = await report({ gender: 'female', category: 'sc' }, { gender: 'male' });
+    expect(body.isEligible).toBe(false);
+    expect(body.failedCriteria).toEqual(['Gender must be female']);
+    expect(body.unverifiedCriteria).toEqual(['Social category']);
+  });
+
+  it('a fully answered profile reports nothing unverified', async () => {
+    const body = await report({ gender: 'female', category: 'sc' }, { gender: 'female', category: 'sc' });
+    expect(body.unverifiedCriteria).toEqual([]);
   });
 });

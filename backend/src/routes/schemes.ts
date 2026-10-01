@@ -5,7 +5,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { deriveLevel, levelWhereClause } from '../utils/schemeLevel.js';
 import { serializeScheme } from '../utils/serializeScheme.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
-import { profileMatchesCriteria, CriteriaStringField } from '../utils/criteriaMatch.js';
+import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
 
 const router = Router();
 
@@ -184,27 +184,14 @@ router.post(
         const criteria = s.eligibilityCriteria;
         let structuredChecked = 0;
         let structuredPassed = 0;
+        let unverified: string[] = [];
 
         if (criteria) {
-          const checks: boolean[] = [];
-          if (criteria.ageMin !== null && !isNaN(age)) checks.push(age >= criteria.ageMin);
-          if (criteria.ageMax !== null && !isNaN(age)) checks.push(age <= criteria.ageMax);
-          if (criteria.incomeMinAnnual !== null && !isNaN(income)) checks.push(income >= criteria.incomeMinAnnual);
-          if (criteria.incomeMaxAnnual !== null && !isNaN(income)) checks.push(income <= criteria.incomeMaxAnnual);
-          const stringChecks: Array<[CriteriaStringField, string | null, string | undefined]> = [
-            ['gender', criteria.gender, profile.gender],
-            ['category', criteria.category, profile.category],
-            ['occupation', criteria.occupation, profile.occupation],
-            ['state', criteria.state, profile.state],
-            ['landOwnership', criteria.landOwnership, profile.land],
-          ];
-          for (const [field, criteriaValue, profileValue] of stringChecks) {
-            if (criteriaValue !== null && profileValue) {
-              checks.push(profileMatchesCriteria(field, criteriaValue, profileValue));
-            }
-          }
-          structuredChecked = checks.length;
-          structuredPassed = checks.filter(Boolean).length;
+          const results = evaluateCriteria(criteria, profile);
+          const answered = results.filter((r) => r.status !== 'unknown');
+          structuredChecked = answered.length;
+          structuredPassed = answered.filter((r) => r.status === 'passed').length;
+          unverified = unverifiedLabels(results);
         }
 
         const tagNames = s.tags.map((t) => t.name.toLowerCase());
@@ -215,6 +202,11 @@ router.post(
         if (structuredChecked > 0) {
           include = structuredPassed === structuredChecked;
           matchScore = structuredPassed;
+        } else if (unverified.length > 0) {
+          // Criteria are on file but the profile can't answer any of them (empty fields): we can't tell
+          // whether they apply, so keep the scheme and let the note say what to add.
+          include = true;
+          matchScore = 0;
         } else if (tagNames.length > 0 && interestTags.size > 0) {
           include = tagMatchCount > 0;
           matchScore = tagMatchCount;
@@ -223,13 +215,13 @@ router.post(
           matchScore = 0;
         }
 
-        return { s, matchScore, include };
+        return { s, matchScore, include, unverified };
       })
       .filter((r) => r.include)
       .sort((a, b) => b.matchScore - a.matchScore)
       .slice(0, DEFAULT_LIMIT);
 
-    res.json({ data: scored.map(({ s, matchScore }) => serializeScheme(s, matchScore)) });
+    res.json({ data: scored.map(({ s, matchScore, unverified }) => serializeScheme(s, matchScore, unverified)) });
   }),
 );
 

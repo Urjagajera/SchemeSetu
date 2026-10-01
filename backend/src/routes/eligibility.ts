@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import prisma from '../db/prisma.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
-import { profileMatchesCriteria, describeCriteriaValue, CriteriaStringField } from '../utils/criteriaMatch.js';
+import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
 
 const router = Router();
 
@@ -48,51 +48,18 @@ router.post(
     const failedCriteria: string[] = [];
     const criteria = scheme.eligibilityCriteria;
     let structuredChecked = 0;
+    // Criteria on file that the profile couldn't answer (empty field). They never count against
+    // the user: the scheme stays eligible and the UI tells them what to add to their profile.
+    let unverifiedCriteria: string[] = [];
 
     if (criteria) {
-      const age = parseInt(profile.age ?? '', 10);
-      if (criteria.ageMin !== null && !isNaN(age)) {
-        structuredChecked++;
-        if (age >= criteria.ageMin) passedCriteria.push(`Age ≥ ${criteria.ageMin}`);
-        else failedCriteria.push(`Age must be at least ${criteria.ageMin}`);
+      const results = evaluateCriteria(criteria, profile);
+      for (const r of results) {
+        if (r.status === 'passed') passedCriteria.push(r.message);
+        else if (r.status === 'failed') failedCriteria.push(r.message);
       }
-      if (criteria.ageMax !== null && !isNaN(age)) {
-        structuredChecked++;
-        if (age <= criteria.ageMax) passedCriteria.push(`Age ≤ ${criteria.ageMax}`);
-        else failedCriteria.push(`Age must be at most ${criteria.ageMax}`);
-      }
-
-      const income = parseInt(profile.income ?? '', 10);
-      if (criteria.incomeMinAnnual !== null && !isNaN(income)) {
-        structuredChecked++;
-        if (income >= criteria.incomeMinAnnual) passedCriteria.push('Income meets minimum');
-        else failedCriteria.push(`Annual income must be at least ₹${criteria.incomeMinAnnual}`);
-      }
-      if (criteria.incomeMaxAnnual !== null && !isNaN(income)) {
-        structuredChecked++;
-        if (income <= criteria.incomeMaxAnnual) passedCriteria.push('Income within limit');
-        else failedCriteria.push(`Annual income must not exceed ₹${criteria.incomeMaxAnnual}`);
-      }
-
-      const stringChecks: Array<[CriteriaStringField, string | undefined, string]> = [
-        ['gender', profile.gender, 'Gender'],
-        ['category', profile.category, 'Social category'],
-        ['occupation', profile.occupation, 'Occupation'],
-        ['state', profile.state, 'State residency'],
-        ['landOwnership', profile.land, 'Land ownership'],
-      ];
-      for (const [field, profileValue, label] of stringChecks) {
-        const criteriaValue = criteria[field] as string | null;
-        if (criteriaValue !== null && profileValue) {
-          structuredChecked++;
-          const wanted = describeCriteriaValue(field, criteriaValue);
-          if (profileMatchesCriteria(field, criteriaValue, profileValue)) {
-            passedCriteria.push(`${label} matches (${wanted})`);
-          } else {
-            failedCriteria.push(`${label} must be ${wanted}`);
-          }
-        }
-      }
+      structuredChecked = passedCriteria.length + failedCriteria.length;
+      unverifiedCriteria = unverifiedLabels(results);
     }
 
     const interests = buildInterestTags(profile);
@@ -122,11 +89,14 @@ router.post(
       ];
     } else {
       overallMatch = Math.round((tagPassedCount / totalTags) * 100);
-      isEligible = overallMatch >= 50;
+      // If criteria exist but the profile couldn't answer any, we simply can't tell: don't call it ineligible.
+      isEligible = unverifiedCriteria.length > 0 ? true : overallMatch >= 50;
       passedCriteria.push(...tagPassed);
       failedCriteria.push(...tagFailed);
       reasons = [
-        `No structured eligibility criteria on file for this scheme yet — matched ${tagPassedCount} of ${tags.length} profile/tag signals instead.`,
+        unverifiedCriteria.length > 0
+          ? `This scheme has eligibility criteria on file, but your profile doesn't say: ${unverifiedCriteria.join(', ')}. Add them to your profile to check.`
+          : `No structured eligibility criteria on file for this scheme yet — matched ${tagPassedCount} of ${tags.length} profile/tag signals instead.`,
       ];
     }
 
@@ -137,6 +107,7 @@ router.post(
       isEligible,
       passedCriteria,
       failedCriteria,
+      unverifiedCriteria,
       reasons,
       suggestions: [
         'Add more tags to your profile settings matching your specific occupation, education, or requirements.',

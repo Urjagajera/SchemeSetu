@@ -90,3 +90,43 @@ describe('POST /api/schemes/recommended: gender and category set membership', ()
     expect(await recommendedFor({ gender: 'other', category: 'general' })).toEqual(['Scheme 4']);
   });
 });
+
+describe('POST /api/schemes/recommended: an unset profile never excludes a scheme', () => {
+  beforeEach(() => mockPrisma.scheme.findMany.mockReset());
+
+  async function recommendedData(profile: Record<string, string>) {
+    mockPrisma.scheme.findMany.mockResolvedValue(SCHEMES);
+    const res = await request(buildApp()).post('/api/schemes/recommended').send({ profile });
+    expect(res.status).toBe(200);
+    return res.body.data as Array<{ name: string; unverifiedCriteria?: string[] }>;
+  }
+
+  it('an empty profile keeps every scheme and lists what each gated scheme could not be checked on', async () => {
+    const data = await recommendedData({});
+    expect(data.map((s) => s.name).sort()).toEqual(['Scheme 1', 'Scheme 2', 'Scheme 3', 'Scheme 4']);
+    const byName = Object.fromEntries(data.map((s) => [s.name, s.unverifiedCriteria]));
+    expect(byName['Scheme 1']).toEqual(['Gender']);
+    expect(byName['Scheme 2']).toEqual(['Social category']);
+    expect(byName['Scheme 3']).toEqual(['Gender', 'Social category']);
+    expect(byName['Scheme 4']).toBeUndefined();
+  });
+
+  it('blank strings behave exactly like a missing profile', async () => {
+    const data = await recommendedData({ gender: '', category: '  ', age: '' });
+    expect(data).toHaveLength(4);
+  });
+
+  it('a known gender with an unknown category: passing gates stay in, failing gates drop out, the rest is noted', async () => {
+    const female = await recommendedData({ gender: 'female' });
+    expect(female.map((s) => s.name).sort()).toEqual(['Scheme 1', 'Scheme 2', 'Scheme 3', 'Scheme 4']);
+    expect(female.find((s) => s.name === 'Scheme 3')!.unverifiedCriteria).toEqual(['Social category']);
+
+    const male = await recommendedData({ gender: 'male' });
+    expect(male.map((s) => s.name).sort()).toEqual(['Scheme 2', 'Scheme 4']);
+  });
+
+  it('a fully answered profile carries no unverified note', async () => {
+    const data = await recommendedData({ gender: 'female', category: 'sc' });
+    expect(data.every((s) => s.unverifiedCriteria === undefined)).toBe(true);
+  });
+});

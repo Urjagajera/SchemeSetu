@@ -29,7 +29,7 @@ type SchemeWithRelations = Scheme & {
  * confirmed by inspecting Compare.tsx and translationUtils.ts before deciding
  * this was safe to leave out.
  */
-export function serializeScheme(scheme: SchemeWithRelations, matchScore?: number) {
+export function serializeScheme(scheme: SchemeWithRelations, matchScore?: number, unverifiedCriteria?: string[]) {
   const categories = (scheme.categories ?? []).map((c) => c.name);
   const category = categories[0] || 'General';
 
@@ -54,5 +54,7 @@ export function serializeScheme(scheme: SchemeWithRelations, matchScore?: number
     eligibilityRawText: scheme.eligibilityRawText,
     featured: false, // Scheme has no "featured" concept — see schemes.ts's /featured route comment
     ...(matchScore !== undefined ? { matchScore } : {}),
+    // Criteria on file that the caller's profile couldn't answer (set only by /recommended).
+    ...(unverifiedCriteria && unverifiedCriteria.length > 0 ? { unverifiedCriteria } : {}),
   };
 }
