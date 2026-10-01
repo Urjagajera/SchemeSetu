@@ -250,6 +250,13 @@ export interface SchemeListFilters {
   level?: string;
   ministry?: string;
   state?: string;
+  /** male | female | other: schemes available to this gender (server-side, real mode only). */
+  gender?: string;
+  /** general | sc | st | obc: schemes available to this social category (server-side, real mode only). */
+  socialCategory?: string;
+  age?: number;
+  /** Annual income in rupees. */
+  income?: number;
   page?: number;
   limit?: number;
 }

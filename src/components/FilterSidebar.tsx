@@ -12,6 +12,8 @@ export interface FilterState {
   state: string;
   occupation: string;
   gender: string;
+  /** "" (any) | general | sc | st | obc: schemes available to someone of this social category. */
+  socialCategory: string;
   /** Annual income ceiling in rupees; null means no income filter. */
   income: number | null;
   age: string;
@@ -54,6 +56,14 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     { label: t('male'), value: 'male' },
     { label: t('female'), value: 'female' },
     { label: t('other'), value: 'other' }
+  ];
+
+  const socialCategories = [
+    { label: t('allSocialCategories'), value: '' },
+    { label: 'General', value: 'general' },
+    { label: 'SC', value: 'sc' },
+    { label: 'ST', value: 'st' },
+    { label: 'OBC', value: 'obc' }
   ];
 
   const levels = [
@@ -243,6 +253,22 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           >
             {genders.map(g => (
               <option key={g.value} value={g.value} className="dark:bg-zinc-900 dark:text-white">{g.label}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Social category */}
+        <div className="space-y-1">
+          <label className="block text-[10px] font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider">
+            {t('socialCategory')}
+          </label>
+          <select
+            value={filters.socialCategory}
+            onChange={(e) => onFilterChange({ socialCategory: e.target.value })}
+            className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-950 dark:text-white text-xs md:text-sm font-medium focus:ring-secondary focus:border-secondary py-2 px-3"
+          >
+            {socialCategories.map(c => (
+              <option key={c.value} value={c.value} className="dark:bg-zinc-900 dark:text-white">{c.label}</option>
             ))}
           </select>
         </div>

@@ -42,6 +42,7 @@ export const Search: React.FC = () => {
     state: searchParams.get('state') || '',
     occupation: searchParams.get('occupation') || '',
     gender: searchParams.get('gender') || '',
+    socialCategory: searchParams.get('socialCategory') || '',
     income: searchParams.get('income') ? parseInt(searchParams.get('income') as string) : null,
     age: searchParams.get('age') || '',
     level: searchParams.get('level') || '',
@@ -99,6 +100,11 @@ export const Search: React.FC = () => {
             : {
                 ministry: filters.ministry,
                 state: filters.state,
+                // Who the scheme is for is decided in the database, so the count and pages are real.
+                gender: filters.gender || undefined,
+                socialCategory: filters.socialCategory || undefined,
+                age: filters.age && !isNaN(parseInt(filters.age)) ? parseInt(filters.age) : undefined,
+                income: filters.income ?? undefined,
                 page: currentPage,
                 limit: itemsPerPage,
               })
@@ -189,7 +195,7 @@ export const Search: React.FC = () => {
           }
 
           // Gender check
-          if (filters.gender) {
+          if (isMockMode && filters.gender) {
             const gender = filters.gender.toLowerCase();
             const titleLower = s.name.toLowerCase();
             const descLower = s.description.toLowerCase();
@@ -207,7 +213,7 @@ export const Search: React.FC = () => {
           }
 
           // Age check
-          if (filters.age) {
+          if (isMockMode && filters.age) {
             const age = parseInt(filters.age);
             if (!isNaN(age)) {
               const descLower = s.description.toLowerCase();
@@ -251,7 +257,7 @@ export const Search: React.FC = () => {
           }
 
           // Income check
-          if (filters.income) {
+          if (isMockMode && filters.income) {
             const incomeVal = filters.income;
             const descLower = s.description.toLowerCase();
 
@@ -331,6 +337,7 @@ export const Search: React.FC = () => {
       state: '',
       occupation: '',
       gender: '',
+      socialCategory: '',
       income: null,
       age: '',
       level: '',
@@ -440,6 +447,12 @@ export const Search: React.FC = () => {
             <span className="text-xs md:text-sm font-bold text-on-surface-variant dark:text-zinc-400">
               {loading ? t('searching') : `${totalSchemes} ${t('schemesFound')}`}
             </span>
+            {/* Occupation is the one filter with no stored data behind it, so it still only trims this page. Say so. */}
+            {!isMockMode && filters.occupation && (
+              <span className="text-[11px] font-semibold text-amber-800 dark:text-amber-300">
+                {t('occupationPageOnlyNote')}
+              </span>
+            )}
 
           </div>
 

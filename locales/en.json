@@ -122,6 +122,8 @@
   "allOccupations": "All Occupations",
   "allMinistries": "All Ministries",
   "allGenders": "All Genders",
+  "allSocialCategories": "All",
+  "occupationPageOnlyNote": "The occupation filter only narrows the schemes on this page, so the count above includes schemes it hides.",
   "male": "Male",
   "female": "Female",
   "other": "Other",

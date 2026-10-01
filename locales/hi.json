@@ -122,6 +122,8 @@
   "allOccupations": "सभी व्यवसाय",
   "allMinistries": "सभी मंत्रालय",
   "allGenders": "सभी लिंग",
+  "allSocialCategories": "सभी",
+  "occupationPageOnlyNote": "व्यवसाय फ़िल्टर केवल इस पेज की योजनाओं को सीमित करता है, इसलिए ऊपर की गिनती में वे योजनाएँ भी शामिल हैं जो छिपी हैं।",
   "male": "पुरुष",
   "female": "महिला",
   "other": "अन्य",
