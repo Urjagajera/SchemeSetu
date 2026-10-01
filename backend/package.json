@@ -13,6 +13,7 @@
     "ingest:eligibility": "tsx src/ingestion/ingestEligibility.ts",
     "ingest:demographics-dry-run": "tsx src/ingestion/dryRunDemographics.ts",
     "translate:vocabulary": "tsx src/translation/buildVocabulary.ts",
+    "translate:cards": "tsx src/translation/translateCards.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

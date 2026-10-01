@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useBookmarks } from '../hooks/useBookmarks';
 import { Scheme } from '../types';
 import { useVocabulary } from '../hooks/useVocabulary';
-import { useCardTitles } from '../services/titleTranslations';
+import { useCardText } from '../services/titleTranslations';
 import { BookmarkButton } from '../components/BookmarkButton';
 import { CompareButton } from '../components/CompareButton';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
@@ -81,7 +81,7 @@ export const SchemeDetail: React.FC = () => {
 
   // Translated ministry/state names and tags, and the titles of the related-scheme cards, for the chosen language.
   const { vocab, loading: vocabLoading } = useVocabulary(language);
-  const relatedTitles = useCardTitles(related.map(s => s.id), language);
+  const relatedText = useCardText(related.map(s => s.id), language);
 
   // While the server is still translating this scheme, English is shown and we ask again every few seconds;
   // each field swaps in as it arrives. Gives up after about three minutes (English simply stays).
@@ -124,7 +124,7 @@ export const SchemeDetail: React.FC = () => {
         : `${translatedScheme?.level} Scheme`;
   const translatedRelated = related.map(s => {
     const base = translateScheme(s, language);
-    return applyVocabulary({ ...base, name: relatedTitles[s.id] ?? base.name }, language, vocab, vocabLoading);
+    return applyVocabulary({ ...base, name: relatedText.titles[s.id] ?? base.name, shortDesc: relatedText.summaries[s.id] ?? base.shortDesc }, language, vocab, vocabLoading);
   });
 
   // Real API data arrives as arrays; mock mode has none of these fields, so fall

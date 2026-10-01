@@ -233,10 +233,10 @@ router.post(
 
 /**
  * GET /api/schemes/titles?lang=hi&ids=a,b,c
- * Translated titles for a page of cards (search results, related schemes...), up to MAX_TITLE_IDS ids.
- * Returns `{ data: { language, status, titles: { [id]: title }, pending, failed } }` and never waits for the
- * model: titles that aren't ready yet are simply missing (the card keeps the English one) and `status` is
- * "pending" so the caller asks again. English or a language that isn't enabled gets an empty `titles`.
+ * Translated titles and short summaries for a page of cards (search results, related schemes...), up to
+ * MAX_TITLE_IDS ids. Returns `{ data: { language, status, titles, summaries, pending, failed } }` (each map is
+ * { [schemeId]: text }) and never waits for the model: what isn't ready yet is simply missing (the card keeps the
+ * English text) and `status` is "pending" so the caller asks again. English or a language that isn't enabled gets an empty `titles`.
  */
 const MAX_TITLE_IDS = 100;
 router.get(
@@ -244,12 +244,12 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const language = enabledLanguage(req.query.lang);
     if (!language) {
-      res.json({ data: { language: 'en', status: 'ready', titles: {}, pending: 0, failed: 0 } });
+      res.json({ data: { language: 'en', status: 'ready', titles: {}, summaries: {}, pending: 0, failed: 0 } });
       return;
     }
     const ids = [...new Set(String(req.query.ids ?? '').split(',').map((s) => s.trim()).filter(Boolean))].slice(0, MAX_TITLE_IDS);
-    const schemes = ids.length === 0 ? [] : await prisma.scheme.findMany({ where: { id: { in: ids } }, select: { id: true, name: true } });
-    res.json({ data: await translationService.getTitles(schemes, language) });
+    const schemes = ids.length === 0 ? [] : await prisma.scheme.findMany({ where: { id: { in: ids } }, select: { id: true, name: true, description: true } });
+    res.json({ data: await translationService.getCardText(schemes, language) });
   }),
 );
 

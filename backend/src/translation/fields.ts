@@ -46,3 +46,23 @@ export function sourceFor(scheme: SchemeSource, field: FieldKey): string | strin
 export function sourceHash(source: string | string[]): string {
   return createHash('sha256').update(`${PROMPT_VERSION}\u0000${JSON.stringify(source)}`).digest('hex').slice(0, 32);
 }
+
+const SUMMARY_MAX_CHARS = 200;
+const SUMMARY_MIN_CHARS = 60;
+
+/**
+ * The short English text a card shows under the title, and the source of the translated "summary" field:
+ * the description without its leading "Details" heading, on one line, cut at a sentence end when there is
+ * one in range, otherwise at a word boundary with "...". Null when there is no description.
+ */
+export function summarySource(description: string): string | null {
+  const text = description.replace(/^\s*details\s*[:\-]?\s*/i, '').replace(/\s+/g, ' ').trim();
+  if (text === '') return null;
+  if (text.length <= SUMMARY_MAX_CHARS) return text;
+  const window = text.slice(0, SUMMARY_MAX_CHARS);
+  const ends = [...window.matchAll(/[.!?](?=\s|$)/g)].map((m) => m.index! + 1);
+  const lastEnd = ends.filter((e) => e >= SUMMARY_MIN_CHARS).pop();
+  if (lastEnd) return window.slice(0, lastEnd).trim();
+  const lastSpace = window.lastIndexOf(' ');
+  return `${window.slice(0, lastSpace > 0 ? lastSpace : SUMMARY_MAX_CHARS).trim()}...`;
+}

@@ -19,11 +19,11 @@ export interface BuildResult {
 
 const BATCH_SIZE = 20;
 
-export async function translateTerms(terms: string[], translate: TranslateBatch): Promise<BuildResult> {
+export async function translateTerms(terms: string[], translate: TranslateBatch, batchSize = BATCH_SIZE): Promise<BuildResult> {
   const out: BuildResult = { translated: {}, models: {}, retried: [], failed: [] };
 
-  for (let i = 0; i < terms.length; i += BATCH_SIZE) {
-    const batch = terms.slice(i, i + BATCH_SIZE);
+  for (let i = 0; i < terms.length; i += batchSize) {
+    const batch = terms.slice(i, i + batchSize);
     const r = await translate(batch);
     if (r.ok && Array.isArray(r.value) && r.value.length === batch.length) {
       batch.forEach((term, j) => {

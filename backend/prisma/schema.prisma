@@ -55,7 +55,7 @@ model SchemeTranslation {
   schemeId     String
   scheme       Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
   languageCode String // "hi" | "gu"
-  field        String // title | description | benefits | eligibility | documents | applicationProcess
+  field        String // title | description | benefits | eligibility | documents | applicationProcess | summary (card text)
   status       String // "ok" | "failed"
   value        Json? // string, or string[] for benefits/eligibility/documents; null when failed
   sourceHash   String

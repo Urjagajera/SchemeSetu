@@ -8,7 +8,7 @@ import { ArrowRight, Building2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { translateScheme, applyVocabulary } from '../utils/translationUtils';
 import { useVocabulary } from '../hooks/useVocabulary';
-import { useCardTitles } from '../services/titleTranslations';
+import { useCardText } from '../services/titleTranslations';
 
 interface SchemeCardProps {
   scheme: Scheme;
@@ -25,11 +25,11 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
 }) => {
   const { t, language } = useTranslation();
   const navigate = useNavigate();
-  // Title from the server's translation (English until it arrives), ministry/category from the vocabulary table.
-  const titles = useCardTitles([rawScheme.id], language);
+  // Title and summary from the server's translation (English until they arrive), ministry/category from the vocabulary table.
+  const { titles, summaries } = useCardText([rawScheme.id], language);
   const { vocab, loading: vocabLoading } = useVocabulary(language);
   const base = translateScheme(rawScheme, language);
-  const scheme = applyVocabulary({ ...base, name: titles[rawScheme.id] ?? base.name }, language, vocab, vocabLoading);
+  const scheme = applyVocabulary({ ...base, name: titles[rawScheme.id] ?? base.name, shortDesc: summaries[rawScheme.id] ?? base.shortDesc }, language, vocab, vocabLoading);
 
   const handleCardClick = () => {
     navigate(`/schemes/${scheme.id}`);

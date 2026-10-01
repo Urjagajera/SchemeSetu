@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createTranslationService, StoredRow, TranslationDb, FieldTranslator } from './service.js';
 import { LANGUAGES } from './languages.js';
-import { SchemeSource } from './fields.js';
+import { SchemeSource, summarySource } from './fields.js';
 
 const hi = LANGUAGES.hi;
 
@@ -28,7 +28,7 @@ function fakeDb(clock: { t: number }) {
           (r) =>
             (typeof where.schemeId === 'string' ? r.schemeId === where.schemeId : where.schemeId.in.includes(r.schemeId)) &&
             r.languageCode === where.languageCode &&
-            (where.field === undefined || r.field === where.field),
+            (where.field === undefined || (typeof where.field === 'string' ? r.field === where.field : where.field.in.includes(r.field))),
         ),
       upsert: async ({ where, create, update }) => {
         const k = `${where.schemeId_languageCode_field.schemeId}:${where.schemeId_languageCode_field.languageCode}:${where.schemeId_languageCode_field.field}`;
@@ -224,101 +224,144 @@ describe('createTranslationService', () => {
   });
 });
 
-describe('getTitles (cards)', () => {
+describe('getCardText (cards: title + summary)', () => {
   const clock = { t: 1_000_000 };
   const cards = [
-    { id: 'a', name: 'Stand-Up India' },
-    { id: 'b', name: 'Disha' },
-    { id: 'c', name: 'Gagan Bharari Shiksha Yojana' },
+    { id: 'a', name: 'Stand-Up India', description: 'Details\nStand-Up India supports women and SC/ST entrepreneurs with bank loans between 10 lakh and 1 crore.' },
+    { id: 'b', name: 'Disha', description: 'Details\nDisha runs early intervention centres for children with disabilities.' },
+    { id: 'c', name: 'Gagan Bharari Shiksha Yojana', description: '' },
   ];
-  const titleTranslator = () => {
-    const batches: string[][] = [];
+  const SUMMARY_A = 'Stand-Up India supports women and SC/ST entrepreneurs with bank loans between 10 lakh and 1 crore.';
+
+  /** Records every batch and which kind of text it was (by the hint it was given). */
+  const cardTranslator = () => {
+    const batches: Array<{ kind: 'title' | 'summary'; items: string[] }> = [];
     const t: FieldTranslator = {
       translateText: vi.fn(),
       translateList: vi.fn(async (source: string[], _lang, hint?: string) => {
-        batches.push(source);
-        expect(hint).toMatch(/welfare schemes/);
+        batches.push({ kind: /summaries/.test(hint ?? '') ? 'summary' : 'title', items: source });
         return { ok: true, value: source.map((x) => `HI(${x})`), model: 'primary', attempts: 1 };
       }),
     };
     return { t, batches };
   };
+  const titleCalls = (b: Array<{ kind: string; items: string[] }>) => b.filter((x) => x.kind === 'title');
 
   beforeEach(() => {
     clock.t = 1_000_000;
   });
 
-  it('translates a page of titles in ONE model call, stores each, and serves them from the database after', async () => {
+  it('translates titles and summaries, one batch each, stores every one, and serves them from the database after', async () => {
     const { db, rows } = fakeDb(clock);
-    const { t, batches } = titleTranslator();
+    const { t, batches } = cardTranslator();
     const svc = createTranslationService({ db, translator: t, now: () => clock.t });
 
-    const first = await svc.getTitles(cards, hi);
-    expect(first).toMatchObject({ status: 'pending', pending: 3, titles: {} });
-    await vi.waitFor(() => expect(rows.size).toBe(3));
+    const first = await svc.getCardText(cards, hi);
+    // 3 titles + 2 summaries (the third scheme has no description, so nothing to summarise)
+    expect(first).toMatchObject({ status: 'pending', pending: 5, titles: {}, summaries: {} });
+    await vi.waitFor(() => expect(rows.size).toBe(5));
 
-    expect(batches).toEqual([['Stand-Up India', 'Disha', 'Gagan Bharari Shiksha Yojana']]);
-    const second = await svc.getTitles(cards, hi);
+    expect(titleCalls(batches)).toHaveLength(1);
+    expect(batches.filter((b) => b.kind === 'summary')).toHaveLength(1);
+    // the summary is the description without its "Details" heading
+    expect(batches.find((b) => b.kind === 'summary')!.items[0]).toBe(SUMMARY_A);
+
+    const second = await svc.getCardText(cards, hi);
     expect(second).toMatchObject({ status: 'ready', pending: 0, failed: 0 });
     expect(second.titles).toEqual({ a: 'HI(Stand-Up India)', b: 'HI(Disha)', c: 'HI(Gagan Bharari Shiksha Yojana)' });
-    expect(t.translateList).toHaveBeenCalledTimes(1);
+    expect(Object.keys(second.summaries)).toEqual(['a', 'b']);
+    expect(second.summaries.a).toBe(`HI(${SUMMARY_A})`);
+    expect(batches).toHaveLength(2);
   });
 
-  it('does not start a second batch for titles already being translated', async () => {
+  it('does not start a second batch for text already being translated', async () => {
     const { db, rows } = fakeDb(clock);
-    const { t, batches } = titleTranslator();
+    const { t, batches } = cardTranslator();
     const svc = createTranslationService({ db, translator: t, now: () => clock.t });
-    await svc.getTitles(cards, hi);
-    const again = await svc.getTitles(cards, hi);
+    await svc.getCardText(cards, hi);
+    const again = await svc.getCardText(cards, hi);
     expect(again.status).toBe('pending');
-    await vi.waitFor(() => expect(rows.size).toBe(3));
-    expect(batches).toHaveLength(1);
+    await vi.waitFor(() => expect(rows.size).toBe(5));
+    expect(batches).toHaveLength(2);
   });
 
-  it('only translates the titles that are missing, and re-translates a title whose English changed', async () => {
+  it('only translates what is missing, and re-translates a title whose English changed', async () => {
     const { db, rows } = fakeDb(clock);
-    const { t, batches } = titleTranslator();
+    const { t, batches } = cardTranslator();
     const svc = createTranslationService({ db, translator: t, now: () => clock.t });
-    await svc.getTitles([cards[0]], hi);
-    await vi.waitFor(() => expect(rows.size).toBe(1));
-
-    const view = await svc.getTitles([cards[0], cards[1]], hi);
-    expect(view.titles).toEqual({ a: 'HI(Stand-Up India)' });
+    await svc.getCardText([cards[0]], hi);
     await vi.waitFor(() => expect(rows.size).toBe(2));
-    expect(batches[1]).toEqual(['Disha']);
 
-    await svc.getTitles([{ id: 'a', name: 'Stand-Up India Plus' }], hi);
-    await vi.waitFor(() => expect(batches).toHaveLength(3));
-    expect(batches[2]).toEqual(['Stand-Up India Plus']);
+    const view = await svc.getCardText([cards[0], cards[1]], hi);
+    expect(view.titles).toEqual({ a: 'HI(Stand-Up India)' });
+    await vi.waitFor(() => expect(rows.size).toBe(4));
+    expect(titleCalls(batches).map((b) => b.items)).toEqual([['Stand-Up India'], ['Disha']]);
+
+    await svc.getCardText([{ ...cards[0], name: 'Stand-Up India Plus' }], hi);
+    await vi.waitFor(() => expect(titleCalls(batches)).toHaveLength(3));
+    expect(titleCalls(batches)[2].items).toEqual(['Stand-Up India Plus']);
+    expect(batches.filter((b) => b.kind === 'summary')).toHaveLength(2); // the summary was not redone
   });
 
-  it('leaves a title in English when both models reject it, and does not retry it for 10 minutes', async () => {
+  it('leaves a text in English when both models reject it, and does not retry it for 10 minutes', async () => {
     const { db, rows } = fakeDb(clock);
     const t: FieldTranslator = {
       translateText: vi.fn(),
-      translateList: vi.fn(async (source: string[]) =>
-        source.length > 1 || source[0] === 'Disha' ? { ok: false, attempts: 2, error: 'returned English' } : { ok: true, value: ['HI(' + source[0] + ')'], model: 'p', attempts: 1 },
-      ),
+      translateList: vi.fn(async (source: string[], _l, hint?: string) => {
+        if (/summaries/.test(hint ?? '')) return { ok: true, value: source.map((x) => 'HI(' + x + ')'), model: 'p', attempts: 1 };
+        return source.length > 1 || source[0] === 'Disha' ? { ok: false, attempts: 2, error: 'returned English' } : { ok: true, value: ['HI(' + source[0] + ')'], model: 'p', attempts: 1 };
+      }),
     };
     const svc = createTranslationService({ db, translator: t, now: () => clock.t });
-    await svc.getTitles(cards.slice(0, 2), hi);
-    await vi.waitFor(() => expect(rows.size).toBe(2));
+    await svc.getCardText(cards.slice(0, 2), hi);
+    await vi.waitFor(() => expect(rows.size).toBe(4));
 
-    const view = await svc.getTitles(cards.slice(0, 2), hi);
+    const view = await svc.getCardText(cards.slice(0, 2), hi);
     expect(view).toMatchObject({ status: 'partial', failed: 1, pending: 0 });
     expect(view.titles).toEqual({ a: 'HI(Stand-Up India)' });
+    expect(Object.keys(view.summaries)).toEqual(['a', 'b']);
 
     const calls = (t.translateList as ReturnType<typeof vi.fn>).mock.calls.length;
-    await svc.getTitles(cards.slice(0, 2), hi);
+    await svc.getCardText(cards.slice(0, 2), hi);
     expect((t.translateList as ReturnType<typeof vi.fn>).mock.calls.length).toBe(calls);
 
     clock.t += 11 * 60 * 1000;
-    expect((await svc.getTitles(cards.slice(0, 2), hi)).status).toBe('pending');
+    expect((await svc.getCardText(cards.slice(0, 2), hi)).status).toBe('pending');
+  });
+
+  it('translateCards waits until everything is stored, and reports how much it attempted', async () => {
+    const { db, rows } = fakeDb(clock);
+    const { t } = cardTranslator();
+    const svc = createTranslationService({ db, translator: t, now: () => clock.t });
+    expect(await svc.translateCards(cards, hi)).toBe(5);
+    expect(rows.size).toBe(5);
+    expect(await svc.translateCards(cards, hi)).toBe(0);
   });
 
   it('reports "unavailable" without a translator', async () => {
     const { db } = fakeDb(clock);
     const svc = createTranslationService({ db, translator: null, now: () => clock.t });
-    expect(await svc.getTitles(cards, hi)).toMatchObject({ status: 'unavailable', titles: {} });
+    expect(await svc.getCardText(cards, hi)).toMatchObject({ status: 'unavailable', titles: {}, summaries: {} });
+  });
+});
+
+describe('summarySource', () => {
+  it('drops the leading "Details" heading and flattens line breaks', () => {
+    expect(summarySource('Details\nThe scheme gives a loan.\nApply online.')).toBe('The scheme gives a loan. Apply online.');
+  });
+  it('cuts a long description at a sentence end inside 200 characters', () => {
+    const d = 'Details\n' + 'The scheme provides financial assistance to eligible students for higher education. '.repeat(1) + 'It also covers hostel costs for the whole duration of the course across all the participating institutions in the state, and more.';
+    const out = summarySource(d)!;
+    expect(out.length).toBeLessThanOrEqual(200);
+    expect(out.endsWith('education.')).toBe(true);
+  });
+  it('cuts at a word with "..." when there is no sentence end in range', () => {
+    const out = summarySource('word '.repeat(80))!;
+    expect(out.endsWith('...')).toBe(true);
+    expect(out.length).toBeLessThanOrEqual(204);
+  });
+  it('is null for an empty description', () => {
+    expect(summarySource('')).toBeNull();
+    expect(summarySource('Details\n  ')).toBeNull();
   });
 });
