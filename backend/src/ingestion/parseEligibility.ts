@@ -25,6 +25,8 @@ import {
   SocialCategory,
 } from './parseDemographics.js';
 import { extractState, StateExtractionResult } from './parseState.js';
+import { extractLand, LandExtractionResult } from './parseLand.js';
+import { extractResidence, ResidenceExtractionResult } from './parseResidence.js';
 
 export interface AgeExtractionResult {
   min: number | null;
@@ -75,12 +77,18 @@ export interface ParsedEligibility {
   category: string | null;
   /** Canonical state names, comma-separated, e.g. "Kerala,Tamil Nadu"; null = no state residency gate in the text. */
   state: string | null;
+  /** "yes" = must own cultivable land, "no" = must be landless; null = no requirement. */
+  landOwnership: string | null;
+  /** "rural" | "urban"; null = no requirement. */
+  residence: string | null;
   hasAnyCriteria: boolean;
   ageResult: AgeExtractionResult;
   incomeResult: IncomeExtractionResult;
   genderResult: DemographicExtractionResult<Gender>;
   categoryResult: DemographicExtractionResult<SocialCategory>;
   stateResult: StateExtractionResult;
+  landResult: LandExtractionResult;
+  residenceResult: ResidenceExtractionResult;
   logs: string[];
   dualCeilingExcluded: boolean;
 }
@@ -548,6 +556,8 @@ export function parseEligibilityForScheme(
   const genderResult = extractGender(eligibilityRawText);
   const categoryResult = extractCategory(eligibilityRawText);
   const stateResult = extractState(eligibilityRawText, authorityName, link);
+  const landResult = extractLand(eligibilityRawText);
+  const residenceResult = extractResidence(eligibilityRawText);
 
   const hasAnyCriteria =
     ageResult.min !== null ||
@@ -556,7 +566,9 @@ export function parseEligibilityForScheme(
     incomeResult.maxAnnual !== null ||
     genderResult.value !== null ||
     categoryResult.value !== null ||
-    stateResult.value !== null;
+    stateResult.value !== null ||
+    landResult.value !== null ||
+    residenceResult.value !== null;
 
   const logs = [...ageResult.logs, ...incomeResult.logs];
 
@@ -568,12 +580,16 @@ export function parseEligibilityForScheme(
     gender: genderResult.value,
     category: categoryResult.value,
     state: stateResult.value,
+    landOwnership: landResult.value,
+    residence: residenceResult.value,
     hasAnyCriteria,
     ageResult,
     incomeResult,
     genderResult,
     categoryResult,
     stateResult,
+    landResult,
+    residenceResult,
     logs,
     dualCeilingExcluded: incomeResult.dualCeilingExcluded,
   };

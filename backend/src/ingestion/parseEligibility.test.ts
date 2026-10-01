@@ -136,3 +136,20 @@ describe('parseEligibilityForScheme: state gates', () => {
     expect(parsed).toMatchObject({ gender: 'female', state: 'Goa', ageMin: 18, ageMax: 40 });
   });
 });
+
+describe('parseEligibilityForScheme: land ownership and residence', () => {
+  it('a scheme whose only criteria are land and residence gets a row', () => {
+    const parsed = parseEligibilityForScheme('https://example.com/lr', 'Land + residence', ['The applicant should be a landholding farmer.', 'The applicant should be residing in a rural area.']);
+    expect(parsed.landOwnership).toBe('yes');
+    expect(parsed.residence).toBe('rural');
+    expect(parsed.hasAnyCriteria).toBe(true);
+    expect(parsed.state).toBeNull();
+  });
+
+  it('is unchanged for a scheme with neither', () => {
+    const parsed = parseEligibilityForScheme('https://example.com/none2', 'None', ['The applicant must be a woman.']);
+    expect(parsed.landOwnership).toBeNull();
+    expect(parsed.residence).toBeNull();
+    expect(parsed.gender).toBe('female');
+  });
+});

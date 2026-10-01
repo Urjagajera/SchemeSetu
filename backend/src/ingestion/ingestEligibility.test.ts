@@ -200,3 +200,57 @@ describe('ingestEligibility.runIngestion — gender and category', () => {
     expect(summary.categoryRestricted).toBe(2);
   });
 });
+
+describe('ingestEligibility.runIngestion — state, land ownership and residence', () => {
+  const SCHEMES = [
+    {
+      id: 'scheme-farm-rural',
+      sourceUrl: 'https://example.com/schemes/farm-rural',
+      name: 'Landholding farmers in rural areas',
+      authorityName: 'Madhya Pradesh',
+      eligibilityRawText: ['The applicant must be a landholding farmer.', 'The applicant should be residing in a rural area.', 'The applicant must be a resident of Madhya Pradesh.'],
+    },
+    {
+      id: 'scheme-landless',
+      sourceUrl: 'https://example.com/schemes/landless',
+      name: 'Landless only',
+      authorityName: 'Ministry Of Rural Development',
+      eligibilityRawText: ['The applicant should be landless.'],
+    },
+    {
+      id: 'scheme-own-or-lease',
+      sourceUrl: 'https://example.com/schemes/own-or-lease',
+      name: 'Own or lease',
+      authorityName: 'Ministry Of Agriculture and Farmers Welfare',
+      eligibilityRawText: ['The farmer must either own agricultural land or have land on lease.', 'Income ceiling ₹1,50,000 if residing in urban areas and ₹1,20,000 if residing in rural areas.'],
+    },
+  ];
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.scheme.findMany.mockResolvedValue(SCHEMES);
+    mockPrisma.eligibilityCriteria.upsert.mockImplementation(({ where }: { where: { schemeId: string } }) => Promise.resolve({ id: `criteria-for-${where.schemeId}` }));
+    mockPrisma.eligibilityCriteria.deleteMany.mockResolvedValue({ count: 0 });
+  });
+
+  it('writes state, land ownership and residence on both create and update', async () => {
+    await runIngestion('B');
+    const call = mockPrisma.eligibilityCriteria.upsert.mock.calls.map((c) => c[0]).find((c) => c.where.schemeId === 'scheme-farm-rural');
+    expect(call.create).toMatchObject({ landOwnership: 'yes', residence: 'rural', state: 'Madhya Pradesh' });
+    expect(call.update).toMatchObject({ landOwnership: 'yes', residence: 'rural', state: 'Madhya Pradesh' });
+  });
+
+  it('creates a row for a scheme whose only criterion is being landless', async () => {
+    const summary = await runIngestion('B');
+    const call = mockPrisma.eligibilityCriteria.upsert.mock.calls.map((c) => c[0]).find((c) => c.where.schemeId === 'scheme-landless');
+    expect(call.create).toMatchObject({ landOwnership: 'no', residence: null, state: null, gender: null, ageMin: null });
+    expect(summary.landRestricted).toBe(2);
+    expect(summary.residenceRestricted).toBe(1);
+  });
+
+  it('own-or-lease and an area-based income ceiling produce no row at all', async () => {
+    await runIngestion('B');
+    expect(mockPrisma.eligibilityCriteria.upsert.mock.calls.map((c) => c[0].where.schemeId)).not.toContain('scheme-own-or-lease');
+    expect(mockPrisma.eligibilityCriteria.deleteMany).toHaveBeenCalledWith({ where: { schemeId: 'scheme-own-or-lease' } });
+  });
+});

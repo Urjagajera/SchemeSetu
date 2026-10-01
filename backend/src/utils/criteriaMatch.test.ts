@@ -120,3 +120,38 @@ describe('state is a set of states', () => {
     expect(describeCriteriaValue('state', ne)).toBe('one of these 8 states / union territories: ' + ne.split(',').join(', '));
   });
 });
+
+describe('land ownership and rural / urban residence', () => {
+  const find = (c: CriteriaRow, profile: Record<string, string>, label: RegExp) => evaluateCriteria(c, profile).find((r) => label.test(r.label));
+
+  it('land "yes": owns cultivable land passes, no fails, blank is unknown', () => {
+    const c = row({ landOwnership: 'yes' });
+    expect(find(c, { land: 'yes' }, /Land/)).toMatchObject({ status: 'passed', message: 'Land ownership matches (owns cultivable land)' });
+    expect(find(c, { land: 'no' }, /Land/)).toMatchObject({ status: 'failed', message: 'Owning cultivable land is required' });
+    expect(find(c, {}, /Land/)?.status).toBe('unknown');
+    expect(find(c, { land: '  ' }, /Land/)?.status).toBe('unknown');
+  });
+
+  it('land "no": the applicant must be landless', () => {
+    const c = row({ landOwnership: 'no' });
+    expect(find(c, { land: 'no' }, /Land/)).toMatchObject({ status: 'passed', message: 'Land ownership matches (landless)' });
+    expect(find(c, { land: 'yes' }, /Land/)).toMatchObject({ status: 'failed', message: 'The applicant must be landless (own no cultivable land)' });
+  });
+
+  it('residence: rural / urban pass or fail, blank is unknown', () => {
+    const c = row({ residence: 'rural' });
+    expect(find(c, { residence: 'rural' }, /Residence/)).toMatchObject({ status: 'passed', label: 'Residence (rural / urban)' });
+    expect(find(c, { residence: 'Urban' }, /Residence/)).toMatchObject({ status: 'failed', message: 'Residence (rural / urban) must be rural' });
+    expect(find(c, {}, /Residence/)?.status).toBe('unknown');
+  });
+
+  it('a scheme with no land or residence requirement says nothing about them', () => {
+    const results = evaluateCriteria(row({ gender: 'female' }), { gender: 'female', land: 'yes', residence: 'rural' });
+    expect(results.map((r) => r.label)).toEqual(['Gender']);
+  });
+
+  it('rows from before the residence column existed still work', () => {
+    const old: CriteriaRow = { ageMin: null, ageMax: null, incomeMinAnnual: null, incomeMaxAnnual: null, gender: 'female', category: null, occupation: null, state: null, landOwnership: null };
+    expect(evaluateCriteria(old, { gender: 'female', residence: 'rural' })).toHaveLength(1);
+  });
+});

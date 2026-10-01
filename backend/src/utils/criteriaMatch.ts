@@ -15,7 +15,7 @@
 import { IncomingProfile } from './profile.js';
 import { canonicalState } from './states.js';
 
-export type CriteriaStringField = 'gender' | 'category' | 'occupation' | 'state' | 'landOwnership';
+export type CriteriaStringField = 'gender' | 'category' | 'occupation' | 'state' | 'landOwnership' | 'residence';
 
 const SET_FIELDS: ReadonlySet<CriteriaStringField> = new Set(['gender', 'category', 'state']);
 
@@ -66,6 +66,8 @@ export interface CriteriaRow {
   occupation: string | null;
   state: string | null;
   landOwnership: string | null;
+  /** "rural" | "urban"; optional so older callers and fixtures without the column keep working. */
+  residence?: string | null;
 }
 
 export interface CriterionResult {
@@ -143,6 +145,7 @@ export function evaluateCriteria(criteria: CriteriaRow, profile: IncomingProfile
     // A state the app does not recognise is treated as not given: unknown never excludes.
     ['state', criteria.state, canonicalState(profile.state) ?? undefined, 'State residency'],
     ['landOwnership', criteria.landOwnership, profile.land, 'Land ownership'],
+    ['residence', criteria.residence ?? null, profile.residence, 'Residence (rural / urban)'],
   ];
   for (const [field, criteriaValue, profileValue, label] of stringChecks) {
     if (criteriaValue === null) continue;
@@ -151,8 +154,18 @@ export function evaluateCriteria(criteria: CriteriaRow, profile: IncomingProfile
       continue;
     }
     const wanted = describeCriteriaValue(field, criteriaValue);
+    const matches = profileMatchesCriteria(field, criteriaValue, profileValue);
+    if (field === 'landOwnership') {
+      // The profile asks "Own Cultivable Land?", so say it in those words rather than "must be yes".
+      out.push(
+        matches
+          ? { label, status: 'passed', message: criteriaValue.trim().toLowerCase() === 'yes' ? `${label} matches (owns cultivable land)` : `${label} matches (landless)` }
+          : { label, status: 'failed', message: criteriaValue.trim().toLowerCase() === 'yes' ? 'Owning cultivable land is required' : 'The applicant must be landless (own no cultivable land)' },
+      );
+      continue;
+    }
     out.push(
-      profileMatchesCriteria(field, criteriaValue, profileValue)
+      matches
         ? { label, status: 'passed', message: `${label} matches (${wanted})` }
         : { label, status: 'failed', message: `${label} must be ${wanted}` },
     );
