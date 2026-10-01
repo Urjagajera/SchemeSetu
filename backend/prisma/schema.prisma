@@ -41,8 +41,32 @@ model Scheme {
   categories           Category[]
   tags                 Tag[]
   bookmarks            Bookmark[]
+  translations         SchemeTranslation[]
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
+}
+
+// One row per scheme + language + field, filled on demand the first time a scheme is viewed in that
+// language (see src/translation/). Per-field rows mean one field failing validation never blocks the
+// others, and only the missing/stale fields are re-translated. `sourceHash` is a hash of the English
+// text the translation was made from, so edited source text is detected and re-translated.
+model SchemeTranslation {
+  id           String   @id @default(uuid())
+  schemeId     String
+  scheme       Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  languageCode String // "hi" | "gu"
+  field        String // title | description | benefits | eligibility | documents | applicationProcess
+  status       String // "ok" | "failed"
+  value        Json? // string, or string[] for benefits/eligibility/documents; null when failed
+  sourceHash   String
+  model        String? // which model produced it (primary or fallback)
+  attempts     Int      @default(1)
+  error        String? // why the last attempt failed, when status = "failed"
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([schemeId, languageCode, field])
+  @@index([schemeId, languageCode])
 }
 
 model EligibilityCriteria {

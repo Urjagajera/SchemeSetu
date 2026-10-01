@@ -29,6 +29,11 @@ export const config = {
   DATABASE_URL: process.env.DATABASE_URL as string,
   NODE_ENV: process.env.NODE_ENV as 'development' | 'production' | 'test',
   SESSION_SECRET: process.env.SESSION_SECRET as string,
+  // On-demand scheme translation (src/translation/). Optional on purpose: without a key the API still
+  // works and simply serves English with translation reported as "unavailable".
+  GROQ_API_KEY: process.env.GROQ_API_KEY,
+  TRANSLATION_PRIMARY_MODEL: process.env.TRANSLATION_PRIMARY_MODEL || 'openai/gpt-oss-120b',
+  TRANSLATION_FALLBACK_MODEL: process.env.TRANSLATION_FALLBACK_MODEL || 'qwen/qwen3.8-27b',
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
   // DEV-ONLY: remove before production — demo login bypass.
