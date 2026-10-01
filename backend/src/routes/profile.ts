@@ -25,6 +25,7 @@ interface ProfileUpdateBody {
   category?: string;
   state?: string;
   district?: string;
+  residence?: string;
   minority?: string;
   disability?: string;
   farmer?: string;
@@ -52,6 +53,7 @@ function serializeProfile(row: Profile) {
     category: row.category ?? undefined,
     state: row.state ?? undefined,
     district: row.district ?? undefined,
+    residence: row.residence ?? undefined,
     minority: row.minority ?? undefined,
     disability: row.disability ?? undefined,
     farmer: row.farmer ?? undefined,
@@ -102,6 +104,7 @@ router.put(
       category: body.category,
       state: body.state,
       district: body.district,
+      residence: body.residence,
       minority: body.minority,
       disability: body.disability,
       farmer: body.farmer,

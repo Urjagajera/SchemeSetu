@@ -5,6 +5,7 @@ export interface IncomingProfile {
   age?: string;
   gender?: string;
   state?: string;
+  residence?: string;
   category?: string;
   occupation?: string;
   income?: string;

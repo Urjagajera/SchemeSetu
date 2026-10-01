@@ -116,6 +116,7 @@ model Profile {
   category    String?
   state       String?
   district    String?
+  residence   String? // "rural" | "urban"; collected by the profile form and the guest wizard
   minority    String?
   disability  String?
   farmer      String?
