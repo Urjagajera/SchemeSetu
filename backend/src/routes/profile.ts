@@ -3,38 +3,11 @@ import { Profile } from '@prisma/client';
 import prisma from '../db/prisma.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { requireAuth } from '../middleware/requireAuth.js';
+import { profileUpdateSchema, profileFieldErrors } from '../utils/profileSchema.js';
 
 const router = Router();
 
 router.use(requireAuth);
-
-/**
- * Body shape for PUT /api/profile — matches UserProfile (src/types/index.ts),
- * minus name (updates User.name directly, not stored here — see the schema
- * comment on the Profile model) and the auth-derived fields (email, picture,
- * role, sub) that don't belong on a profile update at all.
- */
-interface ProfileUpdateBody {
-  name?: string;
-  age?: string;
-  dob?: string;
-  gender?: string;
-  occupation?: string;
-  education?: string;
-  income?: string;
-  category?: string;
-  state?: string;
-  district?: string;
-  residence?: string;
-  minority?: string;
-  disability?: string;
-  farmer?: string;
-  widow?: string;
-  veteran?: string;
-  land?: string;
-  interests?: string[];
-  profileTags?: string[];
-}
 
 /**
  * Serializes a Profile row into the wire shape UserProfile expects.
@@ -81,16 +54,22 @@ router.get(
 
 /**
  * PUT /api/profile
- * Upserts the caller's profile. Only fields present in the body are written
- * (Prisma treats `undefined` as "don't touch this field" in both create and
- * update), matching AuthContext's existing updateProfile(Partial<UserProfile>)
- * signature. `name`, if present, updates User.name in the same transaction
- * instead of being stored on Profile.
+ * Upserts the caller's profile. The body is validated first (utils/profileSchema.ts): a malformed value
+ * rejects the whole request with 400 and a message per field. A profile can be saved partially:
+ *   - a field left out of the body is not touched (Prisma treats `undefined` as "leave it"),
+ *   - a field sent blank ("" or null) is cleared back to unknown (stored as null),
+ *   - a field sent with a value is saved.
+ * `name`, if present, updates User.name in the same transaction instead of being stored on Profile.
  */
 router.put(
   '/',
   asyncHandler(async (req: Request, res: Response) => {
-    const body = req.body as ProfileUpdateBody;
+    const parsed = profileUpdateSchema.safeParse(req.body ?? {});
+    if (!parsed.success) {
+      res.status(400).json({ error: { message: 'Some profile fields are not valid', status: 400, fields: profileFieldErrors(parsed.error) } });
+      return;
+    }
+    const body = parsed.data;
     const userId = req.user!.userId;
     const tags = body.profileTags ?? body.interests;
 

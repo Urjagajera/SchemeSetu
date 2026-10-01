@@ -51,6 +51,19 @@ const DEFAULT_PROFILE: UserProfile = {
   profileTags: []
 };
 
+/**
+ * Thrown by updateProfile when the server refuses or can't be reached, so the form can show a real message
+ * (and mark the fields the server objected to) instead of failing silently.
+ */
+export class ProfileSaveError extends Error {
+  fields: Record<string, string>;
+  constructor(message: string, fields: Record<string, string> = {}) {
+    super(message);
+    this.name = 'ProfileSaveError';
+    this.fields = fields;
+  }
+}
+
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -272,7 +285,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return true;
       } catch (error) {
         console.error('[Update Profile Error]:', error);
-        return false;
+        const body = (error as { response?: { data?: { error?: { message?: string; fields?: Record<string, string> } } } }).response?.data?.error;
+        if (body?.fields && Object.keys(body.fields).length > 0) {
+          throw new ProfileSaveError(body.message || 'Some profile fields are not valid', body.fields);
+        }
+        throw new ProfileSaveError(body?.message || "We couldn't save your profile. Check your connection and try again.");
       }
     }
 

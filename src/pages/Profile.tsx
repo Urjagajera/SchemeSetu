@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FieldErrors } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, ProfileSaveError } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
 import { UserProfile } from '../types';
 import { 
@@ -18,30 +18,67 @@ import {
 import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
 
-// Define Zod Validation Schema matching all requested fields
+// Only the name is required. Every other answer is optional: a blank means "unknown", and the eligibility
+// engine never rules a scheme out because of an unknown. What IS filled in must still be sensible.
+// The server checks the same rules again (backend/src/utils/profileSchema.ts), so keep the two in step.
+const isRealPastDate = (v: string) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+  const d = new Date(`${v}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v && d.getUTCFullYear() >= 1900 && d.getTime() <= Date.now();
+};
+
 const profileSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  age: z.string().refine(val => !isNaN(parseInt(val)) && parseInt(val) > 0, {
-    message: 'Age must be a valid positive number'
+  name: z.string().trim().min(2, 'Name must be at least 2 characters').max(100, 'Name must be 100 characters or fewer'),
+  age: z.string().refine(v => v.trim() === '' || (/^\d{1,3}$/.test(v.trim()) && Number(v) >= 1 && Number(v) <= 120), {
+    message: 'Age must be a whole number between 1 and 120'
   }),
-  dob: z.string().min(1, 'Date of Birth is required'),
-  gender: z.string().min(1, 'Gender is required'),
-  occupation: z.string().min(1, 'Occupation is required'),
-  education: z.string().min(1, 'Education is required'),
-  income: z.string().refine(val => !isNaN(parseInt(val)) && parseInt(val) >= 0, {
-    message: 'Income must be a valid number'
+  dob: z.string().refine(v => v === '' || isRealPastDate(v), {
+    message: 'Enter a real date of birth that is not in the future'
   }),
-  category: z.string().min(1, 'Social category is required'),
-  state: z.string().min(1, 'State is required'),
-  district: z.string().min(1, 'District is required'),
-  residence: z.string().min(1, 'Residence area type is required'),
-  minority: z.string().min(1, 'Minority status is required'),
-  disability: z.string().min(1, 'Disability status is required'),
-  farmer: z.string().min(1, 'Farmer status is required'),
-  widow: z.string().min(1, 'Widow status is required'),
-  veteran: z.string().min(1, 'Veteran status is required'),
-  land: z.string().min(1, 'Landownership is required')
+  gender: z.string(),
+  occupation: z.string(),
+  education: z.string(),
+  income: z.string().refine(v => v.trim() === '' || /^\d{1,12}$/.test(v.trim()), {
+    message: 'Income must be a whole number of rupees, 0 or more'
+  }),
+  category: z.string(),
+  state: z.string().max(100, 'State must be 100 characters or fewer'),
+  district: z.string().max(100, 'District must be 100 characters or fewer'),
+  residence: z.string(),
+  minority: z.string(),
+  disability: z.string(),
+  farmer: z.string(),
+  widow: z.string(),
+  veteran: z.string(),
+  land: z.string()
 });
+
+// Which tab each field lives on, and what to call it in the error summary.
+const FIELD_INFO: Record<string, { label: string; section: 'personal' | 'academic' | 'finance' | 'location' | 'special' }> = {
+  name: { label: 'Name', section: 'personal' },
+  age: { label: 'Age', section: 'personal' },
+  dob: { label: 'Date of birth', section: 'personal' },
+  gender: { label: 'Gender', section: 'personal' },
+  education: { label: 'Education', section: 'academic' },
+  occupation: { label: 'Occupation', section: 'finance' },
+  income: { label: 'Annual family income', section: 'finance' },
+  farmer: { label: 'Farmer status', section: 'finance' },
+  land: { label: 'Land ownership', section: 'finance' },
+  state: { label: 'State', section: 'location' },
+  district: { label: 'District', section: 'location' },
+  residence: { label: 'Residence', section: 'location' },
+  category: { label: 'Social category', section: 'special' },
+  minority: { label: 'Minority status', section: 'special' },
+  disability: { label: 'Disability status', section: 'special' },
+  widow: { label: 'Widow status', section: 'special' },
+  veteran: { label: 'Veteran status', section: 'special' }
+};
+
+interface FormProblem {
+  field: string;
+  label: string;
+  message: string;
+}
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
@@ -50,6 +87,8 @@ export const Profile: React.FC = () => {
   const { t } = useTranslation();
   
   const [successMsg, setSuccessMsg] = useState('');
+  // What stopped a save, shown at the top of the page whichever tab you are on.
+  const [saveProblem, setSaveProblem] = useState<{ message: string; items: FormProblem[] } | null>(null);
   const [activeSection, setActiveSection] = useState<'personal' | 'academic' | 'finance' | 'location' | 'special'>('personal');
   
   const [selectedTags, setSelectedTags] = useState<string[]>(profile.interests || profile.profileTags || []);
@@ -99,6 +138,7 @@ export const Profile: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting }
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -136,9 +176,28 @@ export const Profile: React.FC = () => {
     resetOptions: { keepDirtyValues: true }
   });
 
+  const toProblems = (entries: Array<[string, string]>): FormProblem[] =>
+    entries.map(([field, message]) => ({ field, label: FIELD_INFO[field]?.label ?? field, message }));
+
+  // Jump to the first tab that has a problem, so the error is not hidden on a tab you are not looking at.
+  const showFirstProblem = (items: FormProblem[]) => {
+    const first = items.find(i => FIELD_INFO[i.field]);
+    if (first) setActiveSection(FIELD_INFO[first.field].section);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const onInvalid = (invalid: FieldErrors<ProfileFormValues>) => {
+    setSuccessMsg('');
+    const items = toProblems(Object.entries(invalid).map(([field, err]) => [field, String(err?.message ?? 'Not valid')]));
+    setSaveProblem({ message: 'Your profile was not saved. Please fix the following and try again:', items });
+    showFirstProblem(items);
+  };
+
   const onSubmit = async (values: ProfileFormValues) => {
     try {
       setSuccessMsg('');
+      setSaveProblem(null);
+      // A blank answer is sent as blank: the server turns it into "unknown", which also clears a value saved earlier.
       await updateProfile({
         ...values,
         interests: selectedTags,
@@ -148,6 +207,16 @@ export const Profile: React.FC = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       console.error(err);
+      const failure = err instanceof ProfileSaveError ? err : new ProfileSaveError("We couldn't save your profile. Please try again.");
+      const items = toProblems(Object.entries(failure.fields));
+      items.forEach(i => {
+        if (i.field in FIELD_INFO) setError(i.field as keyof ProfileFormValues, { type: 'server', message: i.message });
+      });
+      setSaveProblem({
+        message: items.length > 0 ? 'The server did not accept your profile. Please fix the following and try again:' : failure.message,
+        items
+      });
+      showFirstProblem(items);
     }
   };
 
@@ -172,7 +241,36 @@ export const Profile: React.FC = () => {
         <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 mt-1">
           Manage your personal information, address, and financial filters used to verify scheme eligibility.
         </p>
+        <p className="font-body text-xs text-on-surface-variant dark:text-zinc-400 mt-2">
+          Only your name is required. Leave anything you are unsure of blank: we never rule out a scheme because of a blank answer,
+          we just tell you which conditions we could not check.
+        </p>
       </div>
+
+      {saveProblem && (
+        <div role="alert" className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/40 text-red-800 dark:text-red-300 rounded-xl p-4 space-y-2 text-xs md:text-sm">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <span className="font-bold">{saveProblem.message}</span>
+          </div>
+          {saveProblem.items.length > 0 && (
+            <ul className="list-disc pl-9 space-y-0.5">
+              {saveProblem.items.map(i => (
+                <li key={i.field}>
+                  <button
+                    type="button"
+                    className="underline font-semibold text-left"
+                    onClick={() => FIELD_INFO[i.field] && setActiveSection(FIELD_INFO[i.field].section)}
+                  >
+                    {i.label}
+                  </button>
+                  : {i.message}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
       {successMsg && (
         <div className="bg-[#d1fadf] border border-green-200 text-[#027a48] rounded-xl p-4 flex items-center gap-2 text-xs md:text-sm">
@@ -181,7 +279,7 @@ export const Profile: React.FC = () => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+      <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
         
         {/* Left column navigation tabs */}
         <div className="md:col-span-1 space-y-3">
@@ -202,6 +300,9 @@ export const Profile: React.FC = () => {
                 >
                   <Icon className="w-4.5 h-4.5" />
                   {sec.label}
+                  {Object.keys(errors).some(f => FIELD_INFO[f]?.section === sec.id) && (
+                    <span className="ml-auto w-2 h-2 rounded-full bg-red-500" aria-label="This tab has a problem" />
+                  )}
                 </button>
               );
             })}
