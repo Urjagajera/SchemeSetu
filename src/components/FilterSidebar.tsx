@@ -91,11 +91,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   // every state that had no locale entry.
   const getStateLabel = (s: string) => stateLabel(s, vocab, t as (key: any) => string);
 
-  const getMinistryLabel = (m: string) => {
-    const localized = translateValue('authority', m, language);
-    if (localized && localized !== m) return localized;
-    return m;
-  };
+  // The ministry list holds every authority (ministries and states): the Hindi vocabulary has a name for each one.
+  const getMinistryLabel = (m: string) => vocab?.names[m.trim()] ?? m;
 
   const getOccupationLabel = (o: string) => {
     const key = `occ_${o.replace(/\s+/g, '_').toLowerCase()}`;
