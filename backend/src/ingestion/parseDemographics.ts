@@ -55,6 +55,9 @@ function cleanSentences(sentences: string[]): string[] {
 const NOT_A_GATE =
   /(relax|priorit|prefer|reserv|cut-?off|concession|quota|earmark|at par|\d+(\.\d+)?\s*%\s*(for|is|of|assistance|subsidy|grant|of the unit cost)|assistance of \d+|\bfor (SC|ST|OBC|women|general|the general|boys|girls|men)\b|in the case of|in case of|per cent|exempt|additional|extra |more than|age limit|years for|years of age for|will be given|shall be given|represent|along with|each (block|district|region|state)|top[- ]performing|highest[- ]scoring)/i;
 
+/** A line ending in a colon introduces a list or a segment ("For students belonging to SCs and OBCs Category:"). */
+const SEGMENT_HEADING = /:\s*$/;
+
 /** Sentences that let several kinds of people apply, so they aren't one restriction. */
 const OPEN_OR_LIST =
   /\b(man or woman|men or women|men and women|women and men|male or female|male and female|female or male|both|irrespective|regardless|any gender|all genders|all castes?|any caste|boy or girl|girls? (and|or) boys?|boys? (and|or) girls?)\b/i;
@@ -98,6 +101,7 @@ function genderFromNoun(noun: string): Gender {
 function genderOfSentence(sentence: string): { gender: Gender | null; reject: string | null } {
   // only sentences that mention a gender word at all are interesting
   if (!new RegExp(String.raw`\b${GENDER_NOUN}\b`, 'i').test(sentence)) return { gender: null, reject: null };
+  if (SEGMENT_HEADING.test(sentence)) return { gender: null, reject: 'heading that introduces a list or segment, not a rule' };
 
   if (NOT_A_GATE.test(sentence)) return { gender: null, reject: 'relaxation/priority/quota/benefit tier, not a gate' };
   if (OPEN_OR_LIST.test(sentence)) return { gender: null, reject: 'open to more than one gender' };
@@ -164,7 +168,7 @@ const GATE_LEAD =
   /\b(applicant|applicants|beneficiar(y|ies)|candidate|candidates|student|students|person|persons|individual|farmer|farmers|entrepreneur|member|worker|household)\b[^.]{0,60}\b(should|must|shall|has to|have to|needs? to|is required to|are required to|will be|is eligible|are eligible|can apply|may apply)\b/i;
 /** Groups outside SC/ST/OBC/general that appear in option lists; if present, the list can't be modelled. */
 const UNMODELLED_GROUP =
-  /\b(denotified|de-notified|notified tribe|NTDNT|DNT|DNC|nomadic|semi[- ]nomadic|PVTG|minorit(y|ies)|muslim|christian|sikh|buddhist|jain|parsi|EWS|economically weaker|landless|artisan|transgender|prisoner|inmate|PwD|disabled|differently[- ]abled|safai|sanitation|scaveng|EBCs?|MBCs?|BCs?|DNTs?|VJNTs?|PwDs?|Vimukta)\b/i;
+  /\b(denotified|de-notified|notified tribe|NTDNT|DNT|DNC|nomadic|semi[- ]nomadic|PVTG|minorit(y|ies)|(muslim|christian|sikh|buddhist|jain|parsi)s?|EWS|economically weaker|landless|artisan|transgender|prisoner|inmate|PwD|disabled|differently[- ]abled|safai|sanitation|scaveng|EBCs?|MBCs?|BCs?|DNTs?|VJNTs?|PwDs?|Vimukta)\b/i;
 /** "SC, ST, or a BPL family": another route to eligibility sits in the same list. */
 const ALT_ROUTE = /\bor\b[^.]*\b(BPL|below poverty line|primitive tribes?|PTGs?)\b|\b(BPL|below poverty line|primitive tribes?|PTGs?)\b[^.]*,\s*or\b/i;
 /** A sentence about a marriage / relationship can name a caste without restricting the applicant's own. */
@@ -172,6 +176,10 @@ const PARTNER_CONTEXT = /\b(inter-?caste|marriage|bride|groom|bridegroom|spouse|
 /** Certificate / proof requirements describe paperwork for people claiming a category, not a gate. */
 const PAPERWORK = /\b(certificate|proof|documents?)\b/i;
 const APPLICANT_SUBJECT = /\b(applicants?|beneficiar(y|ies)|candidates?|students?|farmers?|persons?|individuals?|entrepreneurs?|members?|workers?|households?|famil(y|ies)|trainees?|cultivators?|owners?|residents?|citizens?|artisans?|fishermen|labou?rers?|youth|scholars?|boys?|girls?|women|men|they|he|she|one)\b/i;
+/** "The applicant organization should be a registered NGO working among STs": the category describes who the applicant SERVES. */
+const ORGANISATION_SUBJECT = /\b(organi[sz]ations?|NGOs?|VOs?|societ(y|ies)|institutes?|institutions?|trusts?|cooperatives?|co-operatives?|firms?|compan(y|ies)|enterprises?)\b/i;
+/** The part of a sentence before its first modal verb or "belong": the grammatical subject. */
+const subjectOf = (sentence: string): string => sentence.split(/\b(should|must|shall|has to|have to|needs? to|is required|are required|belong(s|ing)?|will be|is eligible|are eligible)\b/i)[0];
 const EXCLUSION = /\b(other than|excluding|except|not covered|apart from)\b/i;
 const NEGATED = /\b(not|non[- ])\b[^.]{0,30}\b(SC|ST|OBC|scheduled|schedule|backward)\b/i;
 const LIST_WITH_WOMEN = /\b(women|woman|female|girls?)\b\s*(,|\band\b|\bor\b|\/)|(,|\band\b|\bor\b|\/)\s*\b(women|woman|female|girls?)\b/i;
@@ -187,6 +195,8 @@ function categoryOfSentence(rawSentence: string): { set: SocialCategory[]; rejec
   if (GENERAL_GATE.test(sentence)) set.push('general');
   if (set.length === 0) return { set, reject: null }; // not about category at all
 
+  if (SEGMENT_HEADING.test(sentence)) return { set: [], reject: 'heading that introduces a list or segment, not a rule' };
+  if (ORGANISATION_SUBJECT.test(subjectOf(sentence))) return { set: [], reject: 'the applicant is an organisation; the category describes who it serves' };
   if (GENERAL_IN_CATEGORY_LIST.test(sentence)) return { set: [], reject: 'lists general alongside other categories: open to all' };
   if (NOT_A_GATE.test(sentence)) return { set: [], reject: 'relaxation/priority/quota/reservation note, not a gate' };
   if (PAPERWORK.test(sentence)) return { set: [], reject: 'certificate/proof requirement, not a category gate' };

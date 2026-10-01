@@ -30,6 +30,7 @@ describe('extractGender', () => {
     ['a per-gender income tier', ['The annual family income should not exceed ₹6,00,000/- for boys.']],
     ['a one-third quota', ['Earmarking: One-third of the beneficiaries shall be women.']],
     ['a bare list item', ['Pregnant women.']],
+    ['a heading that ends with a colon', ['Boys who have dropped out of school because a middle school is not available within a 3 km radius:']],
   ])('leaves gender null for %s', (_label, sentences) => {
     expect(extractGender(sentences).value).toBeNull();
   });
@@ -92,6 +93,22 @@ describe('extractCategory', () => {
 
   it('does not read "(SC)" after "backward classes" as Scheduled Caste', () => {
     const result = extractCategory(['The applicant must belong to the Rabari or Bharwad caste, classified under socially and educationally backward classes (SC).']);
+    expect(result.value).toBe('obc');
+  });
+
+  it.each([
+    ['a heading that ends with a colon (segment of a multi-group scheme)', ['For students belonging to SCs and OBCs Category:']],
+    ['a heading about a CGPA threshold', ['SC/ST/Physically Challenged/Sponsored candidates must have a minimum CGPA of:']],
+    ['an alternative group written in the plural (Nav-Buddhists)', ['The applicant should be from Scheduled Caste or should be a Nav-Buddhists.']],
+    ['an organisation applicant serving a community', ['The applicant organization should be a registered voluntary organization (VO) / non-governmental organization (NGO) engaged in welfare work among Scheduled Tribes.']],
+  ])('leaves category null for %s', (_label, sentences) => {
+    expect(extractCategory(sentences).value).toBeNull();
+  });
+
+  it('still accepts an individual applicant when the sentence also contains organisation-like words later on', () => {
+    const result = extractCategory([
+      'Only those students who belong to OBCs so specified and notified in relation to the State and who have passed from a recognized institution are eligible.',
+    ]);
     expect(result.value).toBe('obc');
   });
 

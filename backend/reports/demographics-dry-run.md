@@ -4,13 +4,13 @@ Schemes evaluated: 4722. Sample below: 39 schemes chosen deterministically.
 
 | | Schemes | Share |
 |---|---|---|
-| Gender restriction extracted | 253 | 5.4% |
-| Category restriction extracted | 452 | 9.6% |
+| Gender restriction extracted | 254 | 5.4% |
+| Category restriction extracted | 447 | 9.5% |
 | Both | 22 | 0.5% |
 
-Gender values: {"female":232,"transgender":12,"male":9}
+Gender values: {"female":232,"transgender":12,"male":10}
 
-Category values: {"sc":185,"st":133,"sc,st":75,"obc":38,"general":12,"sc,obc":3,"st,obc":3,"sc,st,obc":3}
+Category values: {"sc":182,"st":132,"sc,st":74,"obc":38,"general":12,"sc,obc":3,"st,obc":3,"sc,st,obc":3}
 
 For each scheme: the decision, the sentences that drove it, and the sentences that mention gender/category but were REJECTED (with the reason). Please look for (a) wrong decisions and (b) rejected sentences that should have counted.
 
@@ -80,12 +80,14 @@ For each scheme: the decision, the sentences that drove it, and the sentences th
 - Gender mentions REJECTED:
   - "Note: In case of the death of the beneficiary female worker during delivery, the payment of the Assistance Scheme will be payable to her husband (full amount)." — relaxation/priority/quota/benefit tier, not a gate
 
-### Paternity Benefit Scheme (BBOCWWB)
-- Link: https://www.myscheme.gov.in/schemes/pbsbbocwwb
+### Financial Incentive to SC Meritorious Boy Students
+- Link: https://www.myscheme.gov.in/schemes/fascmbs
 - Why it is in the sample: gender = male
-- **Decision: gender = male, category = null**
+- **Decision: gender = male, category = sc**
 - Gender driven by:
-  - "The applicant should be a male."
+  - "The applicant must be male."
+- Category driven by:
+  - "The applicant must belong to a Scheduled Caste (SC) community of Assam."
 
 ### Ambubhai Purani Award
 - Link: https://www.myscheme.gov.in/schemes/apyg
@@ -119,12 +121,18 @@ For each scheme: the decision, the sentences that drove it, and the sentences th
   - "Transgender couples must apply for financial assistance after 6 months from the date of marriage and not exceeding the 1-year period." — marriage/relationship wording, not a rule on the applicant
   - "For receiving the aid, one of the partners should belong to the Transgender community." — mentions gender but is not an explicit rule on the applicant
 
-### Pre Matric Scholarship for SC students- DNH & DD
-- Link: https://www.myscheme.gov.in/schemes/premsc
+### Centrally Sponsored Scheme of Upgradation of Merit of Scheduled Caste Students
+- Link: https://www.myscheme.gov.in/schemes/css-umscs
 - Why it is in the sample: category = sc
 - **Decision: gender = null, category = sc**
+- Gender mentions REJECTED:
+  - "Girls students are given equal preference with awards allocated in 50:50 ratio between boys and girls." — relaxation/priority/quota/benefit tier, not a gate
+  - "Unutilized awards by girls may be used by boys and vice-versa." — mentions gender but is not an explicit rule on the applicant
 - Category driven by:
-  - "The applicant should belong to the Scheduled Caste category."
+  - "The applicant must be a Scheduled Caste student."
+  - "The applicant must be from districts selected based on highest Scheduled Caste population and identified as Educationally Backward Districts (for new selections from 2014-15 onwards)."
+- Category mentions REJECTED:
+  - "At least 3% representation for disabled Scheduled Caste students wherever possible." — relaxation/priority/quota/reservation note, not a gate
 
 ### Assistance to Scheduled Caste Farmers for Installation of Submersible / Centrifugal Motor Pumpsets With Accessories
 - Link: https://www.myscheme.gov.in/schemes/ascfiscmpa
@@ -133,12 +141,14 @@ For each scheme: the decision, the sentences that drove it, and the sentences th
 - Category driven by:
   - "The applicant should be from the Scheduled Caste Category."
 
-### Consolidated Stipend Scheme for Scheduled Caste Students Pursuing Higher Education
-- Link: https://www.myscheme.gov.in/schemes/csfbscss
+### Special Livestock Insurance Scheme
+- Link: https://www.myscheme.gov.in/schemes/slisc
 - Why it is in the sample: category = sc
 - **Decision: gender = null, category = sc**
 - Category driven by:
-  - "The applicant should belong to the Scheduled Caste (SC) category."
+  - "The applicant should be from a Scheduled Caste family."
+- Category mentions REJECTED:
+  - "*Livestock units established under the “Scheme for Providing Employment Opportunities to Scheduled Castes” are automatically eligible." — mentions a category but is not phrased as a rule on the applicant
 
 ### Cycle Distribution Scheme
 - Link: https://www.myscheme.gov.in/schemes/cds
@@ -155,19 +165,19 @@ For each scheme: the decision, the sentences that drove it, and the sentences th
 - Category driven by:
   - "The girl student should belong to the Scheduled Tribe category."
 
-### Short Term Professional Training Courses
-- Link: https://www.myscheme.gov.in/schemes/stptc
+### Pre-Matric Scholarship For Scheduled Tribe Students Studying In Classes 9th & 10th
+- Link: https://www.myscheme.gov.in/schemes/pmsstsscnt
 - Why it is in the sample: category = st
 - **Decision: gender = null, category = st**
 - Category driven by:
-  - "The applicant should belong to the Scheduled Tribe Community of Goa."
+  - "The applicant must belong to the Scheduled Tribe, as specified in relation to the State or Union Territory to which they actually belong (Domicile State)."
 
-### One Time Financial Support for Economically Weaker Meritorious ST Students
-- Link: https://www.myscheme.gov.in/schemes/otfs-t
+### Assistance for Power Driven Chaff Cutter Scheme under Tribal Area Sub Plan (TASP- ST Category)
+- Link: https://www.myscheme.gov.in/schemes/apdccstaspstc
 - Why it is in the sample: category = st
 - **Decision: gender = null, category = st**
 - Category driven by:
-  - "The student should belong to the Scheduled Tribe (ST) community."
+  - "The beneficiary should belong to the Scheduled Tribe category."
 
 ### Distribution of Free Books and Stationery to SC/ST Students
 - Link: https://www.myscheme.gov.in/schemes/dfbsscsts
@@ -183,12 +193,12 @@ For each scheme: the decision, the sentences that drove it, and the sentences th
 - Category driven by:
   - "The applicant belongs to all categories: SC, ST, and others are eligible to apply."
 
-### Rani Durgavati and Shankarshah Puraskar Scheme (Reward Scheme for Meritorious Students)
-- Link: https://www.myscheme.gov.in/schemes/atpipordasspsrsfms
+### Mukhyamantri Anusuchit Jati / Anusuchit Janjati Udyami Yojana
+- Link: https://www.myscheme.gov.in/schemes/majajuy
 - Why it is in the sample: category = sc,st
 - **Decision: gender = null, category = sc,st**
 - Category driven by:
-  - "The applicant should be from a Scheduled Tribe (ST), or Scheduled Caste (SC) category."
+  - "The applicant must belong to the Schedule Castes (SC)/ Scheduled Tribe (ST) category."
 
 ### Construction of Hostels for OBC Boys and Girls
 - Link: https://www.myscheme.gov.in/schemes/chobcbg
@@ -242,32 +252,38 @@ For each scheme: the decision, the sentences that drove it, and the sentences th
 - Category driven by:
   - "Beneficiary must belong to the General category."
 
-### Mukhyamantri Nahri Kendra
-- Link: https://www.myscheme.gov.in/schemes/somnk
-- Why it is in the sample: has BOTH a gender and a category restriction
-- **Decision: gender = female, category = st**
-- Gender driven by:
-  - "The applicant must be a woman."
-- Category driven by:
-  - "The applicant must belong to the Scheduled Tribe category."
-
-### Financial Incentive to SC Meritorious Girls Students
-- Link: https://www.myscheme.gov.in/schemes/fiscmgs
+### Mahila Kisan Yojana
+- Link: https://www.myscheme.gov.in/schemes/mkyh
 - Why it is in the sample: has BOTH a gender and a category restriction
 - **Decision: gender = female, category = sc**
 - Gender driven by:
-  - "The applicant must be female."
+  - "The applicant should be a female."
 - Category driven by:
-  - "The applicant must belong to a Scheduled Caste (SC) community of Assam."
+  - "The applicant should be from a 'Scheduled Caste'."
 
-### Financial Incentive to SC Meritorious Boy Students
-- Link: https://www.myscheme.gov.in/schemes/fascmbs
+### Grant of Financial Assistance to Poor Scheduled Caste Pregnant & Lactating Women
+- Link: https://www.myscheme.gov.in/schemes/gfapscplw
 - Why it is in the sample: has BOTH a gender and a category restriction
-- **Decision: gender = male, category = sc**
+- **Decision: gender = female, category = sc**
 - Gender driven by:
-  - "The applicant must be male."
+  - "The applicant should be a woman."
 - Category driven by:
-  - "The applicant must belong to a Scheduled Caste (SC) community of Assam."
+  - "The applicant should be from Scheduled Caste."
+
+### Kanya Saksharta Protsahan Yojana (For Scheduled Caste Girls)
+- Link: https://www.myscheme.gov.in/schemes/kspyscg
+- Why it is in the sample: has BOTH a gender and a category restriction
+- **Decision: gender = female, category = sc**
+- Gender driven by:
+  - "The applicant should be a girl student."
+  - "The girl student should be a native of Madhya Pradesh."
+  - "The girl student should belong to the Scheduled Caste category."
+  - "All Scheduled Caste girl students who have passed Class 10 and are entering Class 11 are eligible for the scheme."
+  - "The girl student should be pursuing her education continuously."
+  - "The girl student should be enrolled in a government or recognized government school/institution and attend regularly."
+- Category driven by:
+  - "The girl student should belong to the Scheduled Caste category."
+  - "All Scheduled Caste girl students who have passed Class 10 and are entering Class 11 are eligible for the scheme."
 
 ### Noni Suraksha Yojana
 - Link: https://www.myscheme.gov.in/schemes/nsycg
@@ -294,12 +310,17 @@ For each scheme: the decision, the sentences that drove it, and the sentences th
   - "It should be the first marriage of the daughter/ self." — girl-child / daughter wording: beneficiary is the child, applicant is the parent
   - "The scheme applies only to the marriage of up to two daughters." — girl-child / daughter wording: beneficiary is the child, applicant is the parent
 
-### Deen Dayal SPARSH Yojana (Scholarship For Promotion Of Aptitude & Research In Stamps As A Hobby)
-- Link: https://www.myscheme.gov.in/schemes/ddsy
+### Savitribai Jyotirao Phule Fellowship For Single Girl Child
+- Link: https://www.myscheme.gov.in/schemes/sjpfsgc
 - Why it is in the sample: NEGATIVE: SC/ST/OBC only appears as a relaxation/priority/reservation
 - **Decision: gender = null, category = null**
+- Gender left null because: girl-child / daughter scheme: gender left null by design
+- Gender mentions REJECTED:
+  - "Any single girl child of her parents pursuing Ph.D. in any stream/subject in recognised Universities/Colleges/ Institutes is eligible to apply under the scheme." — girl-child / daughter wording: beneficiary is the child, applicant is the parent
+  - "The scheme is applicable to such a single girl child who has registered herself in regular, full-time Ph. D. program." — girl-child / daughter wording: beneficiary is the child, applicant is the parent
+  - "Girl students up to the age of 40 years for general category and 45 years for the reserved categories i.e. SC/ST/OBC and PWD (Persons with Disabilities) as on the last date of submission of online application are eligible." — relaxation/priority/quota/benefit tier, not a gate
 - Category mentions REJECTED:
-  - "There will be a 5% relaxation for SC/ST." — relaxation/priority/quota/reservation note, not a gate
+  - "Girl students up to the age of 40 years for general category and 45 years for the reserved categories i.e. SC/ST/OBC and PWD (Persons with Disabilities) as on the last date of submission of online application are eligible." — relaxation/priority/quota/reservation note, not a gate
 
 ### Foreign Study Loan Scheme (GUEEDC)
 - Link: https://www.myscheme.gov.in/schemes/fsls
@@ -315,16 +336,12 @@ For each scheme: the decision, the sentences that drove it, and the sentences th
 - Category mentions REJECTED:
   - "For Students of Backward Classes, Scheduled Castes, Nomadic, DNTs, Semi-Nomadic, Vimukt Jati, and Tapriwas Jaati - matric-(Urban 70%) (Rural 60%).,10+2-(Urban 75%) (Rural 70%) , Graduation-Urban 65%) (Rural 60%)" — list includes groups outside SC/ST/OBC/general (e.g. DNT, minority, EWS, landless)
 
-### Project Sankalp
-- Link: https://www.myscheme.gov.in/schemes/ps-g
+### Composite Loan Scheme
+- Link: https://www.myscheme.gov.in/schemes/cls
 - Why it is in the sample: NEGATIVE: category list includes groups we do not model (DNT, minority, landless...)
 - **Decision: gender = null, category = null**
-- Gender mentions REJECTED:
-  - "The scheme focuses on the inclusion of Special Groups such as Women, Persons with Disability (PwD), Below Poverty Line (BPL), Scheduled Caste (SC), and Scheduled Tribe (ST)." — mentions gender but is not an explicit rule on the applicant
-  - "A relaxation of ten years may be given to Women, PwD, BPL, SC, and ST candidates for fresher trainees." — relaxation/priority/quota/benefit tier, not a gate
 - Category mentions REJECTED:
-  - "The scheme focuses on the inclusion of Special Groups such as Women, Persons with Disability (PwD), Below Poverty Line (BPL), Scheduled Caste (SC), and Scheduled Tribe (ST)." — list includes groups outside SC/ST/OBC/general (e.g. DNT, minority, EWS, landless)
-  - "A relaxation of ten years may be given to Women, PwD, BPL, SC, and ST candidates for fresher trainees." — relaxation/priority/quota/reservation note, not a gate
+  - "The applicant should be from one of the following target groups - Scheduled Caste, Scheduled Tribe, Other Backward Class, Minority, Persons with Disability." — list includes groups outside SC/ST/OBC/general (e.g. DNT, minority, EWS, landless)
 
 ### Integrated Hostel Scheme
 - Link: https://www.myscheme.gov.in/schemes/ihs
@@ -335,23 +352,16 @@ For each scheme: the decision, the sentences that drove it, and the sentences th
 - Category mentions REJECTED:
   - "The applicant should belong to the Other Backward Castes, Scheduled Castes, Scheduled Tribes category." — marriage/partner context, not the applicant's own category
 
-### Ayushman Bharat - Pradhan Mantri Jan Arogya Yojana
-- Link: https://www.myscheme.gov.in/schemes/ab-pmjay
+### Assistance to Co-operative Irrigation Societies (Trible Area)
+- Link: https://www.myscheme.gov.in/schemes/atcista
 - Why it is in the sample: NEGATIVE: mentions a category but not phrased as a rule on the applicant
 - **Decision: gender = null, category = null**
-- Gender mentions REJECTED:
-  - "Households with no adult male member between ages 16 to 59" — mentions gender but is not an explicit rule on the applicant
-  - "Washer-man/ Chowkidar" — mentions gender but is not an explicit rule on the applicant
 - Category mentions REJECTED:
-  - "SC/ST households" — mentions a category but is not phrased as a rule on the applicant
+  - "The Scheme is applicable to the Scheduled Tribe (ST) category." — mentions a category but is not phrased as a rule on the applicant
 
-### Mukhyamantri Bagwani Mission: Anjeer Vikas Yojana
-- Link: https://www.myscheme.gov.in/schemes/mbyavyb
+### State Research Scholarship
+- Link: https://www.myscheme.gov.in/schemes/srsn
 - Why it is in the sample: NEGATIVE: mentions a category but not phrased as a rule on the applicant
 - **Decision: gender = null, category = null**
-- Gender mentions REJECTED:
-  - "Women Participation: 30%." — mentions gender but is not an explicit rule on the applicant
 - Category mentions REJECTED:
-  - "General Category: 78.56%." — mentions a category but is not phrased as a rule on the applicant
-  - "Scheduled Castes: 20%." — mentions a category but is not phrased as a rule on the applicant
-  - "Scheduled Tribes: 1.44%." — mentions a category but is not phrased as a rule on the applicant
+  - "Applicable for Scheduled Tribe and Indigenous students of Nagaland who are pursuing Ph.D/D.Litt. course from recognized Universities within India." — mentions a category but is not phrased as a rule on the applicant
