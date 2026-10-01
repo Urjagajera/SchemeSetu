@@ -23,6 +23,7 @@
  * 6. Where a scheme's text names a different state than its authority, the TEXT wins (product decision).
  */
 import { INDIAN_STATES_AND_UTS, canonicalState } from '../utils/states.js';
+import { ABBREVIATION, DOT, splitIntoSentences } from './sentences.js';
 
 export interface RejectedMention {
   sentence: string;
@@ -124,21 +125,6 @@ function firstStateEnd(text: string): number {
 // Sentence-level rules
 // ─────────────────────────────────────────────────────────────
 
-/** Abbreviations whose full stop must not end a sentence ("i.e. Andaman ...", "Rs. 5", "Dr. B.B. Cancer"). */
-const ABBREVIATION = /\b(?:i\.e|e\.g|viz|vs|nos?|dr|mr|mrs|ms|rs|st|etc|approx|sq|km|ha|inc|co|ltd|a\.m|p\.m|u\.t|n\.\s?c\.\s?t|u\.p|m\.p|h\.p|a\.p|t\.n|w\.b)\./gi;
-const INITIALS = /\b([A-Z])\.(?=\s?[A-Z]\.|\s[A-Z][a-z])/g;
-const DOT = '\u0001';
-
-/** One entry can hold several sentences; each is judged on its own (a trailing colon only makes the LAST one a heading). */
-function cleanSentences(sentences: string[]): string[] {
-  return sentences
-    .map((s) => s.replace(/\s+/g, ' ').trim())
-    .filter(Boolean)
-    .map((s) => s.replace(ABBREVIATION, (m) => m.replace(/\./g, DOT)).replace(INITIALS, `$1${DOT}`))
-    .flatMap((s) => s.split(/(?<=[.!?])\s+(?=[A-Z0-9])/))
-    .map((s) => s.replace(new RegExp(DOT, 'g'), '.').trim())
-    .filter(Boolean);
-}
 
 /** Relaxations, preferences, quotas and benefit tiers: they mention a state without restricting who may apply. */
 const NOT_A_GATE =
@@ -323,7 +309,7 @@ function extractStateFromText(sentences: string[], authorityName?: string): Stat
   const implicitSentences: string[] = [];
   let explicitCount = 0;
 
-  for (const sentence of cleanSentences(sentences)) {
+  for (const sentence of splitIntoSentences(sentences)) {
     const d = decideSentence(sentence);
     if (d.reject) {
       result.rejected.push({ sentence, reason: d.reject });
