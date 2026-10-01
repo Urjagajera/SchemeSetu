@@ -39,6 +39,28 @@ function queue(language: string, id: string) {
   set.add(id);
 }
 
+function storeText(language: string, newTitles: unknown, newSummaries: unknown) {
+  const put = (all: Map<string, Map<string, string>>, from: unknown) => {
+    let map = all.get(language);
+    if (!map) all.set(language, (map = new Map()));
+    for (const [id, text] of Object.entries((from ?? {}) as Record<string, string>)) map.set(id, text);
+  };
+  put(titles, newTitles);
+  put(summaries, newSummaries);
+}
+
+/**
+ * List responses (search, featured, recommended) carry the card text the server already has, so the cards
+ * render in the right language on the very first paint instead of English for a moment. Call this before
+ * returning the list to the page. If the server is still translating some of it, polling picks up from here.
+ */
+export function ingestCardText(language: string, translation: unknown, ids: string[]) {
+  const tr = translation as { language?: string; status?: string; titles?: unknown; summaries?: unknown } | null | undefined;
+  if (language === 'en' || isMockMode || !tr || tr.language !== language) return;
+  storeText(language, tr.titles, tr.summaries);
+  if (tr.status === 'pending') requestTitles(language, ids);
+}
+
 async function flush() {
   const work = [...queued.entries()];
   queued.clear();
@@ -50,13 +72,7 @@ async function flush() {
         const res = await axios.get('/api/schemes/titles', { params: { lang: language, ids: chunk.join(',') } });
         const data = res.data?.data;
         if (!data || typeof data.titles !== 'object') throw new Error('unexpected response');
-        const store = (all: Map<string, Map<string, string>>, from: unknown) => {
-          let map = all.get(language);
-          if (!map) all.set(language, (map = new Map()));
-          for (const [id, text] of Object.entries((from ?? {}) as Record<string, string>)) map.set(id, text);
-        };
-        store(titles, data.titles);
-        store(summaries, data.summaries);
+        storeText(language, data.titles, data.summaries);
 
         // Titles and summaries arrive separately, so keep asking about the whole chunk while the server says pending.
         for (const id of chunk) {

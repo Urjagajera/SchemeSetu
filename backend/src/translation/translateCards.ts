@@ -8,7 +8,10 @@
  * - Anything the validator rejects on both models is stored as failed and stays English; it is retried
  *   by the on-demand path after 10 minutes, or by a rerun of this script.
  *
- * Usage: npm run translate:cards -- hi [--limit 100] [--chunk 40] [--parallel 3]
+ * Usage: npm run translate:cards -- hi [--limit 100] [--chunk 40] [--parallel 3] [--titles-only]
+ *
+ * --titles-only skips the summaries (about 5x more calls than titles): the Groq account's daily request limit
+ * is small, so titles are translated ahead of time and summaries are left to the on-demand path.
  */
 import prisma from '../db/prisma.js';
 import config from '../config/env.js';
@@ -30,11 +33,12 @@ async function main() {
   const limit = flag('limit', Number.MAX_SAFE_INTEGER);
   const chunkSize = flag('chunk', 40);
   const parallel = flag('parallel', 3);
+  const fields: Array<'title' | 'summary'> = process.argv.includes('--titles-only') ? ['title'] : ['title', 'summary'];
 
   const schemes = await prisma.scheme.findMany({ select: { id: true, name: true, description: true }, orderBy: { name: 'asc' }, take: limit === Number.MAX_SAFE_INTEGER ? undefined : limit });
   const chunks: (typeof schemes)[] = [];
   for (let i = 0; i < schemes.length; i += chunkSize) chunks.push(schemes.slice(i, i + chunkSize));
-  console.log(`${schemes.length} schemes in ${chunks.length} chunks of up to ${chunkSize}, ${parallel} at a time, into ${lang.name}`);
+  console.log(`${schemes.length} schemes in ${chunks.length} chunks of up to ${chunkSize}, ${parallel} at a time, into ${lang.name} (${fields.join(' + ')})`);
 
   const started = Date.now();
   let next = 0;
@@ -44,7 +48,7 @@ async function main() {
     for (;;) {
       const mine = next++;
       if (mine >= chunks.length) return;
-      attempted += await translationService.translateCards(chunks[mine], lang);
+      attempted += await translationService.translateCards(chunks[mine], lang, fields);
       finished++;
       if (finished % 5 === 0 || finished === chunks.length) {
         const secs = Math.round((Date.now() - started) / 1000);

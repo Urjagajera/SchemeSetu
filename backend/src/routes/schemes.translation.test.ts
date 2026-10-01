@@ -102,3 +102,38 @@ describe('GET /api/schemes/titles', () => {
     expect(mockPrisma.scheme.findMany).not.toHaveBeenCalled();
   });
 });
+
+describe('list endpoints: card text for ?lang=hi', () => {
+  const row = { ...dbScheme, id: 's1', tags: [], categories: [] };
+  const view = { language: 'hi', status: 'ready', titles: { s1: 'स्टैंड-अप इंडिया' }, summaries: {}, pending: 0, failed: 0 };
+
+  beforeEach(() => {
+    mockPrisma.scheme.findMany.mockReset();
+    mockPrisma.scheme.count.mockReset();
+    mockService.getCardText.mockReset();
+    mockPrisma.scheme.findMany.mockResolvedValue([row]);
+    mockPrisma.scheme.count.mockResolvedValue(1);
+    mockService.getCardText.mockResolvedValue(view);
+  });
+
+  it('search results carry the stored titles/summaries next to the untouched English data', async () => {
+    const res = await request(buildApp()).get('/api/schemes?lang=hi');
+    expect(res.status).toBe(200);
+    expect(res.body.data[0].name).toBe('Stand-Up India');
+    expect(res.body.translation).toEqual(view);
+    expect(mockService.getCardText).toHaveBeenCalledWith([row], expect.objectContaining({ code: 'hi' }));
+  });
+
+  it('featured schemes carry them too', async () => {
+    const res = await request(buildApp()).get('/api/schemes/featured?lang=hi');
+    expect(res.body.translation).toEqual(view);
+  });
+
+  it('adds nothing for English, Gujarati (not enabled) or no language', async () => {
+    for (const q of ['', '?lang=en', '?lang=gu']) {
+      const res = await request(buildApp()).get('/api/schemes' + q);
+      expect(res.body).not.toHaveProperty('translation');
+    }
+    expect(mockService.getCardText).not.toHaveBeenCalled();
+  });
+});

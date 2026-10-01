@@ -303,11 +303,16 @@ export function createTranslationService(deps: ServiceDeps) {
     return { language: lang.code, status, titles: plan.titles, summaries: plan.summaries, pending: status === 'pending' ? pending : 0, failed: plan.failed };
   }
 
-  /** Same work as getCardText, but resolves when everything has been translated and stored (bulk runs). Returns how many were attempted. */
-  async function translateCards(cards: CardSource[], lang: LanguageConfig): Promise<number> {
+  /**
+   * Same work as getCardText, but resolves when everything has been translated and stored (bulk runs).
+   * `fields` limits it to titles and/or summaries. Returns how many texts were attempted.
+   */
+  async function translateCards(cards: CardSource[], lang: LanguageConfig, fields: CardField[] = ['title', 'summary']): Promise<number> {
     const plan = await planCards(cards, lang);
-    await Promise.all([startCardJob('title', plan.need.title, lang), startCardJob('summary', plan.need.summary, lang)]);
-    return plan.need.title.length + plan.need.summary.length;
+    const title = fields.includes('title') ? plan.need.title : [];
+    const summary = fields.includes('summary') ? plan.need.summary : [];
+    await Promise.all([startCardJob('title', title, lang), startCardJob('summary', summary, lang)]);
+    return title.length + summary.length;
   }
 
   return { getForView, getCardText, translateCards, /** Resolves when the running job for a scheme finishes (tests and scripts). */ idle: (schemeId: string, lang: LanguageCode) => inFlight.get(`${schemeId}:${lang}`) ?? Promise.resolve() };

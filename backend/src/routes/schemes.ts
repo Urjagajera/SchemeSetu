@@ -12,6 +12,17 @@ import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
 
 const router = Router();
 
+/**
+ * Card text (translated titles and summaries) for a list of schemes, when a non-English language was asked for.
+ * Whatever is already stored comes back immediately, so the first paint of a Hindi list is already Hindi;
+ * the rest is started in the background and `translation.status` is "pending" until it lands. Never waits for the model.
+ */
+async function cardTranslation(rows: Array<{ id: string; name: string; description: string }>, lang: unknown) {
+  const language = enabledLanguage(lang);
+  if (!language || rows.length === 0) return {};
+  return { translation: await translationService.getCardText(rows, language) };
+}
+
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
 const FEATURED_LIMIT = 6;
@@ -79,7 +90,7 @@ router.get(
       prisma.scheme.count({ where }),
     ]);
 
-    res.json({ data: rows.map((s) => serializeScheme(s)), total });
+    res.json({ data: rows.map((s) => serializeScheme(s)), total, ...(await cardTranslation(rows, req.query.lang)) });
   }),
 );
 
@@ -91,13 +102,13 @@ router.get(
  */
 router.get(
   '/featured',
-  asyncHandler(async (_req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const rows = await prisma.scheme.findMany({
       include: { tags: true, categories: true },
       orderBy: { name: 'asc' },
       take: FEATURED_LIMIT,
     });
-    res.json({ data: rows.map((s) => serializeScheme(s)) });
+    res.json({ data: rows.map((s) => serializeScheme(s)), ...(await cardTranslation(rows, req.query.lang)) });
   }),
 );
 
@@ -227,7 +238,10 @@ router.post(
       .sort((a, b) => b.matchScore - a.matchScore)
       .slice(0, DEFAULT_LIMIT);
 
-    res.json({ data: scored.map(({ s, matchScore, unverified }) => serializeScheme(s, matchScore, unverified)) });
+    res.json({
+      data: scored.map(({ s, matchScore, unverified }) => serializeScheme(s, matchScore, unverified)),
+      ...(await cardTranslation(scored.map(({ s }) => s), req.query.lang)),
+    });
   }),
 );
 

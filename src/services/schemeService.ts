@@ -5,6 +5,7 @@ const SCHEMES: Scheme[] = MOCK_SCHEMES;
 
 const API_URL = '/api/schemes';
 import { isMockMode } from '../config/mockMode';
+import { ingestCardText } from './titleTranslations';
 
 /**
  * Guards against Vite's SPA HTML fallback being mistaken for valid API data.
@@ -283,6 +284,7 @@ export const schemeService = {
       });
       const data = assertJsonArray<any>(response.data?.data ?? response.data, 'getSchemes') as Scheme[];
       const total = typeof response.data?.total === 'number' ? response.data.total : data.length;
+      ingestCardText(getActiveLang(), response.data?.translation, data.map((s) => s.id));
       return { data, total };
     } catch (error) {
       console.warn('[schemeService.getSchemes] Backend not available — using local mock data.', (error as Error).message);
@@ -330,7 +332,9 @@ export const schemeService = {
         params: { lang: getActiveLang() }
       });
       const raw = response.data?.data ?? response.data;
-      return assertJsonArray<any>(raw, 'getFeaturedSchemes');
+      const featured = assertJsonArray<any>(raw, 'getFeaturedSchemes');
+      ingestCardText(getActiveLang(), response.data?.translation, featured.map((s: any) => s.id));
+      return featured;
     } catch (error) {
       console.warn('[schemeService.getFeaturedSchemes] Backend not available — filtering featured schemes locally.', (error as Error).message);
       return getLocalFeaturedSchemes();
@@ -366,7 +370,9 @@ export const schemeService = {
         { params: { lang: getActiveLang() } }
       );
       const raw = response.data?.data ?? response.data;
-      return assertJsonArray<any>(raw, 'getEligibleSchemes');
+      const eligible = assertJsonArray<any>(raw, 'getEligibleSchemes');
+      ingestCardText(getActiveLang(), response.data?.translation, eligible.map((s: any) => s.id));
+      return eligible;
     } catch (error) {
       console.warn('[schemeService.getEligibleSchemes] Backend not available — running local tag-based eligibility.', (error as Error).message);
       return getLocalEligibleSchemes(profile);
