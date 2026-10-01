@@ -87,7 +87,7 @@ describe('glossary', () => {
   const src = 'The NGO registered with the National Trust logs in to the National Trust website.';
 
   it('only asks for the entries that appear in the text', () => {
-    expect(glossaryHits([src], 'hi')).toEqual([{ en: 'National Trust', target: 'नेशनल ट्रस्ट' }]);
+    expect(glossaryHits([src], 'hi')).toEqual([expect.objectContaining({ en: 'National Trust', target: 'नेशनल ट्रस्ट' })]);
     expect(glossaryHits(['Aadhaar Card'], 'hi')).toEqual([]);
   });
 
@@ -97,6 +97,18 @@ describe('glossary', () => {
     const r = validateText(src, literal, hi, req);
     expect(r.ok).toBe(false);
     expect(r.reasons.join(' ')).toMatch(/National Trust/);
+  });
+
+  it('accepts the natural Hindi rendering both models chose in the first live run ("राष्ट्रीय ट्रस्ट अधिनियम")', () => {
+    const description = 'The scheme provides therapies to persons with disability covered under the National Trust Act, through trainings and support.';
+    const req = glossaryHits([description], 'hi');
+    const natural = 'यह योजना राष्ट्रीय ट्रस्ट अधिनियम के अंतर्गत आने वाले दिव्यांग व्यक्तियों को प्रशिक्षण और सहायता के माध्यम से थेरेपी प्रदान करती है।';
+    expect(validateText(description, natural, hi, req).ok).toBe(true);
+    // "faith" is still wrong, in either wording
+    const faith = 'यह योजना राष्ट्रीय विश्वास अधिनियम के अंतर्गत आने वाले दिव्यांग व्यक्तियों को प्रशिक्षण और सहायता के माध्यम से थेरेपी प्रदान करती है।';
+    const bad = validateText(description, faith, hi, req);
+    expect(bad.ok).toBe(false);
+    expect(bad.reasons.join(' ')).toMatch(/mistranslated/);
   });
 
   it('accepts the fixed rendering, and also the English name kept as-is', () => {

@@ -16,7 +16,7 @@ export interface TranslatorOptions {
   primaryModel: string;
   fallbackModel: string;
   /** Called for every rejected attempt, with the reasons. Optional. */
-  onReject?: (info: { model: string; reasons: string[] }) => void;
+  onReject?: (info: { model: string; reasons: string[]; /** Start of the rejected output, to make rejections debuggable. */ output?: string }) => void;
 }
 
 export interface FieldResult {
@@ -159,13 +159,13 @@ export function createTranslator(opts: TranslatorOptions) {
         if (resp.finishReason !== 'stop') {
           const why = [`finish reason "${resp.finishReason}" (output cut off)`];
           reasons.push(`${step.model}: ${why[0]}`);
-          opts.onReject?.({ model: step.model, reasons: why });
+          opts.onReject?.({ model: step.model, reasons: why, output: resp.text.slice(0, 300) });
           continue;
         }
         const result = check(resp.text);
         if (result.ok) return { ok: true, value: result.value, model: step.model, calls, reasons };
         reasons.push(`${step.model}: ${result.reasons.join('; ')}`);
-        opts.onReject?.({ model: step.model, reasons: result.reasons });
+        opts.onReject?.({ model: step.model, reasons: result.reasons, output: resp.text.slice(0, 300) });
       } catch (e) {
         const msg = `request failed (${(e as { status?: number }).status ?? ''} ${String((e as Error).message).slice(0, 120)})`;
         reasons.push(`${step.model}: ${msg}`);

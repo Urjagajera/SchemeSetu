@@ -14,7 +14,7 @@ const translator = config.GROQ_API_KEY
       llm: createGroqLlm(config.GROQ_API_KEY),
       primaryModel: config.TRANSLATION_PRIMARY_MODEL,
       fallbackModel: config.TRANSLATION_FALLBACK_MODEL,
-      onReject: ({ model, reasons }) => logger.warn({ model, reasons }, '[translation] attempt rejected by validation'),
+      onReject: ({ model, reasons, output }) => logger.warn({ model, reasons, output }, '[translation] attempt rejected by validation'),
     })
   : null;
 
