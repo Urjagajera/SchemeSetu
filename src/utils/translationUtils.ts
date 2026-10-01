@@ -1,7 +1,7 @@
 const schemeTranslations: Record<string, any> = {};
 const valueTranslations: Record<string, any> = {};
 import { PHRASES } from '../constants/phrases';
-import { Scheme } from '../types';
+import { Scheme, Vocabulary } from '../types';
 
 /**
  * Retrieves translated scheme title or description.
@@ -108,5 +108,29 @@ export function applyServerTranslation(scheme: Scheme, language: string): Scheme
     eligibilityRawText: list(f.eligibility) ?? scheme.eligibilityRawText,
     documentRequirements: list(f.documents) ?? scheme.documentRequirements,
     applicationProcess: text(f.applicationProcess) ?? scheme.applicationProcess,
+  };
+}
+
+/**
+ * Shows the category badge, ministry line and tag chips in the chosen language, from the server's vocabulary.
+ * A name with no translation stays English. Tags work differently: in a non-English language a tag without
+ * a translation is hidden (a few English chips among Hindi ones look broken), and while the vocabulary is
+ * still loading all tags are held back, so English tags don't flash before they swap.
+ * If the language has no vocabulary at all (English, or a language that is not enabled), nothing changes.
+ */
+export function applyVocabulary(scheme: Scheme, language: string, vocab: Vocabulary | null, loading: boolean): Scheme {
+  if (language === 'en') return scheme;
+  if (loading) return { ...scheme, tags: [] };
+  if (!vocab || vocab.language !== language) return scheme;
+
+  const name = (v: string | undefined): string | undefined => (v === undefined ? v : vocab.names[v.trim()] ?? v);
+  const hasTagTable = Object.keys(vocab.tags).length > 0;
+  return {
+    ...scheme,
+    category: name(scheme.category) ?? scheme.category,
+    categories: scheme.categories?.map((c) => name(c) ?? c),
+    ministry: name(scheme.ministry) ?? scheme.ministry,
+    authorityName: name(scheme.authorityName) ?? scheme.authorityName,
+    tags: hasTagTable ? (scheme.tags ?? []).filter((t) => vocab.tags[t]).map((t) => vocab.tags[t]) : scheme.tags,
   };
 }

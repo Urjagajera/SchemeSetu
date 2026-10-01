@@ -4,7 +4,8 @@ import { schemeService } from '../services/schemeService';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useBookmarks } from '../hooks/useBookmarks';
-import { Scheme } from '../types';
+import { Scheme, Vocabulary } from '../types';
+import { getVocabulary } from '../services/vocabularyService';
 import { BookmarkButton } from '../components/BookmarkButton';
 import { CompareButton } from '../components/CompareButton';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
@@ -21,7 +22,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-import { translateScheme, applyServerTranslation } from '../utils/translationUtils';
+import { translateScheme, applyServerTranslation, applyVocabulary } from '../utils/translationUtils';
 
 const DetailSection: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
   <section className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm transition-colors">
@@ -77,6 +78,27 @@ export const SchemeDetail: React.FC = () => {
     loadSchemeDetails();
   }, [id, language]);
 
+  // Translated ministry/state names and tags for the chosen language (one small lookup table, fetched once).
+  const [vocab, setVocab] = useState<Vocabulary | null>(null);
+  const [vocabLoading, setVocabLoading] = useState(false);
+  useEffect(() => {
+    if (language === 'en') {
+      setVocab(null);
+      setVocabLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setVocabLoading(true);
+    getVocabulary(language).then(v => {
+      if (cancelled) return;
+      setVocab(v);
+      setVocabLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [language]);
+
   // While the server is still translating this scheme, English is shown and we ask again every few seconds;
   // each field swaps in as it arrives. Gives up after about three minutes (English simply stays).
   const translationStatus = scheme?.translation?.status;
@@ -107,7 +129,15 @@ export const SchemeDetail: React.FC = () => {
     );
   }
 
-  const translatedScheme = scheme ? applyServerTranslation(translateScheme(scheme, language), language) : null;
+  const translatedScheme = scheme
+    ? applyVocabulary(applyServerTranslation(translateScheme(scheme, language), language), language, vocab, vocabLoading)
+    : null;
+  const levelLabel =
+    translatedScheme?.level === 'Central'
+      ? t('schemeLevelCentral')
+      : translatedScheme?.level === 'State'
+        ? t('schemeLevelState')
+        : `${translatedScheme?.level} Scheme`;
   const translatedRelated = related.map(s => translateScheme(s, language));
 
   // Real API data arrives as arrays; mock mode has none of these fields, so fall
@@ -191,7 +221,7 @@ export const SchemeDetail: React.FC = () => {
                   {translatedScheme.category}
                 </span>
                 <span className="bg-surface-container dark:bg-zinc-800 text-on-surface-variant dark:text-zinc-400 px-3 py-0.5 rounded-full text-[10px] font-bold">
-                  {translatedScheme.level} Scheme
+                  {levelLabel}
                 </span>
               </div>
 

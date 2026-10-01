@@ -10,6 +10,13 @@ export interface SchemeTranslation {
   failedFields: TranslatedFieldKey[];
 }
 
+/** Translated ministry/state names and common tags (GET /api/vocabulary?lang=hi). Empty tables mean "show English". */
+export interface Vocabulary {
+  language: string;
+  names: Record<string, string>;
+  tags: Record<string, string>;
+}
+
 export interface Scheme {
   id: string;
   name: string;

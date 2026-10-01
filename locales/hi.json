@@ -191,6 +191,8 @@
   "nothingRulesOut": "आपकी प्रोफ़ाइल में अब तक ऐसा कुछ नहीं है जो इसे रोकता हो।",
   "translatingNotice": "इस पृष्ठ का अनुवाद हो रहा है… अभी अंग्रेज़ी दिखाई जा रही है।",
   "translationPartialNote": "कुछ अनुभाग अनूदित नहीं हो सके और अंग्रेज़ी में दिखाए गए हैं।",
+  "schemeLevelCentral": "केंद्रीय योजना",
+  "schemeLevelState": "राज्य योजना",
   "availableMatches": "उपलब्ध मिलान",
   "noMatchingSchemesFoundDetails": "कोई मिलान कल्याणकारी योजना नहीं मिली। विवरण को समायोजित करते हैं।",
   "howCanWeHelp": "हम आपकी कैसे मदद कर सकते हैं?",

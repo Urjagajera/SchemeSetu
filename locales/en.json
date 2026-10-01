@@ -191,6 +191,8 @@
   "nothingRulesOut": "Nothing in your profile rules this out so far.",
   "translatingNotice": "Translating this page… showing English for now.",
   "translationPartialNote": "Some sections could not be translated and are shown in English.",
+  "schemeLevelCentral": "Central Scheme",
+  "schemeLevelState": "State Scheme",
   "availableMatches": "Available Matches",
   "noMatchingSchemesFoundDetails": "No matching welfare schemes found. Let's adjust details.",
   "howCanWeHelp": "How can we help you?",
