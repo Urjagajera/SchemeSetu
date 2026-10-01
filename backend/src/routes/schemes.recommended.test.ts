@@ -130,3 +130,31 @@ describe('POST /api/schemes/recommended: an unset profile never excludes a schem
     expect(data.every((s) => s.unverifiedCriteria === undefined)).toBe(true);
   });
 });
+
+describe('POST /api/schemes/recommended: profile state', () => {
+  const post = (profile: Record<string, unknown>) => request(buildApp()).post('/api/schemes/recommended').send({ profile });
+  const whereOf = () => mockPrisma.scheme.findMany.mock.calls[0][0].where;
+
+  beforeEach(() => {
+    mockPrisma.scheme.findMany.mockReset();
+    mockPrisma.scheme.findMany.mockResolvedValue([]);
+  });
+
+  it('a real state keeps central schemes plus that state, whatever spelling it arrives in', async () => {
+    await post({ state: '  gujarat ' });
+    const w = whereOf();
+    expect(w.OR).toHaveLength(2);
+    expect(w.OR[1]).toEqual({ authorityName: { equals: 'Gujarat', mode: 'insensitive' } });
+  });
+
+  it('an unrecognised or blank state is treated as unknown: no state filter, so no state scheme is hidden', async () => {
+    for (const state of ['Gujrat', 'Somewhere', '', '   ']) {
+      mockPrisma.scheme.findMany.mockClear();
+      await post({ state });
+      expect(whereOf()).toEqual({});
+    }
+    mockPrisma.scheme.findMany.mockClear();
+    await post({});
+    expect(whereOf()).toEqual({});
+  });
+});

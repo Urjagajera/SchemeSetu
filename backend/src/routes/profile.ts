@@ -4,6 +4,7 @@ import prisma from '../db/prisma.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { profileUpdateSchema, profileFieldErrors } from '../utils/profileSchema.js';
+import { canonicalState } from '../utils/states.js';
 
 const router = Router();
 
@@ -24,7 +25,8 @@ function serializeProfile(row: Profile) {
     education: row.education ?? undefined,
     income: row.income ?? undefined,
     category: row.category ?? undefined,
-    state: row.state ?? undefined,
+    // A stored value that is a real state in another spelling is returned in the canonical one; anything else as stored.
+    state: row.state ? (canonicalState(row.state) ?? row.state) : undefined,
     district: row.district ?? undefined,
     residence: row.residence ?? undefined,
     minority: row.minority ?? undefined,

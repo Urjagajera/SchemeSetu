@@ -86,8 +86,9 @@ describe('GET /api/schemes filters', () => {
     const { where } = mockPrisma.scheme.findMany.mock.calls[0][0];
     const stateClause = where.AND.find((c: any) => c.OR?.some((o: any) => o.authorityName?.equals === 'Gujarat'));
     expect(stateClause).toBeDefined();
-    // the same clause must also admit central authorities
-    expect(JSON.stringify(stateClause)).toContain('Ministry');
+    // the same clause must also admit central authorities, i.e. everything that is not one of the 36 states/UTs
+    expect(JSON.stringify(stateClause)).toContain('"NOT"');
+    expect(JSON.stringify(stateClause)).toContain('Tamil Nadu');
   });
 });
 
@@ -104,5 +105,23 @@ describe('GET /api/schemes/ministries', () => {
     expect(mockPrisma.scheme.findMany).toHaveBeenCalledWith(
       expect.objectContaining({ distinct: ['authorityName'] }),
     );
+  });
+});
+
+describe('GET /api/schemes/states', () => {
+  it('serves the fixed list of 28 states and 8 union territories, sorted, without touching the database', async () => {
+    mockPrisma.scheme.findMany.mockClear();
+    const res = await request(buildApp()).get('/api/schemes/states');
+    expect(res.status).toBe(200);
+    expect(res.body.data).toHaveLength(36);
+    expect(res.body.data).toEqual([...res.body.data].sort((a: string, b: string) => a.localeCompare(b, 'en')));
+    expect(res.body.data).toEqual(expect.arrayContaining(['Gujarat', 'Delhi', 'Ladakh', 'Dadra & Nagar Haveli and Daman & Diu']));
+    expect(res.body.data).not.toContain('NITI Aayog (National Institution for Transforming India)');
+    expect(mockPrisma.scheme.findMany).not.toHaveBeenCalled();
+  });
+
+  it('is not shadowed by /:id', async () => {
+    const res = await request(buildApp()).get('/api/schemes/states');
+    expect(res.body).toHaveProperty('data');
   });
 });

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { canonicalState } from './states.js';
 
 /**
  * Validation for PUT /api/profile.
@@ -80,7 +81,14 @@ export const profileUpdateSchema = z.object({
   // 0 is a real answer; only blank means unknown.
   income: optionalValue(z.string().regex(/^\d{1,12}$/, 'Income must be a whole number of rupees, 0 or more')),
   category: oneOf('Social category', PROFILE_OPTIONS.category),
-  state: text('State'),
+  // Must be one of the 28 states / 8 union territories (any letter case); saved in the canonical spelling so it
+  // matches the authority name of that state's schemes exactly.
+  state: optionalValue(
+    z
+      .string()
+      .refine((s) => canonicalState(s) !== null, 'State must be one of the listed states or union territories')
+      .transform((s) => canonicalState(s) as string),
+  ),
   district: text('District'),
   residence: oneOf('Residence', PROFILE_OPTIONS.residence),
   minority: oneOf('Minority status', PROFILE_OPTIONS.yesNo),

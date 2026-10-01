@@ -8,6 +8,7 @@ import { translateTerms, renderVocabularyFile } from './vocabularyBuilder.js';
 import { createTranslator } from './translator.js';
 import { Llm } from './llm.js';
 import { validateList } from './validate.js';
+import { INDIAN_STATES_AND_UTS } from '../utils/states.js';
 
 const hasHindi = (s: string) => /[ऀ-ॿ]/.test(s);
 
@@ -34,6 +35,15 @@ describe('the committed Hindi vocabulary', () => {
     expect(hi.tags['Backward Class']).toBe('पिछड़ा वर्ग');
     expect(hi.tags['Disabled Person']).toBe('दिव्यांग व्यक्ति');
     expect(hi.tags['Worker']).toBe('श्रमिक');
+  });
+});
+
+describe('state names', () => {
+  it('every one of the 36 states and union territories has a Hindi name, spelled with Devanagari', () => {
+    for (const state of INDIAN_STATES_AND_UTS) {
+      expect(hi.names[state], state).toBeTruthy();
+      expect(hasHindi(hi.names[state]), state).toBe(true);
+    }
   });
 });
 

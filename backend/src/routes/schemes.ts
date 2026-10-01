@@ -2,7 +2,8 @@ import { Router, Request, Response } from 'express';
 import { Prisma } from '@prisma/client';
 import prisma from '../db/prisma.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
-import { deriveLevel, levelWhereClause } from '../utils/schemeLevel.js';
+import { levelWhereClause } from '../utils/schemeLevel.js';
+import { INDIAN_STATES_AND_UTS, canonicalState } from '../utils/states.js';
 import { serializeScheme } from '../utils/serializeScheme.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
 import { buildDemographicWhere } from '../utils/demographicFilters.js';
@@ -71,7 +72,7 @@ router.get(
           ? {
               OR: [
                 levelWhereClause('central') ?? {},
-                { authorityName: { equals: state, mode: 'insensitive' } },
+                { authorityName: { equals: canonicalState(state) ?? state, mode: 'insensitive' } },
               ],
             }
           : {},
@@ -114,20 +115,14 @@ router.get(
 
 /**
  * GET /api/schemes/states
- * Derives distinct non-central authority names from live Scheme data, same
- * heuristic as the frontend's mock-mode getLocalStates().
+ * The 28 states and 8 union territories (utils/states.ts), spelled as the scheme data spells them, so the
+ * Search filter, the profile form and the guest wizard all offer the same fixed list. A state's own schemes
+ * carry its name as their authority, so a value from this list is exactly what the state filters match on.
  */
 router.get(
   '/states',
   asyncHandler(async (_req: Request, res: Response) => {
-    const rows = await prisma.scheme.findMany({
-      select: { authorityName: true },
-      distinct: ['authorityName'],
-    });
-    const states = Array.from(
-      new Set(rows.map((r) => r.authorityName.trim()).filter((name) => deriveLevel(name) === 'State')),
-    ).sort();
-    res.json({ data: states });
+    res.json({ data: [...INDIAN_STATES_AND_UTS].sort((a, b) => a.localeCompare(b, 'en')) });
   }),
 );
 
@@ -187,8 +182,12 @@ router.post(
     const age = parseInt(profile.age ?? '', 10);
     const income = parseInt(profile.income ?? '', 10);
 
-    const where: Prisma.SchemeWhereInput = profile.state
-      ? { OR: [levelWhereClause('Central') ?? {}, { authorityName: { equals: profile.state, mode: 'insensitive' } }] }
+    // The profile's state is only trusted when it names a real state/UT (any spelling of it). Anything else is
+    // treated as not provided: unknown never excludes, so an unrecognised value must not hide every state scheme.
+    const state = canonicalState(profile.state);
+    const scoringProfile = { ...profile, state: state ?? undefined };
+    const where: Prisma.SchemeWhereInput = state
+      ? { OR: [levelWhereClause('Central') ?? {}, { authorityName: { equals: state, mode: 'insensitive' } }] }
       : {};
 
     const rows = await prisma.scheme.findMany({
@@ -204,7 +203,7 @@ router.post(
         let unverified: string[] = [];
 
         if (criteria) {
-          const results = evaluateCriteria(criteria, profile);
+          const results = evaluateCriteria(criteria, scoringProfile);
           const answered = results.filter((r) => r.status !== 'unknown');
           structuredChecked = answered.length;
           structuredPassed = answered.filter((r) => r.status === 'passed').length;

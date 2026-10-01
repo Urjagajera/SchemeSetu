@@ -190,3 +190,42 @@ describe('PUT /api/profile: partial saves and validation', () => {
     });
   });
 });
+
+describe('PUT /api/profile: state', () => {
+  const put = (body: unknown) => request(buildApp()).put('/api/profile').send(body as object);
+  beforeEach(() => {
+    mockPrisma.profile.upsert.mockReset();
+    mockPrisma.$transaction.mockReset();
+    mockPrisma.profile.upsert.mockImplementation((args: unknown) => args);
+    mockPrisma.$transaction.mockImplementation(async (ops: unknown[]) => [row(), ...ops.slice(1)]);
+  });
+
+  it('saves a state in its canonical spelling, whatever the case or spacing it arrives in', async () => {
+    await put({ state: '  gujarat ' });
+    expect(mockPrisma.profile.upsert.mock.calls[0][0].update.state).toBe('Gujarat');
+    mockPrisma.profile.upsert.mockClear();
+    await put({ state: 'dadra and nagar haveli and daman and diu' });
+    expect(mockPrisma.profile.upsert.mock.calls[0][0].update.state).toBe('Dadra & Nagar Haveli and Daman & Diu');
+  });
+
+  it('rejects a free-text value that is not a state or union territory', async () => {
+    for (const state of ['Gujrat', 'Ministry Of Finance', 'Mars']) {
+      const res = await put({ state });
+      expect(res.status).toBe(400);
+      expect(res.body.error.fields.state).toMatch(/listed states/);
+    }
+    expect(mockPrisma.profile.upsert).not.toHaveBeenCalled();
+  });
+
+  it('a blank state still clears it back to unknown', async () => {
+    await put({ state: '' });
+    expect(mockPrisma.profile.upsert.mock.calls[0][0].update.state).toBeNull();
+  });
+
+  it('returns a stored state in its canonical spelling (and a value that is no state as stored)', async () => {
+    mockPrisma.profile.findUnique.mockResolvedValue(row({ state: 'gujarat ' }));
+    expect((await request(buildApp()).get('/api/profile')).body.profile.state).toBe('Gujarat');
+    mockPrisma.profile.findUnique.mockResolvedValue(row({ state: 'Somewhere Else' }));
+    expect((await request(buildApp()).get('/api/profile')).body.profile.state).toBe('Somewhere Else');
+  });
+});
