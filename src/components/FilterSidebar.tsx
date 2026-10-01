@@ -3,6 +3,8 @@ import { useTranslation } from '../contexts/LanguageContext';
 import { X, RefreshCw, Layers, MapPin, User, Coins } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { translateValue } from '../utils/translationUtils';
+import { useVocabulary } from '../hooks/useVocabulary';
+import { stateLabel } from '../utils/stateLabel';
 
 /** Slider position that means "any income" (no income filter). */
 const INCOME_FILTER_OFF_AT = 1000000;
@@ -44,6 +46,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   className
 }) => {
   const { t, language } = useTranslation();
+  const { vocab } = useVocabulary(language);
 
   const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
@@ -84,13 +87,9 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     return t(c.toLowerCase() as any) || c;
   };
 
-  const getStateLabel = (s: string) => {
-    const localized = translateValue('authority', s, language);
-    if (localized && localized !== s) return localized;
-
-    const key = `state_${s.replace(/\s+/g, '_').toLowerCase()}`;
-    return t(key as any) || s;
-  };
+  // Translated state name (see utils/stateLabel.ts). The old lookup answered with the raw `state_xxx` key for
+  // every state that had no locale entry.
+  const getStateLabel = (s: string) => stateLabel(s, vocab, t as (key: any) => string);
 
   const getMinistryLabel = (m: string) => {
     const localized = translateValue('authority', m, language);

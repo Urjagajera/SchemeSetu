@@ -4,6 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useAuth, ProfileSaveError } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
+import { useStates } from '../hooks/useStates';
+import { useVocabulary } from '../hooks/useVocabulary';
+import { stateLabel } from '../utils/stateLabel';
 import { UserProfile } from '../types';
 import { 
   User, 
@@ -84,7 +87,9 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export const Profile: React.FC = () => {
   const { user, profile, updateProfile } = useAuth();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const states = useStates();
+  const { vocab } = useVocabulary(language);
   
   const [successMsg, setSuccessMsg] = useState('');
   // What stopped a save, shown at the top of the page whichever tab you are on.
@@ -479,11 +484,26 @@ export const Profile: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">State / Union Territory</label>
-                  <input
-                    type="text"
-                    {...register('state')}
-                    className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
-                  />
+                  {/* Rendered once the list has arrived, so the saved state is selected as soon as the dropdown exists. */}
+                  {states.length > 0 ? (
+                    <select
+                      {...register('state')}
+                      className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
+                    >
+                      <option value="">Select…</option>
+                      {states.map(s => (
+                        <option key={s} value={s}>{stateLabel(s, vocab, t as (key: any) => string)}</option>
+                      ))}
+                      {/* A value saved before this was a dropdown that is not on the list stays visible instead of vanishing. */}
+                      {profile.state && !states.includes(profile.state) && (
+                        <option value={profile.state}>{profile.state} (not on the list: please choose a state)</option>
+                      )}
+                    </select>
+                  ) : (
+                    <select disabled className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 text-xs md:text-sm py-2 px-3 opacity-60">
+                      <option>Loading…</option>
+                    </select>
+                  )}
                 </div>
 
                 <div className="space-y-1">

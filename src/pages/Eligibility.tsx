@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useBookmarks } from '../hooks/useBookmarks';
+import { useStates } from '../hooks/useStates';
+import { useVocabulary } from '../hooks/useVocabulary';
+import { stateLabel } from '../utils/stateLabel';
 import { schemeService } from '../services/schemeService';
 import { eligibilityService, EligibilityReport } from '../services/eligibilityService';
 import { Scheme, UserProfile } from '../types';
@@ -26,7 +29,8 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const Eligibility: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const { vocab } = useVocabulary(language);
   const { isAuthenticated, profile: loggedInProfile } = useAuth();
   const { bookmarks, toggleBookmark } = useBookmarks();
 
@@ -51,8 +55,8 @@ export const Eligibility: React.FC = () => {
 
   const [wizardSubmitted, setWizardSubmitted] = useState(false);
 
-  // States list for Wizard
-  const states = ['Uttar Pradesh', 'Maharashtra', 'Bihar', 'Karnataka', 'Rajasthan', 'Delhi', 'Gujarat'];
+  // States list for the wizard: the same fixed list of states and union territories as everywhere else.
+  const states = useStates();
   const occupations = ['student', 'farmer', 'entrepreneur', 'senior citizen', 'unemployed', 'employee', 'other'];
 
   // Run matching
@@ -94,10 +98,7 @@ export const Eligibility: React.FC = () => {
   };
 
   if (isAuthenticated) {
-    const getStateLabel = (s: string) => {
-      const key = `state_${s.replace(/\s+/g, '_').toLowerCase()}`;
-      return t(key as any) || s;
-    };
+    const getStateLabel = (s: string) => stateLabel(s, vocab, t as (key: any) => string);
 
     const getOccupationLabel = (o: string) => {
       const key = `occ_${o.replace(/\s+/g, '_').toLowerCase()}`;
@@ -398,7 +399,7 @@ export const Eligibility: React.FC = () => {
                 >
                   <option value="">Select…</option>
                   {states.map(s => (
-                    <option key={s} value={s}>{s}</option>
+                    <option key={s} value={s}>{stateLabel(s, vocab, t as (key: any) => string)}</option>
                   ))}
                 </select>
               </div>
