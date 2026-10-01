@@ -64,6 +64,7 @@ function renderScheme(r: Row, why: string): string {
     r.res.differsFromAuthority ? '**TEXT NAMES A DIFFERENT STATE THAN THE AUTHORITY**' : '',
   ].filter(Boolean);
   if (flags.length) lines.push(`- Flags: ${flags.join('; ')}`);
+  if (r.res.suppressedValue) lines.push(`- The text said: ${r.res.suppressedValue} (not stored: reviewed and judged a source-data error)`);
   if (r.res.nullReason) lines.push(`- Left null because: ${r.res.nullReason}`);
   if (r.res.matchedSentences.length) {
     lines.push('- Driven by:');
@@ -85,7 +86,7 @@ async function main() {
 
   const rows: Row[] = schemes.map((s) => {
     const authorityState = canonicalState(s.authorityName);
-    return { ...s, authorityState, res: extractState(s.eligibilityRawText, s.authorityName) };
+    return { ...s, authorityState, res: extractState(s.eligibilityRawText, s.authorityName, s.sourceUrl) };
   });
 
   const withState = rows.filter((r) => r.res.value);
@@ -94,6 +95,7 @@ async function main() {
   const centralWith = central.filter((r) => r.res.value);
   const stateWith = stateSchemes.filter((r) => r.res.value);
   const differs = rows.filter((r) => r.res.differsFromAuthority);
+  const suppressed = rows.filter((r) => r.res.suppressedReason);
   const implicit = rows.filter((r) => r.res.usedImplicit);
   const years = withState.filter((r) => r.res.yearsQualifier);
   const district = withState.filter((r) => r.res.districtLevel);
@@ -107,7 +109,7 @@ async function main() {
   console.log(`Schemes evaluated: ${rows.length}  (state authority: ${stateSchemes.length}, central: ${central.length})`);
   console.log(`State gate extracted: ${withState.length}  (state schemes ${stateWith.length}, central ${centralWith.length})`);
   console.log(`  via implicit "resident of the State": ${implicit.length}; with a years-of-residence qualifier: ${years.length}; district-level: ${district.length}; multi-state sets: ${multi.length}`);
-  console.log(`  text names a DIFFERENT state than the authority: ${differs.length}; conflicting sentences (null): ${conflicts.length}`);
+  console.log(`  text names a DIFFERENT state than the authority: ${differs.length}; suppressed after review: ${suppressed.length}; conflicting sentences (null): ${conflicts.length}`);
   console.log(`  possible misses (state scheme, residency wording, extractor null): ${missed.length}`);
   console.log('  rejected-mention reasons:', JSON.stringify(tally(rows.flatMap((r) => r.res.rejected), (x) => x.reason)));
   console.log('  set sizes:', JSON.stringify(tally(withState, (r) => String(r.res.values.length))));
@@ -146,7 +148,8 @@ async function main() {
   out.push(`| ...with a years-of-residence qualifier (gate kept, duration ignored) | ${years.length} |`);
   out.push(`| ...district-level wording (set is a superset) | ${district.length} |`);
   out.push(`| ...sets with more than one state | ${multi.length} |`);
-  out.push(`| **Text names a different state than the authority** | **${differs.length}** |`);
+  out.push(`| **Text names a different state than the authority (stored, text wins)** | **${differs.length}** |`);
+  out.push(`| Reviewed by hand and suppressed (source-data errors, left authority-only) | ${suppressed.length} |`);
   out.push(`| Conflicting gates in different sentences (left null) | ${conflicts.length} |`);
   out.push(`| Possible misses (state scheme, residency wording, left null) | ${missed.length} |`);
   out.push(`| State-authority schemes with NO gate (stay authority-only, as agreed) | ${stateSchemes.length - stateWith.length} |`, '');
@@ -155,6 +158,8 @@ async function main() {
 
   out.push(`## A. Text names a different state than the authority (${differs.length}) — text wins, as decided`, '');
   out.push(...differs.map((r) => renderScheme(r, 'text and authority disagree')));
+  out.push('---', '', `## A2. Reviewed by hand and suppressed (${suppressed.length}): left null on purpose`, '');
+  out.push(...suppressed.map((r) => renderScheme(r, 'source-data error, state gate suppressed')));
   out.push('---', '', `## B. Every central scheme that would get a state gate (${centralWith.length})`, '');
   out.push(...centralWith.map((r) => renderScheme(r, 'central scheme with a state gate')));
   out.push('---', '', `## C. Sample of state schemes that would get a gate (${sampleC.length})`, '');

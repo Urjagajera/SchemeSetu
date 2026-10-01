@@ -273,3 +273,31 @@ describe('extractState: "mandatory" is a rule word', () => {
     expect(extractState(['It is mandatory for the student to be a permanent resident of the state of Assam.']).value).toBe('Assam');
   });
 });
+
+describe('extractState: the 3 schemes reviewed by hand and judged source-data errors', () => {
+  const cases: Array<[string, string, string, string]> = [
+    ['https://www.myscheme.gov.in/schemes/maternalnutritionuk', 'Uttarakhand', 'The beneficiary must be a resident of Odisha.', 'Odisha'],
+    ['https://www.myscheme.gov.in/schemes/matbhpbocwwb', 'Madhya Pradesh', 'The applicant should be a resident of Himachal Pradesh', 'Himachal Pradesh'],
+    ['https://www.myscheme.gov.in/schemes/shssd', 'Madhya Pradesh', 'The applicant should be a resident of Chhattisgarh.', 'Chhattisgarh'],
+  ];
+
+  it.each(cases)('%s: no state is stored, and the report still shows what the text said', (url, authority, sentence, said) => {
+    const r = extractState([sentence], authority, url);
+    expect(r.value).toBeNull();
+    expect(r.values).toEqual([]);
+    expect(r.suppressedValue).toBe(said);
+    expect(r.suppressedReason).toMatch(/source-data error/);
+    expect(r.differsFromAuthority).toBe(false);
+  });
+
+  it.each(cases)('%s: the general "text wins" rule is unchanged for any other scheme with the same text', (_url, authority, sentence, said) => {
+    expect(extractState([sentence], authority).value).toBe(said);
+    expect(extractState([sentence], authority, 'https://www.myscheme.gov.in/schemes/some-other-scheme').value).toBe(said);
+  });
+
+  it('a listed scheme with no state text is simply null, with nothing suppressed', () => {
+    const r = extractState(['The applicant must be above 18 years.'], 'Madhya Pradesh', 'https://www.myscheme.gov.in/schemes/shssd');
+    expect(r.value).toBeNull();
+    expect(r.suppressedReason).toBeNull();
+  });
+});

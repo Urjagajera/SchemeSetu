@@ -24,6 +24,7 @@ import {
   Gender,
   SocialCategory,
 } from './parseDemographics.js';
+import { extractState, StateExtractionResult } from './parseState.js';
 
 export interface AgeExtractionResult {
   min: number | null;
@@ -72,11 +73,14 @@ export interface ParsedEligibility {
   gender: string | null;
   /** Lowercase comma-separated set, e.g. "sc,st"; null = no category restriction. */
   category: string | null;
+  /** Canonical state names, comma-separated, e.g. "Kerala,Tamil Nadu"; null = no state residency gate in the text. */
+  state: string | null;
   hasAnyCriteria: boolean;
   ageResult: AgeExtractionResult;
   incomeResult: IncomeExtractionResult;
   genderResult: DemographicExtractionResult<Gender>;
   categoryResult: DemographicExtractionResult<SocialCategory>;
+  stateResult: StateExtractionResult;
   logs: string[];
   dualCeilingExcluded: boolean;
 }
@@ -535,12 +539,15 @@ export function extractIncome(sentences: string[], schemeLink?: string): IncomeE
 export function parseEligibilityForScheme(
   link: string,
   title: string,
-  eligibilityRawText: string[]
+  eligibilityRawText: string[],
+  /** Scheme.authorityName: lets "resident of the State" be read as the scheme's own state. */
+  authorityName?: string
 ): ParsedEligibility {
   const ageResult = extractAge(eligibilityRawText);
   const incomeResult = extractIncome(eligibilityRawText, link);
   const genderResult = extractGender(eligibilityRawText);
   const categoryResult = extractCategory(eligibilityRawText);
+  const stateResult = extractState(eligibilityRawText, authorityName, link);
 
   const hasAnyCriteria =
     ageResult.min !== null ||
@@ -548,7 +555,8 @@ export function parseEligibilityForScheme(
     incomeResult.minAnnual !== null ||
     incomeResult.maxAnnual !== null ||
     genderResult.value !== null ||
-    categoryResult.value !== null;
+    categoryResult.value !== null ||
+    stateResult.value !== null;
 
   const logs = [...ageResult.logs, ...incomeResult.logs];
 
@@ -559,11 +567,13 @@ export function parseEligibilityForScheme(
     incomeMaxAnnual: incomeResult.maxAnnual,
     gender: genderResult.value,
     category: categoryResult.value,
+    state: stateResult.value,
     hasAnyCriteria,
     ageResult,
     incomeResult,
     genderResult,
     categoryResult,
+    stateResult,
     logs,
     dualCeilingExcluded: incomeResult.dualCeilingExcluded,
   };

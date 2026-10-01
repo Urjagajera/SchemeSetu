@@ -68,6 +68,7 @@ export interface IngestionRunSummary {
   rowsSkippedNoCriteria: number;
   genderRestricted: number;
   categoryRestricted: number;
+  stateRestricted: number;
   skippedForSanityList: Array<{ link: string; title: string; amount: number; sentence: string; reason: string }>;
   multipleIncomesResolvedList: Array<{ link: string; title: string; chosen: number; candidates: number[]; sentence: string }>;
   dualCeilingExclusions: DualCeilingExclusion[];
@@ -102,19 +103,20 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
     rowsSkippedNoCriteria: 0,
     genderRestricted: 0,
     categoryRestricted: 0,
+    stateRestricted: 0,
     skippedForSanityList: [],
     multipleIncomesResolvedList: [],
     dualCeilingExclusions: [],
     items: [],
   };
 
-  let schemesToProcess: Array<{ id: string; sourceUrl: string; name: string; eligibilityRawText: string[] }> = [];
+  let schemesToProcess: Array<{ id: string; sourceUrl: string; name: string; authorityName: string; eligibilityRawText: string[] }> = [];
 
   if (phase === 'A') {
     console.log(`Fetching curated test batch of ${PHASE_A_LINKS.length} schemes...`);
     schemesToProcess = await prisma.scheme.findMany({
       where: { sourceUrl: { in: PHASE_A_LINKS } },
-      select: { id: true, sourceUrl: true, name: true, eligibilityRawText: true },
+      select: { id: true, sourceUrl: true, name: true, authorityName: true, eligibilityRawText: true },
     });
 
     // Ensure order matches PHASE_A_LINKS for clean comparison
@@ -122,7 +124,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
   } else {
     console.log('Fetching ALL schemes from database...');
     schemesToProcess = await prisma.scheme.findMany({
-      select: { id: true, sourceUrl: true, name: true, eligibilityRawText: true },
+      select: { id: true, sourceUrl: true, name: true, authorityName: true, eligibilityRawText: true },
       orderBy: { createdAt: 'asc' },
     });
   }
@@ -131,7 +133,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
   console.log(`Found ${schemesToProcess.length} schemes to process in Phase ${phase}.\n`);
 
   for (const scheme of schemesToProcess) {
-    const parsed = parseEligibilityForScheme(scheme.sourceUrl, scheme.name, scheme.eligibilityRawText);
+    const parsed = parseEligibilityForScheme(scheme.sourceUrl, scheme.name, scheme.eligibilityRawText, scheme.authorityName);
 
     // Track sanity bound skips
     if (parsed.incomeResult.skippedForSanity.length > 0) {
@@ -200,6 +202,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
           incomeMaxAnnual: parsed.incomeMaxAnnual,
           gender: parsed.gender,
           category: parsed.category,
+          state: parsed.state,
         },
         update: {
           ageMin: parsed.ageMin,
@@ -209,10 +212,12 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
           // Always written, even when null, so a re-run clears values the parser no longer produces.
           gender: parsed.gender,
           category: parsed.category,
+          state: parsed.state,
         },
       });
       if (parsed.gender !== null) summary.genderRestricted++;
       if (parsed.category !== null) summary.categoryRestricted++;
+      if (parsed.state !== null) summary.stateRestricted++;
       rowAction = 'CREATED';
       criteriaId = upserted.id;
       summary.rowsCreatedOrUpdated++;
@@ -231,6 +236,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
         ...parsed.incomeResult.matchedSentences,
         ...parsed.genderResult.matchedSentences,
         ...parsed.categoryResult.matchedSentences,
+        ...parsed.stateResult.matchedSentences,
       ])
     );
 
@@ -251,6 +257,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
   console.log(`  Skipped (No Criteria):    ${summary.rowsSkippedNoCriteria}`);
   console.log(`  Gender restricted:        ${summary.genderRestricted}`);
   console.log(`  Category restricted:      ${summary.categoryRestricted}`);
+  console.log(`  State restricted:         ${summary.stateRestricted}`);
   console.log(`  Sanity Skips:             ${summary.skippedForSanityList.length}`);
   console.log(`  Multiple Incomes Resolved: ${summary.multipleIncomesResolvedList.length}`);
   console.log(`  Dual-Ceiling Excluded:    ${summary.dualCeilingExclusions.length}`);

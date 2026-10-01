@@ -108,3 +108,31 @@ describe('parseEligibilityForScheme — end-to-end aggregation', () => {
     expect(parsed.dualCeilingExcluded).toBe(true);
   });
 });
+
+describe('parseEligibilityForScheme: state gates', () => {
+  it('a scheme whose only criterion is a state gets a row, with the state set', () => {
+    const parsed = parseEligibilityForScheme('https://example.com/rpsy', 'State-only scheme', ['The applicant must be a permanent resident of Uttar Pradesh.']);
+    expect(parsed.state).toBe('Uttar Pradesh');
+    expect(parsed.hasAnyCriteria).toBe(true);
+    expect(parsed.ageMin).toBeNull();
+    expect(parsed.gender).toBeNull();
+  });
+
+  it('uses the authority to read "resident of the State"', () => {
+    const parsed = parseEligibilityForScheme('https://example.com/x', 'X', ['The applicant must be a resident of the State.'], 'Bihar');
+    expect(parsed.state).toBe('Bihar');
+    expect(parseEligibilityForScheme('https://example.com/x', 'X', ['The applicant must be a resident of the State.'], 'Ministry Of Finance').state).toBeNull();
+  });
+
+  it('applies the reviewed exceptions by source URL', () => {
+    const parsed = parseEligibilityForScheme('https://www.myscheme.gov.in/schemes/shssd', 'Student Housing', ['The applicant should be a resident of Chhattisgarh.'], 'Madhya Pradesh');
+    expect(parsed.state).toBeNull();
+    expect(parsed.hasAnyCriteria).toBe(false);
+    expect(parsed.stateResult.suppressedValue).toBe('Chhattisgarh');
+  });
+
+  it('keeps age, gender and state together on one result', () => {
+    const parsed = parseEligibilityForScheme('https://example.com/y', 'Y', ['The applicant must be a woman.', 'The applicant must be a resident of Goa.', 'Applicants aged between 18 and 40 years may apply.'], 'Goa');
+    expect(parsed).toMatchObject({ gender: 'female', state: 'Goa', ageMin: 18, ageMax: 40 });
+  });
+});

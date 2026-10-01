@@ -45,7 +45,25 @@ export interface StateExtractionResult {
   districtLevel: boolean;
   /** The scheme's authority is a state and the result does not include it (text wins, but worth a human look). */
   differsFromAuthority: boolean;
+  /** Set when a human reviewed this scheme and decided its state text is a source-data error: no gate is stored. */
+  suppressedReason: string | null;
+  /** What the text said before it was suppressed (for the report). */
+  suppressedValue: string | null;
 }
+
+/**
+ * Schemes whose text names a state that contradicts their authority and that were reviewed by hand and judged to
+ * be SOURCE-DATA ERRORS (a wrong state pasted into a template), not intentional cross-state eligibility. For these
+ * no state gate is stored: they stay authority-only, like a scheme with no residency sentence. Keyed by
+ * Scheme.sourceUrl so the exception cannot leak onto any other scheme. The general rule (when text and authority
+ * disagree, the text wins) is unchanged for every scheme not listed here.
+ * Decision: product owner, after reading the state dry-run report.
+ */
+export const SUPPRESSED_STATE_GATES: ReadonlyMap<string, string> = new Map([
+  ['https://www.myscheme.gov.in/schemes/maternalnutritionuk', 'text says Odisha but the authority is Uttarakhand: source-data error'],
+  ['https://www.myscheme.gov.in/schemes/matbhpbocwwb', 'text says Himachal Pradesh but the authority is Madhya Pradesh: source-data error'],
+  ['https://www.myscheme.gov.in/schemes/shssd', 'text says Chhattisgarh but the authority is Madhya Pradesh: source-data error'],
+]);
 
 // ─────────────────────────────────────────────────────────────
 // Finding states in text
@@ -274,14 +292,30 @@ const SEGMENT_HEADING = /:\s*$/;
 // ─────────────────────────────────────────────────────────────
 
 function emptyResult(): StateExtractionResult {
-  return { value: null, values: [], matchedSentences: [], rejected: [], nullReason: null, yearsQualifier: false, usedImplicit: false, districtLevel: false, differsFromAuthority: false };
+  return { value: null, values: [], matchedSentences: [], rejected: [], nullReason: null, yearsQualifier: false, usedImplicit: false, districtLevel: false, differsFromAuthority: false, suppressedReason: null, suppressedValue: null };
 }
 
 /**
  * @param sentences     Scheme.eligibilityRawText
  * @param authorityName Scheme.authorityName; only used to resolve "resident of the State" (when it is a state)
+ * @param sourceUrl     Scheme.sourceUrl; only used to apply SUPPRESSED_STATE_GATES
  */
-export function extractState(sentences: string[], authorityName?: string): StateExtractionResult {
+export function extractState(sentences: string[], authorityName?: string, sourceUrl?: string): StateExtractionResult {
+  const result = extractStateFromText(sentences, authorityName);
+  const suppressed = sourceUrl ? SUPPRESSED_STATE_GATES.get(sourceUrl) : undefined;
+  if (suppressed && result.value) {
+    result.suppressedReason = suppressed;
+    result.suppressedValue = result.value;
+    result.value = null;
+    result.values = [];
+    result.matchedSentences = [];
+    result.differsFromAuthority = false;
+    result.nullReason = `suppressed after review: ${suppressed}`;
+  }
+  return result;
+}
+
+function extractStateFromText(sentences: string[], authorityName?: string): StateExtractionResult {
   const result = emptyResult();
   const authorityState = canonicalState(authorityName ?? '');
 
