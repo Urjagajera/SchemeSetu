@@ -95,7 +95,7 @@ function groupItems(items: string[]): string[][] {
 
 // ───────────── prompts ─────────────
 
-function systemPrompt(lang: LanguageConfig, glossary: GlossaryRequirement[], list: boolean, count?: number): string {
+function systemPrompt(lang: LanguageConfig, glossary: GlossaryRequirement[], list: boolean, count?: number, hint?: string): string {
   const lines = [
     'You are a professional translator for an Indian government welfare-scheme portal.',
     `Translate the content the user sends from English into ${lang.name}, in a formal, respectful, natural register suitable for official government information. Avoid word-for-word or robotic phrasing.`,
@@ -106,6 +106,7 @@ function systemPrompt(lang: LanguageConfig, glossary: GlossaryRequirement[], lis
     '- Do not add, remove, explain or summarise anything.',
     `- You must translate ALL of it into ${lang.name}. Never return the English unchanged, however long the content is.`,
   ];
+  if (hint) lines.push(`- ${hint}`);
   if (glossary.length > 0) {
     lines.push('- Use exactly these renderings for these names:');
     for (const g of glossary) lines.push(`    "${g.en}" -> "${g.target}"`);
@@ -208,14 +209,15 @@ export function createTranslator(opts: TranslatorOptions) {
     return { ok: true, value: joined, model: [...models].join('+'), attempts };
   }
 
-  async function translateList(items: string[], lang: LanguageConfig): Promise<FieldResult> {
+  /** `hint` is one extra instruction about what the items are, e.g. "these are ministry names". */
+  async function translateList(items: string[], lang: LanguageConfig, hint?: string): Promise<FieldResult> {
     let attempts = 0;
     const models = new Set<string>();
     const outs: string[] = [];
 
     for (const group of groupItems(items)) {
       const glossary = glossaryHits(group, lang.code);
-      const system = systemPrompt(lang, glossary, true, group.length);
+      const system = systemPrompt(lang, glossary, true, group.length, hint);
       const r = await runChain<string[]>(
         (step) => ({ model: step.model, effort: step.effort, system, user: JSON.stringify(group), json: true, maxTokens: MAX_TOKENS }),
         (text) => {
