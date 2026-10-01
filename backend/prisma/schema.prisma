@@ -92,6 +92,7 @@ model EligibilityCriteria {
   occupation      String? // e.g. "farmer", "student", "entrepreneur" — matches Profile.tsx occupation options
   state           String? // state/UT residency restriction, null = no state restriction (central scheme)
   landOwnership   String? // "yes" | "no" — land ownership requirement, if any
+  residence       String? // "rural" | "urban" — where the applicant must live, if the scheme says so; null = no requirement
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
