@@ -663,15 +663,6 @@ export const Profile: React.FC = () => {
             </div>
           )}
 
-          {/* Fields that blocked the save. The selects have no inline message of their own, so without this
-              a blank "Select…" would make Save do nothing, silently. */}
-          {Object.keys(errors).length > 0 && (
-            <div role="alert" className="rounded-lg border border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900/40 text-red-700 dark:text-red-400 text-xs font-semibold px-4 py-3">
-              Please complete these before saving:{' '}
-              {Object.values(errors).map((e) => e?.message).filter(Boolean).join(' · ')}
-            </div>
-          )}
-
           {/* Action Submission Buttons */}
           <div className="pt-4 border-t border-outline-variant dark:border-zinc-800 flex justify-end">
             <button
