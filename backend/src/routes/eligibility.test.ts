@@ -41,8 +41,8 @@ function schemeWith(criteria: Record<string, unknown>) {
   };
 }
 
-async function report(criteria: Record<string, unknown>, profile: Record<string, string>) {
-  mockPrisma.scheme.findUnique.mockResolvedValue(schemeWith(criteria));
+async function report(criteria: Record<string, unknown>, profile: Record<string, string>, tags: string[] = []) {
+  mockPrisma.scheme.findUnique.mockResolvedValue({ ...schemeWith(criteria), tags: tags.map((name) => ({ name })) });
   const res = await request(buildApp()).post('/api/eligibility/report').send({ profile, schemeId: 'scheme-1' });
   return res.body;
 }
@@ -121,6 +121,23 @@ describe('POST /api/eligibility/report: an unset profile is "unknown", never an 
     expect(body.isEligible).toBe(false);
     expect(body.failedCriteria).toEqual(['Gender must be female']);
     expect(body.unverifiedCriteria).toEqual(['Social category']);
+  });
+
+  it('when nothing can be checked, it shows no keyword-mismatch noise as "missing requirements" and no match percentage', async () => {
+    const body = await report({ gender: 'female', category: 'sc' }, {}, ['Scheduled Caste', 'Girl Student', 'Scholarship']);
+    expect(body.isEligible).toBe(true);
+    expect(body.overallMatch).toBe(0);
+    expect(body.failedCriteria).toEqual([]);
+    expect(body.passedCriteria).toEqual([]);
+    expect(body.unverifiedCriteria).toEqual(['Gender', 'Social category']);
+  });
+
+  it('a scheme with no criteria on file still uses the tag fallback and is not affected', async () => {
+    mockPrisma.scheme.findUnique.mockResolvedValue({ id: 'scheme-1', name: 'Tag-only', tags: [{ name: 'Farmer' }], eligibilityCriteria: null });
+    const res = await request(buildApp()).post('/api/eligibility/report').send({ profile: { occupation: 'farmer' }, schemeId: 'scheme-1' });
+    expect(res.body.isEligible).toBe(true);
+    expect(res.body.passedCriteria).toEqual(['Interest match: "Farmer"']);
+    expect(res.body.unverifiedCriteria).toEqual([]);
   });
 
   it('a fully answered profile reports nothing unverified', async () => {

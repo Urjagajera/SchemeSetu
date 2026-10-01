@@ -87,16 +87,21 @@ router.post(
       reasons = [
         `Matched ${passedCriteria.length} of ${structuredChecked} structured eligibility criteria on file for this scheme.`,
       ];
+    } else if (unverifiedCriteria.length > 0) {
+      // Criteria are on file but the profile answers none of them (empty fields). We simply can't tell, so:
+      // not ineligible, no match percentage, and no keyword-mismatch noise posing as "missing requirements".
+      overallMatch = 0;
+      isEligible = true;
+      reasons = [
+        `This scheme has eligibility criteria on file, but your profile doesn't say: ${unverifiedCriteria.join(', ')}. Add them to your profile to check.`,
+      ];
     } else {
       overallMatch = Math.round((tagPassedCount / totalTags) * 100);
-      // If criteria exist but the profile couldn't answer any, we simply can't tell: don't call it ineligible.
-      isEligible = unverifiedCriteria.length > 0 ? true : overallMatch >= 50;
+      isEligible = overallMatch >= 50;
       passedCriteria.push(...tagPassed);
       failedCriteria.push(...tagFailed);
       reasons = [
-        unverifiedCriteria.length > 0
-          ? `This scheme has eligibility criteria on file, but your profile doesn't say: ${unverifiedCriteria.join(', ')}. Add them to your profile to check.`
-          : `No structured eligibility criteria on file for this scheme yet — matched ${tagPassedCount} of ${tags.length} profile/tag signals instead.`,
+        `No structured eligibility criteria on file for this scheme yet — matched ${tagPassedCount} of ${tags.length} profile/tag signals instead.`,
       ];
     }
 
