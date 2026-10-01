@@ -46,6 +46,9 @@ router.post(
 
     const passedCriteria: string[] = [];
     const failedCriteria: string[] = [];
+    // "Worth checking": soft mismatches (occupation). They never count as a failed criterion or change isEligible.
+    const notes: string[] = [];
+    let hardPassed = 0;
     const criteria = scheme.eligibilityCriteria;
     let structuredChecked = 0;
     // Criteria on file that the profile couldn't answer (empty field). They never count against
@@ -55,10 +58,17 @@ router.post(
     if (criteria) {
       const results = evaluateCriteria(criteria, profile);
       for (const r of results) {
-        if (r.status === 'passed') passedCriteria.push(r.message);
-        else if (r.status === 'failed') failedCriteria.push(r.message);
+        if (r.soft) {
+          if (r.status === 'passed') passedCriteria.push(r.message);
+          else if (r.status === 'failed') notes.push(r.message);
+          continue;
+        }
+        if (r.status === 'passed') {
+          passedCriteria.push(r.message);
+          hardPassed++;
+        } else if (r.status === 'failed') failedCriteria.push(r.message);
       }
-      structuredChecked = passedCriteria.length + failedCriteria.length;
+      structuredChecked = hardPassed + failedCriteria.length;
       unverifiedCriteria = unverifiedLabels(results);
     }
 
@@ -82,10 +92,10 @@ router.post(
     let reasons: string[];
 
     if (structuredChecked > 0) {
-      overallMatch = Math.round((passedCriteria.length / structuredChecked) * 100);
+      overallMatch = Math.round((hardPassed / structuredChecked) * 100);
       isEligible = failedCriteria.length === 0;
       reasons = [
-        `Matched ${passedCriteria.length} of ${structuredChecked} structured eligibility criteria on file for this scheme.`,
+        `Matched ${hardPassed} of ${structuredChecked} structured eligibility criteria on file for this scheme.`,
       ];
     } else if (unverifiedCriteria.length > 0) {
       // Criteria are on file but the profile answers none of them (empty fields). We simply can't tell, so:
@@ -113,6 +123,7 @@ router.post(
       passedCriteria,
       failedCriteria,
       unverifiedCriteria,
+      notes,
       reasons,
       suggestions: [
         'Add more tags to your profile settings matching your specific occupation, education, or requirements.',

@@ -116,6 +116,21 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
         </div>
       )}
 
+      {/* Soft mismatches (occupation): worth a look, never a missing requirement */}
+      {report.notes && report.notes.length > 0 && (
+        <div className="rounded-lg border border-sky-200 dark:border-sky-900/40 bg-sky-50 dark:bg-sky-950/30 p-4 space-y-1.5">
+          <h4 className="font-heading text-sm font-bold text-sky-800 dark:text-sky-300 flex items-center gap-1.5">
+            <HelpCircle className="w-4 h-4" />
+            {t('worthCheckingHeading')}
+          </h4>
+          <ul className="text-xs md:text-sm text-sky-900 dark:text-sky-200 space-y-1">
+            {report.notes.map((n, i) => (
+              <li key={i}>{n}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* Explanations & Suggestions */}
       {(report.reasons.length > 0 || report.suggestions.length > 0) && (
         <div className="pt-4 border-t border-outline-variant dark:border-zinc-800 space-y-4">

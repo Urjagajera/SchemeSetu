@@ -160,3 +160,56 @@ describe('POST /api/schemes/recommended: profile state', () => {
     expect(whereOf()).toEqual({});
   });
 });
+
+describe('POST /api/schemes/recommended: occupation is soft (ranks, never excludes)', () => {
+  const farmerScheme = dbScheme(11, { occupation: 'farmer' });
+  const studentScheme = dbScheme(12, { occupation: 'student' });
+  const femaleScheme = dbScheme(13, { gender: 'female' });
+  const femaleFarmer = dbScheme(14, { gender: 'female', occupation: 'farmer' });
+  const open = dbScheme(15, null);
+
+  async function ranked(profile: Record<string, string>) {
+    mockPrisma.scheme.findMany.mockResolvedValue([farmerScheme, studentScheme, femaleScheme, femaleFarmer, open]);
+    const res = await request(buildApp()).post('/api/schemes/recommended').send({ profile });
+    expect(res.status).toBe(200);
+    return res.body.data as Array<{ name: string; matchScore: number }>;
+  }
+
+  beforeEach(() => mockPrisma.scheme.findMany.mockReset());
+
+  it('a mismatch never removes a scheme', async () => {
+    const names = (await ranked({ occupation: 'student' })).map((s) => s.name);
+    expect(names).toContain('Scheme 11'); // farmers only, profile says student: still there
+    expect(names).toHaveLength(5);
+  });
+
+  it('a match ranks higher, a mismatch lower, among schemes with the same hard score', async () => {
+    const data = await ranked({ occupation: 'farmer', gender: 'female' });
+    const score = (n: number) => data.find((s) => s.name === 'Scheme ' + n)!.matchScore;
+    expect(score(14)).toBeGreaterThan(score(13)); // female + farmer match beats female only
+    expect(score(11)).toBeGreaterThan(score(12)); // farmer scheme beats student scheme for a farmer
+    expect(data.findIndex((s) => s.name === 'Scheme 14')).toBeLessThan(data.findIndex((s) => s.name === 'Scheme 13'));
+  });
+
+  it('the score sent to the app never goes below 0, but a demoted scheme sorts below an unscored one', async () => {
+    const data = await ranked({ occupation: 'student' });
+    expect(data.every((s) => s.matchScore >= 0)).toBe(true);
+    const order = data.map((s) => s.name);
+    expect(order.indexOf('Scheme 12')).toBeLessThan(order.indexOf('Scheme 15')); // student scheme (boosted) above the open one
+    expect(order.indexOf('Scheme 15')).toBeLessThan(order.indexOf('Scheme 11')); // farmer scheme (demoted) below the open one
+  });
+
+  it('a blank or "other" occupation changes nothing', async () => {
+    const base = await ranked({});
+    for (const occupation of ['', 'other', 'senior citizen']) {
+      const data = await ranked({ occupation });
+      expect(data.map((s) => [s.name, s.matchScore])).toEqual(base.map((s) => [s.name, s.matchScore]));
+    }
+  });
+
+  it('a hard failure still excludes, whatever the occupation says', async () => {
+    const names = (await ranked({ occupation: 'farmer', gender: 'male' })).map((s) => s.name);
+    expect(names).not.toContain('Scheme 14'); // female-only: hard gate fails even though the occupation matches
+    expect(names).not.toContain('Scheme 13');
+  });
+});

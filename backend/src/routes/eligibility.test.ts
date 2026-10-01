@@ -145,3 +145,37 @@ describe('POST /api/eligibility/report: an unset profile is "unknown", never an 
     expect(body.unverifiedCriteria).toEqual([]);
   });
 });
+
+describe('POST /api/eligibility/report: occupation is soft', () => {
+  beforeEach(() => mockPrisma.scheme.findUnique.mockReset());
+
+  it('a mismatch is a worth-checking note: not a failed criterion, and the scheme stays eligible', async () => {
+    const r = await report({ occupation: 'farmer', gender: 'female' }, { occupation: 'student', gender: 'female' });
+    expect(r.isEligible).toBe(true);
+    expect(r.failedCriteria).toEqual([]);
+    expect(r.notes).toEqual(['This scheme is meant for farmers; your profile says student']);
+    expect(r.overallMatch).toBe(100);
+    expect(r.reasons[0]).toMatch(/Matched 1 of 1/);
+  });
+
+  it('a match is listed with the passed criteria but does not change the percentage', async () => {
+    const r = await report({ occupation: 'farmer', gender: 'female' }, { occupation: 'farmer', gender: 'male' });
+    expect(r.passedCriteria.some((c: string) => /Occupation matches/.test(c))).toBe(true);
+    expect(r.failedCriteria).toEqual(['Gender must be female']);
+    expect(r.isEligible).toBe(false); // the hard gate decides
+    expect(r.overallMatch).toBe(0);
+    expect(r.notes).toEqual([]);
+  });
+
+  it('a scheme whose only criterion is occupation is never ineligible because of it', async () => {
+    const r = await report({ occupation: 'farmer' }, { occupation: 'student' }, ['farmer']);
+    expect(r.failedCriteria.every((c: string) => !/Occupation|meant for/.test(c))).toBe(true);
+    expect(r.notes).toEqual(['This scheme is meant for farmers; your profile says student']);
+  });
+
+  it('a blank occupation produces neither a note nor an add-to-profile request', async () => {
+    const r = await report({ occupation: 'farmer', gender: 'female' }, { gender: 'female' });
+    expect(r.notes).toEqual([]);
+    expect(r.unverifiedCriteria).toEqual([]);
+  });
+});

@@ -153,3 +153,17 @@ describe('parseEligibilityForScheme: land ownership and residence', () => {
     expect(parsed.gender).toBe('female');
   });
 });
+
+describe('parseEligibilityForScheme: occupation', () => {
+  it('a scheme whose only criterion is an occupation gets a row', () => {
+    const parsed = parseEligibilityForScheme('https://example.com/occ', 'Farmers only', ['The applicant must be a farmer.']);
+    expect(parsed.occupation).toBe('farmer');
+    expect(parsed.hasAnyCriteria).toBe(true);
+  });
+
+  it('is null when the sentence has an alternative we cannot name', () => {
+    const parsed = parseEligibilityForScheme('https://example.com/occ2', 'Mixed', ['The applicant should be a farmer, entrepreneur, or member of SHG.']);
+    expect(parsed.occupation).toBeNull();
+    expect(parsed.hasAnyCriteria).toBe(false);
+  });
+});

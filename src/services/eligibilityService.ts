@@ -28,6 +28,8 @@ export interface EligibilityReport {
   failedCriteria: string[];
   /** Criteria on file the profile couldn't answer; they never count against the user. */
   unverifiedCriteria?: string[];
+  /** "Worth checking": soft mismatches (occupation). They never count as a missing requirement or change isEligible. */
+  notes?: string[];
   reasons: string[];
   suggestions: string[];
 }

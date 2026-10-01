@@ -208,13 +208,17 @@ router.post(
         let structuredChecked = 0;
         let structuredPassed = 0;
         let unverified: string[] = [];
+        // Occupation is SOFT: a match ranks the scheme higher, a mismatch lower, and neither ever excludes it.
+        let softDelta = 0;
 
         if (criteria) {
           const results = evaluateCriteria(criteria, scoringProfile);
-          const answered = results.filter((r) => r.status !== 'unknown');
+          const hard = results.filter((r) => !r.soft);
+          const answered = hard.filter((r) => r.status !== 'unknown');
           structuredChecked = answered.length;
           structuredPassed = answered.filter((r) => r.status === 'passed').length;
-          unverified = unverifiedLabels(results);
+          unverified = unverifiedLabels(hard);
+          for (const r of results) if (r.soft) softDelta += r.status === 'passed' ? 1 : r.status === 'failed' ? -1 : 0;
         }
 
         const tagNames = s.tags.map((t) => t.name.toLowerCase());
@@ -238,10 +242,12 @@ router.post(
           matchScore = 0;
         }
 
-        return { s, matchScore, include, unverified };
+        // Sorted on the raw score (a demoted scheme can sink below an unscored one); the number sent to the app never goes below 0.
+        const rank = matchScore + softDelta;
+        return { s, matchScore: Math.max(0, rank), rank, include, unverified };
       })
       .filter((r) => r.include)
-      .sort((a, b) => b.matchScore - a.matchScore)
+      .sort((a, b) => b.rank - a.rank)
       .slice(0, DEFAULT_LIMIT);
 
     res.json({

@@ -27,6 +27,7 @@ import {
 import { extractState, StateExtractionResult } from './parseState.js';
 import { extractLand, LandExtractionResult } from './parseLand.js';
 import { extractResidence, ResidenceExtractionResult } from './parseResidence.js';
+import { extractOccupation, OccupationExtractionResult } from './parseOccupation.js';
 
 export interface AgeExtractionResult {
   min: number | null;
@@ -81,6 +82,8 @@ export interface ParsedEligibility {
   landOwnership: string | null;
   /** "rural" | "urban"; null = no requirement. */
   residence: string | null;
+  /** Comma-separated set of farmer / student / entrepreneur / employee / unemployed. SOFT in the engine: ranks, never excludes. */
+  occupation: string | null;
   hasAnyCriteria: boolean;
   ageResult: AgeExtractionResult;
   incomeResult: IncomeExtractionResult;
@@ -89,6 +92,7 @@ export interface ParsedEligibility {
   stateResult: StateExtractionResult;
   landResult: LandExtractionResult;
   residenceResult: ResidenceExtractionResult;
+  occupationResult: OccupationExtractionResult;
   logs: string[];
   dualCeilingExcluded: boolean;
 }
@@ -558,6 +562,7 @@ export function parseEligibilityForScheme(
   const stateResult = extractState(eligibilityRawText, authorityName, link);
   const landResult = extractLand(eligibilityRawText);
   const residenceResult = extractResidence(eligibilityRawText);
+  const occupationResult = extractOccupation(eligibilityRawText);
 
   const hasAnyCriteria =
     ageResult.min !== null ||
@@ -568,7 +573,8 @@ export function parseEligibilityForScheme(
     categoryResult.value !== null ||
     stateResult.value !== null ||
     landResult.value !== null ||
-    residenceResult.value !== null;
+    residenceResult.value !== null ||
+    occupationResult.value !== null;
 
   const logs = [...ageResult.logs, ...incomeResult.logs];
 
@@ -582,6 +588,7 @@ export function parseEligibilityForScheme(
     state: stateResult.value,
     landOwnership: landResult.value,
     residence: residenceResult.value,
+    occupation: occupationResult.value,
     hasAnyCriteria,
     ageResult,
     incomeResult,
@@ -590,6 +597,7 @@ export function parseEligibilityForScheme(
     stateResult,
     landResult,
     residenceResult,
+    occupationResult,
     logs,
     dualCeilingExcluded: incomeResult.dualCeilingExcluded,
   };

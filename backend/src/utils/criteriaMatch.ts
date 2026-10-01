@@ -5,8 +5,14 @@
  *
  * gender, category and state are stored as comma-separated SETS (for example "sc,st",
  * "female", or "Kerala,Tamil Nadu"; see ingestion/parseDemographics.ts and parseState.ts),
- * so the profile passes when its value is IN the set. The other string fields (occupation,
- * landOwnership) are single values and still use a plain case-insensitive equality.
+ * so the profile passes when its value is IN the set. landOwnership and residence are single
+ * values and use a plain case-insensitive equality.
+ *
+ * OCCUPATION IS SOFT. A profile holds one occupation but a person can be a student and a farmer, so a
+ * mismatch is never a reason to exclude a scheme. evaluateCriteria marks the occupation result `soft`:
+ * callers use a match to rank a scheme higher, and a mismatch to rank it lower and show a "worth checking"
+ * note, but never as a failed criterion. A blank, "other" or "senior citizen" profile occupation says
+ * nothing at all (there is no result).
  *
  * UNKNOWN IS NOT A FAILURE. A criterion the profile can't answer (the field is
  * empty or missing) is reported as "unknown": it never excludes a scheme, and the
@@ -17,7 +23,7 @@ import { canonicalState } from './states.js';
 
 export type CriteriaStringField = 'gender' | 'category' | 'occupation' | 'state' | 'landOwnership' | 'residence';
 
-const SET_FIELDS: ReadonlySet<CriteriaStringField> = new Set(['gender', 'category', 'state']);
+const SET_FIELDS: ReadonlySet<CriteriaStringField> = new Set(['gender', 'category', 'state', 'occupation']);
 
 function splitSet(criteriaValue: string): string[] {
   return criteriaValue
@@ -43,6 +49,10 @@ export function profileMatchesCriteria(field: CriteriaStringField, criteriaValue
 
 const CATEGORY_LABELS: Record<string, string> = { sc: 'SC', st: 'ST', obc: 'OBC', general: 'General' };
 
+/** The occupations a scheme can name (the profile's own options, minus "senior citizen" and "other"). */
+const SCHEME_OCCUPATIONS: ReadonlySet<string> = new Set(['farmer', 'student', 'entrepreneur', 'employee', 'unemployed']);
+const OCCUPATION_PEOPLE: Record<string, string> = { farmer: 'farmers', student: 'students', entrepreneur: 'entrepreneurs (self-employed)', employee: 'employees', unemployed: 'unemployed people' };
+
 /** Human-readable form of a stored value for the eligibility report ("SC or ST", "female"). */
 export function describeCriteriaValue(field: CriteriaStringField, criteriaValue: string): string {
   if (!SET_FIELDS.has(field)) return criteriaValue;
@@ -51,6 +61,7 @@ export function describeCriteriaValue(field: CriteriaStringField, criteriaValue:
     const states = splitSet(criteriaValue).map((v) => canonicalState(v) ?? v);
     return states.length > 4 ? `one of these ${states.length} states / union territories: ${states.join(', ')}` : states.join(' or ');
   }
+  if (field === 'occupation') return splitSet(criteriaValue).map((v) => OCCUPATION_PEOPLE[v] ?? v).join(' or ');
   const parts = splitSet(criteriaValue).map((v) => (field === 'category' ? CATEGORY_LABELS[v] ?? v : v));
   return parts.join(' or ');
 }
@@ -75,6 +86,8 @@ export interface CriterionResult {
   label: string;
   status: 'passed' | 'failed' | 'unknown';
   message: string;
+  /** A soft result ranks a scheme but never excludes it (occupation). A soft failure is a note, not a failed criterion. */
+  soft?: boolean;
 }
 
 const hasValue = (v: string | undefined | null): v is string => typeof v === 'string' && v.trim() !== '';
@@ -137,11 +150,24 @@ export function evaluateCriteria(criteria: CriteriaRow, profile: IncomingProfile
     }
   }
 
+  // ── occupation (SOFT) ──
+  if (criteria.occupation !== null) {
+    const mine = (profile.occupation ?? '').trim().toLowerCase();
+    // Only the occupations a scheme can name are compared; blank, "other" and "senior citizen" say nothing.
+    if (SCHEME_OCCUPATIONS.has(mine)) {
+      const allowed = splitSet(criteria.occupation);
+      out.push(
+        allowed.includes(mine)
+          ? { label: 'Occupation', status: 'passed', soft: true, message: `Occupation matches (this scheme is for ${describeCriteriaValue('occupation', criteria.occupation)})` }
+          : { label: 'Occupation', status: 'failed', soft: true, message: `This scheme is meant for ${describeCriteriaValue('occupation', criteria.occupation)}; your profile says ${mine}` },
+      );
+    }
+  }
+
   // ── string fields ──
   const stringChecks: Array<[CriteriaStringField, string | null, string | undefined, string]> = [
     ['gender', criteria.gender, profile.gender, 'Gender'],
     ['category', criteria.category, profile.category, 'Social category'],
-    ['occupation', criteria.occupation, profile.occupation, 'Occupation'],
     // A state the app does not recognise is treated as not given: unknown never excludes.
     ['state', criteria.state, canonicalState(profile.state) ?? undefined, 'State residency'],
     ['landOwnership', criteria.landOwnership, profile.land, 'Land ownership'],

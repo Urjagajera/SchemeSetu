@@ -71,7 +71,7 @@ describe('profileMatchesCriteria: set membership for gender and category', () =>
 
   it('keeps plain case-insensitive equality for single-value fields (no comma splitting)', () => {
     expect(profileMatchesCriteria('occupation', 'Farmer', 'farmer')).toBe(true);
-    expect(profileMatchesCriteria('occupation', 'farmer,student', 'farmer')).toBe(false);
+    expect(profileMatchesCriteria('residence', 'rural,urban', 'rural')).toBe(false);
     expect(profileMatchesCriteria('landOwnership', 'yes', 'no')).toBe(false);
   });
 });
@@ -82,7 +82,8 @@ describe('describeCriteriaValue', () => {
     expect(describeCriteriaValue('category', 'sc,st,obc')).toBe('SC or ST or OBC');
     expect(describeCriteriaValue('category', 'general')).toBe('General');
     expect(describeCriteriaValue('gender', 'female')).toBe('female');
-    expect(describeCriteriaValue('occupation', 'Farmer')).toBe('Farmer');
+    expect(describeCriteriaValue('occupation', 'farmer')).toBe('farmers');
+    expect(describeCriteriaValue('occupation', 'farmer,entrepreneur')).toBe('farmers or entrepreneurs (self-employed)');
   });
 });
 
@@ -153,5 +154,35 @@ describe('land ownership and rural / urban residence', () => {
   it('rows from before the residence column existed still work', () => {
     const old: CriteriaRow = { ageMin: null, ageMax: null, incomeMinAnnual: null, incomeMaxAnnual: null, gender: 'female', category: null, occupation: null, state: null, landOwnership: null };
     expect(evaluateCriteria(old, { gender: 'female', residence: 'rural' })).toHaveLength(1);
+  });
+});
+
+describe('occupation is SOFT', () => {
+  const occ = (criteria: string, profile: Record<string, string>) => evaluateCriteria(row({ occupation: criteria }), profile);
+
+  it('a match is a soft pass, a mismatch is a soft fail with a plain note, never a plain failure', () => {
+    expect(occ('farmer', { occupation: 'farmer' })[0]).toMatchObject({ status: 'passed', soft: true, label: 'Occupation' });
+    const miss = occ('farmer', { occupation: 'student' })[0];
+    expect(miss).toMatchObject({ status: 'failed', soft: true });
+    expect(miss.message).toBe('This scheme is meant for farmers; your profile says student');
+  });
+
+  it('a set matches when the profile is any one of them', () => {
+    expect(occ('farmer,entrepreneur', { occupation: 'Entrepreneur' })[0].status).toBe('passed');
+    expect(occ('farmer,entrepreneur', { occupation: 'student' })[0].message).toBe('This scheme is meant for farmers or entrepreneurs (self-employed); your profile says student');
+  });
+
+  it('a blank, "other" or "senior citizen" profile occupation says nothing at all: no result, no add-to-profile note', () => {
+    for (const occupation of [undefined, '', '  ', 'other', 'senior citizen', 'astronaut']) {
+      const results = evaluateCriteria(row({ occupation: 'farmer' }), { occupation });
+      expect(results, String(occupation)).toEqual([]);
+      expect(unverifiedLabels(results)).toEqual([]);
+    }
+  });
+
+  it('only the occupation result is soft; other criteria stay hard', () => {
+    const results = evaluateCriteria(row({ occupation: 'farmer', gender: 'female' }), { occupation: 'student', gender: 'male' });
+    expect(results.find((r) => r.label === 'Gender')?.soft).toBeUndefined();
+    expect(results.find((r) => r.label === 'Occupation')?.soft).toBe(true);
   });
 });

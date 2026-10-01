@@ -71,6 +71,7 @@ export interface IngestionRunSummary {
   stateRestricted: number;
   landRestricted: number;
   residenceRestricted: number;
+  occupationRestricted: number;
   skippedForSanityList: Array<{ link: string; title: string; amount: number; sentence: string; reason: string }>;
   multipleIncomesResolvedList: Array<{ link: string; title: string; chosen: number; candidates: number[]; sentence: string }>;
   dualCeilingExclusions: DualCeilingExclusion[];
@@ -108,6 +109,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
     stateRestricted: 0,
     landRestricted: 0,
     residenceRestricted: 0,
+    occupationRestricted: 0,
     skippedForSanityList: [],
     multipleIncomesResolvedList: [],
     dualCeilingExclusions: [],
@@ -209,6 +211,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
           state: parsed.state,
           landOwnership: parsed.landOwnership,
           residence: parsed.residence,
+          occupation: parsed.occupation,
         },
         update: {
           ageMin: parsed.ageMin,
@@ -221,6 +224,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
           state: parsed.state,
           landOwnership: parsed.landOwnership,
           residence: parsed.residence,
+          occupation: parsed.occupation,
         },
       });
       if (parsed.gender !== null) summary.genderRestricted++;
@@ -228,6 +232,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
       if (parsed.state !== null) summary.stateRestricted++;
       if (parsed.landOwnership !== null) summary.landRestricted++;
       if (parsed.residence !== null) summary.residenceRestricted++;
+      if (parsed.occupation !== null) summary.occupationRestricted++;
       rowAction = 'CREATED';
       criteriaId = upserted.id;
       summary.rowsCreatedOrUpdated++;
@@ -249,6 +254,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
         ...parsed.stateResult.matchedSentences,
         ...parsed.landResult.matchedSentences,
         ...parsed.residenceResult.matchedSentences,
+        ...parsed.occupationResult.matchedSentences,
       ])
     );
 
@@ -272,6 +278,7 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
   console.log(`  State restricted:         ${summary.stateRestricted}`);
   console.log(`  Land restricted:          ${summary.landRestricted}`);
   console.log(`  Residence restricted:     ${summary.residenceRestricted}`);
+  console.log(`  Occupation (soft):        ${summary.occupationRestricted}`);
   console.log(`  Sanity Skips:             ${summary.skippedForSanityList.length}`);
   console.log(`  Multiple Incomes Resolved: ${summary.multipleIncomesResolvedList.length}`);
   console.log(`  Dual-Ceiling Excluded:    ${summary.dualCeilingExclusions.length}`);

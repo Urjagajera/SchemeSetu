@@ -254,3 +254,24 @@ describe('ingestEligibility.runIngestion — state, land ownership and residence
     expect(mockPrisma.eligibilityCriteria.deleteMany).toHaveBeenCalledWith({ where: { schemeId: 'scheme-own-or-lease' } });
   });
 });
+
+describe('ingestEligibility.runIngestion — occupation', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.scheme.findMany.mockResolvedValue([
+      { id: 'scheme-farmers', sourceUrl: 'https://example.com/schemes/farmers', name: 'Farmers only', authorityName: 'Bihar', eligibilityRawText: ['The applicant must be a farmer.'] },
+      { id: 'scheme-mixed', sourceUrl: 'https://example.com/schemes/mixed', name: 'Mixed', authorityName: 'Bihar', eligibilityRawText: ['The applicant should be a farmer, entrepreneur, or member of SHG.'] },
+    ]);
+    mockPrisma.eligibilityCriteria.upsert.mockImplementation(({ where }: { where: { schemeId: string } }) => Promise.resolve({ id: 'criteria-for-' + where.schemeId }));
+    mockPrisma.eligibilityCriteria.deleteMany.mockResolvedValue({ count: 0 });
+  });
+
+  it('writes the occupation, and only for the scheme whose sentence is clean', async () => {
+    const summary = await runIngestion('B');
+    const calls = mockPrisma.eligibilityCriteria.upsert.mock.calls.map((c) => c[0]);
+    expect(calls.find((c) => c.where.schemeId === 'scheme-farmers').create).toMatchObject({ occupation: 'farmer' });
+    expect(calls.find((c) => c.where.schemeId === 'scheme-farmers').update).toMatchObject({ occupation: 'farmer' });
+    expect(calls.map((c) => c.where.schemeId)).not.toContain('scheme-mixed');
+    expect(summary.occupationRestricted).toBe(1);
+  });
+});
