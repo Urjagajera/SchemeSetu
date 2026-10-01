@@ -23,7 +23,13 @@ function fakeDb(clock: { t: number }) {
   const rows = new Map<string, StoredRow & { schemeId: string; languageCode: string; model: string | null; attempts: number; error: string | null }>();
   const db: TranslationDb = {
     schemeTranslation: {
-      findMany: async ({ where }) => [...rows.values()].filter((r) => r.schemeId === where.schemeId && r.languageCode === where.languageCode),
+      findMany: async ({ where }) =>
+        [...rows.values()].filter(
+          (r) =>
+            (typeof where.schemeId === 'string' ? r.schemeId === where.schemeId : where.schemeId.in.includes(r.schemeId)) &&
+            r.languageCode === where.languageCode &&
+            (where.field === undefined || r.field === where.field),
+        ),
       upsert: async ({ where, create, update }) => {
         const k = `${where.schemeId_languageCode_field.schemeId}:${where.schemeId_languageCode_field.languageCode}:${where.schemeId_languageCode_field.field}`;
         const existing = rows.get(k);
@@ -215,5 +221,104 @@ describe('createTranslationService', () => {
     await svc2.getForView(scheme(), hi);
     await expect(svc2.idle('s1', 'hi')).resolves.toBeUndefined();
     expect(log).toHaveBeenCalledWith(expect.stringMatching(/could not store/), expect.anything());
+  });
+});
+
+describe('getTitles (cards)', () => {
+  const clock = { t: 1_000_000 };
+  const cards = [
+    { id: 'a', name: 'Stand-Up India' },
+    { id: 'b', name: 'Disha' },
+    { id: 'c', name: 'Gagan Bharari Shiksha Yojana' },
+  ];
+  const titleTranslator = () => {
+    const batches: string[][] = [];
+    const t: FieldTranslator = {
+      translateText: vi.fn(),
+      translateList: vi.fn(async (source: string[], _lang, hint?: string) => {
+        batches.push(source);
+        expect(hint).toMatch(/welfare schemes/);
+        return { ok: true, value: source.map((x) => `HI(${x})`), model: 'primary', attempts: 1 };
+      }),
+    };
+    return { t, batches };
+  };
+
+  beforeEach(() => {
+    clock.t = 1_000_000;
+  });
+
+  it('translates a page of titles in ONE model call, stores each, and serves them from the database after', async () => {
+    const { db, rows } = fakeDb(clock);
+    const { t, batches } = titleTranslator();
+    const svc = createTranslationService({ db, translator: t, now: () => clock.t });
+
+    const first = await svc.getTitles(cards, hi);
+    expect(first).toMatchObject({ status: 'pending', pending: 3, titles: {} });
+    await vi.waitFor(() => expect(rows.size).toBe(3));
+
+    expect(batches).toEqual([['Stand-Up India', 'Disha', 'Gagan Bharari Shiksha Yojana']]);
+    const second = await svc.getTitles(cards, hi);
+    expect(second).toMatchObject({ status: 'ready', pending: 0, failed: 0 });
+    expect(second.titles).toEqual({ a: 'HI(Stand-Up India)', b: 'HI(Disha)', c: 'HI(Gagan Bharari Shiksha Yojana)' });
+    expect(t.translateList).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not start a second batch for titles already being translated', async () => {
+    const { db, rows } = fakeDb(clock);
+    const { t, batches } = titleTranslator();
+    const svc = createTranslationService({ db, translator: t, now: () => clock.t });
+    await svc.getTitles(cards, hi);
+    const again = await svc.getTitles(cards, hi);
+    expect(again.status).toBe('pending');
+    await vi.waitFor(() => expect(rows.size).toBe(3));
+    expect(batches).toHaveLength(1);
+  });
+
+  it('only translates the titles that are missing, and re-translates a title whose English changed', async () => {
+    const { db, rows } = fakeDb(clock);
+    const { t, batches } = titleTranslator();
+    const svc = createTranslationService({ db, translator: t, now: () => clock.t });
+    await svc.getTitles([cards[0]], hi);
+    await vi.waitFor(() => expect(rows.size).toBe(1));
+
+    const view = await svc.getTitles([cards[0], cards[1]], hi);
+    expect(view.titles).toEqual({ a: 'HI(Stand-Up India)' });
+    await vi.waitFor(() => expect(rows.size).toBe(2));
+    expect(batches[1]).toEqual(['Disha']);
+
+    await svc.getTitles([{ id: 'a', name: 'Stand-Up India Plus' }], hi);
+    await vi.waitFor(() => expect(batches).toHaveLength(3));
+    expect(batches[2]).toEqual(['Stand-Up India Plus']);
+  });
+
+  it('leaves a title in English when both models reject it, and does not retry it for 10 minutes', async () => {
+    const { db, rows } = fakeDb(clock);
+    const t: FieldTranslator = {
+      translateText: vi.fn(),
+      translateList: vi.fn(async (source: string[]) =>
+        source.length > 1 || source[0] === 'Disha' ? { ok: false, attempts: 2, error: 'returned English' } : { ok: true, value: ['HI(' + source[0] + ')'], model: 'p', attempts: 1 },
+      ),
+    };
+    const svc = createTranslationService({ db, translator: t, now: () => clock.t });
+    await svc.getTitles(cards.slice(0, 2), hi);
+    await vi.waitFor(() => expect(rows.size).toBe(2));
+
+    const view = await svc.getTitles(cards.slice(0, 2), hi);
+    expect(view).toMatchObject({ status: 'partial', failed: 1, pending: 0 });
+    expect(view.titles).toEqual({ a: 'HI(Stand-Up India)' });
+
+    const calls = (t.translateList as ReturnType<typeof vi.fn>).mock.calls.length;
+    await svc.getTitles(cards.slice(0, 2), hi);
+    expect((t.translateList as ReturnType<typeof vi.fn>).mock.calls.length).toBe(calls);
+
+    clock.t += 11 * 60 * 1000;
+    expect((await svc.getTitles(cards.slice(0, 2), hi)).status).toBe('pending');
+  });
+
+  it('reports "unavailable" without a translator', async () => {
+    const { db } = fakeDb(clock);
+    const svc = createTranslationService({ db, translator: null, now: () => clock.t });
+    expect(await svc.getTitles(cards, hi)).toMatchObject({ status: 'unavailable', titles: {} });
   });
 });

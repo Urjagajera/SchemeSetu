@@ -6,7 +6,9 @@ import { BookmarkButton } from './BookmarkButton';
 import { CompareButton } from './CompareButton';
 import { ArrowRight, Building2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { cn } from '../utils/cn';
-import { translateScheme } from '../utils/translationUtils';
+import { translateScheme, applyVocabulary } from '../utils/translationUtils';
+import { useVocabulary } from '../hooks/useVocabulary';
+import { useCardTitles } from '../services/titleTranslations';
 
 interface SchemeCardProps {
   scheme: Scheme;
@@ -23,7 +25,11 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
 }) => {
   const { t, language } = useTranslation();
   const navigate = useNavigate();
-  const scheme = translateScheme(rawScheme, language);
+  // Title from the server's translation (English until it arrives), ministry/category from the vocabulary table.
+  const titles = useCardTitles([rawScheme.id], language);
+  const { vocab, loading: vocabLoading } = useVocabulary(language);
+  const base = translateScheme(rawScheme, language);
+  const scheme = applyVocabulary({ ...base, name: titles[rawScheme.id] ?? base.name }, language, vocab, vocabLoading);
 
   const handleCardClick = () => {
     navigate(`/schemes/${scheme.id}`);

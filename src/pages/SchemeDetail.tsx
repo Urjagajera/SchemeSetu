@@ -4,8 +4,9 @@ import { schemeService } from '../services/schemeService';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useBookmarks } from '../hooks/useBookmarks';
-import { Scheme, Vocabulary } from '../types';
-import { getVocabulary } from '../services/vocabularyService';
+import { Scheme } from '../types';
+import { useVocabulary } from '../hooks/useVocabulary';
+import { useCardTitles } from '../services/titleTranslations';
 import { BookmarkButton } from '../components/BookmarkButton';
 import { CompareButton } from '../components/CompareButton';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
@@ -78,26 +79,9 @@ export const SchemeDetail: React.FC = () => {
     loadSchemeDetails();
   }, [id, language]);
 
-  // Translated ministry/state names and tags for the chosen language (one small lookup table, fetched once).
-  const [vocab, setVocab] = useState<Vocabulary | null>(null);
-  const [vocabLoading, setVocabLoading] = useState(false);
-  useEffect(() => {
-    if (language === 'en') {
-      setVocab(null);
-      setVocabLoading(false);
-      return;
-    }
-    let cancelled = false;
-    setVocabLoading(true);
-    getVocabulary(language).then(v => {
-      if (cancelled) return;
-      setVocab(v);
-      setVocabLoading(false);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [language]);
+  // Translated ministry/state names and tags, and the titles of the related-scheme cards, for the chosen language.
+  const { vocab, loading: vocabLoading } = useVocabulary(language);
+  const relatedTitles = useCardTitles(related.map(s => s.id), language);
 
   // While the server is still translating this scheme, English is shown and we ask again every few seconds;
   // each field swaps in as it arrives. Gives up after about three minutes (English simply stays).
@@ -138,7 +122,10 @@ export const SchemeDetail: React.FC = () => {
       : translatedScheme?.level === 'State'
         ? t('schemeLevelState')
         : `${translatedScheme?.level} Scheme`;
-  const translatedRelated = related.map(s => translateScheme(s, language));
+  const translatedRelated = related.map(s => {
+    const base = translateScheme(s, language);
+    return applyVocabulary({ ...base, name: relatedTitles[s.id] ?? base.name }, language, vocab, vocabLoading);
+  });
 
   // Real API data arrives as arrays; mock mode has none of these fields, so fall
   // back to its single benefit string there and show nothing for the rest.

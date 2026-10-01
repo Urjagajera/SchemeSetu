@@ -232,6 +232,28 @@ router.post(
 );
 
 /**
+ * GET /api/schemes/titles?lang=hi&ids=a,b,c
+ * Translated titles for a page of cards (search results, related schemes...), up to MAX_TITLE_IDS ids.
+ * Returns `{ data: { language, status, titles: { [id]: title }, pending, failed } }` and never waits for the
+ * model: titles that aren't ready yet are simply missing (the card keeps the English one) and `status` is
+ * "pending" so the caller asks again. English or a language that isn't enabled gets an empty `titles`.
+ */
+const MAX_TITLE_IDS = 100;
+router.get(
+  '/titles',
+  asyncHandler(async (req: Request, res: Response) => {
+    const language = enabledLanguage(req.query.lang);
+    if (!language) {
+      res.json({ data: { language: 'en', status: 'ready', titles: {}, pending: 0, failed: 0 } });
+      return;
+    }
+    const ids = [...new Set(String(req.query.ids ?? '').split(',').map((s) => s.trim()).filter(Boolean))].slice(0, MAX_TITLE_IDS);
+    const schemes = ids.length === 0 ? [] : await prisma.scheme.findMany({ where: { id: { in: ids } }, select: { id: true, name: true } });
+    res.json({ data: await translationService.getTitles(schemes, language) });
+  }),
+);
+
+/**
  * GET /api/schemes/:id
  * MUST be registered after the static sub-paths above (/featured, /states,
  * /recommended) or Express would match them here as an :id value instead.
