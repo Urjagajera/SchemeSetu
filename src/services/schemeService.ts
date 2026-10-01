@@ -312,7 +312,9 @@ export const schemeService = {
         params: { lang: getActiveLang() }
       });
       const raw = response.data?.data ?? response.data;
-      return raw ? (raw as Scheme) : null;
+      if (!raw) return null;
+      // The server sends the translation state next to the English scheme; keep it on the scheme.
+      return response.data?.translation ? ({ ...raw, translation: response.data.translation } as Scheme) : (raw as Scheme);
     } catch (error) {
       console.warn(`[schemeService.getSchemeById] Backend not available — finding scheme "${id}" locally.`, (error as Error).message);
       return getLocalSchemeById(id);

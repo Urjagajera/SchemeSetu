@@ -1,3 +1,15 @@
+/** Which scheme fields the server has translated (GET /api/schemes/:id?lang=hi). Missing fields are still English. */
+export type TranslatedFieldKey = 'title' | 'description' | 'benefits' | 'eligibility' | 'documents' | 'applicationProcess';
+
+export interface SchemeTranslation {
+  language: 'hi' | 'gu';
+  /** pending: still translating (poll again); partial: some fields failed and stay English; unavailable: translation is off. */
+  status: 'ready' | 'pending' | 'partial' | 'unavailable';
+  fields: Partial<Record<TranslatedFieldKey, string | string[]>>;
+  pendingFields: TranslatedFieldKey[];
+  failedFields: TranslatedFieldKey[];
+}
+
 export interface Scheme {
   id: string;
   name: string;
@@ -29,6 +41,9 @@ export interface Scheme {
 
   /** Criteria on file for this scheme that the user's profile couldn't answer (empty fields), e.g. ["Gender"]. */
   unverifiedCriteria?: string[];
+
+  /** Present only on the single-scheme response, when a non-English language was requested. */
+  translation?: SchemeTranslation;
   categoryColor?: string;
   categoryTextColor?: string;
   image?: string;

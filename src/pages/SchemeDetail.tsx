@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-import { translateScheme } from '../utils/translationUtils';
+import { translateScheme, applyServerTranslation } from '../utils/translationUtils';
 
 const DetailSection: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
   <section className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm transition-colors">
@@ -75,7 +75,29 @@ export const SchemeDetail: React.FC = () => {
     };
 
     loadSchemeDetails();
-  }, [id]);
+  }, [id, language]);
+
+  // While the server is still translating this scheme, English is shown and we ask again every few seconds;
+  // each field swaps in as it arrives. Gives up after about three minutes (English simply stays).
+  const translationStatus = scheme?.translation?.status;
+  useEffect(() => {
+    if (!id || translationStatus !== 'pending') return;
+    let cancelled = false;
+    let tries = 0;
+    const timer = setInterval(async () => {
+      if (++tries > 60) {
+        clearInterval(timer);
+        return;
+      }
+      const fresh = await schemeService.getSchemeById(id);
+      if (cancelled || !fresh) return;
+      setScheme(prev => (prev ? { ...prev, translation: fresh.translation } : prev));
+    }, 3000);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [id, translationStatus]);
 
   if (loading) {
     return (
@@ -85,7 +107,7 @@ export const SchemeDetail: React.FC = () => {
     );
   }
 
-  const translatedScheme = scheme ? translateScheme(scheme, language) : null;
+  const translatedScheme = scheme ? applyServerTranslation(translateScheme(scheme, language), language) : null;
   const translatedRelated = related.map(s => translateScheme(s, language));
 
   // Real API data arrives as arrays; mock mode has none of these fields, so fall
@@ -134,6 +156,18 @@ export const SchemeDetail: React.FC = () => {
         <ChevronRight className="w-3.5 h-3.5" />
         <span className="text-on-surface dark:text-zinc-300 font-bold max-w-[200px] truncate">{translatedScheme.name}</span>
       </nav>
+
+      {/* Translation state: English stays until each translated field arrives */}
+      {language !== 'en' && scheme?.translation?.status === 'pending' && (
+        <div role="status" className="rounded-lg border border-sky-200 dark:border-sky-900/40 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-200 text-xs font-semibold px-4 py-2.5">
+          {t('translatingNotice')}
+        </div>
+      )}
+      {language !== 'en' && scheme?.translation?.status === 'partial' && (
+        <div role="status" className="rounded-lg border border-amber-200 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200 text-xs font-semibold px-4 py-2.5">
+          {t('translationPartialNote')}
+        </div>
+      )}
 
       {/* Main Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">

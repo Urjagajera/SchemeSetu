@@ -189,6 +189,8 @@
   "couldNotCheckHeading": "Couldn't check yet",
   "couldNotCheckHelp": "Add these to your profile to see if you qualify:",
   "nothingRulesOut": "Nothing in your profile rules this out so far.",
+  "translatingNotice": "Translating this page… showing English for now.",
+  "translationPartialNote": "Some sections could not be translated and are shown in English.",
   "availableMatches": "Available Matches",
   "noMatchingSchemesFoundDetails": "No matching welfare schemes found. Let's adjust details.",
   "howCanWeHelp": "How can we help you?",

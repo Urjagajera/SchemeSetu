@@ -88,3 +88,25 @@ export function translateScheme(scheme: Scheme, language: string): Scheme {
     documents: scheme.documents?.map(key => translatePhrase(key, language)) || []
   };
 }
+
+/**
+ * Puts the server-translated fields (title, description, benefits, eligibility, documents, application
+ * process) on top of the English scheme. Only fields the server has actually translated are replaced, so a
+ * scheme that is still translating, or whose translation partly failed, shows English for the rest.
+ */
+export function applyServerTranslation(scheme: Scheme, language: string): Scheme {
+  const tr = scheme.translation;
+  if (!tr || language === 'en' || tr.language !== language) return scheme;
+  const f = tr.fields;
+  const text = (v: string | string[] | undefined): string | undefined => (typeof v === 'string' && v.trim() !== '' ? v : undefined);
+  const list = (v: string | string[] | undefined): string[] | undefined => (Array.isArray(v) && v.length > 0 ? v : undefined);
+  return {
+    ...scheme,
+    name: text(f.title) ?? scheme.name,
+    description: text(f.description) ?? scheme.description,
+    benefits: list(f.benefits) ?? scheme.benefits,
+    eligibilityRawText: list(f.eligibility) ?? scheme.eligibilityRawText,
+    documentRequirements: list(f.documents) ?? scheme.documentRequirements,
+    applicationProcess: text(f.applicationProcess) ?? scheme.applicationProcess,
+  };
+}
