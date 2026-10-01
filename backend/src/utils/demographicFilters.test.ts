@@ -59,3 +59,28 @@ describe('buildDemographicWhere', () => {
     expect(buildDemographicWhere({ age: '0' })).toHaveLength(1); // 0 is a valid age
   });
 });
+
+describe('buildDemographicWhere: state', () => {
+  it('adds one clause for a real state, in any spelling, and ignores anything else', () => {
+    expect(buildDemographicWhere({ state: 'Goa' })).toHaveLength(1);
+    expect(buildDemographicWhere({ state: ' goa ' })).toHaveLength(1);
+    expect(buildDemographicWhere({ state: 'Gujrat' })).toEqual([]);
+    expect(buildDemographicWhere({ state: '' })).toEqual([]);
+  });
+
+  it('keeps schemes with no criteria, with no state limit, or whose list contains the state', () => {
+    const [clause] = buildDemographicWhere({ state: 'Goa' });
+    const text = JSON.stringify(clause);
+    expect(text).toContain('"eligibilityCriteria":{"is":null}');
+    expect(text).toContain('"is":{"state":null}');
+    expect(text).toContain('"state":{"equals":"Goa"}');
+    expect(text).toContain('"state":{"startsWith":"Goa,"}');
+    expect(text).toContain('"state":{"endsWith":",Goa"}');
+    expect(text).toContain('"state":{"contains":",Goa,"}');
+  });
+
+  it('uses the canonical spelling, so "dadra and nagar haveli and daman and diu" finds the stored name', () => {
+    const text = JSON.stringify(buildDemographicWhere({ state: 'dadra and nagar haveli and daman and diu' }));
+    expect(text).toContain('Dadra & Nagar Haveli and Daman & Diu');
+  });
+});

@@ -143,8 +143,10 @@ describe('POST /api/schemes/recommended: profile state', () => {
   it('a real state keeps central schemes plus that state, whatever spelling it arrives in', async () => {
     await post({ state: '  gujarat ' });
     const w = whereOf();
-    expect(w.OR).toHaveLength(2);
+    expect(w.OR).toHaveLength(3);
     expect(w.OR[1]).toEqual({ authorityName: { equals: 'Gujarat', mode: 'insensitive' } });
+    // and a scheme whose own text limits it to that state, whichever authority publishes it
+    expect(JSON.stringify(w.OR[2])).toContain('"state":{"equals":"Gujarat"}');
   });
 
   it('an unrecognised or blank state is treated as unknown: no state filter, so no state scheme is hidden', async () => {

@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { canonicalState } from './states.js';
 
 /**
  * Search filters for who a scheme is FOR, applied in the database so the result
@@ -10,10 +11,11 @@ import { Prisma } from '@prisma/client';
  * eligibility engine uses for a profile (see utils/criteriaMatch.ts), including
  * "unknown never excludes".
  *
- * gender and category are stored as comma-separated sets ("sc,st"), age and income as
- * numeric bounds on EligibilityCriteria.
+ * gender, category and state are stored as comma-separated sets ("sc,st", "Kerala,Tamil Nadu"), age and
+ * income as numeric bounds on EligibilityCriteria.
  */
 export interface DemographicQuery {
+  state?: string;
   gender?: string;
   socialCategory?: string;
   age?: string;
@@ -27,7 +29,7 @@ const MAX_AGE = 120;
 const noCriteriaRow: Prisma.SchemeWhereInput = { eligibilityCriteria: { is: null } };
 
 /** value is a member of a comma-separated set column; exact forms only, so "st" never matches inside another value. */
-function setContains(field: 'gender' | 'category', value: string): Prisma.EligibilityCriteriaWhereInput {
+export function setContains(field: 'gender' | 'category' | 'state', value: string): Prisma.EligibilityCriteriaWhereInput {
   return {
     OR: [
       { [field]: { equals: value } },
@@ -47,6 +49,15 @@ function parseWholeNumber(raw: string | undefined): number | null {
 /** Returns the extra AND-conditions for whichever filters were supplied and valid; invalid values are ignored. */
 export function buildDemographicWhere(q: DemographicQuery): Prisma.SchemeWhereInput[] {
   const clauses: Prisma.SchemeWhereInput[] = [];
+
+  // A scheme limited to certain states (EligibilityCriteria.state) stays only when the chosen state is one of them.
+  // This sits on top of the authority-level rule in the route (central schemes plus that state's own schemes).
+  const state = canonicalState(q.state);
+  if (state) {
+    clauses.push({
+      OR: [noCriteriaRow, { eligibilityCriteria: { is: { state: null } } }, { eligibilityCriteria: { is: setContains('state', state) } }],
+    });
+  }
 
   const gender = q.gender?.trim().toLowerCase();
   if (gender && GENDERS.has(gender)) {

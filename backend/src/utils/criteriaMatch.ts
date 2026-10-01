@@ -3,9 +3,9 @@
  * Shared by POST /api/eligibility/report and POST /api/schemes/recommended so both
  * routes judge a profile identically.
  *
- * gender and category are stored as lowercase comma-separated SETS (for example
- * "sc,st" or "female", see ingestion/parseDemographics.ts), so the profile passes
- * when its value is IN the set. The other string fields (occupation, state,
+ * gender, category and state are stored as comma-separated SETS (for example "sc,st",
+ * "female", or "Kerala,Tamil Nadu"; see ingestion/parseDemographics.ts and parseState.ts),
+ * so the profile passes when its value is IN the set. The other string fields (occupation,
  * landOwnership) are single values and still use a plain case-insensitive equality.
  *
  * UNKNOWN IS NOT A FAILURE. A criterion the profile can't answer (the field is
@@ -13,10 +13,11 @@
  * routes surface it as a note ("set your profile to check this") instead.
  */
 import { IncomingProfile } from './profile.js';
+import { canonicalState } from './states.js';
 
 export type CriteriaStringField = 'gender' | 'category' | 'occupation' | 'state' | 'landOwnership';
 
-const SET_FIELDS: ReadonlySet<CriteriaStringField> = new Set(['gender', 'category']);
+const SET_FIELDS: ReadonlySet<CriteriaStringField> = new Set(['gender', 'category', 'state']);
 
 function splitSet(criteriaValue: string): string[] {
   return criteriaValue
@@ -45,6 +46,11 @@ const CATEGORY_LABELS: Record<string, string> = { sc: 'SC', st: 'ST', obc: 'OBC'
 /** Human-readable form of a stored value for the eligibility report ("SC or ST", "female"). */
 export function describeCriteriaValue(field: CriteriaStringField, criteriaValue: string): string {
   if (!SET_FIELDS.has(field)) return criteriaValue;
+  if (field === 'state') {
+    // back to the canonical spelling; a long list reads better as "one of these"
+    const states = splitSet(criteriaValue).map((v) => canonicalState(v) ?? v);
+    return states.length > 4 ? `one of these ${states.length} states / union territories: ${states.join(', ')}` : states.join(' or ');
+  }
   const parts = splitSet(criteriaValue).map((v) => (field === 'category' ? CATEGORY_LABELS[v] ?? v : v));
   return parts.join(' or ');
 }
@@ -134,7 +140,8 @@ export function evaluateCriteria(criteria: CriteriaRow, profile: IncomingProfile
     ['gender', criteria.gender, profile.gender, 'Gender'],
     ['category', criteria.category, profile.category, 'Social category'],
     ['occupation', criteria.occupation, profile.occupation, 'Occupation'],
-    ['state', criteria.state, profile.state, 'State residency'],
+    // A state the app does not recognise is treated as not given: unknown never excludes.
+    ['state', criteria.state, canonicalState(profile.state) ?? undefined, 'State residency'],
     ['landOwnership', criteria.landOwnership, profile.land, 'Land ownership'],
   ];
   for (const [field, criteriaValue, profileValue, label] of stringChecks) {

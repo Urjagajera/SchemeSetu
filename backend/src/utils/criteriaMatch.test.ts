@@ -71,7 +71,7 @@ describe('profileMatchesCriteria: set membership for gender and category', () =>
 
   it('keeps plain case-insensitive equality for single-value fields (no comma splitting)', () => {
     expect(profileMatchesCriteria('occupation', 'Farmer', 'farmer')).toBe(true);
-    expect(profileMatchesCriteria('state', 'Jammu, Kashmir', 'jammu')).toBe(false);
+    expect(profileMatchesCriteria('occupation', 'farmer,student', 'farmer')).toBe(false);
     expect(profileMatchesCriteria('landOwnership', 'yes', 'no')).toBe(false);
   });
 });
@@ -83,5 +83,40 @@ describe('describeCriteriaValue', () => {
     expect(describeCriteriaValue('category', 'general')).toBe('General');
     expect(describeCriteriaValue('gender', 'female')).toBe('female');
     expect(describeCriteriaValue('occupation', 'Farmer')).toBe('Farmer');
+  });
+});
+
+describe('state is a set of states', () => {
+  it('passes when the profile state is one of the listed states, in any letter case', () => {
+    expect(profileMatchesCriteria('state', 'Kerala,Tamil Nadu', 'Kerala')).toBe(true);
+    expect(profileMatchesCriteria('state', 'Kerala,Tamil Nadu', 'tamil nadu')).toBe(true);
+    expect(profileMatchesCriteria('state', 'Kerala,Tamil Nadu', 'Karnataka')).toBe(false);
+  });
+
+  it('never matches a state by part of its name', () => {
+    expect(profileMatchesCriteria('state', 'Uttar Pradesh', 'Uttarakhand')).toBe(false);
+    expect(profileMatchesCriteria('state', 'Madhya Pradesh,Uttar Pradesh', 'Pradesh')).toBe(false);
+  });
+
+  it('evaluateCriteria: pass, fail and unknown', () => {
+    const c = row({ state: 'Kerala,Tamil Nadu,Karnataka' });
+    expect(evaluateCriteria(c, { state: 'Kerala' })[0]).toMatchObject({ label: 'State residency', status: 'passed' });
+    expect(evaluateCriteria(c, { state: ' kerala ' })[0].status).toBe('passed');
+    const failed = evaluateCriteria(c, { state: 'Goa' })[0];
+    expect(failed.status).toBe('failed');
+    expect(failed.message).toBe('State residency must be Kerala or Tamil Nadu or Karnataka');
+  });
+
+  it('a state the app does not recognise is unknown, never a failure', () => {
+    const c = row({ state: 'Kerala' });
+    for (const state of [undefined, '', '  ', 'Gujrat', 'Mars']) {
+      expect(evaluateCriteria(c, { state })[0].status, String(state)).toBe('unknown');
+    }
+  });
+
+  it('describes a short list with "or" and a long list as "one of these N"', () => {
+    expect(describeCriteriaValue('state', 'Kerala,Tamil Nadu')).toBe('Kerala or Tamil Nadu');
+    const ne = 'Arunachal Pradesh,Assam,Manipur,Meghalaya,Mizoram,Nagaland,Sikkim,Tripura';
+    expect(describeCriteriaValue('state', ne)).toBe('one of these 8 states / union territories: ' + ne.split(',').join(', '));
   });
 });

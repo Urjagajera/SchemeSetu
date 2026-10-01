@@ -6,7 +6,7 @@ import { levelWhereClause } from '../utils/schemeLevel.js';
 import { INDIAN_STATES_AND_UTS, canonicalState } from '../utils/states.js';
 import { serializeScheme } from '../utils/serializeScheme.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
-import { buildDemographicWhere } from '../utils/demographicFilters.js';
+import { buildDemographicWhere, setContains } from '../utils/demographicFilters.js';
 import { enabledLanguage } from '../translation/languages.js';
 import { translationService } from '../translation/index.js';
 import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
@@ -76,7 +76,7 @@ router.get(
               ],
             }
           : {},
-        ...buildDemographicWhere({ gender, socialCategory, age, income }),
+        ...buildDemographicWhere({ state, gender, socialCategory, age, income }),
       ],
     };
 
@@ -187,7 +187,14 @@ router.post(
     const state = canonicalState(profile.state);
     const scoringProfile = { ...profile, state: state ?? undefined };
     const where: Prisma.SchemeWhereInput = state
-      ? { OR: [levelWhereClause('Central') ?? {}, { authorityName: { equals: state, mode: 'insensitive' } }] }
+      ? {
+          OR: [
+            levelWhereClause('Central') ?? {},
+            { authorityName: { equals: state, mode: 'insensitive' } },
+            // A scheme whose own text limits it to this state, whichever authority publishes it.
+            { eligibilityCriteria: { is: setContains('state', state) } },
+          ],
+        }
       : {};
 
     const rows = await prisma.scheme.findMany({
