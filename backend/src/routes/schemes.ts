@@ -6,6 +6,8 @@ import { deriveLevel, levelWhereClause } from '../utils/schemeLevel.js';
 import { serializeScheme } from '../utils/serializeScheme.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
 import { buildDemographicWhere } from '../utils/demographicFilters.js';
+import { enabledLanguage } from '../translation/languages.js';
+import { translationService } from '../translation/index.js';
 import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
 
 const router = Router();
@@ -234,6 +236,11 @@ router.post(
  * MUST be registered after the static sub-paths above (/featured, /states,
  * /recommended) or Express would match them here as an :id value instead.
  */
+/**
+ * GET /api/schemes/:id
+ * Optional ?lang=hi (Hindi is enabled; others are ignored) adds `translation: { status, fields, pendingFields,
+ * failedFields }` next to the English `data`. Fields not in `translation.fields` are still English.
+ */
 router.get(
   '/:id',
   asyncHandler(async (req: Request, res: Response) => {
@@ -247,7 +254,17 @@ router.get(
       return;
     }
 
-    res.json({ data: serializeScheme(scheme) });
+    const data = serializeScheme(scheme);
+
+    // ?lang=hi: also report the translation state. The response never waits for the model: it returns the
+    // English scheme plus whatever is already translated, starts translating the rest in the background on
+    // first view, and the client asks again a few seconds later (see translation/service.ts).
+    const language = enabledLanguage(req.query.lang);
+    if (!language) {
+      res.json({ data });
+      return;
+    }
+    res.json({ data, translation: await translationService.getForView(scheme, language) });
   }),
 );
 
