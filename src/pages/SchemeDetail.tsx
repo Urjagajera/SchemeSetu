@@ -55,12 +55,15 @@ export const SchemeDetail: React.FC = () => {
   const [scheme, setScheme] = useState<Scheme | null>(null);
   const [related, setRelated] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
+  // True once we stopped asking about a translation that never finished: the page then says so instead of "translating…".
+  const [pollGaveUp, setPollGaveUp] = useState(false);
 
   useEffect(() => {
     const loadSchemeDetails = async () => {
       if (!id) return;
       try {
         setLoading(true);
+        setPollGaveUp(false);
         const data = await schemeService.getSchemeById(id);
         setScheme(data);
 
@@ -93,6 +96,7 @@ export const SchemeDetail: React.FC = () => {
     const timer = setInterval(async () => {
       if (++tries > 60) {
         clearInterval(timer);
+        if (!cancelled) setPollGaveUp(true);
         return;
       }
       const fresh = await schemeService.getSchemeById(id);
@@ -175,12 +179,12 @@ export const SchemeDetail: React.FC = () => {
       </nav>
 
       {/* Translation state: English stays until each translated field arrives */}
-      {language !== 'en' && scheme?.translation?.status === 'pending' && (
+      {language !== 'en' && scheme?.translation?.status === 'pending' && !pollGaveUp && (
         <div role="status" className="rounded-lg border border-sky-200 dark:border-sky-900/40 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-200 text-xs font-semibold px-4 py-2.5">
           {t('translatingNotice')}
         </div>
       )}
-      {language !== 'en' && scheme?.translation?.status === 'partial' && (
+      {language !== 'en' && (scheme?.translation?.status === 'partial' || (scheme?.translation?.status === 'pending' && pollGaveUp)) && (
         <div role="status" className="rounded-lg border border-amber-200 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200 text-xs font-semibold px-4 py-2.5">
           {t('translationPartialNote')}
         </div>
