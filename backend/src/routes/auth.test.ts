@@ -10,7 +10,6 @@ const testConfig = vi.hoisted(() => ({
   NODE_ENV: 'development' as 'development' | 'production' | 'test',
   SESSION_SECRET: 'test-session-secret-do-not-use-in-prod',
   GOOGLE_CLIENT_ID: 'test-google-client-id' as string | undefined,
-  ENABLE_DEMO_LOGIN: true,
   CLIENT_URL: 'http://localhost:5173',
 }));
 
@@ -129,56 +128,16 @@ describe('POST /api/auth/google', () => {
   });
 });
 
-describe('POST /api/auth/demo-login', () => {
-  const app = buildApp();
-
-  beforeEach(() => {
+describe('POST /api/auth/demo-login (removed)', () => {
+  it('no longer exists: it 404s whatever the environment and creates no user', async () => {
     vi.clearAllMocks();
+    for (const env of ['development', 'production'] as const) {
+      testConfig.NODE_ENV = env;
+      const res = await request(buildApp()).post('/api/auth/demo-login').send();
+      expect(res.status).toBe(404);
+    }
     testConfig.NODE_ENV = 'development';
-    testConfig.ENABLE_DEMO_LOGIN = true;
-  });
-
-  afterEach(() => {
-    testConfig.NODE_ENV = 'development';
-    testConfig.ENABLE_DEMO_LOGIN = true;
-  });
-
-  it('404s in production regardless of the ENABLE_DEMO_LOGIN flag', async () => {
-    testConfig.NODE_ENV = 'production';
-    testConfig.ENABLE_DEMO_LOGIN = true;
-
-    const res = await request(app).post('/api/auth/demo-login').send();
-    expect(res.status).toBe(404);
     expect(mockPrisma.user.upsert).not.toHaveBeenCalled();
-  });
-
-  it('404s outside production when ENABLE_DEMO_LOGIN is not explicitly true', async () => {
-    testConfig.NODE_ENV = 'development';
-    testConfig.ENABLE_DEMO_LOGIN = false;
-
-    const res = await request(app).post('/api/auth/demo-login').send();
-    expect(res.status).toBe(404);
-    expect(mockPrisma.user.upsert).not.toHaveBeenCalled();
-  });
-
-  it('logs into the seeded demo account, wipes its bookmarks, and sets a session cookie when both gates are satisfied', async () => {
-    mockPrisma.user.upsert.mockResolvedValueOnce({
-      id: 'demo-user-uuid',
-      name: 'Demo User',
-      email: 'demo@schemesetu.dev',
-      profilePictureUrl: null,
-    });
-    mockPrisma.bookmark.deleteMany.mockResolvedValueOnce({ count: 3 });
-
-    const res = await request(app).post('/api/auth/demo-login').send();
-
-    expect(res.status).toBe(200);
-    expect(res.body.success).toBe(true);
-    expect(mockPrisma.bookmark.deleteMany).toHaveBeenCalledWith({ where: { userId: 'demo-user-uuid' } });
-
-    const cookieValue = extractSessionCookieValue(res.headers['set-cookie']);
-    const decoded = jwt.verify(cookieValue as string, TEST_SESSION_SECRET) as { userId: string };
-    expect(decoded.userId).toBe('demo-user-uuid');
   });
 });
 

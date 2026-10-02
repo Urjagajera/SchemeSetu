@@ -1,0 +1,36 @@
+# Render blueprint for the backend API. The frontend is deployed on Vercel (see vercel.json).
+# Secrets are never stored here: `sync: false` values are typed into the Render dashboard.
+services:
+  - type: web
+    name: schemesetu-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: backend
+    # Dev dependencies are needed at build time (typescript, prisma), so install them explicitly.
+    buildCommand: npm ci --include=dev && npx prisma generate && npm run build
+    # Applies any pending database migrations, then starts the server.
+    startCommand: npx prisma migrate deploy && node dist/server.js
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      # Browser -> Vercel -> Render: two proxies in front of Express (utils/trustProxy.ts).
+      - key: TRUST_PROXY_HOPS
+        value: "2"
+      # Render generates this once and keeps it; it is never shown in the repo or in chat.
+      - key: SESSION_SECRET
+        generateValue: true
+      # The Neon connection string (direct, not pooled), with ?sslmode=require&connect_timeout=15.
+      - key: DATABASE_URL
+        sync: false
+      # The exact Vercel origin, e.g. https://your-project.vercel.app (no trailing slash).
+      - key: CLIENT_URL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false

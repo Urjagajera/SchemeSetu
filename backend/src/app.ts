@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import config from './config/env.js';
+import { applyTrustProxy } from './utils/trustProxy.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { chatLimiter } from './middleware/rateLimiters.js';
@@ -17,6 +18,9 @@ import profileRouter from './routes/profile.js';
 import vocabularyRouter from './routes/vocabulary.js';
 
 const app = express();
+
+// Behind Vercel + Render every request arrives from a proxy; without this the rate limiters would see one shared address.
+applyTrustProxy(app, config.TRUST_PROXY_HOPS);
 
 // Disable ETags so dynamic API endpoints always return 200 OK with fresh data instead of 304 Not Modified
 app.set('etag', false);
