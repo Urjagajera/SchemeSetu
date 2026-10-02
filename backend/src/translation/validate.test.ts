@@ -118,6 +118,49 @@ describe('glossary', () => {
   });
 });
 
+describe('numbers written as ordinal words (the "2nd or 3rd trimester" false rejection)', () => {
+  // Real source line that was rejected with "numbers missing from the translation: 2, 3".
+  const src = 'The applicant must be a pregnant woman in her 2nd or 3rd trimester of pregnancy.';
+
+  it('accepts the English ordinals written as Hindi words', () => {
+    const r = validateText(src, 'आवेदक गर्भावस्था की दूसरी या तीसरी तिमाही में एक गर्भवती महिला होनी चाहिए।', hi);
+    expect(r.reasons).toEqual([]);
+    expect(r.ok).toBe(true);
+  });
+
+  it('still accepts the digits, as before', () => {
+    expect(validateText(src, 'आवेदक गर्भावस्था की 2 या 3 तिमाही में एक गर्भवती महिला होनी चाहिए।', hi).ok).toBe(true);
+    expect(validateText('Students of Class 6th to 10th', 'कक्षा 6वीं से 10वीं के छात्र', hi).ok).toBe(true);
+  });
+
+  it('still rejects when one of the ordinals is dropped', () => {
+    const r = validateText(src, 'आवेदक गर्भावस्था की दूसरी तिमाही में एक गर्भवती महिला होनी चाहिए।', hi);
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(' ')).toMatch(/numbers missing from the translation: 3/);
+  });
+
+  it('accepts either spelling of the nasal sign (पाँचवीं / पांचवीं)', () => {
+    expect(validateText('Students of the 5th standard', 'पाँचवीं कक्षा के छात्र', hi).ok).toBe(true);
+    expect(validateText('Students of the 5th standard', 'पांचवीं कक्षा के छात्र', hi).ok).toBe(true);
+  });
+
+  it('does not excuse a number that also appears as a plain number', () => {
+    // "2" here is a quantity; writing only "दूसरे" (second) does not carry it
+    const s = 'The first 2 children and the 2nd child of each family are eligible.';
+    expect(validateText(s, 'प्रत्येक परिवार के पहले बच्चे और दूसरे बच्चे पात्र हैं।', hi).ok).toBe(false);
+  });
+
+  it('only allows words for 1st to 10th; larger ordinals must keep their digits', () => {
+    expect(validateText('Students of the 12th standard', 'बारहवीं कक्षा के छात्र', hi).ok).toBe(false);
+    expect(validateText('Students of the 12th standard', '12वीं कक्षा के छात्र', hi).ok).toBe(true);
+  });
+
+  it('keeps the strict rule for a language with no ordinal table (Gujarati)', () => {
+    expect(validateText('Applicants in the 2nd year', 'બીજા વર્ષમાં અરજદારો', gu).ok).toBe(false);
+    expect(validateText('Applicants in the 2nd year', '2જા વર્ષમાં અરજદારો', gu).ok).toBe(true);
+  });
+});
+
 describe('validateList', () => {
   const docsEn = ['Aadhaar Card', 'Caste Certificate (Valid for 3 years from date of issue)', 'Bank Passbook'];
   const docsHi = ['आधार कार्ड', 'जाति प्रमाणपत्र (जारी तिथि से 3 वर्ष वैध)', 'बैंक पासबुक'];

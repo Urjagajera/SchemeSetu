@@ -75,6 +75,50 @@ function numbersOf(text: string): string[] {
   return [...new Set(found.map((n) => n.replace(/,/g, '').replace(/\.$/, '')))];
 }
 
+/**
+ * Numbers that appear in the source only as English ordinals ("2nd", "3rd trimester"). A translation may
+ * write these as words (Hindi: "दूसरी या तीसरी तिमाही") instead of digits, which is correct and idiomatic, so
+ * the digit alone must not be demanded. A number that also appears plainly somewhere else is not included.
+ */
+function ordinalOnlyNumbers(text: string): Set<string> {
+  const plain = new Set<string>();
+  const ordinal = new Set<string>();
+  for (const m of text.matchAll(/\d[\d,]*(?:\.\d+)?(st|nd|rd|th)?\b/gi)) {
+    const n = m[0].replace(/(st|nd|rd|th)$/i, '').replace(/,/g, '').replace(/\.$/, '');
+    (m[1] ? ordinal : plain).add(n);
+  }
+  return new Set([...ordinal].filter((n) => !plain.has(n)));
+}
+
+/**
+ * Ordinal words for 1st to 10th, per language. Only languages listed here get the allowance above; for any other
+ * language the strict digit rule stays. Chandrabindu (ँ) is normalised to anusvara (ं) before comparing, since
+ * both spellings are in use (पाँचवीं / पांचवीं).
+ */
+const ORDINAL_WORDS: Partial<Record<LanguageConfig['code'], Record<number, string[]>>> = {
+  hi: {
+    1: ['पहला', 'पहली', 'पहले', 'प्रथम'],
+    2: ['दूसरा', 'दूसरी', 'दूसरे', 'द्वितीय'],
+    3: ['तीसरा', 'तीसरी', 'तीसरे', 'तृतीय'],
+    4: ['चौथा', 'चौथी', 'चौथे', 'चतुर्थ'],
+    5: ['पांचवां', 'पांचवीं', 'पांचवें', 'पंचम'],
+    6: ['छठा', 'छठी', 'छठे', 'षष्ठ'],
+    7: ['सातवां', 'सातवीं', 'सातवें', 'सप्तम'],
+    8: ['आठवां', 'आठवीं', 'आठवें', 'अष्टम'],
+    9: ['नौवां', 'नौवीं', 'नौवें', 'नवम'],
+    10: ['दसवां', 'दसवीं', 'दसवें', 'दशम'],
+  },
+};
+
+const normaliseNasal = (t: string): string => t.replace(/ँ/g, 'ं');
+
+function hasOrdinalWord(out: string, lang: LanguageConfig, n: string): boolean {
+  const words = ORDINAL_WORDS[lang.code]?.[Number(n)];
+  if (!words) return false;
+  const text = normaliseNasal(out);
+  return words.some((w) => text.includes(normaliseNasal(w)));
+}
+
 function urlsOf(text: string): string[] {
   return [...new Set((text.match(URL_OR_EMAIL) || []).map((u) => u.replace(/[.,;:]+$/, '')))];
 }
@@ -113,7 +157,8 @@ function checkBlock(
 
   // Numbers, amounts and dates must survive (native digits are accepted and normalised).
   const outDigits = toAsciiDigits(out, lang).replace(/(\d),(?=\d)/g, '$1');
-  const missing = numbersOf(source).filter((n) => !outDigits.includes(n));
+  const ordinalOnly = ordinalOnlyNumbers(source);
+  const missing = numbersOf(source).filter((n) => !outDigits.includes(n) && !(ordinalOnly.has(n) && hasOrdinalWord(out, lang, n)));
   if (missing.length > 0) reasons.push(`numbers missing from the translation: ${missing.slice(0, 5).join(', ')}`);
 
   // URLs and emails must be kept verbatim.
@@ -138,7 +183,7 @@ function checkBlock(
       reasons.push(`"${g.en}" was mistranslated as "${wrong}"`);
       continue;
     }
-    const accepted = [g.target, ...(g.acceptable ?? [])];
+    const accepted =[g.target, ...(g.acceptable ?? [])];
     if (!accepted.some((a) => out.includes(a)) && !out.toLowerCase().includes(g.en.toLowerCase())) {
       reasons.push(`"${g.en}" must be rendered as "${g.target}" (or kept in English)`);
     }
