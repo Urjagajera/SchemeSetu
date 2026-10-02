@@ -22,6 +22,7 @@ SchemeSetu is a modern pan-India government scheme discovery and eligibility pla
 - [Database Models (Schema Architecture)](#database-models-schema-architecture)
 - [Data Ingestion Pipeline (Sprint 7)](#data-ingestion-pipeline-sprint-7)
 - [Multilingual Localization](#multilingual-localization)
+- [Testing](#testing)
 - [Sprint Roadmap & Status](#sprint-roadmap--status)
 
 ---
@@ -359,6 +360,32 @@ SchemeSetu features native multi-language UI support:
 
 ---
 
+## Testing
+
+Both halves have automated tests, and CI runs them on every push and pull request (typecheck, then tests, then build).
+
+```bash
+npm test                 # frontend: Vitest + jsdom + Testing Library
+cd backend && npm test   # backend: Vitest + supertest
+```
+
+**Frontend** (`src/**/*.test.ts(x)`, next to the code they test). What is covered: the helpers that decide which
+language each part of a page is shown in, the card-title store (request pooling, polling and its limit), the scheme
+page's translation notices, the profile form's validation and error display, and sign-in / profile loading.
+What is not: most other pages and components, and no end-to-end browser tests. It is a safety net for the logic that
+has broken before, not a coverage target.
+
+How the tests are written:
+- Everything outside the unit under test is replaced at its edge (`axios`, the context hooks, `schemeService`) with
+  `vi.mock`. Shared helpers live in `src/test/` (`setup.ts`, `factories.ts`).
+- Time-based behaviour (polling, the 30 ms request pooling) uses Vitest's fake timers, so tests do not wait.
+- A test for a bug should fail without the fix. Check it by putting the old code back for one run.
+
+Dev-tooling note: `npm audit` flags Vitest 2 (its UI/API server can read files). That only applies when it is run with
+`--ui` or as an API server, which `npm test` and CI do not do. Vitest 5 would need a much newer Vite than the app uses.
+
+---
+
 ## Available Scripts
 
 ### Root / Frontend
@@ -367,6 +394,9 @@ SchemeSetu features native multi-language UI support:
 | `npm run dev` | Start Vite frontend dev server at `http://localhost:5173` |
 | `npm run build` | Build production frontend bundle |
 | `npm run preview` | Preview production frontend build locally |
+| `npm run typecheck` | Type-check the frontend, tests included |
+| `npm test` | Run the frontend tests once |
+| `npm run test:watch` | Re-run frontend tests as files change |
 
 ### Backend (`/backend`)
 | Command | Description |
@@ -375,6 +405,8 @@ SchemeSetu features native multi-language UI support:
 | `npm run build` | Compile TypeScript to `dist/` |
 | `npm start` | Run compiled server in production mode |
 | `npm run prisma:generate` | Regenerate Prisma Client types |
+| `npm run typecheck` | Type-check the backend |
+| `npm test` | Run the backend tests once |
 | `npm run ingest:dry-run` | Run CSV ingestion parser audit (zero DB writes) |
 
 ---
