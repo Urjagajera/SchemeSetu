@@ -118,6 +118,48 @@ describe('glossary', () => {
   });
 });
 
+describe('glossary: disability terms (अपाहिज is forbidden, दिव्यांग is asked for)', () => {
+  // Real sentence from the Hindi audit; the Qwen fallback wrote "अपाहिज".
+  const src = 'The applicant should be a disabled Defence Forces Personnel (Army, Navy, or Air Force) who became permanently disabled due to war.';
+  const goodHi = 'आवेदक एक दिव्यांग रक्षा बल कर्मी (सेना, नौसेना या वायु सेना) होना चाहिए, जो युद्ध के कारण स्थायी रूप से दिव्यांग हो गया हो।';
+  const badHi = 'आवेदक एक अपाहिज रक्षा बलों का कर्मी (सेना, नौसेना या वायु सेना) होना चाहिए, जो युद्ध के कारण स्थायी रूप से अपाहिज हो गया हो।';
+
+  it('puts the preferred word in the prompt for each English term that appears, and only those', () => {
+    expect(glossaryHits([src], 'hi')).toEqual([expect.objectContaining({ en: 'disabled', target: 'दिव्यांग', forbidOnly: true })]);
+    expect(glossaryHits(['75% disability'], 'hi')).toEqual([expect.objectContaining({ en: 'disability', target: 'दिव्यांगता' })]);
+    expect(glossaryHits(['artisans with disabilities'], 'hi')).toEqual([expect.objectContaining({ en: 'disabilities', target: 'दिव्यांगता' })]);
+    for (const term of ['Differently Abled Trainees', 'physically challenged', 'handicapped', 'specially abled', 'Divyang']) {
+      expect(glossaryHits([term], 'hi')).toEqual([expect.objectContaining({ target: 'दिव्यांग' })]);
+    }
+    expect(glossaryHits(['Aadhaar Card'], 'hi')).toEqual([]);
+  });
+
+  it('rejects अपाहिज and its forms, and accepts दिव्यांग', () => {
+    const req = glossaryHits([src], 'hi');
+    expect(validateText(src, goodHi, hi, req).ok).toBe(true);
+    const bad = validateText(src, badHi, hi, req);
+    expect(bad.ok).toBe(false);
+    expect(bad.reasons.join(' ')).toMatch(/"disabled" was mistranslated as "अपाहिज"/);
+    // the abstract noun and plural forms are caught too (substring test)
+    const pct = 'Disability 75% and above: ₹35,00,000/-';
+    expect(validateText(pct, '75% या उससे अधिक अपाहिजता: ₹35,00,000/-', hi, glossaryHits([pct], 'hi')).ok).toBe(false);
+    expect(validateText(pct, '75% या उससे अधिक दिव्यांगता: ₹35,00,000/-', hi, glossaryHits([pct], 'hi')).ok).toBe(true);
+  });
+
+  it('only enforces the forbidden word: another acceptable rendering is not rejected', () => {
+    const differently = 'The applicant\'s annual income should not exceed ₹72,000/- (not applicable for differently abled).';
+    const req = glossaryHits([differently], 'hi');
+    // Qwen's own wording, and the older official विकलांग, both pass
+    expect(validateText(differently, 'आवेदक की वार्षिक आय ₹72,000/- से अधिक नहीं होनी चाहिए (विशेष आवश्यकताओं वाले व्यक्तियों के लिए लागू नहीं)।', hi, req).ok).toBe(true);
+    expect(validateText(differently, 'आवेदक की वार्षिक आय ₹72,000/- से अधिक नहीं होनी चाहिए (विकलांगों के लिए लागू नहीं)।', hi, req).ok).toBe(true);
+  });
+
+  it('does not touch text whose English has no disability term', () => {
+    const plain = 'The applicant should be a farmer.';
+    expect(glossaryHits([plain], 'hi')).toEqual([]);
+  });
+});
+
 describe('numbers written as ordinal words (the "2nd or 3rd trimester" false rejection)', () => {
   // Real source line that was rejected with "numbers missing from the translation: 2, 3".
   const src = 'The applicant must be a pregnant woman in her 2nd or 3rd trimester of pregnancy.';

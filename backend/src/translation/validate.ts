@@ -183,6 +183,7 @@ function checkBlock(
       reasons.push(`"${g.en}" was mistranslated as "${wrong}"`);
       continue;
     }
+    if (g.forbidOnly) continue;
     const accepted =[g.target, ...(g.acceptable ?? [])];
     if (!accepted.some((a) => out.includes(a)) && !out.toLowerCase().includes(g.en.toLowerCase())) {
       reasons.push(`"${g.en}" must be rendered as "${g.target}" (or kept in English)`);
