@@ -62,7 +62,7 @@ describe('the legal text says only what the code does', () => {
   });
 
   it('the session cookie text matches the code (7 days, httpOnly)', () => {
-    const auth = read('backend', 'src', 'routes', 'auth.ts');
+    const auth = read('backend', 'src', 'utils', 'sessionCookie.ts');
     expect(auth).toMatch(/SESSION_MAX_AGE_MS = 7 \* 24 \* 60 \* 60 \* 1000/);
     expect(auth).toMatch(/httpOnly: true/);
     expect(en.pvCookie).toMatch(/up to 7 days/);
