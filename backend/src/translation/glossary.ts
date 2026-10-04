@@ -32,11 +32,14 @@ export interface GlossaryEntry {
   forbidOnly?: boolean;
   /** Match the English term only as a whole word (plural s allowed): "pig" must not fire on "pigeon" or "piggery". */
   wholeWord?: boolean;
+  /** Phrases that contain the term but are not what the entry is about ("Pulse Polio" is not about the crop). They are ignored when looking for the term. */
+  except?: string[];
 }
 
 /** True when `term` occurs in `text` (case-insensitively; as a whole word when asked). */
-export function mentions(text: string, term: string, wholeWord?: boolean): boolean {
-  const t = text.toLowerCase();
+export function mentions(text: string, term: string, wholeWord?: boolean, except?: string[]): boolean {
+  let t = text.toLowerCase();
+  for (const phrase of except ?? []) t = t.split(phrase.toLowerCase()).join(' ');
   const needle = term.toLowerCase();
   if (!wholeWord) return t.includes(needle);
   for (let i = t.indexOf(needle); i >= 0; i = t.indexOf(needle, i + 1)) {
@@ -90,7 +93,10 @@ const GUJARATI_AUDIT_TERMS: GlossaryEntry[] = [
   { en: 'buffalo', gu: unverified({ preferred: 'ભેંસ', forbidden: ['બફેલો', 'હાથી', 'મોઢા'] }) },
   { en: 'piglet', wholeWord: true, gu: unverified({ preferred: 'ડુક્કરનું બચ્ચું', acceptable: ['ડુક્કરના બચ્ચા', 'બચ્ચા', 'પિગલેટ'], forbidden: ['ઘરેણી'] }) },
   { en: 'pig', wholeWord: true, gu: unverified({ preferred: 'ડુક્કર', forbidden: ['સૂરિયા', 'ઘરેણી'] }) },
-  { en: 'pulses', wholeWord: true, gu: unverified({ preferred: 'કઠોળ', forbidden: ['ડાળિયા'] }) },
+  // "pulse" also matches "pulses" (whole word, plural s allowed). Medical uses of the word are left out.
+  { en: 'pulse', wholeWord: true, except: ['pulse polio', 'pulse rate', 'pulse oximeter', 'pulse oximetry'], gu: unverified({ preferred: 'કઠોળ', forbidden: ['ડાળિયા'] }) },
+  // "Small/marginal farmers": marginal means the smallest holdings, not "with edges" (the audit's કિનારીવાળા).
+  { en: 'marginal', wholeWord: true, gu: unverified({ preferred: 'સીમાંત', acceptable: ['સિમાંત'], forbidden: ['કિનારી'] }) },
   { en: 'sewing machine', gu: unverified({ preferred: 'સિલાઈ મશીન', acceptable: ['સિલાઇ મશીન', 'સીવણ મશીન', 'સીવવાનું મશીન'], forbidden: ['ટાંકી'] }) },
   { en: 'partnership firm', gu: unverified({ preferred: 'ભાગીદારી પેઢી', forbidden: ['સાહોદરિક'] }) },
   { en: 'partnership concern', gu: unverified({ preferred: 'ભાગીદારી પેઢી', acceptable: ['ભાગીદારી પેઢી'], forbidden: ['ચિંતા'] }) },
@@ -123,6 +129,7 @@ export interface GlossaryRequirement {
   /** Only `forbidden` is enforced (see GlossaryEntry). */
   forbidOnly?: boolean;
   wholeWord?: boolean;
+  except?: string[];
 }
 
 /** Entries whose English term appears in any of the given texts, for entries that constrain this language. */
@@ -131,8 +138,8 @@ export function glossaryHits(texts: string[], lang: LanguageCode): GlossaryRequi
   const out: GlossaryRequirement[] = [];
   for (const g of GLOSSARY) {
     const l = g[lang];
-    if (!l || !mentions(haystack, g.en, g.wholeWord)) continue;
-    out.push({ en: g.en, target: l.preferred, acceptable: l.acceptable, forbidden: l.forbidden, forbidOnly: g.forbidOnly, wholeWord: g.wholeWord });
+    if (!l || !mentions(haystack, g.en, g.wholeWord, g.except)) continue;
+    out.push({ en: g.en, target: l.preferred, acceptable: l.acceptable, forbidden: l.forbidden, forbidOnly: g.forbidOnly, wholeWord: g.wholeWord, except: g.except });
   }
   return out;
 }

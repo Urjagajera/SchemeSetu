@@ -83,6 +83,41 @@ export function strayScripts(source: string, out: string, lang: LanguageConfig):
   return [...found].map(([name, chars]) => `${name} (${[...chars].slice(0, 6).join('')})`);
 }
 
+/**
+ * Words that mix the language's script with Latin letters with nothing between them, which is how a model garbles a
+ * word (Gujarati "કોconut" for coconut, "પાછાShortest" with an English word fused on; Hindi "पoultry"). A native letter
+ * followed straight by a Latin one is always flagged. A Latin letter followed straight by a native one is flagged
+ * except in Gujarati, where a grammatical ending is written on an English word ("XIIમાં", "Cardને", "PRLનું") and
+ * 5 of the 7 mixed words in the 1,072 audited Gujarati lines were exactly that, correct. Punctuation, digits, slashes
+ * and spaces all separate words, so web addresses and acronyms standing on their own are never flagged.
+ */
+export function gluedLatinWords(text: string, lang: LanguageConfig): string[] {
+  const isNative = (ch: string) => {
+    const cp = ch.codePointAt(0)!;
+    return cp >= lang.script[0] && cp <= lang.script[1] && /[\p{L}\p{M}]/u.test(ch); // letters and vowel signs, not digits or the danda
+  };
+  const isLatin = (ch: string) => /[A-Za-z]/.test(ch);
+  const found: string[] = [];
+  let run = '';
+  const flush = () => {
+    const chars = Array.from(run);
+    let bad = false;
+    for (let i = 1; i < chars.length; i++) {
+      const [a, b] = [chars[i - 1], chars[i]];
+      if (isNative(a) && isLatin(b)) bad = true;
+      if (isLatin(a) && isNative(b) && lang.code !== 'gu') bad = true;
+    }
+    if (bad) found.push(run);
+    run = '';
+  };
+  for (const ch of text) {
+    if (isLatin(ch) || isNative(ch)) run += ch;
+    else flush();
+  }
+  flush();
+  return [...new Set(found)];
+}
+
 /** Letters and combining marks (Indic vowel signs are marks): the characters that carry a script. */
 function scriptCounts(text: string, lang: LanguageConfig): { visible: number; native: number } {
   let visible = 0;
@@ -201,6 +236,8 @@ function checkBlock(
 
   const stray = strayScripts(source, out, lang);
   if (stray.length > 0) reasons.push(`letters from another script inside the ${lang.name} text: ${stray.join(', ')}`);
+  const glued = gluedLatinWords(out, lang);
+  if (glued.length > 0) reasons.push(`Latin letters stuck inside ${lang.name} words: ${glued.slice(0, 3).join(', ')}`);
 
   if (english > 0) {
     if (out.trim() === source.trim()) reasons.push('returned the English unchanged');
@@ -232,7 +269,7 @@ function checkBlock(
 
   // Required renderings of proper names.
   for (const g of glossary) {
-    if (!mentions(source, g.en, g.wholeWord)) continue;
+    if (!mentions(source, g.en, g.wholeWord, g.except)) continue;
     const wrong = (g.forbidden ?? []).find((f) => out.includes(f));
     if (wrong) {
       reasons.push(`"${g.en}" was mistranslated as "${wrong}"`);

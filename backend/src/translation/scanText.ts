@@ -1,6 +1,6 @@
 import { LanguageConfig } from './languages.js';
 import { GLOSSARY } from './glossary.js';
-import { strayScripts } from './validate.js';
+import { strayScripts, gluedLatinWords } from './validate.js';
 
 /**
  * Finds the faults that must never sit in a stored translation, without needing the English source:
@@ -15,8 +15,6 @@ export interface TextProblem {
   detail: string;
 }
 
-const range = (lang: LanguageConfig): string => `${String.fromCodePoint(lang.script[0])}-${String.fromCodePoint(lang.script[1])}`;
-
 export function forbiddenFor(lang: LanguageConfig): string[] {
   const out = new Set<string>();
   for (const g of GLOSSARY) for (const f of g[lang.code]?.forbidden ?? []) out.add(f);
@@ -27,11 +25,8 @@ export function scanText(text: string, lang: LanguageConfig): TextProblem[] {
   const problems: TextProblem[] = [];
   for (const s of strayScripts('', text, lang)) problems.push({ kind: 'stray-script', detail: s });
 
-  // a Latin letter directly touching a native letter, with nothing (not even a hyphen or bracket) between; the whole
-  // run of letters around it is reported
-  const native = range(lang);
-  const glued = new RegExp(`[A-Za-z${native}]*(?:[${native}][A-Za-z]|[A-Za-z][${native}])[A-Za-z${native}]*`, 'gu');
-  for (const m of text.matchAll(glued)) problems.push({ kind: 'latin-in-word', detail: m[0] });
+  // Latin letters stuck to the language's own letters (the rule, and its Gujarati exemption, are in validate.ts)
+  for (const w of gluedLatinWords(text, lang)) problems.push({ kind: 'latin-in-word', detail: w });
 
   for (const f of forbiddenFor(lang)) if (text.includes(f)) problems.push({ kind: 'forbidden', detail: f });
   return problems;
