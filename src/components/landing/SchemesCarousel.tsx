@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { schemeService } from '../../services/schemeService';
 import { Scheme } from '../../types';
+import { cardDescription } from '../../utils/descriptionText';
 
 /**
  * Scene 4 — Scheme Discovery.
@@ -46,7 +47,7 @@ const SchemeCardLanding: React.FC<{ scheme: Scheme; onClick: () => void; index: 
         </h3>
 
         <p className="font-body text-xs text-on-surface-variant leading-relaxed line-clamp-3 flex-grow">
-          {scheme.shortDesc || scheme.description?.slice(0, 140)}
+          {cardDescription(scheme)}
         </p>
 
         <div className="mt-5 pt-4 border-t border-outline-variant flex items-center justify-between">

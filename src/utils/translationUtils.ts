@@ -2,6 +2,7 @@ const schemeTranslations: Record<string, any> = {};
 const valueTranslations: Record<string, any> = {};
 import { PHRASES } from '../constants/phrases';
 import { Scheme, Vocabulary } from '../types';
+import { stripDetailsHeading } from './descriptionText';
 
 /**
  * Retrieves translated scheme title or description.
@@ -66,6 +67,7 @@ export function translateScheme(scheme: Scheme, language: string): Scheme {
     // If the scheme has raw keys, map them to English strings
     return {
       ...scheme,
+      shortDesc: stripDetailsHeading(scheme.shortDesc),
       eligibility: scheme.eligibility?.map(key => translatePhrase(key, 'en')) || [],
       documents: scheme.documents?.map(key => translatePhrase(key, 'en')) || []
     };
@@ -77,7 +79,7 @@ export function translateScheme(scheme: Scheme, language: string): Scheme {
     ...scheme,
     name: translatedName,
     description: translateSchemeField(scheme.id, 'description', scheme.description, language),
-    shortDesc: translateSchemeField(scheme.id, 'shortDesc', scheme.description, language),
+    shortDesc: stripDetailsHeading(translateSchemeField(scheme.id, 'shortDesc', scheme.description, language)),
     authorityName: translateValue('authority', scheme.authorityName, language),
     ministry: translateValue('authority', scheme.ministry || scheme.authorityName, language),
     category: translateValue('main_category', scheme.category, language),

@@ -24,6 +24,7 @@ import {
 import { motion } from 'framer-motion';
 
 import { translateScheme, applyServerTranslation, applyVocabulary } from '../utils/translationUtils';
+import { stripDetailsHeading } from '../utils/descriptionText';
 
 const DetailSection: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
   <section className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm transition-colors">
@@ -221,7 +222,7 @@ export const SchemeDetail: React.FC = () => {
               </h1>
 
               <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed">
-                {translatedScheme.description}
+                {stripDetailsHeading(translatedScheme.description)}
               </p>
 
               <div className="flex items-center gap-2 text-xs md:text-sm font-semibold text-on-surface-variant dark:text-zinc-550 pt-2">

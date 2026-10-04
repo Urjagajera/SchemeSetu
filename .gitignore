@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 vite.config.ts.timestamp-*.mjs
+vitest.config.ts.timestamp-*.mjs
 
 # Editor directories and files
 .vscode/*

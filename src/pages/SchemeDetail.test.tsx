@@ -126,6 +126,41 @@ describe('SchemeDetail translation notices', () => {
   });
 });
 
+describe('SchemeDetail description heading', () => {
+  // The source descriptions open with a one-word heading line, "Details", which only gets in the way.
+  const DETAILS_ONLY = /^(Details|विवरण)$/;
+
+  it('does not open the English description with the "Details" heading', async () => {
+    mocks.language = 'en';
+    mocks.getSchemeById.mockResolvedValue(schemeWith(undefined, { description: 'Details\nFinancial help for students.' }));
+    await renderPage();
+    expect(screen.queryByText('Financial help for students.')).not.toBeNull();
+    expect(screen.queryByText(DETAILS_ONLY)).toBeNull();
+    expect(document.body.textContent).not.toMatch(/Details\s*Financial help/);
+  });
+
+  it('does not open the translated description with its translated heading either', async () => {
+    mocks.getSchemeById.mockResolvedValue(
+      schemeWith(makeTranslation({ status: 'ready', fields: { description: 'विवरण\nछात्रों के लिए वित्तीय सहायता।' } })),
+    );
+    await renderPage();
+    expect(screen.queryByText('छात्रों के लिए वित्तीय सहायता।')).not.toBeNull();
+    expect(screen.queryByText(DETAILS_ONLY)).toBeNull();
+  });
+
+  it('does not start the cards in the related-schemes list with it', async () => {
+    mocks.language = 'en';
+    mocks.getSchemeById.mockResolvedValue(schemeWith());
+    mocks.getSchemes.mockResolvedValue({
+      data: [makeScheme({ id: 'rel-1', name: 'Related Scheme', shortDesc: 'Details\nRelated body text that follows the heading.', description: 'Details\nRelated body text that follows the heading.' })],
+      total: 1,
+    });
+    await renderPage();
+    expect(screen.queryByText('Related body text that follows the heading.')).not.toBeNull();
+    expect(document.body.textContent).not.toMatch(/Details\s*Related body text/);
+  });
+});
+
 describe('SchemeDetail when the scheme does not exist', () => {
   it('shows the not-found message instead of an empty page', async () => {
     mocks.getSchemeById.mockResolvedValue(null);

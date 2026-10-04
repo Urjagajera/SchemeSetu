@@ -100,6 +100,22 @@ describe('applyVocabulary', () => {
   });
 });
 
+describe('translateScheme: the card description never opens with the source heading', () => {
+  const withHeading = makeScheme({ shortDesc: 'Details\nFinancial help for students.', description: 'Details\nFinancial help for students.' });
+
+  it('in English', () => {
+    expect(translateScheme(withHeading, 'en').shortDesc).toBe('Financial help for students.');
+  });
+
+  it('in Hindi, for the English text a card shows before its translated summary arrives', () => {
+    expect(translateScheme(withHeading, 'hi').shortDesc).toBe('Financial help for students.');
+  });
+
+  it('leaves the stored description itself untouched (the heading is only dropped when it is shown)', () => {
+    expect(translateScheme(withHeading, 'en').description).toBe('Details\nFinancial help for students.');
+  });
+});
+
 describe('phrase and value lookups', () => {
   it('translatePhrase falls back to English, then to the key itself', () => {
     const phrases = PHRASES as unknown as Record<string, Record<string, string>>;
