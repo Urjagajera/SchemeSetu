@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   user: { name: 'Asha Patel' } as { name: string } | null,
   profile: {} as Partial<UserProfile>,
   updateProfile: vi.fn(),
+  language: 'en' as 'en' | 'hi' | 'gu',
 }));
 
 // Keep the real ProfileSaveError (the page checks for it); replace only the hook that reads the live session.
@@ -15,7 +16,12 @@ vi.mock('../contexts/AuthContext', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../contexts/AuthContext')>()),
   useAuth: () => ({ user: mocks.user, profile: mocks.profile, updateProfile: mocks.updateProfile }),
 }));
-vi.mock('../contexts/LanguageContext', () => ({ useTranslation: () => ({ t: (key: string) => key, language: 'en' }) }));
+// The real dictionaries, so these tests read the wording people actually see (English by default).
+vi.mock('../contexts/LanguageContext', async () => {
+  const { TRANSLATIONS } = await import('../constants/translations');
+  const dict = TRANSLATIONS as unknown as Record<string, Record<string, string>>;
+  return { useTranslation: () => ({ t: (key: string) => dict[mocks.language][key] || dict.en[key] || key, language: mocks.language }) };
+});
 vi.mock('../hooks/useStates', () => ({ useStates: () => ['Gujarat', 'Kerala'] }));
 vi.mock('../hooks/useVocabulary', () => ({ useVocabulary: () => ({ vocab: null, loading: false }) }));
 
@@ -34,6 +40,7 @@ function setup() {
 beforeEach(() => {
   mocks.user = { name: 'Asha Patel' };
   mocks.profile = {};
+  mocks.language = 'en';
   mocks.updateProfile.mockReset();
   mocks.updateProfile.mockResolvedValue(true);
   vi.spyOn(console, 'error').mockImplementation(() => {}); // the page logs the failures it shows
@@ -130,5 +137,57 @@ describe('Profile form: when the save fails', () => {
     await user.click(screen.getByRole('button', { name: SAVE }));
     expect(await screen.findByText(SUCCESS)).not.toBeNull();
     expect(screen.queryByRole('alert')).toBeNull();
+  });
+});
+
+describe('Profile form in Hindi and Gujarati', () => {
+  it.each([
+    ['hi', 'बदलाव सहेजें', 'व्यक्तिगत जानकारी', 'नाम कम से कम 2 अक्षरों का होना चाहिए', 'आपकी प्रोफ़ाइल सहेजी नहीं गई'],
+    ['gu', 'ફેરફારો સાચવો', 'અંગત માહિતી', 'નામ ઓછામાં ઓછા 2 અક્ષરનું હોવું જોઈએ', 'તમારી પ્રોફાઇલ સાચવવામાં આવી નથી'],
+  ] as const)('%s: the form, the tab names and the validation message are in the language', async (lang, save, tab, nameMsg, notSaved) => {
+    mocks.language = lang;
+    mocks.user = { name: 'A' };
+    const { user } = setup();
+    expect(screen.getAllByText(tab).length).toBeGreaterThan(0);
+    await user.click(screen.getByRole('button', { name: save }));
+    const alert = await screen.findByRole('alert');
+    expect(alert.textContent).toContain(notSaved);
+    expect(alert.textContent).toContain(nameMsg);
+    expect(alert.textContent).not.toContain('Name must be at least 2 characters');
+    expect(alert.textContent).not.toContain('Your profile was not saved');
+    expect(mocks.updateProfile).not.toHaveBeenCalled();
+  });
+
+  it('the success message and the dropdown options are translated too', async () => {
+    mocks.language = 'hi';
+    const { user } = setup();
+    await user.click(screen.getByRole('button', { name: 'बदलाव सहेजें' }));
+    expect(await screen.findByText('आपकी पात्रता प्रोफ़ाइल सफलतापूर्वक सहेज ली गई है!')).toBeTruthy();
+    expect(screen.queryByText(SUCCESS)).toBeNull();
+    expect(document.body.textContent).not.toContain('Select…');
+    expect(screen.getAllByText('चुनें…').length).toBeGreaterThan(0);
+  });
+
+  it('the error list names each field in the language, with the message beside it', async () => {
+    mocks.language = 'hi';
+    const { user, container } = setup();
+    fireEvent.change(field(container, 'dob'), { target: { value: '2999-01-01' } });
+    fireEvent.change(field(container, 'age'), { target: { value: '150' } });
+    await user.click(screen.getByRole('button', { name: 'बदलाव सहेजें' }));
+    const alert = await screen.findByRole('alert');
+    expect(alert.textContent).toContain('जन्म तिथि');
+    expect(alert.textContent).toContain('भविष्य की न हो, ऐसी वास्तविक जन्म तिथि दर्ज करें');
+    expect(alert.textContent).toContain('आयु');
+    expect(alert.textContent).toContain('आयु 1 से 120 के बीच की पूर्ण संख्या होनी चाहिए');
+    expect(alert.textContent).not.toMatch(/Date of birth|Age must/);
+  });
+
+  it('a message that comes from the server (English) is shown as it is, not turned into a key', async () => {
+    mocks.language = 'hi';
+    mocks.updateProfile.mockRejectedValue(new ProfileSaveError('The server is busy', { age: 'Server says no' }));
+    const { user } = setup();
+    await user.click(screen.getByRole('button', { name: 'बदलाव सहेजें' }));
+    const alert = await screen.findByRole('alert');
+    expect(alert.textContent).toContain('Server says no');
   });
 });
