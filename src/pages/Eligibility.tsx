@@ -225,9 +225,9 @@ export const Eligibility: React.FC = () => {
           <div className="flex items-start gap-3 text-center sm:text-left">
             <Lock className="w-6 h-6 text-secondary shrink-0 mt-0.5" />
             <div>
-              <h3 className="font-heading text-sm font-bold text-primary dark:text-white">Save eligibility profile?</h3>
+              <h3 className="font-heading text-sm font-bold text-primary dark:text-white">{t('wzSaveTitle')}</h3>
               <p className="text-[11px] md:text-xs text-on-surface-variant dark:text-zinc-450 mt-0.5 leading-relaxed">
-                Register a free account using Google OAuth to lock in your demographic profile and get auto-updates.
+                {t('wzSaveDesc')}
               </p>
             </div>
           </div>
@@ -235,14 +235,14 @@ export const Eligibility: React.FC = () => {
             to="/register"
             className="flex items-center gap-1 px-4 py-2 bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 rounded-lg text-xs font-bold shadow-sm hover:opacity-95 whitespace-nowrap active:scale-95 transition-all"
           >
-            Create Account
+            {t('wzCreateAccount')}
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         <div className="flex items-center justify-between">
           <h1 className="font-display text-2xl font-extrabold text-primary dark:text-white">
-            Guest Eligibility Matches
+            {t('wzGuestTitle')}
           </h1>
           <button
             onClick={() => {
@@ -251,7 +251,7 @@ export const Eligibility: React.FC = () => {
             }}
             className="text-secondary dark:text-sky-400 font-bold hover:underline text-xs flex items-center gap-1"
           >
-            <ChevronLeft className="w-4 h-4" /> Start Over
+            <ChevronLeft className="w-4 h-4" /> {t('wzStartOver')}
           </button>
         </div>
 
@@ -274,7 +274,7 @@ export const Eligibility: React.FC = () => {
         ) : (
           <div className="text-center py-16 bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl max-w-md mx-auto shadow-sm">
             <p className="text-sm text-on-surface-variant dark:text-zinc-550 italic mb-4">
-              No matching welfare schemes found. Let's adjust criteria.
+              {t('wzNoMatches')}
             </p>
             <button
               onClick={() => {
@@ -283,7 +283,7 @@ export const Eligibility: React.FC = () => {
               }}
               className="px-5 py-2 bg-secondary text-white rounded-lg text-xs font-bold"
             >
-              Modify Details
+              {t('wzModify')}
             </button>
           </div>
         )}
@@ -306,10 +306,10 @@ export const Eligibility: React.FC = () => {
             <Sparkles className="w-6 h-6 animate-pulse" />
           </div>
           <h1 className="font-heading text-lg md:text-xl font-bold text-primary dark:text-white">
-            Find Matching Schemes
+            {t('wzTitle')}
           </h1>
           <p className="text-xs text-on-surface-variant dark:text-zinc-400 max-w-xs mx-auto leading-relaxed">
-            Answer a few quick questions to identify government welfare schemes tailored for you.
+            {t('wzIntro')}
           </p>
         </div>
 
@@ -343,7 +343,7 @@ export const Eligibility: React.FC = () => {
             >
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                  Enter Your Age
+                  {t('wzAge')}
                 </label>
                 <input
                   type="number"
@@ -358,7 +358,7 @@ export const Eligibility: React.FC = () => {
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                  Gender
+                  {t('genderLabel')}
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {['male', 'female', 'other'].map(g => (
@@ -373,7 +373,7 @@ export const Eligibility: React.FC = () => {
                           : "border-outline-variant text-on-surface dark:text-zinc-350 dark:border-zinc-700 dark:bg-zinc-900"
                       )}
                     >
-                      {g}
+                      {t(g as Parameters<typeof t>[0])}
                     </button>
                   ))}
                 </div>
@@ -390,14 +390,14 @@ export const Eligibility: React.FC = () => {
             >
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                  Select Your State
+                  {t('wzState')}
                 </label>
                 <select
                   value={guestProfile.state}
                   onChange={(e) => handleInputChange('state', e.target.value)}
                   className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-850 dark:text-white text-sm focus:ring-secondary focus:border-secondary py-2.5 px-3"
                 >
-                  <option value="">Select…</option>
+                  <option value="">{t('optSelect')}</option>
                   {states.map(s => (
                     <option key={s} value={s}>{stateLabel(s, vocab, t as (key: any) => string)}</option>
                   ))}
@@ -406,23 +406,23 @@ export const Eligibility: React.FC = () => {
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                  Select Your Occupation
+                  {t('wzOccupation')}
                 </label>
                 <select
                   value={guestProfile.occupation}
                   onChange={(e) => handleInputChange('occupation', e.target.value)}
                   className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-850 dark:text-white text-sm focus:ring-secondary focus:border-secondary py-2.5 px-3"
                 >
-                  <option value="">Select…</option>
+                  <option value="">{t('optSelect')}</option>
                   {occupations.map(o => (
-                    <option key={o} value={o}>{o.charAt(0).toUpperCase() + o.slice(1)}</option>
+                    <option key={o} value={o}>{t(`occ_${o.replace(/\s+/g, '_')}` as Parameters<typeof t>[0])}</option>
                   ))}
                 </select>
               </div>
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                  Declared Annual Income (₹)
+                  {t('wzIncome')}
                 </label>
                 <input
                   type="number"
@@ -447,7 +447,7 @@ export const Eligibility: React.FC = () => {
             >
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                  Social Category
+                  {t('socialCategory')}
                 </label>
                 <div className="grid grid-cols-4 gap-1.5">
                   {['general', 'sc', 'st', 'obc'].map(cat => (
@@ -462,7 +462,7 @@ export const Eligibility: React.FC = () => {
                           : "border-outline-variant text-on-surface dark:text-zinc-300 dark:border-zinc-700"
                       )}
                     >
-                      {cat}
+                      {cat === 'general' ? t('wzCatGeneral') : cat.toUpperCase()}
                     </button>
                   ))}
                 </div>
@@ -470,7 +470,7 @@ export const Eligibility: React.FC = () => {
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                  Residence Area
+                  {t('wzResidence')}
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   {['rural', 'urban'].map(res => (
@@ -485,7 +485,7 @@ export const Eligibility: React.FC = () => {
                           : "border-outline-variant text-on-surface dark:text-zinc-300 dark:border-zinc-700"
                       )}
                     >
-                      {res}
+                      {res === 'rural' ? t('wzRural') : t('wzUrban')}
                     </button>
                   ))}
                 </div>
@@ -493,7 +493,7 @@ export const Eligibility: React.FC = () => {
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                  Own Cultivable Land?
+                  {t('pfLand')}
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   {['yes', 'no'].map(l => (
@@ -508,7 +508,7 @@ export const Eligibility: React.FC = () => {
                           : "border-outline-variant text-on-surface dark:text-zinc-300 dark:border-zinc-700"
                       )}
                     >
-                      {l}
+                      {l === 'yes' ? t('optYes') : t('optNo')}
                     </button>
                   ))}
                 </div>
@@ -524,7 +524,7 @@ export const Eligibility: React.FC = () => {
                 onClick={() => setStep(step - 1)}
                 className="flex items-center gap-1 text-on-surface-variant hover:text-on-surface font-semibold text-xs md:text-sm focus:outline-none"
               >
-                <ChevronLeft className="w-4 h-4" /> Previous
+                <ChevronLeft className="w-4 h-4" /> {t('wzPrev')}
               </button>
             ) : (
               <div />
@@ -536,14 +536,14 @@ export const Eligibility: React.FC = () => {
                 onClick={() => setStep(step + 1)}
                 className="flex items-center gap-1 px-5 py-2 bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 rounded-lg text-xs md:text-sm font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all focus:outline-none"
               >
-                Next <ChevronRight className="w-4 h-4" />
+                {t('wzNext')} <ChevronRight className="w-4 h-4" />
               </button>
             ) : (
               <button
                 type="submit"
                 className="px-6 py-2 bg-primary hover:bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 rounded-lg text-xs md:text-sm font-bold shadow-md active:scale-95 transition-all focus:outline-none"
               >
-                Find Schemes
+                {t('wzFind')}
               </button>
             )}
           </div>
