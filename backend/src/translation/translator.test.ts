@@ -8,6 +8,7 @@ const PRIMARY = 'primary-model';
 const FALLBACK = 'fallback-model';
 
 const EN = 'The applicant should belong to the Scheduled Caste community';
+const GU_EN = 'Fill in the application details for registration';
 const HI = 'आवेदक को शेड्यूल्ड कास्ट समुदाय से होना चाहिए।';
 
 /** A fake model: `script[model]` is a queue of answers (a string, a response, or an Error to throw). */
@@ -103,13 +104,28 @@ describe('translateText: validated, with fallback', () => {
     expect(r).toMatchObject({ ok: true, value: fixed, model: FALLBACK });
   });
 
-  it('prioritizes the fallback model for Gujarati to ensure high native-script quality', async () => {
+  it('tries the primary model first for Gujarati too, and the fallback only when it fails', async () => {
     const gu = LANGUAGES.gu;
     const GU_TEXT = 'અરજી પ્રક્રિયા અને નોંધણી માટે વિગતો ભરો.';
-    const { llm, calls } = fakeLlm({ [FALLBACK]: [GU_TEXT] });
-    const r = await translator(llm).translateText(EN, gu);
-    expect(r).toMatchObject({ ok: true, value: GU_TEXT, model: FALLBACK, attempts: 1 });
-    expect(calls[0].model).toBe(FALLBACK);
+    const first = fakeLlm({ [PRIMARY]: [GU_TEXT], [FALLBACK]: ['unused'] });
+    const r1 = await translator(first.llm).translateText(GU_EN, gu);
+    expect(r1).toMatchObject({ ok: true, value: GU_TEXT, model: PRIMARY, attempts: 1 });
+    expect(first.calls.map((c) => c.model)).toEqual([PRIMARY]);
+
+    const second = fakeLlm({ [PRIMARY]: [GU_EN], [FALLBACK]: [GU_TEXT] }); // primary hands the English back
+    const r2 = await translator(second.llm).translateText(GU_EN, gu);
+    expect(r2).toMatchObject({ ok: true, value: GU_TEXT, model: FALLBACK, attempts: 2 });
+    expect(second.calls.map((c) => c.model)).toEqual([PRIMARY, FALLBACK]);
+  });
+
+  it('a Gujarati answer with a Devanagari word is rejected and the fallback is used', async () => {
+    const gu = LANGUAGES.gu;
+    const bad = 'અરજી પ્રક્રિયા અને खेल નોંધણી માટે વિગતો ભરો.';
+    const good = 'અરજી પ્રક્રિયા અને નોંધણી માટે વિગતો ભરો.';
+    const { llm, calls } = fakeLlm({ [PRIMARY]: [bad], [FALLBACK]: [good] });
+    const r = await translator(llm).translateText(GU_EN, gu);
+    expect(r).toMatchObject({ ok: true, value: good, model: FALLBACK });
+    expect(calls.map((c) => c.model)).toEqual([PRIMARY, FALLBACK]);
   });
 });
 

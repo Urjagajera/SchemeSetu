@@ -137,11 +137,8 @@ function parseItems(text: string): unknown {
 
 export function createTranslator(opts: TranslatorOptions) {
   function getChain(lang?: LanguageConfig): Array<{ model: string; effort?: 'low' | 'medium' }> {
-    // For Gujarati, Qwen (fallbackModel) is calibrated to produce 100% natural Gujarati script,
-    // whereas gpt-oss-120b frequently skips procedural steps and returns English unchanged.
-    if (lang?.code === 'gu' && opts.fallbackModel && opts.fallbackModel !== opts.primaryModel) {
-      return [{ model: opts.fallbackModel }, { model: opts.primaryModel, effort: 'low' }];
-    }
+    // Every language, Gujarati included, tries the primary model (gpt-oss-120b) first and the fallback (Qwen) only if
+    // that fails validation. In the Gujarati audit gpt-oss-120b had 0.9% wrong-meaning lines against Qwen's 8.1%.
     const chain: Array<{ model: string; effort?: 'low' | 'medium' }> = [{ model: opts.primaryModel, effort: 'low' }];
     if (opts.fallbackModel && opts.fallbackModel !== opts.primaryModel) chain.push({ model: opts.fallbackModel });
     return chain;

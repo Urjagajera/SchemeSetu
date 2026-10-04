@@ -18,15 +18,33 @@ import { LanguageCode } from './languages.js';
  */
 export interface GlossaryLang {
   preferred: string;
+  /** True when no native speaker has checked this rendering. Every Gujarati entry is unverified. */
+  unverified?: boolean;
   acceptable?: string[];
   forbidden?: string[];
 }
 
 export interface GlossaryEntry {
   en: string;
-  hi: GlossaryLang;
-  gu: GlossaryLang;
+  /** A language with no entry is simply not constrained for this term. */
+  hi?: GlossaryLang;
+  gu?: GlossaryLang;
   forbidOnly?: boolean;
+  /** Match the English term only as a whole word (plural s allowed): "pig" must not fire on "pigeon" or "piggery". */
+  wholeWord?: boolean;
+}
+
+/** True when `term` occurs in `text` (case-insensitively; as a whole word when asked). */
+export function mentions(text: string, term: string, wholeWord?: boolean): boolean {
+  const t = text.toLowerCase();
+  const needle = term.toLowerCase();
+  if (!wholeWord) return t.includes(needle);
+  for (let i = t.indexOf(needle); i >= 0; i = t.indexOf(needle, i + 1)) {
+    const before = t[i - 1];
+    const after = t.slice(i + needle.length).match(/^(es|s)?(?![a-z])/)?.[0] !== undefined;
+    if ((before === undefined || !/[a-z]/.test(before)) && after) return true;
+  }
+  return false;
 }
 
 /**
@@ -47,6 +65,38 @@ const DISABILITY_TERMS: Array<{ en: string; hi: string; gu: string }> = [
   { en: 'disablement', hi: 'दिव्यांगता', gu: 'દિવ્યાંગતા' },
 ];
 
+/**
+ * Gujarati terms from the back-translation audit (backend/reports/gujarati-gptoss-audit.md), where the models turned
+ * these into something else: pig into "unintelligible", piglets into jewellery, Sewing Machine into "tank machine",
+ * Interest Subvention into "cooking subvention", trimester into months, free into "liberated", Scheduled Tribe into
+ * "certified caste", Denotified/Nomadic into "tribal"/"honourable", partnership concern into "partnership worries".
+ *
+ * EVERY rendering here is UNVERIFIED: written from the audit by a non-speaker. A native Gujarati speaker must check
+ * them before Gujarati is switched on. `forbidden` lists are substring tests, so they hold only wrong words that
+ * cannot sit inside a correct one (મુક્ત, for instance, is inside વિમુક્ત "denotified", so "free" is enforced by
+ * requiring મફત instead of forbidding મુક્ત). Hindi is not constrained by these entries.
+ */
+const unverified = (g: GlossaryLang): GlossaryLang => ({ ...g, unverified: true });
+const GUJARATI_AUDIT_TERMS: GlossaryEntry[] = [
+  { en: 'free of charge', gu: unverified({ preferred: 'મફત', acceptable: ['નિઃશુલ્ક', 'વિનામૂલ્યે', 'નિ:શુલ્ક'] }) },
+  { en: 'free of cost', gu: unverified({ preferred: 'મફત', acceptable: ['નિઃશુલ્ક', 'વિનામૂલ્યે', 'નિ:શુલ્ક'] }) },
+  { en: 'Scheduled Caste', gu: unverified({ preferred: 'અનુસૂચિત જાતિ', acceptable: ['શેડ્યુલ્ડ કાસ્ટ'], forbidden: ['પ્રમાણિત જાતિ', 'નિર્ધારિત જાતિ'] }) },
+  { en: 'Scheduled Tribe', gu: unverified({ preferred: 'અનુસૂચિત જનજાતિ', acceptable: ['શેડ્યુલ્ડ ટ્રાઇબ'], forbidden: ['પ્રમાણિત જાતિ', 'સ્થાનિક જાતિ'] }) },
+  { en: 'Backward Class', gu: unverified({ preferred: 'પછાત વર્ગ', forbidden: ['પાછળ પડેલા', 'પાછળની વર્ગ'] }) },
+  { en: 'Denotified', gu: unverified({ preferred: 'વિમુક્ત', acceptable: ['ડિનોટિફાઇડ'], forbidden: ['આદિવાસી'] }) },
+  { en: 'Nomadic', gu: unverified({ preferred: 'વિચરતી', acceptable: ['વિચરતા', 'વિચરતું', 'નોમેડિક'], forbidden: ['નામદાર'] }) },
+  { en: 'trimester', gu: unverified({ preferred: 'ત્રિમાસિક', acceptable: ['ટ્રાઇમેસ્ટર'] }) },
+  { en: 'interest subvention', gu: unverified({ preferred: 'વ્યાજ સહાય', acceptable: ['વ્યાજ સબવેન્શન', 'વ્યાજ સબસિડી', 'વ્યાજ રાહત'], forbidden: ['રસોઈ'] }) },
+  { en: 'buffalo', gu: unverified({ preferred: 'ભેંસ', forbidden: ['બફેલો', 'હાથી', 'મોઢા'] }) },
+  { en: 'piglet', wholeWord: true, gu: unverified({ preferred: 'ડુક્કરનું બચ્ચું', acceptable: ['ડુક્કરના બચ્ચા', 'બચ્ચા', 'પિગલેટ'], forbidden: ['ઘરેણી'] }) },
+  { en: 'pig', wholeWord: true, gu: unverified({ preferred: 'ડુક્કર', forbidden: ['સૂરિયા', 'ઘરેણી'] }) },
+  { en: 'pulses', wholeWord: true, gu: unverified({ preferred: 'કઠોળ', forbidden: ['ડાળિયા'] }) },
+  { en: 'sewing machine', gu: unverified({ preferred: 'સિલાઈ મશીન', acceptable: ['સિલાઇ મશીન', 'સીવણ મશીન', 'સીવવાનું મશીન'], forbidden: ['ટાંકી'] }) },
+  { en: 'partnership firm', gu: unverified({ preferred: 'ભાગીદારી પેઢી', forbidden: ['સાહોદરિક'] }) },
+  { en: 'partnership concern', gu: unverified({ preferred: 'ભાગીદારી પેઢી', acceptable: ['ભાગીદારી પેઢી'], forbidden: ['ચિંતા'] }) },
+  { en: 'age relaxation', gu: unverified({ preferred: 'ઉંમરમાં છૂટછાટ', acceptable: ['વય મર્યાદામાં છૂટછાટ', 'વયમાં છૂટછાટ', 'છૂટછાટ', 'છૂટ'], forbidden: ['મુલતવી'] }) },
+];
+
 export const GLOSSARY: GlossaryEntry[] = [
   // "National Trust" is the name of a statutory body. Found in calibration translated literally as "national
   // faith"; in the first live run both models chose "राष्ट्रीय ट्रस्ट", which is correct and in common use.
@@ -61,6 +111,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     gu: { preferred: t.gu },
     forbidOnly: true,
   })),
+  ...GUJARATI_AUDIT_TERMS,
 ];
 
 export interface GlossaryRequirement {
@@ -71,16 +122,17 @@ export interface GlossaryRequirement {
   forbidden?: string[];
   /** Only `forbidden` is enforced (see GlossaryEntry). */
   forbidOnly?: boolean;
+  wholeWord?: boolean;
 }
 
-/** Entries whose English term appears (case-insensitively) in any of the given texts. */
+/** Entries whose English term appears in any of the given texts, for entries that constrain this language. */
 export function glossaryHits(texts: string[], lang: LanguageCode): GlossaryRequirement[] {
-  const haystack = texts.join('\n').toLowerCase();
-  return GLOSSARY.filter((g) => haystack.includes(g.en.toLowerCase())).map((g) => ({
-    en: g.en,
-    target: g[lang].preferred,
-    acceptable: g[lang].acceptable,
-    forbidden: g[lang].forbidden,
-    forbidOnly: g.forbidOnly,
-  }));
+  const haystack = texts.join(' ');
+  const out: GlossaryRequirement[] = [];
+  for (const g of GLOSSARY) {
+    const l = g[lang];
+    if (!l || !mentions(haystack, g.en, g.wholeWord)) continue;
+    out.push({ en: g.en, target: l.preferred, acceptable: l.acceptable, forbidden: l.forbidden, forbidOnly: g.forbidOnly, wholeWord: g.wholeWord });
+  }
+  return out;
 }

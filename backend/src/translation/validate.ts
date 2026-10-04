@@ -22,7 +22,7 @@ export interface ValidationResult {
   nativePct: number;
 }
 
-import type { GlossaryRequirement } from './glossary.js';
+import { mentions, type GlossaryRequirement } from './glossary.js';
 export type { GlossaryRequirement };
 
 const URL_OR_EMAIL = /https?:\/\/[^\s)]+|www\.[^\s)]+|[\w.+-]+@[\w-]+\.[\w.-]+/g;
@@ -232,7 +232,7 @@ function checkBlock(
 
   // Required renderings of proper names.
   for (const g of glossary) {
-    if (!source.toLowerCase().includes(g.en.toLowerCase())) continue;
+    if (!mentions(source, g.en, g.wholeWord)) continue;
     const wrong = (g.forbidden ?? []).find((f) => out.includes(f));
     if (wrong) {
       reasons.push(`"${g.en}" was mistranslated as "${wrong}"`);
