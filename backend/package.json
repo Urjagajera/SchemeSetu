@@ -20,6 +20,7 @@
     "ingest:occupation-dry-run": "tsx src/ingestion/dryRunOccupation.ts",
     "ingest:tags-dry-run": "tsx src/ingestion/dryRunTags.ts",
     "ingest:tags-apply": "tsx src/ingestion/applyTagMerge.ts",
+    "scan:translations": "tsx src/translation/scanStored.ts",
     "translate:vocabulary": "tsx src/translation/buildVocabulary.ts",
     "translate:cards": "tsx src/translation/translateCards.ts",
     "test": "vitest run",

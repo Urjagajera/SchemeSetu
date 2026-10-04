@@ -70,7 +70,7 @@ const OTHER_SCRIPTS: ReadonlyArray<readonly [number, number, string]> = [
 ];
 
 /** Names of other scripts whose letters appear in `out` (letters the English source itself had are not counted). */
-function strayScripts(source: string, out: string, lang: LanguageConfig): string[] {
+export function strayScripts(source: string, out: string, lang: LanguageConfig): string[] {
   const inSource = new Set(Array.from(source));
   const found = new Map<string, Set<string>>();
   for (const ch of out) {
