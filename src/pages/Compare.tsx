@@ -5,14 +5,23 @@ import { useTranslation } from '../contexts/LanguageContext';
 import { Trash2, Plus, ArrowLeftRight, ExternalLink } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
-import { translateScheme } from '../utils/translationUtils';
+import { translateScheme, applyVocabulary } from '../utils/translationUtils';
+import { useVocabulary } from '../hooks/useVocabulary';
+import { useStoredTitles } from '../services/titleTranslations';
 
 export const Compare: React.FC = () => {
   const { comparedSchemes, removeFromCompare, clearCompare } = useCompare();
   const { t, language } = useTranslation();
   const navigate = useNavigate();
 
-  const translatedSchemes = comparedSchemes.map(s => translateScheme(s, language));
+  // Titles, ministry and category in the chosen language, the way the cards show them: the title the cards already
+  // fetched (this page never asks for one, so it never starts a translation), ministry and category from the stored
+  // vocabulary. English stays until they are there.
+  const { vocab, loading: vocabLoading } = useVocabulary(language);
+  const storedTitles = useStoredTitles(comparedSchemes.map(s => s.id), language);
+  const translatedSchemes = comparedSchemes.map(s =>
+    applyVocabulary({ ...translateScheme(s, language), name: storedTitles[s.id] ?? translateScheme(s, language).name }, language, vocab, vocabLoading),
+  );
 
   // Slot fillers to make a grid of 3 columns
   const emptySlotsCount = 3 - translatedSchemes.length;

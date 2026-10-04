@@ -145,3 +145,21 @@ export function useCardText(ids: string[], language: string): { titles: Record<s
   };
   return { titles: pick(titles), summaries: pick(summaries) };
 }
+
+/**
+ * The translated titles already in memory, for pages (like Compare) that only show schemes some card has already
+ * shown. Unlike useCardText it never asks the server, so using it can never start a translation.
+ */
+export function useStoredTitles(ids: string[], language: string): Record<string, string> {
+  const [, rerender] = useReducer((n: number) => n + 1, 0);
+  useEffect(() => {
+    listeners.add(rerender);
+    return () => {
+      listeners.delete(rerender);
+    };
+  }, []);
+  const known = language === 'en' ? undefined : titles.get(language);
+  const out: Record<string, string> = {};
+  if (known) for (const id of ids) if (known.has(id)) out[id] = known.get(id)!;
+  return out;
+}
