@@ -13,7 +13,6 @@ import {
   ArrowRight, 
   Bot, 
   TrendingUp, 
-  Zap, 
   Sparkles 
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -70,12 +69,6 @@ export const Dashboard: React.FC = () => {
 
     loadDashboardData();
   }, [profile]);
-
-  const recentUpdates = [
-    { title: t('updateTitle1'), date: t('yesterday'), category: t('farmerLoans') },
-    { title: t('updateTitle2'), date: `2 ${t('daysAgo')}`, category: t('scholarships') },
-    { title: t('updateTitle3'), date: `1 ${t('weeksAgo')}`, category: t('housing') }
-  ];
 
   const greeting = () => {
     const hr = new Date().getHours();
@@ -208,32 +201,6 @@ export const Dashboard: React.FC = () => {
               {t('startChat')}
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-          </div>
-
-          {/* Recent Updates List */}
-          <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 shadow-sm space-y-4">
-            <h3 className="font-heading text-sm font-bold text-primary dark:text-white flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-secondary dark:text-sky-400" />
-              {t('recentUpdates')}
-            </h3>
-            
-            <div className="space-y-3.5 divide-y divide-outline-variant dark:divide-zinc-850">
-              {recentUpdates.map((update, idx) => (
-                <div key={idx} className={cn("text-xs space-y-1", idx > 0 && "pt-3.5")}>
-                  <div className="flex justify-between items-center gap-2">
-                    <span className="bg-secondary-container/10 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-2 py-0.5 rounded text-[10px] font-bold">
-                      {update.category}
-                    </span>
-                    <span className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-medium">
-                      {update.date}
-                    </span>
-                  </div>
-                  <h4 className="font-body text-xs font-semibold text-on-surface dark:text-zinc-300 leading-snug line-clamp-2">
-                    {update.title}
-                  </h4>
-                </div>
-              ))}
-            </div>
           </div>
 
         </div>

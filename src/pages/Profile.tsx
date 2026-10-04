@@ -325,9 +325,6 @@ export const Profile: React.FC = () => {
               <h4 className="font-heading text-xs md:text-sm font-extrabold text-primary dark:text-white">
                 {t('verifiedCitizen')}
               </h4>
-              <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 leading-relaxed mt-1">
-                Your credentials are encrypted and stored in Supabase secure storage vault.
-              </p>
             </div>
           </div>
         </div>

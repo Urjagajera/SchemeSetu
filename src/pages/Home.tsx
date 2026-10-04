@@ -4,6 +4,7 @@ import { useTranslation } from '../contexts/LanguageContext';
 import { useBookmarks } from '../hooks/useBookmarks';
 import { schemeService } from '../services/schemeService';
 import { Scheme } from '../types';
+import { useStates } from '../hooks/useStates';
 import { Hero } from '../components/Hero';
 import { StatCard } from '../components/StatCard';
 import { CategoryCard } from '../components/CategoryCard';
@@ -18,7 +19,9 @@ export const Home: React.FC = () => {
   const { bookmarks, toggleBookmark } = useBookmarks();
   const [featuredSchemes, setFeaturedSchemes] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState('');
+  // The figures in the stats bar come from the data itself, not from numbers typed in here.
+  const [schemeTotal, setSchemeTotal] = useState<number | null>(null);
+  const states = useStates();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -28,6 +31,10 @@ export const Home: React.FC = () => {
   const dragStartXRef = useRef(0);
   const hasDraggedRef = useRef(false);
   const resumeTimeoutRef = useRef<any>(null);
+
+  useEffect(() => {
+    schemeService.getSchemes({ limit: 1 }).then((r) => setSchemeTotal(r.total)).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const loadFeatured = async () => {
@@ -190,14 +197,6 @@ export const Home: React.FC = () => {
     }
   };
 
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) {
-      alert('Thank you! You have been subscribed.');
-      setEmail('');
-    }
-  };
-
   const categories = [
     { icon: 'school', label: t('scholarships'), value: 'Education' },
     { icon: 'medical_services', label: t('healthInsurance'), value: 'Healthcare' },
@@ -225,11 +224,9 @@ export const Home: React.FC = () => {
       {/* Stats Bar */}
       <section className="bg-surface-container-lowest dark:bg-zinc-900 border-b border-outline-variant dark:border-zinc-800 py-8 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard value="4500+" label={t('activeSchemes')} />
-            <StatCard value="28" label={t('statesCovered')} />
-            <StatCard value="9.8 Cr+" label={t('beneficiaries')} />
-            <StatCard value="₹2.4L Cr" label={t('disbursed')} />
+          <div className="grid grid-cols-2 gap-6 max-w-xl mx-auto">
+            {schemeTotal !== null && <StatCard value={schemeTotal.toLocaleString('en-IN')} label={t('activeSchemes')} />}
+            {states.length > 0 && <StatCard value={String(states.length)} label={t('statesCovered')} />}
           </div>
         </div>
       </section>

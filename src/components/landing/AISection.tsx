@@ -40,7 +40,7 @@ const STEPS = [
   {
     stage: '02',
     label: 'AI Matching',
-    desc: 'SetuAI cross-references your profile against thousands of active schemes.',
+    desc: 'SetuAI gives quick answers about common schemes. The Eligibility Checker matches your profile against the listed schemes.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-6 h-6" aria-hidden="true">
         <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18" strokeLinecap="round" strokeLinejoin="round" />
@@ -155,7 +155,7 @@ export const AISection: React.FC = () => {
 
             {/* Flow arrow between cards on desktop */}
             <p className="text-white/30 text-xs text-center mt-1">
-              Secure · Private · Free to use
+              Free to use · Google sign-in · No password stored
             </p>
           </div>
         </div>

@@ -97,10 +97,10 @@ export const Login: React.FC = () => {
   }, [loginWithGoogle, navigate, redirect]);
 
   const signupBenefits = [
-    t('check1') || 'Access 500+ central & state schemes',
-    t('check2') || 'Check your scheme eligibility instantly',
-    t('check3') || 'Get personalized scheme recommendations',
-    t('check4') || 'Download eligibility reports'
+    t('check1'),
+    t('check2'),
+    t('check3'),
+    t('check4')
   ];
 
   return (
@@ -221,16 +221,6 @@ export const Login: React.FC = () => {
                 ))}
               </div>
 
-              <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 text-center leading-relaxed">
-                {t('agreeTo')}{' '}
-                <a href="#" className="text-secondary dark:text-sky-400 hover:underline">
-                  {t('termsOfService')}
-                </a>{' '}
-                {t('and')}{' '}
-                <a href="#" className="text-secondary dark:text-sky-400 hover:underline">
-                  {t('privacyPolicy')}
-                </a>.
-              </p>
             </div>
           )}
 
@@ -245,10 +235,6 @@ export const Login: React.FC = () => {
           <Link to="/help" className="hover:text-secondary dark:hover:text-sky-400 transition-colors">
             {t('helpDesk')}
           </Link>
-          <span className="w-1 h-1 bg-outline-variant dark:bg-zinc-800 rounded-full" />
-          <a href="#" className="hover:text-secondary dark:hover:text-sky-400 transition-colors">
-            {t('privacyPolicy')}
-          </a>
         </div>
         
         <p className="opacity-75">{t('footerCopy')}</p>

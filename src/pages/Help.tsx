@@ -29,11 +29,11 @@ export const Help: React.FC = () => {
     },
     {
       q: t('faqQ4') || 'How often is the scheme data updated?',
-      a: t('faqA4') || 'Our team updates scheme information daily. New schemes, deadline changes, and eligibility updates are reflected within 24-48 hours of official announcement. You can subscribe to notifications to get instant alerts.'
+      a: t('faqA4'),
     },
     {
       q: t('faqQ5') || 'Is my personal data safe on SchemeSetu?',
-      a: t('faqA5') || 'Yes. We use Google OAuth 2.0 for authentication, which means we never store your password. The eligibility check information you enter is used only to match you with schemes and is not stored permanently on our servers. Please refer to our Privacy Policy for full details.'
+      a: t('faqA5'),
     },
     {
       q: t('faqQ6') || 'What documents are generally required for most schemes?',

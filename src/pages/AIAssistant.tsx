@@ -134,7 +134,7 @@ export const AIAssistant: React.FC = () => {
         {
           id: Math.random().toString(36).substring(7),
           sender: 'ai',
-          text: `Hello! I am **SetuAI**. How can I help you check eligibility or learn about government benefits today?`,
+          text: `Hello! This is **SetuAI**: quick answers about common schemes. It is not a live assistant, so please confirm details on the official portal.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ],
@@ -155,7 +155,7 @@ export const AIAssistant: React.FC = () => {
           {
             id: 'init-msg',
             sender: 'ai',
-            text: `Hello! I am **SetuAI**, your intelligent government schemes guide. How can I assist you today?`,
+            text: `Hello! This is **SetuAI**: quick answers about common schemes. It is not a live assistant, so please confirm details on the official portal.`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           }
         ],
@@ -183,7 +183,7 @@ export const AIAssistant: React.FC = () => {
             {
               id: 'init-msg',
               sender: 'ai',
-              text: `Hello! I am **SetuAI**, your intelligent government schemes guide. How can I assist you today?`,
+              text: `Hello! This is **SetuAI**: quick answers about common schemes. It is not a live assistant, so please confirm details on the official portal.`,
               timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }
           ],

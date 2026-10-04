@@ -34,7 +34,7 @@ const MOCK_RESPONSES: Record<string, string> = {
   'scholarship': `SchemeSetu has several scholarship schemes:\n\n1. **Post-Matric Scholarship for SC Students** — for SC students with income < ₹2.5L\n2. **NMMSS** — for meritorious Class IX-XII students from economically weaker sections\n\nWould you like details on any specific scholarship? [Browse all education schemes →](/search?category=Education)`,
   'eligibility': `I can help you check your eligibility! Here's how:\n\n1. **Use our Eligibility Checker** — [Click here →](/eligibility)\n2. Answer 3 simple steps about your age, income, and occupation\n3. Get a personalized list of matching schemes\n\nOr tell me more about yourself (age, state, occupation) and I can give you a quick estimate!`,
   'documents': `**Common documents required for most government schemes:**\n\n- Aadhaar Card (mandatory for most)\n- Bank Account linked to Aadhaar\n- Income Certificate (from Tehsildar/SDM)\n- Caste Certificate (if applicable)\n- Age Proof (Birth Certificate or Class 10 Marksheet)\n- Address Proof\n\nThe exact documents vary by scheme. Check the scheme's detail page for the complete list.`,
-  'default': `I'm **SetuAI**, your government scheme assistant!\n\nI can help you:\n- **Find schemes** you're eligible for\n- **Understand documents** required for applications\n- **Answer questions** about any specific scheme\n\nTry asking me: *"What is PM Kisan?"* or *"How do I check my eligibility?"*`
+  'default': `I'm **SetuAI**. I have ready-made answers about a few common schemes. I am not a live assistant, so please confirm details on the official portal.\n\nI can help you:\n- **Find schemes** you're eligible for\n- **Understand documents** required for applications\n- **Answer questions** about any specific scheme\n\nTry asking me: *"What is PM Kisan?"* or *"How do I check my eligibility?"*`
 };
 
 function buildDefaultConversations(): ChatConversation[] {
@@ -45,7 +45,7 @@ function buildDefaultConversations(): ChatConversation[] {
       {
         id: 'init-msg',
         sender: 'ai',
-        text: `Hello! I am **SetuAI**, your intelligent government schemes guide. How can I assist you today?`,
+        text: `Hello! This is **SetuAI**: quick answers about common schemes. It is not a live assistant, so please confirm details on the official portal.`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ],
