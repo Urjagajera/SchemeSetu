@@ -78,13 +78,22 @@ describe('the legal text says only what the code does', () => {
     expect(en.pvThird).toMatch(/no user data to Groq/);
   });
 
-  it('the "delete your data" paragraph is true: there is no delete-account or export route yet', () => {
-    // If one of these routes is added, this fails: update the Privacy Policy (pvDelete) and this test together.
-    const routes = ['auth', 'profile', 'bookmarks'].map((f) => read('backend', 'src', 'routes', f + '.ts')).join('\n');
-    const deletes = [...routes.matchAll(/router\.delete\(\s*'([^']*)'/g)].map((m) => m[1]);
-    expect(deletes).toEqual(['/:schemeId']); // only "remove one bookmark"
-    expect(routes).not.toMatch(/router\.\w+\(\s*'[^']*(export|download)/i);
-    expect(en.pvDelete).toMatch(/no button to delete your account/);
+  it('the "deleting your data" paragraph is true: the routes and the Settings buttons exist, and only for the signed-in user', () => {
+    const account = read('backend', 'src', 'routes', 'account.ts');
+    expect(account).toMatch(/router\.use\(requireAuth\)/);
+    expect(account).toMatch(/router\.delete\(\s*'\/'/);
+    expect(account).toMatch(/router\.get\(\s*'\/export'/);
+    expect(account).toMatch(/bookmark\.deleteMany[\s\S]*profile\.deleteMany[\s\S]*user\.deleteMany/); // all three, in one transaction
+    expect(read('backend', 'src', 'app.ts')).toContain("app.use('/api/account', accountRouter)");
+    const settings = read('src', 'pages', 'Settings.tsx');
+    expect(settings).toContain('deleteMyAccount');
+    expect(settings).toContain('downloadMyData');
+    expect(en.pvDelete).toMatch(/download a copy of your data and delete your account from Settings/);
+    expect(en.pvDelete).toContain('removes your account, profile and bookmarks from our database');
+    expect(en.pvDelete).not.toMatch(/no button|not yet available/i);
+    // the only other delete route is "remove one bookmark"
+    const others = ['auth', 'profile', 'bookmarks'].map((f) => read('backend', 'src', 'routes', f + '.ts')).join('\n');
+    expect([...others.matchAll(/router\.delete\(\s*'([^']*)'/g)].map((m) => m[1])).toEqual(['/:schemeId']);
   });
 
   it('the data it lists as collected is what the database holds, and nothing more', () => {

@@ -15,6 +15,7 @@ import chatRouter from './routes/chat.js';
 import bookmarksRouter from './routes/bookmarks.js';
 import authRouter from './routes/auth.js';
 import profileRouter from './routes/profile.js';
+import accountRouter from './routes/account.js';
 import vocabularyRouter from './routes/vocabulary.js';
 
 const app = express();
@@ -60,6 +61,7 @@ app.use('/api/chat', chatLimiter, chatRouter);
 app.use('/api/bookmarks', bookmarksRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/profile', profileRouter);
+app.use('/api/account', accountRouter);
 app.use('/api/vocabulary', vocabularyRouter);
 
 // ── Error handler (MUST be last) ─────────────────────────────
