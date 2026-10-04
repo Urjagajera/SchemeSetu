@@ -5,7 +5,8 @@ import { useTranslation } from '../contexts/LanguageContext';
 import { Trash2, Plus, ArrowLeftRight, ExternalLink } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
-import { translateScheme, applyVocabulary } from '../utils/translationUtils';
+import { translateScheme, applyServerTranslation, applyVocabulary } from '../utils/translationUtils';
+import { useSchemeDetails } from '../hooks/useSchemeDetails';
 import { useVocabulary } from '../hooks/useVocabulary';
 import { useStoredTitles } from '../services/titleTranslations';
 
@@ -19,9 +20,22 @@ export const Compare: React.FC = () => {
   // vocabulary. English stays until they are there.
   const { vocab, loading: vocabLoading } = useVocabulary(language);
   const storedTitles = useStoredTitles(comparedSchemes.map(s => s.id), language);
-  const translatedSchemes = comparedSchemes.map(s =>
-    applyVocabulary({ ...translateScheme(s, language), name: storedTitles[s.id] ?? translateScheme(s, language).name }, language, vocab, vocabLoading),
-  );
+  // The list entries carry no eligibility, documents or full benefits, so each compared scheme's detail is fetched the
+  // way the scheme page does it (at most 3). English shows until a field's translation is there.
+  const { details, loadingIds } = useSchemeDetails(comparedSchemes.map(s => s.id), language);
+  const translatedSchemes = comparedSchemes.map(s => {
+    const full = details[s.id];
+    const base = translateScheme(full ?? s, language);
+    const merged = full ? applyServerTranslation(base, language) : base;
+    const shown = applyVocabulary({ ...merged, name: storedTitles[s.id] ?? merged.name }, language, vocab, vocabLoading);
+    return {
+      ...shown,
+      isLoading: loadingIds.includes(s.id),
+      benefitList: shown.benefits && shown.benefits.length > 0 ? shown.benefits : shown.benefit ? [shown.benefit] : [],
+      eligibilityList: shown.eligibilityRawText && shown.eligibilityRawText.length > 0 ? shown.eligibilityRawText : shown.eligibility ?? [],
+      documentList: shown.documentRequirements && shown.documentRequirements.length > 0 ? shown.documentRequirements : shown.documents ?? [],
+    };
+  });
 
   // Slot fillers to make a grid of 3 columns
   const emptySlotsCount = 3 - translatedSchemes.length;
@@ -136,8 +150,20 @@ export const Compare: React.FC = () => {
             <div className="grid grid-cols-4 p-4 text-xs md:text-sm items-start text-on-surface dark:text-zinc-300">
               <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs">{t('benefitAmount')}</div>
               {slots.map((s, idx) => (
-                <div key={idx} className="col-span-1 px-4 font-bold text-secondary dark:text-sky-400 leading-relaxed">
-                  {s ? s.benefit : <span className="text-zinc-300 dark:text-zinc-700 font-normal">—</span>}
+                <div key={idx} className="col-span-1 px-4 text-secondary dark:text-sky-400 leading-relaxed">
+                  {!s ? (
+                    <span className="text-zinc-300 dark:text-zinc-700 font-normal">—</span>
+                  ) : s.isLoading ? (
+                    <span data-testid="compare-loading" className="font-normal text-on-surface-variant dark:text-zinc-500">{t('optLoading')}</span>
+                  ) : s.benefitList.length > 0 ? (
+                    <ul className="list-disc list-inside space-y-1 pl-1">
+                      {s.benefitList.map((item: string, i: number) => (
+                        <li key={i} className={cn('text-[11px] md:text-xs', i === 0 && 'font-bold')}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span className="text-zinc-300 dark:text-zinc-700 font-normal">—</span>
+                  )}
                 </div>
               ))}
             </div>
@@ -147,16 +173,18 @@ export const Compare: React.FC = () => {
               <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs font-heading">{t('eligibility')}</div>
               {slots.map((s, idx) => (
                 <div key={idx} className="col-span-1 px-4 space-y-1">
-                  {s ? (
+                  {s && s.isLoading ? (
+                    <span data-testid="compare-loading" className="text-on-surface-variant dark:text-zinc-500">{t('optLoading')}</span>
+                  ) : s && s.eligibilityList.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 pl-1">
-                      {(s.eligibility || []).slice(0, 3).map((item: string, i: number) => (
+                      {s.eligibilityList.slice(0, 3).map((item: string, i: number) => (
                         <li key={i} className="leading-relaxed text-[11px] md:text-xs">
                           {item}
                         </li>
                       ))}
-                      {s.eligibility && s.eligibility.length > 3 && (
+                      {s.eligibilityList.length > 3 && (
                         <li className="text-[10px] text-on-surface-variant dark:text-zinc-500 list-none pl-4 italic">
-                          +{s.eligibility.length - 3} {t('more')}...
+                          +{s.eligibilityList.length - 3} {t('more')}...
                         </li>
                       )}
                     </ul>
@@ -172,16 +200,18 @@ export const Compare: React.FC = () => {
               <div className="col-span-1 font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider text-xs font-heading">{t('documentsRequired')}</div>
               {slots.map((s, idx) => (
                 <div key={idx} className="col-span-1 px-4 space-y-1">
-                  {s ? (
+                  {s && s.isLoading ? (
+                    <span data-testid="compare-loading" className="text-on-surface-variant dark:text-zinc-500">{t('optLoading')}</span>
+                  ) : s && s.documentList.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 pl-1">
-                      {(s.documents || []).slice(0, 3).map((item: string, i: number) => (
+                      {s.documentList.slice(0, 3).map((item: string, i: number) => (
                         <li key={i} className="leading-relaxed text-[11px] md:text-xs">
                           {item}
                         </li>
                       ))}
-                      {s.documents && s.documents.length > 3 && (
+                      {s.documentList.length > 3 && (
                         <li className="text-[10px] text-on-surface-variant dark:text-zinc-500 list-none pl-4 italic">
-                          +{s.documents.length - 3} {t('more')}...
+                          +{s.documentList.length - 3} {t('more')}...
                         </li>
                       )}
                     </ul>
