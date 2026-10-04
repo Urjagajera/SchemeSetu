@@ -40,3 +40,18 @@ comparable. The new validator rules and glossary did not fire on this sample: no
 - Word-level slips the validator cannot see: "pulse" (singular) became "ડાળિયા"; "marginal" became "કિનારીવાળા"; "ninety"
   became a non-word; Latin letters inside a Gujarati word ("કોconut") pass the script check.
 - Roughly one in twenty lines still changes meaning. A native review is the gate for switching Gujarati on.
+
+## Second round (2026-10-05): the gaps the re-audit left open
+
+Gujarati is still off and nothing here calls a model.
+
+- **Latin letters fused onto a Gujarati word are rejected** ("કોconut" for coconut, "પાછાShortest route" with an English phrase
+  fused on). Real audit data decided the rule: of 7 mixed words in 1,072 audited lines, 5 were a Gujarati ending written on an
+  English word ("XIIમાં", "Cardને", "PRLનું", "Corporationને", "Componentનું"), which is correct Gujarati, and 2 were
+  garbles. So a Gujarati letter followed straight by a Latin one is rejected, and a Latin word followed by a Gujarati ending
+  is allowed. Hindi, which writes endings as separate words, rejects both directions. The stored-text scan uses the same rule
+  and still finds 0 problems in the 5,482 stored Hindi rows.
+- **Glossary:** "pulse" in the singular (and "pulses", one entry now) must be કઠોળ, never ડાળિયા; "Pulse Polio", "pulse rate"
+  and "pulse oximeter" are left out of it. "marginal" must be સીમાંત, never કિનારીવાળા ("with edges"), which is how the audit
+  rendered "Small/marginal farmers". Both are unverified Gujarati wording.
+- Tests use the real audit lines, and every rule was mutation-checked.
