@@ -43,6 +43,46 @@ function removeAll(text: string, phrase: string): string {
   }
 }
 
+/**
+ * Scripts other than the target language's, as Unicode ranges. A Gujarati line with a Devanagari, Telugu or Arabic
+ * letter in it is a model slip (seen in the Gujarati audit: "खेल" for sport, a Telugu "తెలంగాణ" in a title, "मुंबई"
+ * and "मुख्यमंत्री" in Devanagari, an Arabic phrase glued into a sentence), not a choice. Latin is not listed: English words and acronyms are allowed.
+ */
+const OTHER_SCRIPTS: ReadonlyArray<readonly [number, number, string]> = [
+  [0x0590, 0x05ff, 'Hebrew'],
+  [0x0600, 0x06ff, 'Arabic'],
+  [0x0700, 0x08ff, 'Arabic-family'],
+  [0x0900, 0x097f, 'Devanagari'],
+  [0x0980, 0x09ff, 'Bengali'],
+  [0x0a00, 0x0a7f, 'Gurmukhi'],
+  [0x0a80, 0x0aff, 'Gujarati'],
+  [0x0b00, 0x0b7f, 'Odia'],
+  [0x0b80, 0x0bff, 'Tamil'],
+  [0x0c00, 0x0c7f, 'Telugu'],
+  [0x0c80, 0x0cff, 'Kannada'],
+  [0x0d00, 0x0d7f, 'Malayalam'],
+  [0x0d80, 0x0dff, 'Sinhala'],
+  [0x0e00, 0x0e7f, 'Thai'],
+  [0x0400, 0x04ff, 'Cyrillic'],
+  [0x3040, 0x30ff, 'Japanese'],
+  [0x4e00, 0x9fff, 'Chinese'],
+  [0xac00, 0xd7af, 'Korean'],
+];
+
+/** Names of other scripts whose letters appear in `out` (letters the English source itself had are not counted). */
+function strayScripts(source: string, out: string, lang: LanguageConfig): string[] {
+  const inSource = new Set(Array.from(source));
+  const found = new Map<string, Set<string>>();
+  for (const ch of out) {
+    if (!/[\p{L}\p{M}]/u.test(ch) || inSource.has(ch)) continue;
+    const cp = ch.codePointAt(0)!;
+    if (cp >= lang.script[0] && cp <= lang.script[1]) continue;
+    const hit = OTHER_SCRIPTS.find(([lo, hi]) => cp >= lo && cp <= hi);
+    if (hit) found.set(hit[2], (found.get(hit[2]) ?? new Set()).add(ch));
+  }
+  return [...found].map(([name, chars]) => `${name} (${[...chars].slice(0, 6).join('')})`);
+}
+
 /** Letters and combining marks (Indic vowel signs are marks): the characters that carry a script. */
 function scriptCounts(text: string, lang: LanguageConfig): { visible: number; native: number } {
   let visible = 0;
@@ -108,6 +148,18 @@ const ORDINAL_WORDS: Partial<Record<LanguageConfig['code'], Record<number, strin
     9: ['नौवां', 'नौवीं', 'नौवें', 'नवम'],
     10: ['दसवां', 'दसवीं', 'दसवें', 'दशम'],
   },
+  gu: {
+    1: ['પહેલું', 'પહેલી', 'પહેલો', 'પહેલા', 'પ્રથમ'],
+    2: ['બીજું', 'બીજી', 'બીજો', 'બીજા', 'દ્વિતીય'],
+    3: ['ત્રીજું', 'ત્રીજી', 'ત્રીજો', 'ત્રીજા', 'તૃતીય'],
+    4: ['ચોથું', 'ચોથી', 'ચોથો', 'ચોથા', 'ચતુર્થ'],
+    5: ['પાંચમું', 'પાંચમી', 'પાંચમો', 'પાંચમા', 'પંચમ'],
+    6: ['છઠ્ઠું', 'છઠ્ઠી', 'છઠ્ઠો', 'છઠ્ઠા', 'ષષ્ઠ'],
+    7: ['સાતમું', 'સાતમી', 'સાતમો', 'સાતમા', 'સપ્તમ'],
+    8: ['આઠમું', 'આઠમી', 'આઠમો', 'આઠમા', 'અષ્ટમ'],
+    9: ['નવમું', 'નવમી', 'નવમો', 'નવમા', 'નવમ'],
+    10: ['દસમું', 'દસમી', 'દસમો', 'દસમા', 'દશમ'],
+  },
 };
 
 const normaliseNasal = (t: string): string => t.replace(/ँ/g, 'ं');
@@ -146,6 +198,9 @@ function checkBlock(
     reasons.push('empty output');
     return nativePct;
   }
+
+  const stray = strayScripts(source, out, lang);
+  if (stray.length > 0) reasons.push(`letters from another script inside the ${lang.name} text: ${stray.join(', ')}`);
 
   if (english > 0) {
     if (out.trim() === source.trim()) reasons.push('returned the English unchanged');

@@ -197,9 +197,99 @@ describe('numbers written as ordinal words (the "2nd or 3rd trimester" false rej
     expect(validateText('Students of the 12th standard', '12वीं कक्षा के छात्र', hi).ok).toBe(true);
   });
 
-  it('keeps the strict rule for a language with no ordinal table (Gujarati)', () => {
-    expect(validateText('Applicants in the 2nd year', 'બીજા વર્ષમાં અરજદારો', gu).ok).toBe(false);
-    expect(validateText('Applicants in the 2nd year', '2જા વર્ષમાં અરજદારો', gu).ok).toBe(true);
+  it('keeps the strict rule for a language with no ordinal table', () => {
+    const noTable = { ...gu, code: 'xx' as unknown as typeof gu.code };
+    expect(validateText('Applicants in the 2nd year', 'બીજા વર્ષમાં અરજદારો', noTable).ok).toBe(false);
+    expect(validateText('Applicants in the 2nd year', '2જા વર્ષમાં અરજદારો', noTable).ok).toBe(true);
+  });
+});
+
+describe('Gujarati ordinal words (the "10th Standard" false rejection)', () => {
+  // Real source line from the Gujarati audit (scheme 34, Kanya Dhan Scheme): gpt-oss-120b was rejected with
+  // "numbers missing from the translation: 10". The rejected output was not kept; this is the idiomatic wording.
+  const src = 'The applicant should have passed the 10th Standard of examination.';
+
+  it('accepts the ordinal written as a Gujarati word', () => {
+    const r = validateText(src, 'અરજદારે દસમા ધોરણની પરીક્ષા પાસ કરેલી હોવી જોઈએ.', gu);
+    expect(r.reasons).toEqual([]);
+    expect(r.ok).toBe(true);
+  });
+
+  it('still accepts the digits (the Qwen wording from the same audit)', () => {
+    expect(validateText(src, 'અરજીદારે 10મી ધોરણની પરીક્ષામાં સફળતા મેળવી હોવી જોઈએ.', gu).ok).toBe(true);
+  });
+
+  it('accepts a range of ordinals, each as a word (2nd or 3rd trimester)', () => {
+    const t = 'The applicant must be a pregnant woman in her 2nd or 3rd trimester of pregnancy.';
+    expect(validateText(t, 'અરજદાર ગર્ભાવસ્થાના બીજા અથવા ત્રીજા ત્રિમાસિકમાં હોય તેવી ગર્ભવતી મહિલા હોવી જોઈએ.', gu).ok).toBe(true);
+  });
+
+  it('still rejects when one of the ordinals is dropped', () => {
+    const t = 'The applicant must be a pregnant woman in her 2nd or 3rd trimester of pregnancy.';
+    const r = validateText(t, 'અરજદાર ગર્ભાવસ્થાના બીજા ત્રિમાસિકમાં હોય તેવી ગર્ભવતી મહિલા હોવી જોઈએ.', gu);
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(' ')).toMatch(/numbers missing from the translation: 3/);
+  });
+
+  it('does not excuse a number that also appears as a plain number', () => {
+    const s = 'The first 2 children and the 2nd child of each family are eligible.';
+    expect(validateText(s, 'દરેક પરિવારના પહેલા બાળક અને બીજા બાળક પાત્ર છે.', gu).ok).toBe(false);
+  });
+
+  it('only allows words for 1st to 10th; larger ordinals must keep their digits', () => {
+    expect(validateText('Students of the 12th standard', 'બારમા ધોરણના વિદ્યાર્થીઓ', gu).ok).toBe(false);
+    expect(validateText('Students of the 12th standard', '12મા ધોરણના વિદ્યાર્થીઓ', gu).ok).toBe(true);
+  });
+
+  it('a plain list number that is simply dropped is still rejected (scheme 48, "1." "2." "3.")', () => {
+    // Scheme 48's rejection was list numbering, not an ordinal: the words must not excuse it.
+    const list = ['1.\tThe applicant should be a permanent resident of Arunachal Pradesh.', '2.\tPreference would be given to women.', '3.\tFarmers must be poor.'].join('\n');
+    const dropped = ['અરજદાર અરુણાચલ પ્રદેશનો કાયમી રહેવાસી હોવો જોઈએ.', 'મહિલાઓને પ્રાથમિકતા આપવામાં આવશે.', 'ખેડૂતો ગરીબ હોવા જોઈએ.'].join('\n');
+    const r = validateText(list, dropped, gu);
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(' ')).toMatch(/numbers missing from the translation: 1, 2, 3/);
+  });
+});
+
+describe('letters from another script inside a translation', () => {
+  // Real lines from the Gujarati audit (Qwen and gpt-oss-120b) that carried a stray-script word.
+  const cases: Array<[string, string, string, string]> = [
+    ['Devanagari "sport" in Gujarati (Qwen)', 'The Status of the Award will be the same as the Arjuna Awards conferred in the field of Sports by the Ministry of Youth Affairs and Sports.',
+      'યુવા વ્યવહાર અને खेल મંત્રાલય દ્વારા खेल ક્ષેત્રમાં અર્જુન પુરસ્કારોને સમાન સ્થિતિ આ પુરસ્કારને મળશે.', 'Devanagari'],
+    ['Telugu "Telangana" in a title (gpt-oss)', 'Disability Aids and Appliances - Telangana', 'દિવ્યાંગતા સહાય અને ઉપકરણો - తెలంగాణ', 'Telugu'],
+    ['Devanagari "Mumbai" glued to Gujarati letters (gpt-oss)', 'The applicant must be from the particular village/urban area/parish (in case of Mumbai, Sindhudurg and other parts of the country).',
+      'અરજદારને નિર્દિષ્ટ ગામ/શહેર વિસ્તાર/પેરીશ (મુंबई, સિંધુદુર્ગ અને દેશના અન્ય ભાગો માટે)માંથી હોવો જોઈએ.', 'Devanagari'],
+    ['Devanagari "Chief Minister" in a title (gpt-oss)', 'Mukhyamantri Aarthik Kalyan Yojana', 'મુખ्यमंत्री આર્થિક કલ્યાણ યોજના', 'Devanagari'],
+    ['Arabic phrase inside a sentence (gpt-oss)', 'The Awardees will be reimbursed airfare (economy class) subject to production of the original boarding passes along with a duly filled in proforma.',
+      'પુરસ્કાર પ્રાપ્તકર્તાઓને એરફેર (ઇકોનોમી ક્લાસ) ની રીફંડ આપવામાં આવશે, بشرط اصل બોર્ડિંગ પાસ સાથે પ્રોફોર્મા ભરેલ હોય.', 'Arabic'],
+  ];
+
+  it.each(cases)('rejects: %s', (_name, source, out, script) => {
+    const r = validateText(source, out, gu);
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(' ')).toContain('another script');
+    expect(r.reasons.join(' ')).toContain(script);
+  });
+
+  it('rejects it inside a list too', () => {
+    const r = validateList(['Mukhyamantri Aarthik Kalyan Yojana'], ['મુખ्यमंत्री આર્થિક કલ્યાણ યોજના'], gu);
+    expect(r.ok).toBe(false);
+  });
+
+  it('also catches Gujarati letters inside Hindi text', () => {
+    const r = validateText('Mukhyamantri Aarthik Kalyan Yojana', 'मुख्यमंत्री आर्थिक કલ્યાણ योजना', hi);
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(' ')).toContain('Gujarati');
+  });
+
+  it('accepts clean Gujarati, English words and acronyms, numbers and the danda', () => {
+    const r = validateText('Disability Aids and Appliances - Telangana (PAN card, Rs. 5,000)', 'દિવ્યાંગતા સહાય અને ઉપકરણો - Telangana (PAN કાર્ડ, Rs. 5,000)', gu);
+    expect(r.reasons).toEqual([]);
+    expect(validateText('Apply online', 'ઓનલાઈન અરજી કરો। અહીં ક્લિક કરો', gu).ok).toBe(true);
+  });
+
+  it('does not count a letter that the English source itself contained', () => {
+    expect(validateText('Scheme नाम of the Ministry', 'યોજના नाम મંત્રાલયની', gu).reasons.join(' ')).not.toContain('another script');
   });
 });
 
