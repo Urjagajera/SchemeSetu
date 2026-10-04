@@ -14,3 +14,11 @@ was checked with the same stored-text scan and the translation validator before 
 | same scheme (summary) | …के अंतर्गत **आल्पांख्यक** मेरिट-कम-मीन्स छात्रवृत्ति योजना… अल्पसंख्यक समुदायों **से संबंधित** प्रतिभाशाली छात्रों… | …के अंतर्गत **अल्पसंख्यक** मेरिट-कम-मीन्स छात्रवृत्ति योजना… अल्पसंख्यक समुदायों **के** प्रतिभाशाली छात्रों… |
 
 (The earlier hand fix "यंत्रांकन" to "यंत्रीकरण" in the Agricultural Mechanization title is also in.)
+
+## Result
+
+Each new text was read against the English: the word order now follows the English, "Veteran" is वरिष्ठ (senior),
+"Post Graduate" is स्नातकोत्तर, "Horticulture and Forestry" is औद्यानिकी एवं वानिकी (the earlier text had dropped
+Horticulture), and the misspelt "आल्पांख्यक" is gone. `npm run scan:translations -- hi` now finds **0 problem rows out of
+5,482** (it found 30 before the clean-up, then 3). The Hindi wording was written by the assistant and has not been
+checked by a native speaker.
