@@ -25,6 +25,7 @@ import { motion } from 'framer-motion';
 
 import { translateScheme, applyServerTranslation, applyVocabulary } from '../utils/translationUtils';
 import { stripDetailsHeading } from '../utils/descriptionText';
+import { LinkedText } from '../components/LinkedText';
 
 const DetailSection: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
   <section className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm transition-colors">
@@ -273,7 +274,7 @@ export const SchemeDetail: React.FC = () => {
               )}
               {applicationProcess && (
                 <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed whitespace-pre-line break-words">
-                  {applicationProcess}
+                  <LinkedText text={applicationProcess} />
                 </p>
               )}
             </DetailSection>

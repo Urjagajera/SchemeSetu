@@ -161,6 +161,41 @@ describe('SchemeDetail description heading', () => {
   });
 });
 
+describe('SchemeDetail "How to apply" links', () => {
+  // The page has other new-tab links (the official-website button), so look only inside the How to apply section.
+  const howToApply = () => screen.getByText('howToApply').closest('section')!;
+  const stepLinks = () => [...howToApply().querySelectorAll('a[target="_blank"]')];
+  const STEPS = 'Application Process\nStep 1: Visit https://www.standupmitra.in/Login/Register.\nStep 2: Fill the form (see https://jeevanpramaan.gov.in).';
+
+  it('makes the web addresses clickable, opening in a new tab', async () => {
+    mocks.language = 'en';
+    mocks.getSchemeById.mockResolvedValue(schemeWith(undefined, { applicationProcess: STEPS }));
+    await renderPage();
+    const anchors = stepLinks();
+    expect(anchors.map((a) => a.getAttribute('href'))).toEqual(['https://www.standupmitra.in/Login/Register', 'https://jeevanpramaan.gov.in']);
+    anchors.forEach((a) => expect((a.getAttribute('rel') ?? '')).toMatch(/noopener.*noreferrer|noreferrer.*noopener/));
+    // the sentence's full stop and bracket stay as ordinary text next to the link
+    expect(document.body.textContent).toContain('Visit https://www.standupmitra.in/Login/Register.');
+    expect(document.body.textContent).toContain('(see https://jeevanpramaan.gov.in).');
+  });
+
+  it('does the same in the translated text', async () => {
+    mocks.getSchemeById.mockResolvedValue(
+      schemeWith(makeTranslation({ status: 'ready', fields: { applicationProcess: 'आवेदन प्रक्रिया\nचरण 1: https://www.standupmitra.in/Login/Register पर जाएँ।' } })),
+    );
+    await renderPage();
+    expect(stepLinks().map((a) => a.getAttribute('href'))).toEqual(['https://www.standupmitra.in/Login/Register']);
+  });
+
+  it('shows plain steps with no address as plain text', async () => {
+    mocks.language = 'en';
+    mocks.getSchemeById.mockResolvedValue(schemeWith(undefined, { applicationProcess: 'Visit the office and submit the form.' }));
+    await renderPage();
+    expect(screen.queryByText('Visit the office and submit the form.')).not.toBeNull();
+    expect(stepLinks()).toHaveLength(0);
+  });
+});
+
 describe('SchemeDetail when the scheme does not exist', () => {
   it('shows the not-found message instead of an empty page', async () => {
     mocks.getSchemeById.mockResolvedValue(null);
