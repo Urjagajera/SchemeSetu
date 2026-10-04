@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, cleanup } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import type { Scheme, SchemeTranslation } from '../types';
 import { makeScheme, makeTranslation } from '../test/factories';
@@ -158,6 +158,129 @@ describe('SchemeDetail machine-translation note', () => {
     mocks.getSchemeById.mockResolvedValue(schemeWith(makeTranslation({ status: 'unavailable' })));
     await renderPage();
     expect(screen.queryByTestId('machine-translated-note')).toBeNull();
+  });
+});
+
+describe('SchemeDetail per-section English / translated switch', () => {
+  const SECTIONS = ['benefits', 'eligibility', 'howToApply', 'documents'] as const;
+  const EN = {
+    benefits: 'Cash award of one lakh',
+    eligibility: 'Must be a student',
+    documents: 'Aadhaar card',
+    applicationProcess: 'Apply online at the portal.',
+  };
+  const HI = {
+    benefits: ['एक लाख का नकद पुरस्कार'],
+    eligibility: ['विद्यार्थी होना चाहिए'],
+    documents: ['आधार कार्ड'],
+    applicationProcess: 'पोर्टल पर ऑनलाइन आवेदन करें।',
+  };
+  const full = () =>
+    schemeWith(makeTranslation({ status: 'ready', fields: { title: 'हिंदी शीर्षक', benefits: HI.benefits, eligibility: HI.eligibility, documents: HI.documents, applicationProcess: HI.applicationProcess } }), {
+      benefits: [EN.benefits],
+      eligibilityRawText: [EN.eligibility],
+      documentRequirements: [EN.documents],
+      applicationProcess: EN.applicationProcess,
+    });
+  const text = () => document.body.textContent ?? '';
+  const click = (id: string) => act(async () => { screen.getByTestId(id).click(); });
+
+  it('shows a switch on each of the four sections, with the translation selected first', async () => {
+    mocks.getSchemeById.mockResolvedValue(full());
+    await renderPage();
+    for (const key of SECTIONS) {
+      expect(screen.getByTestId('toggle-' + key)).toBeTruthy();
+      expect(screen.getByTestId('toggle-' + key + '-translated').getAttribute('aria-pressed')).toBe('true');
+      expect(screen.getByTestId('toggle-' + key + '-en').getAttribute('aria-pressed')).toBe('false');
+    }
+    expect(screen.getByTestId('toggle-benefits-translated').textContent).toBe('हिन्दी');
+    expect(text()).toContain(HI.benefits[0]);
+    expect(text()).not.toContain(EN.benefits);
+  });
+
+  it('switches one section to its English original and leaves the others translated', async () => {
+    mocks.getSchemeById.mockResolvedValue(full());
+    await renderPage();
+    await click('toggle-eligibility-en');
+    expect(text()).toContain(EN.eligibility);
+    expect(text()).not.toContain(HI.eligibility[0]);
+    expect(screen.getByTestId('toggle-eligibility-en').getAttribute('aria-pressed')).toBe('true');
+    // the other three are untouched
+    expect(text()).toContain(HI.benefits[0]);
+    expect(text()).toContain(HI.documents[0]);
+    expect(text()).toContain(HI.applicationProcess);
+  });
+
+  it('several sections can show English at the same time', async () => {
+    mocks.getSchemeById.mockResolvedValue(full());
+    await renderPage();
+    await click('toggle-benefits-en');
+    await click('toggle-documents-en');
+    expect(text()).toContain(EN.benefits);
+    expect(text()).toContain(EN.documents);
+    expect(text()).toContain(HI.eligibility[0]);
+  });
+
+  it.each([
+    ['benefits', EN.benefits, HI.benefits[0]],
+    ['eligibility', EN.eligibility, HI.eligibility[0]],
+    ['documents', EN.documents, HI.documents[0]],
+    ['howToApply', EN.applicationProcess, HI.applicationProcess],
+  ])('the %s switch shows the English original and switches back', async (key, en, hi) => {
+    mocks.getSchemeById.mockResolvedValue(full());
+    await renderPage();
+    await click('toggle-' + key + '-en');
+    expect(text()).toContain(en);
+    expect(text()).not.toContain(hi);
+    await click('toggle-' + key + '-translated');
+    expect(text()).toContain(hi);
+    expect(text()).not.toContain(en);
+  });
+
+  it('shows no switch in English', async () => {
+    mocks.language = 'en';
+    mocks.getSchemeById.mockResolvedValue(full());
+    await renderPage();
+    for (const key of SECTIONS) expect(screen.queryByTestId('toggle-' + key)).toBeNull();
+  });
+
+  it('shows no switch on a section that was not translated (it is English already)', async () => {
+    mocks.getSchemeById.mockResolvedValue(
+      schemeWith(makeTranslation({ status: 'partial', fields: { title: 'हिंदी शीर्षक', benefits: HI.benefits }, failedFields: ['eligibility'] }), {
+        benefits: [EN.benefits],
+        eligibilityRawText: [EN.eligibility],
+        documentRequirements: [EN.documents],
+        applicationProcess: EN.applicationProcess,
+      }),
+    );
+    await renderPage();
+    expect(screen.queryByTestId('toggle-benefits')).not.toBeNull();
+    for (const key of ['eligibility', 'documents', 'howToApply']) expect(screen.queryByTestId('toggle-' + key), key).toBeNull();
+    expect(text()).toContain(EN.eligibility);
+  });
+
+  it('goes back to the translation when you open another scheme from the same page', async () => {
+    mocks.getSchemeById.mockResolvedValue(full());
+    mocks.getSchemes.mockResolvedValue({ data: [makeScheme({ id: 'rel-1', name: 'Related Scheme', category: 'Education', categories: ['Education'] })], total: 1 });
+    await renderPage();
+    await click('toggle-benefits-en');
+    expect(text()).toContain(EN.benefits);
+    await act(async () => { screen.getByText('Related Scheme').click(); });
+    await act(async () => { await vi.advanceTimersByTimeAsync(0); });
+    expect(mocks.getSchemeById).toHaveBeenCalledWith('rel-1');
+    expect(text()).toContain(HI.benefits[0]);
+    expect(text()).not.toContain(EN.benefits);
+  });
+
+  it('does not remember the choice: a different page starts translated again', async () => {
+    mocks.getSchemeById.mockResolvedValue(full());
+    await renderPage();
+    await click('toggle-benefits-en');
+    expect(text()).toContain(EN.benefits);
+    cleanup();
+    await renderPage();
+    expect(text()).toContain(HI.benefits[0]);
+    expect(text()).not.toContain(EN.benefits);
   });
 });
 

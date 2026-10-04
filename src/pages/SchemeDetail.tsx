@@ -26,16 +26,23 @@ import { motion } from 'framer-motion';
 import { translateScheme, applyServerTranslation, applyVocabulary } from '../utils/translationUtils';
 import { stripDetailsHeading } from '../utils/descriptionText';
 import { LinkedText } from '../components/LinkedText';
+import { SectionLanguageToggle } from '../components/SectionLanguageToggle';
+import { nativeLanguageName } from '../utils/languageNames';
 
-const DetailSection: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
+const DetailSection: React.FC<{ icon: React.ReactNode; title: string; toggle?: React.ReactNode; children: React.ReactNode }> = ({ icon, title, toggle, children }) => (
   <section className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm transition-colors">
-    <h2 className="flex items-center gap-2 font-heading text-sm md:text-base font-extrabold text-primary dark:text-white mb-3">
-      <span className="text-secondary dark:text-sky-400">{icon}</span>
-      {title}
-    </h2>
+    <div className="flex items-start justify-between gap-3 mb-3">
+      <h2 className="flex items-center gap-2 font-heading text-sm md:text-base font-extrabold text-primary dark:text-white">
+        <span className="text-secondary dark:text-sky-400">{icon}</span>
+        {title}
+      </h2>
+      {toggle}
+    </div>
     {children}
   </section>
 );
+
+type SectionKey = 'benefits' | 'eligibility' | 'howToApply' | 'documents';
 
 const BulletList: React.FC<{ items: string[] }> = ({ items }) => (
   <ul className="list-disc pl-5 space-y-2 marker:text-secondary dark:marker:text-sky-400">
@@ -59,6 +66,9 @@ export const SchemeDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   // True once we stopped asking about a translation that never finished: the page then says so instead of "translating…".
   const [pollGaveUp, setPollGaveUp] = useState(false);
+  // Which sections show the English original instead of the translation. Not remembered: it resets with the page or the language.
+  const [englishSections, setEnglishSections] = useState<Partial<Record<SectionKey, boolean>>>({});
+  useEffect(() => { setEnglishSections({}); }, [id, language]);
 
   useEffect(() => {
     const loadSchemeDetails = async () => {
@@ -144,6 +154,33 @@ export const SchemeDetail: React.FC = () => {
   const applicationProcess = (translatedScheme?.applicationProcess ?? '')
     .replace(/^\s*application process\s*:?\s*\n/i, '')
     .trim();
+
+  // The English original of each section is already on the page (the raw scheme); the switch only chooses which to show.
+  const sameText = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+  const englishBenefits = scheme?.benefits ?? (scheme?.benefit ? [scheme.benefit] : []);
+  const englishEligibility = scheme?.eligibilityRawText ?? [];
+  const englishDocuments = scheme?.documentRequirements ?? [];
+  const englishProcess = (scheme?.applicationProcess ?? '').replace(/^\s*application process\s*:?\s*\n/i, '').trim();
+  const canToggle: Record<SectionKey, boolean> = {
+    benefits: language !== 'en' && !sameText(benefitItems, englishBenefits),
+    eligibility: language !== 'en' && !sameText(eligibilityItems, englishEligibility),
+    documents: language !== 'en' && !sameText(documentItems, englishDocuments),
+    howToApply: language !== 'en' && !sameText(applicationProcess, englishProcess),
+  };
+  const toggleFor = (key: SectionKey) =>
+    canToggle[key] ? (
+      <SectionLanguageToggle
+        testId={`toggle-${key}`}
+        label={t('sectionLanguageToggle')}
+        translatedName={nativeLanguageName(language)}
+        showEnglish={!!englishSections[key]}
+        onChange={(showEnglish) => setEnglishSections((prev) => ({ ...prev, [key]: showEnglish }))}
+      />
+    ) : undefined;
+  const shownBenefits = englishSections.benefits && canToggle.benefits ? englishBenefits : benefitItems;
+  const shownEligibility = englishSections.eligibility && canToggle.eligibility ? englishEligibility : eligibilityItems;
+  const shownDocuments = englishSections.documents && canToggle.documents ? englishDocuments : documentItems;
+  const shownProcess = englishSections.howToApply && canToggle.howToApply ? englishProcess : applicationProcess;
 
   if (!translatedScheme) {
     return (
@@ -254,21 +291,21 @@ export const SchemeDetail: React.FC = () => {
 
           {/* Benefits: every benefit listed in the source data, not just the first */}
           {benefitItems.length > 0 && (
-            <DetailSection icon={<Coins className="w-4 h-4" />} title={t('schemeBenefits')}>
-              <BulletList items={benefitItems} />
+            <DetailSection icon={<Coins className="w-4 h-4" />} title={t('schemeBenefits')} toggle={toggleFor('benefits')}>
+              <BulletList items={shownBenefits} />
             </DetailSection>
           )}
 
           {/* Eligibility */}
           {eligibilityItems.length > 0 && (
-            <DetailSection icon={<CheckCircle className="w-4 h-4" />} title={t('schemeEligibility')}>
-              <BulletList items={eligibilityItems} />
+            <DetailSection icon={<CheckCircle className="w-4 h-4" />} title={t('schemeEligibility')} toggle={toggleFor('eligibility')}>
+              <BulletList items={shownEligibility} />
             </DetailSection>
           )}
 
           {/* How to apply: mode(s) plus the step-by-step process text */}
           {(applicationModes.length > 0 || applicationProcess) && (
-            <DetailSection icon={<ClipboardList className="w-4 h-4" />} title={t('howToApply')}>
+            <DetailSection icon={<ClipboardList className="w-4 h-4" />} title={t('howToApply')} toggle={toggleFor('howToApply')}>
               {applicationModes.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                   <span className="text-xs font-bold text-on-surface-variant dark:text-zinc-400">{t('applicationModeLabel')}:</span>
@@ -279,9 +316,9 @@ export const SchemeDetail: React.FC = () => {
                   ))}
                 </div>
               )}
-              {applicationProcess && (
+              {shownProcess && (
                 <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed whitespace-pre-line break-words">
-                  <LinkedText text={applicationProcess} />
+                  <LinkedText text={shownProcess} />
                 </p>
               )}
             </DetailSection>
@@ -289,8 +326,8 @@ export const SchemeDetail: React.FC = () => {
 
           {/* Documents required */}
           {documentItems.length > 0 && (
-            <DetailSection icon={<FileText className="w-4 h-4" />} title={t('documentsRequired')}>
-              <BulletList items={documentItems} />
+            <DetailSection icon={<FileText className="w-4 h-4" />} title={t('documentsRequired')} toggle={toggleFor('documents')}>
+              <BulletList items={shownDocuments} />
             </DetailSection>
           )}
 
