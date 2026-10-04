@@ -45,7 +45,8 @@ const db = vi.hoisted(() => {
   };
 });
 
-vi.mock('../config/env.js', () => ({ default: { NODE_ENV: 'test', SESSION_SECRET: 'test-secret' } }));
+const testConfig = vi.hoisted(() => ({ NODE_ENV: 'test' as string, SESSION_SECRET: 'test-secret' }));
+vi.mock('../config/env.js', () => ({ default: testConfig }));
 vi.mock('../db/prisma.js', () => ({ default: db.prisma }));
 
 const { default: accountRouter } = await import('./account.js');
@@ -62,6 +63,7 @@ function app() {
 const cookieFor = (userId: string) => `schemesetu_session=${jwt.sign({ userId }, 'test-secret')}`;
 
 beforeEach(() => {
+  testConfig.NODE_ENV = 'test';
   db.state.failOn = '';
   db.state.users = [
     { id: 'u1', googleId: 'g1', email: 'one@example.test', name: 'One', profilePictureUrl: 'http://pic/1', createdAt: new Date('2026-01-01') },
@@ -159,6 +161,15 @@ describe('DELETE /api/account', () => {
     const set = (res.headers['set-cookie'] as unknown as string[]).join(';');
     expect(set).toMatch(/schemesetu_session=;/);
     expect(set).toMatch(/Expires=Thu, 01 Jan 1970/);
+  });
+
+  it('in production clears the cookie with Secure and SameSite=None, like logout', async () => {
+    testConfig.NODE_ENV = 'production';
+    const res = await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
+    const cleared = String(res.headers['set-cookie']?.[0]);
+    expect(cleared).toMatch(/SameSite=None/);
+    expect(cleared).toMatch(/;\s*Secure/);
+    expect(cleared).toMatch(/;\s*HttpOnly/);
   });
 
   it('works for an account that never saved a profile or a bookmark', async () => {

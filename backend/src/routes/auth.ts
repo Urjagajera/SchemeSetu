@@ -4,22 +4,11 @@ import jwt from 'jsonwebtoken';
 import prisma from '../db/prisma.js';
 import config from '../config/env.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
-import { requireAuth, SESSION_COOKIE_NAME } from '../middleware/requireAuth.js';
+import { requireAuth } from '../middleware/requireAuth.js';
+import { setSessionCookie, clearSessionCookie } from '../utils/sessionCookie.js';
 import { authLimiter } from '../middleware/rateLimiters.js';
 
 const router = Router();
-
-const SESSION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
-
-function setSessionCookie(res: Response, userId: string): void {
-  const token = jwt.sign({ userId }, config.SESSION_SECRET, { expiresIn: '7d' });
-  res.cookie(SESSION_COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: config.NODE_ENV === 'production',
-    sameSite: config.NODE_ENV === 'production' ? 'none' : 'lax',
-    maxAge: SESSION_MAX_AGE_MS,
-  });
-}
 
 function serializeUser(user: { id: string; name: string | null; email: string; profilePictureUrl: string | null }) {
   return {
@@ -95,7 +84,7 @@ router.post(
 
 /** POST /api/auth/logout — idempotent; clears the session cookie regardless of whether one was present. */
 router.post('/logout', (_req: Request, res: Response) => {
-  res.clearCookie(SESSION_COOKIE_NAME);
+  clearSessionCookie(res);
   res.json({ success: true });
 });
 

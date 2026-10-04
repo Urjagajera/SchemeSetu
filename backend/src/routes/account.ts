@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../db/prisma.js';
-import config from '../config/env.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
-import { requireAuth, SESSION_COOKIE_NAME } from '../middleware/requireAuth.js';
+import { requireAuth } from '../middleware/requireAuth.js';
+import { clearSessionCookie } from '../utils/sessionCookie.js';
 
 const router = Router();
 
@@ -80,8 +80,7 @@ router.delete(
       prisma.profile.deleteMany({ where: { userId } }),
       prisma.user.deleteMany({ where: { id: userId } }),
     ]);
-    const production = config.NODE_ENV === 'production';
-    res.clearCookie(SESSION_COOKIE_NAME, { httpOnly: true, secure: production, sameSite: production ? 'none' : 'lax' });
+    clearSessionCookie(res);
     res.json({ success: true, deleted: { bookmarks: bookmarks.count, profile: profile.count, account: user.count } });
   }),
 );

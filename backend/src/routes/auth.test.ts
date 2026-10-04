@@ -151,6 +151,35 @@ describe('POST /api/auth/logout', () => {
   });
 });
 
+describe('POST /api/auth/logout: cookie attributes', () => {
+  afterEach(() => { testConfig.NODE_ENV = 'development'; });
+
+  it.each([
+    ['production', /SameSite=None/, /;\s*Secure/],
+    ['development', /SameSite=Lax/, null],
+  ] as const)('in %s it clears the cookie with the same attributes it is set with', async (env, sameSite, secure) => {
+    testConfig.NODE_ENV = env;
+    const res = await request(buildApp()).post('/api/auth/logout').send();
+    const cleared = String(res.headers['set-cookie']?.[0]);
+    expect(cleared).toMatch(/Expires=Thu, 01 Jan 1970/);
+    expect(cleared).toMatch(/;\s*HttpOnly/);
+    expect(cleared).toMatch(sameSite);
+    if (secure) expect(cleared).toMatch(secure);
+    else expect(cleared).not.toMatch(/;\s*Secure/);
+  });
+
+  it('is the same cookie attributes sign-in sets', async () => {
+    testConfig.NODE_ENV = 'production';
+    mockVerifyIdToken.mockResolvedValueOnce({ getPayload: () => ({ sub: 'g', email: 'a@b.test' }) });
+    mockPrisma.user.findUnique.mockResolvedValueOnce(null);
+    mockPrisma.user.upsert.mockResolvedValueOnce({ id: 'u', name: 'A', email: 'a@b.test', profilePictureUrl: null });
+    const signIn = await request(buildApp()).post('/api/auth/google').send({ idToken: 'x' });
+    const logout = await request(buildApp()).post('/api/auth/logout').send();
+    const attrs = (c: string) => c.split(';').map((p) => p.trim()).filter((p) => /^(HttpOnly|Secure|SameSite=.*|Path=.*)$/.test(p)).sort();
+    expect(attrs(String(logout.headers['set-cookie']?.[0]))).toEqual(attrs(String(signIn.headers['set-cookie']?.[0])));
+  });
+});
+
 describe('GET /api/auth/me', () => {
   const app = buildApp();
 
