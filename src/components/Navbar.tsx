@@ -31,7 +31,7 @@ export const Navbar: React.FC = () => {
   if (isLandingPage) return null;
 
   const navLinks = isAuthPage
-    ? [{ name: 'Dashboard', path: '/', icon: LayoutDashboard }]
+    ? [{ name: t('shDashboard'), path: '/', icon: LayoutDashboard }]
     : (isLandingPage ? [] : [
         { name: t('searchBtn'), path: '/search', icon: BookOpen },
         { name: t('aiAssistant'), path: '/ai', icon: Bot },
@@ -152,7 +152,7 @@ export const Navbar: React.FC = () => {
 
           <div className="pt-4 border-t border-outline-variant dark:border-zinc-800 flex flex-col gap-3">
             <div className="flex justify-between items-center px-3">
-              <span className="text-sm font-medium text-on-surface-variant dark:text-zinc-400">Language</span>
+              <span className="text-sm font-medium text-on-surface-variant dark:text-zinc-400">{t('shLanguage')}</span>
               <LanguageSwitcher />
             </div>
 

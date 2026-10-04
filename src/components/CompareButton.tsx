@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeftRight } from 'lucide-react';
 import { useCompare } from '../contexts/CompareContext';
+import { useTranslation } from '../contexts/LanguageContext';
 import { Scheme } from '../types';
 import { cn } from '../utils/cn';
 
@@ -10,6 +11,7 @@ interface CompareButtonProps {
 }
 
 export const CompareButton: React.FC<CompareButtonProps> = ({ scheme, className }) => {
+  const { t } = useTranslation();
   const { isInCompare, addToCompare, removeFromCompare } = useCompare();
   const checked = isInCompare(scheme.id);
 
@@ -20,7 +22,7 @@ export const CompareButton: React.FC<CompareButtonProps> = ({ scheme, className 
     } else {
       const res = addToCompare(scheme);
       if (!res.success) {
-        alert(res.message);
+        alert(t(res.message));
       }
     }
   };
@@ -33,7 +35,7 @@ export const CompareButton: React.FC<CompareButtonProps> = ({ scheme, className 
         checked ? "text-secondary bg-secondary-container/20 border-secondary" : "text-on-surface-variant bg-white",
         className
       )}
-      title={checked ? "Remove from Comparison" : "Add to Comparison (Max 3)"}
+      title={checked ? t('shCmpRemove') : t('shCmpAdd')}
     >
       <ArrowLeftRight className="w-5 h-5" />
     </button>

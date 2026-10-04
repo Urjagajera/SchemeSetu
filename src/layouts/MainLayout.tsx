@@ -15,10 +15,10 @@ export const MainLayout: React.FC = () => {
   const location = useLocation();
 
   const mobileNavItems = [
-    { label: 'Home', path: '/', icon: Home },
-    { label: 'Search', path: '/search', icon: Search },
-    { label: 'SetuAI', path: '/ai', icon: Bot },
-    { label: 'Account', path: isAuthenticated ? '/dashboard' : '/login', icon: User }
+    { label: t('shTabHome'), path: '/', icon: Home },
+    { label: t('shTabSearch'), path: '/search', icon: Search },
+    { label: t('shTabAssistant'), path: '/ai', icon: Bot },
+    { label: t('shTabAccount'), path: isAuthenticated ? '/dashboard' : '/login', icon: User }
   ];
 
   // Some pages like full-page AI chat don't need a double footer or large margins

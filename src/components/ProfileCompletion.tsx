@@ -35,7 +35,7 @@ export const ProfileCompletion: React.FC<ProfileCompletionProps> = ({
           </p>
         </div>
         <span className="flex items-center gap-1 text-[11px] font-bold text-secondary bg-secondary-container/20 px-2.5 py-0.5 rounded-full whitespace-nowrap">
-          {percentage}% Complete
+          {percentage}% {t('shComplete')}
         </span>
       </div>
 
@@ -49,7 +49,7 @@ export const ProfileCompletion: React.FC<ProfileCompletionProps> = ({
         </div>
         {missingFields.length > 0 && (
           <p className="text-[11px] text-on-surface-variant dark:text-zinc-400">
-            Missing: <span className="font-bold">{missingFields.join(', ')}</span>
+            {t('shMissing')} <span className="font-bold">{missingFields.join(', ')}</span>
           </p>
         )}
       </div>

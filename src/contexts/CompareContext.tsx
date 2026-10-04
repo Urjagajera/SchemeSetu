@@ -3,7 +3,8 @@ import { Scheme } from '../types';
 
 interface CompareContextProps {
   comparedSchemes: Scheme[];
-  addToCompare: (scheme: Scheme) => { success: boolean; message: string };
+  // `message` is a locale key (see locales/*.json); the caller shows it with t().
+  addToCompare: (scheme: Scheme) => { success: boolean; message: 'shCmpAlready' | 'shCmpMax' | 'shCmpAdded' };
   removeFromCompare: (id: string) => void;
   isInCompare: (id: string) => boolean;
   clearCompare: () => void;
@@ -14,15 +15,15 @@ const CompareContext = createContext<CompareContextProps | undefined>(undefined)
 export const CompareProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [comparedSchemes, setComparedSchemes] = useState<Scheme[]>([]);
 
-  const addToCompare = (scheme: Scheme) => {
+  const addToCompare = (scheme: Scheme): { success: boolean; message: 'shCmpAlready' | 'shCmpMax' | 'shCmpAdded' } => {
     if (comparedSchemes.find(s => s.id === scheme.id)) {
-      return { success: false, message: 'Scheme is already added to comparison.' };
+      return { success: false, message: 'shCmpAlready' };
     }
     if (comparedSchemes.length >= 3) {
-      return { success: false, message: 'You can compare a maximum of 3 schemes.' };
+      return { success: false, message: 'shCmpMax' };
     }
     setComparedSchemes(prev => [...prev, scheme]);
-    return { success: true, message: 'Scheme added to comparison.' };
+    return { success: true, message: 'shCmpAdded' };
   };
 
   const removeFromCompare = (id: string) => {

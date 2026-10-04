@@ -63,7 +63,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const socialCategories = [
     { label: t('allSocialCategories'), value: '' },
-    { label: 'General', value: 'general' },
+    { label: t('shCatGeneral'), value: 'general' },
     { label: 'SC', value: 'sc' },
     { label: 'ST', value: 'st' },
     { label: 'OBC', value: 'obc' }
@@ -159,7 +159,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className="border-b border-outline-variant dark:border-zinc-850 pb-4 space-y-3">
         <div className="flex items-center gap-2 text-primary dark:text-white">
           <MapPin className="w-4 h-4 text-secondary dark:text-sky-400" />
-          <span className="text-xs font-extrabold uppercase tracking-wider">Scope & Location</span>
+          <span className="text-xs font-extrabold uppercase tracking-wider">{t('shFilterScope')}</span>
         </div>
 
         {/* Level */}
@@ -217,7 +217,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className="border-b border-outline-variant dark:border-zinc-850 pb-4 space-y-3">
         <div className="flex items-center gap-2 text-primary dark:text-white">
           <User className="w-4 h-4 text-secondary dark:text-sky-400" />
-          <span className="text-xs font-extrabold uppercase tracking-wider">Demographics</span>
+          <span className="text-xs font-extrabold uppercase tracking-wider">{t('shFilterDemo')}</span>
         </div>
 
         {/* Occupation */}

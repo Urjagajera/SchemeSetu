@@ -25,24 +25,24 @@ export const Footer: React.FC = () => {
               </span>
             </Link>
             <p className="text-xs text-on-surface-variant dark:text-zinc-400 leading-relaxed">
-              Discover central and state government schemes, check your eligibility, and find where to apply.
+              {t('shTagline')}
             </p>
           </div>
 
           {/* Column 2: Explore */}
           <div className="flex flex-col gap-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-primary dark:text-white">
-              Explore
+              {t('shExplore')}
             </h4>
             <div className="flex flex-col gap-2">
               <Link to={getLinkPath('/search')} className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
-                All Government Schemes
+                {t('shAllSchemes')}
               </Link>
               <Link to={getLinkPath('/ai')} className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
-                AI Assistant (SetuAI)
+                {t('shAiLink')}
               </Link>
               <Link to={getLinkPath('/eligibility')} className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
-                Eligibility Checker
+                {t('shEligLink')}
               </Link>
             </div>
           </div>
@@ -50,7 +50,7 @@ export const Footer: React.FC = () => {
           {/* Column 3: Support & Legal */}
           <div className="flex flex-col gap-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-primary dark:text-white">
-              Support & Legal
+              {t('shSupport')}
             </h4>
             <div className="flex flex-col gap-2">
               <Link to={getLinkPath('/help')} className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { useTranslation } from '../contexts/LanguageContext';
 
 interface PaginationProps {
   currentPage: number;
@@ -15,6 +16,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   className
 }) => {
+  const { t } = useTranslation();
   if (totalPages <= 1) return null;
 
   const getPageNumbers = () => {
@@ -65,13 +67,13 @@ export const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <nav className={cn("flex items-center justify-center gap-1.5 mt-8", className)} aria-label="Pagination">
+    <nav className={cn("flex items-center justify-center gap-1.5 mt-8", className)} aria-label={t('shPagination')}>
       {/* Prev */}
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className="p-2 rounded-lg border border-outline-variant bg-white text-on-surface hover:bg-surface-container-low disabled:opacity-50 disabled:pointer-events-none transition-colors focus:outline-none dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
-        title="Previous Page"
+        title={t('shPrevPage')}
       >
         <ChevronLeft className="w-4 h-4" />
       </button>
@@ -109,7 +111,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         className="p-2 rounded-lg border border-outline-variant bg-white text-on-surface hover:bg-surface-container-low disabled:opacity-50 disabled:pointer-events-none transition-colors focus:outline-none dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
-        title="Next Page"
+        title={t('shNextPage')}
       >
         <ChevronRight className="w-4 h-4" />
       </button>

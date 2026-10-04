@@ -1,6 +1,7 @@
 import React from 'react';
 import { Bookmark } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from '../contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '../utils/cn';
 
@@ -18,6 +19,7 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
   className
 }) => {
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleClick = (e: React.MouseEvent) => {
@@ -37,7 +39,7 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
         isBookmarked ? "text-secondary bg-secondary-container/20 border-secondary" : "text-on-surface-variant bg-white",
         className
       )}
-      title={isBookmarked ? "Remove Bookmark" : "Save Scheme"}
+      title={isBookmarked ? t('shBmRemove') : t('shBmSave')}
     >
       <Bookmark className={cn("w-5 h-5", isBookmarked && "fill-current")} />
     </button>

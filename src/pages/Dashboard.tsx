@@ -32,6 +32,8 @@ export const Dashboard: React.FC = () => {
   const checkProfileCompleteness = () => {
     let completedFields = 0;
     const fieldsToCheck = ['age', 'gender', 'state', 'category', 'occupation', 'income', 'residence'];
+    // what each is called in the "Missing:" list (locale keys)
+    const fieldNames: Record<string, Parameters<typeof t>[0]> = { age: 'pfAge', gender: 'genderLabel', state: 'stateLabel', category: 'socialCategory', occupation: 'occupationLabel', income: 'pfFIncome', residence: 'residence' };
     const missing: string[] = [];
 
     fieldsToCheck.forEach(f => {
@@ -39,7 +41,7 @@ export const Dashboard: React.FC = () => {
       if (val && val !== '') {
         completedFields++;
       } else {
-        missing.push(f.charAt(0).toUpperCase() + f.slice(1));
+        missing.push(t(fieldNames[f]));
       }
     });
 

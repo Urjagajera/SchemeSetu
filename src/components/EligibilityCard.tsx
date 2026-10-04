@@ -36,7 +36,7 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
             {report.schemeTitle}
           </h3>
           <p className="text-xs text-on-surface-variant dark:text-zinc-400 mt-1">
-            Detailed criteria analysis based on your demographic profile.
+            {t('shEcAnalysis')}
           </p>
         </div>
         
@@ -59,7 +59,7 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
         <div className="space-y-3">
           <h4 className="font-heading text-sm font-bold text-green-700 dark:text-green-400 flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4" />
-            Verified Criteria ({report.passedCriteria.length})
+            {t('shEcVerified')} ({report.passedCriteria.length})
           </h4>
           {report.passedCriteria.length > 0 ? (
             <ul className="space-y-2">
@@ -71,7 +71,7 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
               ))}
             </ul>
           ) : (
-            <p className="text-xs md:text-sm text-on-surface-variant dark:text-zinc-550 italic">None of the criteria matched.</p>
+            <p className="text-xs md:text-sm text-on-surface-variant dark:text-zinc-550 italic">{t('shEcNone')}</p>
           )}
         </div>
 
@@ -94,7 +94,7 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
             unverified.length > 0 ? (
             <p className="text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 italic">{t('nothingRulesOut')}</p>
           ) : (
-            <p className="text-xs md:text-sm text-green-700 dark:text-green-400 italic">No missing requirements. You are fully eligible!</p>
+            <p className="text-xs md:text-sm text-green-700 dark:text-green-400 italic">{t('shEcAllMet')}</p>
           )
           )}
         </div>
