@@ -58,3 +58,33 @@ describe('SchemeCard description', () => {
     expect(cardText(container)).not.toContain(BODY);
   });
 });
+
+describe('SchemeCard machine-translation badge', () => {
+  it('is shown when a translated title has arrived in Hindi mode', () => {
+    mocks.language = 'hi';
+    mocks.cardText = { titles: { 'scheme-1': 'हिंदी शीर्षक' }, summaries: {} };
+    renderCard();
+    expect(screen.getByTestId('machine-translated-badge').textContent).toBe('machineTranslatedBadge');
+    expect(screen.getByTestId('machine-translated-badge').getAttribute('title')).toBe('machineTranslatedNote');
+  });
+
+  it('is shown when only the summary has arrived', () => {
+    mocks.language = 'hi';
+    mocks.cardText = { titles: {}, summaries: { 'scheme-1': 'सारांश' } };
+    renderCard();
+    expect(screen.queryByTestId('machine-translated-badge')).not.toBeNull();
+  });
+
+  it('is not shown while the card is still English in Hindi mode', () => {
+    mocks.language = 'hi';
+    renderCard();
+    expect(screen.queryByTestId('machine-translated-badge')).toBeNull();
+  });
+
+  it('is not shown in English, even if translated text is lying around', () => {
+    mocks.language = 'en';
+    mocks.cardText = { titles: { 'scheme-1': 'हिंदी शीर्षक' }, summaries: {} };
+    renderCard();
+    expect(screen.queryByTestId('machine-translated-badge')).toBeNull();
+  });
+});

@@ -192,6 +192,8 @@
   "nothingRulesOut": "Nothing in your profile rules this out so far.",
   "translatingNotice": "Translating this page… showing English for now.",
   "translationPartialNote": "Some sections could not be translated and are shown in English.",
+  "machineTranslatedNote": "This text is machine translated and may contain mistakes. The English original is available: switch the language to English.",
+  "machineTranslatedBadge": "Machine translated",
   "schemeLevelCentral": "Central Scheme",
   "schemeLevelState": "State Scheme",
   "availableMatches": "Available Matches",

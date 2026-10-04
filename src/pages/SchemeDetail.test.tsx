@@ -126,6 +126,41 @@ describe('SchemeDetail translation notices', () => {
   });
 });
 
+describe('SchemeDetail machine-translation note', () => {
+  const NOTE = 'machineTranslatedNote';
+
+  it('is shown on a translated page, whether fully or partly translated', async () => {
+    mocks.getSchemeById.mockResolvedValue(schemeWith(makeTranslation({ status: 'ready', fields: { title: 'हिंदी शीर्षक' } })));
+    await renderPage();
+    expect(screen.getByTestId('machine-translated-note').textContent).toBe(NOTE);
+  });
+
+  it('is shown when only part was translated', async () => {
+    mocks.getSchemeById.mockResolvedValue(schemeWith(makeTranslation({ status: 'partial', fields: { title: 'हिंदी शीर्षक' }, failedFields: ['description'] })));
+    await renderPage();
+    expect(screen.queryByTestId('machine-translated-note')).not.toBeNull();
+  });
+
+  it('is not shown in English', async () => {
+    mocks.language = 'en';
+    mocks.getSchemeById.mockResolvedValue(schemeWith(makeTranslation({ status: 'ready', fields: { title: 'हिंदी शीर्षक' } })));
+    await renderPage();
+    expect(screen.queryByTestId('machine-translated-note')).toBeNull();
+  });
+
+  it('is not shown while the page is still English and being translated, or when translation is off', async () => {
+    mocks.getSchemeById.mockResolvedValue(schemeWith(makeTranslation({ status: 'pending' })));
+    await renderPage();
+    expect(screen.queryByTestId('machine-translated-note')).toBeNull();
+  });
+
+  it('is not shown when translation is unavailable (the page is plain English)', async () => {
+    mocks.getSchemeById.mockResolvedValue(schemeWith(makeTranslation({ status: 'unavailable' })));
+    await renderPage();
+    expect(screen.queryByTestId('machine-translated-note')).toBeNull();
+  });
+});
+
 describe('SchemeDetail description heading', () => {
   // The source descriptions open with a one-word heading line, "Details", which only gets in the way.
   const DETAILS_ONLY = /^(Details|विवरण)$/;

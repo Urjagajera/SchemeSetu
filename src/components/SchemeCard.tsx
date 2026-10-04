@@ -104,6 +104,13 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
           {scheme.shortDesc}
         </p>
 
+        {/* Only when a machine translation is actually on the card (not while it is still English) */}
+        {language !== 'en' && (titles[rawScheme.id] || summaries[rawScheme.id]) && (
+          <p data-testid="machine-translated-badge" title={t('machineTranslatedNote')} className="text-[10px] font-semibold text-on-surface-variant dark:text-zinc-500 mb-3">
+            {t('machineTranslatedBadge')}
+          </p>
+        )}
+
         {/* Criteria the profile couldn't answer: never a reason to hide the scheme, just a nudge */}
         {scheme.unverifiedCriteria && scheme.unverifiedCriteria.length > 0 && (
           <p className="text-[11px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 rounded px-2 py-1 mb-3">

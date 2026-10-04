@@ -192,6 +192,13 @@ export const SchemeDetail: React.FC = () => {
         </div>
       )}
 
+      {/* The translation is machine made: say so, and point to the English original */}
+      {language !== 'en' && (scheme?.translation?.status === 'ready' || scheme?.translation?.status === 'partial') && (
+        <p data-testid="machine-translated-note" className="text-xs text-on-surface-variant dark:text-zinc-400 -mt-2">
+          {t('machineTranslatedNote')}
+        </p>
+      )}
+
       {/* Main Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         
