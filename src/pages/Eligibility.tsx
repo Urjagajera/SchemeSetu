@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useBookmarks } from '../hooks/useBookmarks';
@@ -55,30 +55,75 @@ export const Eligibility: React.FC = () => {
 
   const [wizardSubmitted, setWizardSubmitted] = useState(false);
 
+  // Results come a page at a time. `usedProfile` is the profile the first page was worked out for, so "Show more" asks
+  // about the same one.
+  const [paging, setPaging] = useState({ page: 1, total: 0, hasMore: false });
+  const [loadingMore, setLoadingMore] = useState(false);
+  const usedProfile = useRef<UserProfile | null>(null);
+
   // States list for the wizard: the same fixed list of states and union territories as everywhere else.
   const states = useStates();
   const occupations = ['student', 'farmer', 'entrepreneur', 'senior citizen', 'unemployed', 'employee', 'other'];
 
   // Run matching
+  const reportsFor = async (userProfile: UserProfile, list: Scheme[]) => {
+    const reportMap: Record<string, EligibilityReport> = {};
+    for (const scheme of list) {
+      reportMap[scheme.id] = await eligibilityService.getEligibilityReport(userProfile, scheme);
+    }
+    return reportMap;
+  };
+
   const evaluateEligibility = async (userProfile: UserProfile) => {
     try {
       setLoading(true);
-      const matches = await schemeService.getEligibleSchemes(userProfile);
-      setSchemes(matches);
-
+      usedProfile.current = userProfile;
+      const first = await schemeService.getEligibleSchemesPage(userProfile, 1);
+      setSchemes(first.data);
+      setPaging({ page: 1, total: first.total, hasMore: first.hasMore });
       // Generate report cards for each matching scheme
-      const reportMap: Record<string, EligibilityReport> = {};
-      for (const scheme of matches) {
-        const report = await eligibilityService.getEligibilityReport(userProfile, scheme);
-        reportMap[scheme.id] = report;
-      }
-      setReports(reportMap);
+      setReports(await reportsFor(userProfile, first.data));
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
+
+  // The next page of matches, added under the ones already shown. A scheme that is already on the page is never added twice.
+  const showMore = async () => {
+    const userProfile = usedProfile.current;
+    if (!userProfile || loadingMore) return;
+    try {
+      setLoadingMore(true);
+      const nextPage = paging.page + 1;
+      const next = await schemeService.getEligibleSchemesPage(userProfile, nextPage);
+      const shown = new Set(schemes.map((s) => s.id));
+      const fresh = next.data.filter((s) => !shown.has(s.id));
+      const freshReports = await reportsFor(userProfile, fresh);
+      setSchemes((prev) => [...prev, ...fresh]);
+      setReports((prev) => ({ ...prev, ...freshReports }));
+      setPaging({ page: nextPage, total: next.total, hasMore: next.hasMore });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
+  const showMoreButton = paging.hasMore ? (
+    <div className="flex justify-center pt-2">
+      <button
+        type="button"
+        data-testid="show-more"
+        onClick={showMore}
+        disabled={loadingMore}
+        className="px-6 py-2.5 border border-secondary text-secondary dark:border-sky-500 dark:text-sky-400 rounded-lg text-xs md:text-sm font-bold hover:bg-secondary/10 transition-colors disabled:opacity-60"
+      >
+        {loadingMore ? t('optLoading') : t('recShowMore')}
+      </button>
+    </div>
+  ) : null;
 
   // Evaluate automatically if logged in
   useEffect(() => {
@@ -176,7 +221,7 @@ export const Eligibility: React.FC = () => {
         {/* Eligible schemes reports */}
         <div className="space-y-6">
           <h3 className="font-heading text-base md:text-lg font-bold text-primary dark:text-white pt-4">
-            {t('availableMatches')} ({schemes.length})
+            {t('availableMatches')} ({schemes.length}{paging.total > schemes.length ? ` / ${paging.total}` : ''})
           </h3>
 
           {loading ? (
@@ -194,6 +239,7 @@ export const Eligibility: React.FC = () => {
                   />
                 );
               })}
+              {showMoreButton}
             </div>
           ) : (
             <div className="text-center py-16 bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl max-w-md mx-auto shadow-sm">
@@ -270,6 +316,7 @@ export const Eligibility: React.FC = () => {
                 />
               );
             })}
+            {showMoreButton}
           </div>
         ) : (
           <div className="text-center py-16 bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl max-w-md mx-auto shadow-sm">

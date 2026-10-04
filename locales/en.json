@@ -433,5 +433,6 @@
   "acConfirmGo": "Delete permanently",
   "acCancel": "Cancel",
   "acDeleteBusy": "Deleting…",
-  "acDeleteFail": "We could not delete your account. Nothing was removed. Please try again."
+  "acDeleteFail": "We could not delete your account. Nothing was removed. Please try again.",
+  "recShowMore": "Show more"
 }

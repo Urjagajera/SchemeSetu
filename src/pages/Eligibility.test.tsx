@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 const mocks = vi.hoisted(() => ({
   language: 'en' as 'en' | 'hi' | 'gu',
-  getEligibleSchemes: vi.fn(),
+  getEligibleSchemesPage: vi.fn(),
 }));
 
 vi.mock('../contexts/AuthContext', () => ({ useAuth: () => ({ isAuthenticated: false, profile: {} }) }));
@@ -18,7 +18,7 @@ vi.mock('../contexts/LanguageContext', async () => {
 vi.mock('../hooks/useBookmarks', () => ({ useBookmarks: () => ({ bookmarks: [], toggleBookmark: () => {} }) }));
 vi.mock('../hooks/useStates', () => ({ useStates: () => ['Gujarat'] }));
 vi.mock('../hooks/useVocabulary', () => ({ useVocabulary: () => ({ vocab: null, loading: false }) }));
-vi.mock('../services/schemeService', () => ({ schemeService: { getEligibleSchemes: mocks.getEligibleSchemes } }));
+vi.mock('../services/schemeService', () => ({ schemeService: { getEligibleSchemesPage: mocks.getEligibleSchemesPage } }));
 vi.mock('../services/eligibilityService', () => ({ eligibilityService: { getEligibilityReport: vi.fn() } }));
 
 import { Eligibility } from './Eligibility';
@@ -31,8 +31,8 @@ const WORDS = {
 
 beforeEach(() => {
   mocks.language = 'en';
-  mocks.getEligibleSchemes.mockReset();
-  mocks.getEligibleSchemes.mockResolvedValue([]);
+  mocks.getEligibleSchemesPage.mockReset();
+  mocks.getEligibleSchemesPage.mockResolvedValue({ data: [], total: 0, hasMore: false, page: 1 });
 });
 
 const text = () => document.body.textContent ?? '';
@@ -76,7 +76,7 @@ async function walk(lang: 'en' | 'hi' | 'gu') {
 describe('Eligibility wizard: every step and the results screen in each language', () => {
   it.each(['en', 'hi', 'gu'] as const)('%s', async (lang) => {
     await walk(lang);
-    expect(mocks.getEligibleSchemes).toHaveBeenCalledTimes(1);
+    expect(mocks.getEligibleSchemesPage).toHaveBeenCalledTimes(1);
   });
 
   it('Hindi and Gujarati show none of the old hardcoded English wording', async () => {
@@ -91,7 +91,7 @@ describe('Eligibility wizard: every step and the results screen in each language
 
   it('the answers still go to the matcher as the same plain values, whatever the language', async () => {
     await walk('hi');
-    const sent = mocks.getEligibleSchemes.mock.calls[0][0];
+    const sent = mocks.getEligibleSchemesPage.mock.calls[0][0];
     expect(sent.age).toBe('30');
     expect(sent.income).toBe('100000');
   });

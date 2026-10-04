@@ -26,6 +26,7 @@ async function cardTranslation(rows: Array<{ id: string; name: string; descripti
 
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
+const MAX_RECOMMENDED_LIMIT = 50;
 const FEATURED_LIMIT = 6;
 
 function parsePagination(req: Request): { page: number; limit: number; skip: number } {
@@ -163,6 +164,10 @@ router.get(
  *      (nothing to disqualify it on) with score 0. Since the Phase B ingestion
  *      run, 1,341 of 4,722 schemes have a real EligibilityCriteria row and go
  *      through path 1; the rest fall into path 2 or 3 depending on tags.
+ * Paged: the body may also carry `page` (default 1) and `limit` (default 20, at most 50), whole numbers >= 1 or the
+ * request is a 400. The ranking is the same as before (best score first); ties are now broken by scheme id so a page
+ * boundary is stable and the next page never repeats a scheme. The response adds `page`, `limit`, `total` (everything
+ * that matched, not just this page) and `hasMore`.
  * A real, always-available signal doesn't wait on structured criteria being
  * present: State-level schemes are pre-filtered to the profile's own state
  * (Central schemes always pass through), so two profiles with different
@@ -171,12 +176,19 @@ router.get(
 router.post(
   '/recommended',
   asyncHandler(async (req: Request, res: Response) => {
-    const { profile } = req.body as { profile?: IncomingProfile };
+    const { profile, page: rawPage, limit: rawLimit } = req.body as { profile?: IncomingProfile; page?: unknown; limit?: unknown };
 
     if (!profile) {
       res.status(400).json({ error: { message: 'profile is required', status: 400 } });
       return;
     }
+    const page = rawPage === undefined ? 1 : Number(rawPage);
+    const requestedLimit = rawLimit === undefined ? DEFAULT_LIMIT : Number(rawLimit);
+    if (!Number.isInteger(page) || page < 1 || !Number.isInteger(requestedLimit) || requestedLimit < 1) {
+      res.status(400).json({ error: { message: 'page and limit must be whole numbers of 1 or more', status: 400 } });
+      return;
+    }
+    const limit = Math.min(requestedLimit, MAX_RECOMMENDED_LIMIT);
 
     const interestTags = buildInterestTags(profile);
     const age = parseInt(profile.age ?? '', 10);
@@ -202,7 +214,7 @@ router.post(
       include: { tags: true, categories: true, eligibilityCriteria: true },
     });
 
-    const scored = rows
+    const ranked = rows
       .map((s) => {
         const criteria = s.eligibilityCriteria;
         let structuredChecked = 0;
@@ -247,11 +259,18 @@ router.post(
         return { s, matchScore: Math.max(0, rank), rank, include, unverified };
       })
       .filter((r) => r.include)
-      .sort((a, b) => b.rank - a.rank)
-      .slice(0, DEFAULT_LIMIT);
+      // best score first; equal scores in id order, so the same profile always gets the same order
+      .sort((a, b) => b.rank - a.rank || (a.s.id < b.s.id ? -1 : a.s.id > b.s.id ? 1 : 0));
+
+    const total = ranked.length;
+    const scored = ranked.slice((page - 1) * limit, page * limit);
 
     res.json({
       data: scored.map(({ s, matchScore, unverified }) => serializeScheme(s, matchScore, unverified)),
+      page,
+      limit,
+      total,
+      hasMore: page * limit < total,
       ...(await cardTranslation(scored.map(({ s }) => s), req.query.lang)),
     });
   }),

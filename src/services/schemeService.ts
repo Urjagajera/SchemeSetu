@@ -273,6 +273,17 @@ function localSchemeList(filters?: SchemeListFilters): SchemeListResult {
   return { data, total: data.length };
 }
 
+/** How many matches one page of results holds. */
+export const ELIGIBLE_PAGE_SIZE = 20;
+
+export interface EligiblePage {
+  data: Scheme[];
+  /** Everything that fits, not just this page. */
+  total: number;
+  hasMore: boolean;
+  page: number;
+}
+
 export const schemeService = {
   async getSchemes(filters?: SchemeListFilters): Promise<SchemeListResult> {
     if (isMockMode) {
@@ -359,23 +370,36 @@ export const schemeService = {
     }
   },
 
+  /** The first page of the schemes that fit a profile (what the dashboard shows a few of). */
   async getEligibleSchemes(profile: UserProfile): Promise<Scheme[]> {
+    return (await schemeService.getEligibleSchemesPage(profile, 1)).data;
+  },
+
+  /** One page of the schemes that fit a profile, best match first, with how many fit in all. */
+  async getEligibleSchemesPage(profile: UserProfile, page = 1, limit = ELIGIBLE_PAGE_SIZE): Promise<EligiblePage> {
+    const fromList = (all: Scheme[]): EligiblePage => ({
+      data: all.slice((page - 1) * limit, page * limit),
+      total: all.length,
+      hasMore: page * limit < all.length,
+      page,
+    });
     if (isMockMode) {
-      return getLocalEligibleSchemes(profile);
+      return fromList(getLocalEligibleSchemes(profile));
     }
     try {
       const response = await axios.post(
         `${API_URL}/recommended`,
-        { profile },
+        { profile, page, limit },
         { params: { lang: getActiveLang() } }
       );
       const raw = response.data?.data ?? response.data;
       const eligible = assertJsonArray<any>(raw, 'getEligibleSchemes');
       ingestCardText(getActiveLang(), response.data?.translation, eligible.map((s: any) => s.id));
-      return eligible;
+      const total = typeof response.data?.total === 'number' ? response.data.total : eligible.length;
+      return { data: eligible, total, hasMore: response.data?.hasMore === true, page };
     } catch (error) {
       console.warn('[schemeService.getEligibleSchemes] Backend not available — running local tag-based eligibility.', (error as Error).message);
-      return getLocalEligibleSchemes(profile);
+      return fromList(getLocalEligibleSchemes(profile));
     }
   },
 
