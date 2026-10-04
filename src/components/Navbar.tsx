@@ -24,19 +24,15 @@ export const Navbar: React.FC = () => {
     return location.pathname.startsWith(path);
   };
 
-  const isLandingPage = location.pathname === '/home';
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
-
-  // Landing page owns its own nav overlay (LandingNav). Suppress this bar entirely.
-  if (isLandingPage) return null;
 
   const navLinks = isAuthPage
     ? [{ name: t('shDashboard'), path: '/', icon: LayoutDashboard }]
-    : (isLandingPage ? [] : [
+    : [
         { name: t('searchBtn'), path: '/search', icon: BookOpen },
         { name: t('aiAssistant'), path: '/ai', icon: Bot },
         { name: t('helpDesk'), path: '/help', icon: HelpCircle }
-      ]);
+      ];
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-outline-variant bg-white/80 backdrop-blur-md dark:bg-zinc-900/80 dark:border-zinc-800 transition-colors">
