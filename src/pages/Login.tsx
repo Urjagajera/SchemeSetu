@@ -235,6 +235,14 @@ export const Login: React.FC = () => {
           <Link to="/help" className="hover:text-secondary dark:hover:text-sky-400 transition-colors">
             {t('helpDesk')}
           </Link>
+          <span className="w-1 h-1 bg-outline-variant dark:bg-zinc-800 rounded-full" />
+          <Link to="/privacy" className="hover:text-secondary dark:hover:text-sky-400 transition-colors">
+            {t('lgPrivacy')}
+          </Link>
+          <span className="w-1 h-1 bg-outline-variant dark:bg-zinc-800 rounded-full" />
+          <Link to="/terms" className="hover:text-secondary dark:hover:text-sky-400 transition-colors">
+            {t('lgTerms')}
+          </Link>
         </div>
         
         <p className="opacity-75">{t('footerCopy')}</p>

@@ -22,10 +22,11 @@ describe('Footer tells the truth', () => {
     expect(container.querySelector('a[href^="mailto:"], a[href^="tel:"]')).toBeNull();
   });
 
-  it('links to no privacy policy or terms page (there is none yet)', () => {
+  it('links to the Privacy Policy and Terms pages, and to Help', () => {
     const { container } = renderFooter();
     const hrefs = [...container.querySelectorAll('a')].map((a) => a.getAttribute('href'));
-    expect(hrefs.filter((h) => /privacy|terms/i.test(h ?? ''))).toEqual([]);
+    expect(hrefs).toContain('/privacy');
+    expect(hrefs).toContain('/terms');
     expect(hrefs).toContain('/help');
   });
 

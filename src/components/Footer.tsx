@@ -56,6 +56,12 @@ export const Footer: React.FC = () => {
               <Link to={getLinkPath('/help')} className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
                 {t('helpDesk')}
               </Link>
+              <Link to="/privacy" className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
+                {t('lgPrivacy')}
+              </Link>
+              <Link to="/terms" className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
+                {t('lgTerms')}
+              </Link>
             </div>
           </div>
 

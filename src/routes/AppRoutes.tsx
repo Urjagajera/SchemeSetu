@@ -19,6 +19,8 @@ const Profile = lazy(() => import('../pages/Profile'));
 const Settings = lazy(() => import('../pages/Settings'));
 const Help = lazy(() => import('../pages/Help'));
 const NotFound = lazy(() => import('../pages/NotFound'));
+const Privacy = lazy(() => import('../pages/Legal').then((m) => ({ default: m.Privacy })));
+const Terms = lazy(() => import('../pages/Legal').then((m) => ({ default: m.Terms })));
 
 export const AppRoutes: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -46,6 +48,10 @@ export const AppRoutes: React.FC = () => {
           <Route path="/home" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Login />} />
+
+          {/* The legal pages are public: you must be able to read them before you sign in. */}
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
 
           {/* Eligibility Checker: public regardless of auth state. It's a stateless
               check — Eligibility.tsx already branches internally on isAuthenticated

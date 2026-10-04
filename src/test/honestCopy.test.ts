@@ -51,8 +51,13 @@ describe('the interface does not make false or invented claims', () => {
     expect(hits).toEqual([]);
   });
 
-  it('no link points at a privacy or terms page that does not exist', () => {
-    const hits = scanned.filter((f) => /['"`]\/(privacy|terms)['"`]/.test(fs.readFileSync(f, 'utf8'))).map((f) => path.relative(root, f));
-    expect(hits).toEqual([]);
+  it('a link to the privacy or terms page is allowed only because those pages exist', () => {
+    const linkers = scanned.filter((f) => /['"`]\/(privacy|terms)['"`]/.test(fs.readFileSync(f, 'utf8')));
+    if (linkers.length > 0) {
+      const routes = fs.readFileSync(path.join(root, 'src', 'routes', 'AppRoutes.tsx'), 'utf8');
+      expect(routes).toContain('path="/privacy"');
+      expect(routes).toContain('path="/terms"');
+      expect(fs.existsSync(path.join(root, 'src', 'pages', 'Legal.tsx'))).toBe(true);
+    }
   });
 });
