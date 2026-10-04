@@ -31,6 +31,7 @@ import fs from 'fs';
 import { parseCsvFile } from './csvParser.js';
 import prisma from '../db/prisma.js';
 import { deriveLevel } from '../utils/schemeLevel.js';
+import { canonicalTags } from './tagCanonical.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -104,7 +105,8 @@ async function runIngestion(): Promise<void> {
         },
       };
       const tagLink = {
-        connectOrCreate: scheme.tags.map((tag) => ({
+        // merged-away spellings (tagRenames.ts) map to the kept tag, so a re-run cannot recreate them
+        connectOrCreate: canonicalTags(scheme.tags).map((tag) => ({
           where: { name: tag },
           create: { name: tag },
         })),

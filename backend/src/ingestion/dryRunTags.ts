@@ -13,7 +13,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import prisma from '../db/prisma.js';
 import { hi } from '../translation/vocabulary/hi.js';
-import { planMerges, type MergeGroup, type TagInfo } from './tagMerge.js';
+import { isSamePhrase, planMerges, type MergeGroup, type TagInfo } from './tagMerge.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPORTS = path.join(__dirname, '..', '..', 'reports');
@@ -73,6 +73,8 @@ async function main(): Promise<void> {
   }
 
   const tagsRemoved = Object.keys(plan.renames).length;
+  const notSamePhrase = Object.entries(plan.renames).filter(([from, to]) => !isSamePhrase(from, to));
+  if (notSamePhrase.length > 0) throw new Error(`renames that are not the same phrase: ${notSamePhrase.map(([f, t]) => `${f} => ${t}`).join('; ')}`);
   const hindiNames = Object.keys(hindiTags);
   const hindiMerged = hindiNames.filter((n) => n in plan.renames);
   const hindiCanonicalMissing = hindiMerged.filter((n) => hindiTags[plan.renames[n]] === undefined);
@@ -104,6 +106,8 @@ async function main(): Promise<void> {
   lines.push(`| Scheme-tag links | ${fmt(linksBefore)} → ${fmt(linksAfter)} (${fmt(linksBefore - linksAfter)} fewer, all from a scheme that carried two spellings of the same tag) |`);
   lines.push(`| Schemes whose tag list changes | ${fmt(schemesChanged)} of ${fmt(tagsOfScheme.size)} with tags; ${fmt(schemesCollapsing)} of them carried two spellings and end up with one |`);
   lines.push(`| Groups where the kept form is not obvious | ${fmt(flagged.length)}: ${fmt(needsLook.length)} worth your eye, ${fmt(lowStakes.length)} low-stakes ties/close calls between tiny tags (all listed below) |`);
+  lines.push(`| Every rename is the same phrase | yes: all ${fmt(tagsRemoved)} differ only by case, spacing, punctuation or a plural on the last word (checked by code on every run) |`);
+  lines.push(`| Misspellings left alone | ${fmt(plan.leftAlone.length)}: ${plan.leftAlone.map((t) => `${t.name} (${t.reason})`).join(', ')} |`);
   lines.push(`| Pairs deliberately NOT merged | ${fmt(plan.heldBack.length)} (singular/plural that mean different things) |`);
   lines.push(`| Groups that clash with tag names written into the code | ${fmt(codeConflicts.length)} (see "Code that matches tags by exact name") |`);
   lines.push(`| Hindi vocabulary tag entries | ${fmt(hindiNames.length)}; ${fmt(hindiMerged.length)} would be merged away, of which ${fmt(hindiCanonicalMissing.length)} would lose their Hindi (the rule keeps a member that has an entry) |`);

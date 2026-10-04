@@ -9,6 +9,8 @@
  *      word can never create a merge by itself.
  *
  * What is never merged, on purpose:
+ *   - Misspelt or truncated forms that only look like a plural once a suffix is stripped (TYPO_FORMS: "Enterpris",
+ *     "Backward Classe", "Coache"). They are left exactly as they are.
  *   - Pairs whose singular and plural mean different things (HELD_BACK_PAIRS: "Aid" and "AIDS", "Art" and "Arts", ...).
  *   - Different spellings and synonyms ("Enterpreneur" vs "Entrepreneur", "Schedule Caste" vs "Scheduled Caste",
  *     "Start Up" vs "Startup", "Farmer" vs "Cultivator"). Those are not typographic and are left alone.
@@ -58,6 +60,17 @@ export const HELD_BACK_PAIRS: Record<string, string> = {
   ward: '"Ward" and "Wards" can mean a municipal ward, a hospital ward or a protected person',
   spectacle: '"Spectacles" are glasses, "Spectacle" is a sight',
   coach: '"Coaches" can be railway coaches, "Coach" a trainer',
+};
+
+/**
+ * Tags that are misspelt or truncated forms of a word. Stripping a suffix from the real plural ("Enterprises" minus
+ * "es", "Classes" minus "s", "Coaches" minus "s") produces them, which would otherwise pull them into a group by
+ * accident. A different spelling is not a typographic variant, so they are left out of every merge.
+ */
+export const TYPO_FORMS: Record<string, string> = {
+  enterpris: 'truncated "Enterprise"',
+  'backward classe': 'misspelt "Backward Class"',
+  coache: 'misspelt "Coach"',
 };
 
 /** Lower-cased, punctuation and symbols treated as spaces, whitespace collapsed. */
@@ -137,9 +150,28 @@ function flagsFor(members: TagInfo[], canonical: TagInfo): string[] {
   return flags;
 }
 
+/**
+ * True when two tag names are the same phrase: identical once case, spacing and punctuation are ignored, or identical
+ * in every word but the last, where the last word differs only by a plural. This is the rule every rename has to
+ * satisfy; the apply step refuses to run a rename that does not.
+ */
+export function isSamePhrase(a: string, b: string): boolean {
+  const ka = typographicKey(a);
+  const kb = typographicKey(b);
+  if (ka === '' || kb === '') return false;
+  if (ka in TYPO_FORMS || kb in TYPO_FORMS) return false;
+  if (ka === kb) return true;
+  const wa = ka.split(' ');
+  const wb = kb.split(' ');
+  if (wa.length !== wb.length || !wa.slice(0, -1).every((w, i) => w === wb[i])) return false;
+  return singularCandidates(ka).includes(kb) || singularCandidates(kb).includes(ka);
+}
+
 export interface MergePlan {
   groups: MergeGroup[];
   heldBack: HeldBackPair[];
+  /** Tags left exactly as they are because they are misspellings (see TYPO_FORMS). */
+  leftAlone: Array<{ name: string; reason: string }>;
   /** Variant name to the name it will become, for every tag that is merged away. */
   renames: Record<string, string>;
 }
@@ -147,9 +179,14 @@ export interface MergePlan {
 export function planMerges(tags: TagInfo[]): MergePlan {
   const uf = new UnionFind();
   const byKey = new Map<string, TagInfo[]>();
+  const leftAlone: Array<{ name: string; reason: string }> = [];
   for (const t of tags) {
     const key = typographicKey(t.name);
     if (key === '') continue; // a tag that is only symbols has no words to compare
+    if (key in TYPO_FORMS) {
+      leftAlone.push({ name: t.name, reason: TYPO_FORMS[key] });
+      continue;
+    }
     const bucket = byKey.get(key);
     if (bucket) bucket.push(t);
     else byKey.set(key, [t]);
@@ -195,7 +232,8 @@ export function planMerges(tags: TagInfo[]): MergePlan {
   }
   groups.sort((a, b) => sum(b) - sum(a) || a.canonical.localeCompare(b.canonical, 'en'));
   heldBack.sort((a, b) => a.singular.localeCompare(b.singular, 'en'));
-  return { groups, heldBack, renames };
+  leftAlone.sort((a, b) => a.name.localeCompare(b.name, 'en'));
+  return { groups, heldBack, leftAlone, renames };
 }
 
 const sum = (g: MergeGroup): number => g.members.reduce((n, m) => n + m.schemeCount, 0);

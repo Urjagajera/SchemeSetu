@@ -15,6 +15,7 @@ import { EmptyState } from '../components/EmptyState';
 import Sidebar from '../components/Sidebar';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { matchesEntrepreneur } from '../utils/occupationKeywords';
 import { motion } from 'framer-motion';
 
 export const Search: React.FC = () => {
@@ -162,12 +163,7 @@ export const Search: React.FC = () => {
                            tagsLower.some(t => farmerKeywords.includes(t)) ||
                            farmerKeywords.some(kw => titleLower.includes(kw));
             } else if (occ === 'entrepreneur') {
-              const entrepreneurKeywords = [
-                'entrepreneur', 'business', 'start-up', 'startups', 'industry', 'industries', 
-                'msme', 'micro enterprise', 'self employment', 'self-employment', 'retailer', 'trader'
-              ];
-              matchesOcc = tagsLower.some(t => entrepreneurKeywords.includes(t)) ||
-                           entrepreneurKeywords.some(kw => titleLower.includes(kw) || descLower.includes(kw));
+              matchesOcc = matchesEntrepreneur(tagsLower, titleLower, descLower);
             } else if (occ === 'senior citizen') {
               const seniorKeywords = ['senior citizen', 'pension', 'old age', 'elderly'];
               matchesOcc = s.category.toLowerCase() === 'senior citizen' || 

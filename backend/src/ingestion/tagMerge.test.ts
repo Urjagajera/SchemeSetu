@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { chooseCanonical, planMerges, singularCandidates, typographicKey, type TagInfo } from './tagMerge.js';
+import { chooseCanonical, isSamePhrase, planMerges, singularCandidates, typographicKey, type TagInfo } from './tagMerge.js';
 
 const tag = (name: string, schemeCount: number, hindi?: string): TagInfo => ({ name, schemeCount, hindi });
 const groupOf = (tags: TagInfo[], name: string) => planMerges(tags).groups.find((g) => g.members.some((m) => m.name === name));
@@ -77,10 +77,16 @@ describe('planMerges: singular and plural', () => {
     expect(plan.renames).toEqual({ 'Senior Citizens': 'Senior Citizen' });
   });
 
-  it('joins a typo into the group through the plural it matches', () => {
-    const g = groupOf([tag('Enterprise', 214), tag('Enterprises', 5), tag('Enterpris', 1)], 'Enterpris')!;
-    expect(g.canonical).toBe('Enterprise');
-    expect(g.members).toHaveLength(3);
+  it('leaves a truncated or misspelt form alone even though stripping a suffix from the plural produces it', () => {
+    // "Enterprises" minus "es" is "Enterpris", "Classes" minus "s" is "Classe": neither is a plural of anything
+    const plan = planMerges([tag('Enterprise', 214), tag('Enterprises', 5), tag('Enterpris', 1)]);
+    expect(plan.renames).toEqual({ Enterprises: 'Enterprise' });
+    expect(plan.leftAlone).toEqual([{ name: 'Enterpris', reason: 'truncated "Enterprise"' }]);
+    const classes = planMerges([tag('Backward Class', 19), tag('Backward Classes', 23), tag('Backward Classe', 1)]);
+    expect(classes.renames).toEqual({ 'Backward Class': 'Backward Classes' });
+    expect(classes.leftAlone.map((t) => t.name)).toEqual(['Backward Classe']);
+    const coaches = planMerges([tag('Coache', 1), tag('Coaches', 1)]);
+    expect(coaches.groups).toEqual([]);
   });
 
   it('combines typographic and plural variants in one group', () => {
@@ -213,5 +219,49 @@ describe('planMerges: bookkeeping', () => {
     const plan = planMerges(tags);
     const survivors = tags.filter((t) => !(t.name in plan.renames));
     expect(planMerges(survivors).groups).toEqual([]);
+  });
+});
+
+describe('isSamePhrase: the rule every rename must satisfy', () => {
+  it.each([
+    ['Micro Small Medium Enterprise', 'Micro Small Medium Enterprises'],
+    ['Construction Workers', 'Construction Worker'],
+    ['Building Workers', 'Building Worker'],
+    ['Scheduled Castes', 'Scheduled Caste'],
+    ['Scheduled Tribes', 'Scheduled Tribe'],
+    ['Self Employment', 'Self-employment'],
+    ['ARTISTS', 'Artists'],
+    ['Pre-Matrics', 'Pre Matric'],
+    ['HIV & AIDS', 'HIV / AIDS'],
+  ])('%s and %s are the same phrase', (a, b) => {
+    expect(isSamePhrase(a, b)).toBe(true);
+    expect(isSamePhrase(b, a)).toBe(true);
+  });
+
+  it.each([
+    ['Workers', 'Construction Workers'], // a short tag into a longer, different one
+    ['Enterprise', 'Micro Small Medium Enterprises'],
+    ['Castes', 'Scheduled Castes'],
+    ['Farmer', 'Cultivator'],
+    ['Enterpreneur', 'Entrepreneur'],
+    ['Schedule Caste', 'Scheduled Caste'],
+    ['Start Up', 'Startup'],
+    ['Person With Disability', 'Persons With Disability'], // plural in a word other than the last
+    ['Enterpris', 'Enterprise'],
+    ['Backward Classe', 'Backward Classes'],
+    ['', 'Farmer'],
+  ])('%s and %s are NOT the same phrase', (a, b) => {
+    expect(isSamePhrase(a, b)).toBe(false);
+    expect(isSamePhrase(b, a)).toBe(false);
+  });
+
+  it('holds for every rename a plan produces', () => {
+    const plan = planMerges([
+      tag('Farmer', 388), tag('Farmers', 36), tag('Fishery', 55), tag('Fisheries', 24), tag('Pre-Matric', 23), tag('Pre Matric', 10), tag('Pre-Matrics', 1),
+      tag('Enterprise', 214), tag('Enterprises', 5), tag('Enterpris', 1), tag('Self-employment', 82), tag('Self Employment', 67), tag('Workers', 3), tag('Worker', 100),
+      tag('Construction Worker', 259), tag('Construction Workers', 44), tag('Aid', 1), tag('AIDS', 3),
+    ]);
+    expect(Object.keys(plan.renames).length).toBeGreaterThan(5);
+    for (const [variant, canonical] of Object.entries(plan.renames)) expect(isSamePhrase(variant, canonical), `${variant} => ${canonical}`).toBe(true);
   });
 });
