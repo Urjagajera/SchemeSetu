@@ -330,3 +330,40 @@ describe('validateList', () => {
     expect(r.reasons.join(' ')).toMatch(/numbers missing/);
   });
 });
+
+// The row the Hindi summaries could not finish: a sentence that is two scheme names in quotes.
+describe('names in quotes kept in English', () => {
+  const SRC = 'The scheme “ Scheme For Vaccine Manufacturing Units” is a sub scheme under the “Investment Promotion Scheme (IPS)- 2022” for Thrust Sectors.';
+  const KEPT = 'यह योजना “Investment Promotion Scheme (IPS)- 2022” के अंतर्गत “Scheme For Vaccine Manufacturing Units” एक उप-योजना है, जो थ्रस्ट सेक्टर्स के लिए है।';
+  const TRANSLATED_NAMES = 'यह योजना “निवेश संवर्धन योजना (आईपीएस)- 2022” के अंतर्गत “टीका विनिर्माण इकाइयों के लिए योजना” एक उप-योजना है, जो थ्रस्ट सेक्टर्स के लिए है।';
+
+  it('does not count the kept names against the Hindi-script share', () => {
+    const r = validateText(SRC, KEPT, hi);
+    expect(r.reasons.join(' ')).not.toMatch(/script/);
+    expect(r.ok).toBe(true);
+  });
+
+  it('still accepts the same sentence with the names translated', () => {
+    expect(validateText(SRC, TRANSLATED_NAMES, hi).ok).toBe(true);
+  });
+
+  it('only names that are in quotes in the source get the exception', () => {
+    const src = 'The scheme Investment Promotion Scheme for Thrust Sectors is run by the Department of Industries and Commerce.';
+    const out = 'The scheme Investment Promotion Scheme for Thrust Sectors है और Department of Industries and Commerce चलाता है।';
+    expect(validateText(src, out, hi).reasons.join(' ')).toMatch(/only \d+% of the text is in Hindi script/);
+  });
+
+  it('a name that is in quotes but not kept exactly gets no exception', () => {
+    const out = 'यह Investment Promotion योजना और Vaccine Manufacturing Units के अंतर्गत Thrust Sectors के लिए एक sub scheme है।';
+    expect(validateText(SRC, out, hi).reasons.join(' ')).toMatch(/only \d+% of the text is in Hindi script/);
+  });
+
+  it('English copied back unchanged is still rejected', () => {
+    expect(validateText(SRC, SRC, hi).reasons.join(' ')).toMatch(/unchanged/);
+  });
+
+  it('works the same for Gujarati', () => {
+    const out = 'આ યોજના “Investment Promotion Scheme (IPS)- 2022” હેઠળ “Scheme For Vaccine Manufacturing Units” એક પેટા યોજના છે, જે થ્રસ્ટ સેક્ટર્સ માટે છે.';
+    expect(validateText(SRC, out, gu).reasons.join(' ')).not.toMatch(/script/);
+  });
+});

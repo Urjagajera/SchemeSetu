@@ -214,6 +214,12 @@ function lineCount(text: string): number {
   return text.split('\n').filter((l) => l.trim() !== '').length;
 }
 
+/** Names the source puts in quotation marks, with the quotes and stray spaces taken off. Only Latin ones: a name already in the native script needs no exception. */
+function quotedNames(source: string): string[] {
+  const names = [...source.matchAll(/["“”]([^"“”]{3,120})["“”]/g)].map((m) => m[1].trim());
+  return [...new Set(names.filter((n) => /[A-Za-z]/.test(n) && /^[ -~ -ɏ -⁯]+$/.test(n)))];
+}
+
 /** Shared checks for a text block (or the joined items of a list). */
 function checkBlock(
   source: string,
@@ -225,8 +231,11 @@ function checkBlock(
 ): number {
   // Glossary names kept in English are allowed, so they must not count against the script percentage.
   const withoutKeptNames = glossary.reduce((t, g) => removeAll(t, g.en), out);
+  // So are names the source puts in quotes ("Investment Promotion Scheme (IPS)") when the output keeps them exactly: a name stays in
+  // its own words, and a sentence that is mostly such names would otherwise never reach the script percentage.
+  const withoutQuoted = quotedNames(source).reduce((t, q) => removeAll(t, q), withoutKeptNames);
   const english = englishWordCount(source);
-  const { visible, native } = scriptCounts(withoutKeptNames, lang);
+  const { visible, native } = scriptCounts(withoutQuoted, lang);
   const nativePct = visible === 0 ? 0 : Math.round((native / visible) * 100);
 
   if (out.trim() === '') {
