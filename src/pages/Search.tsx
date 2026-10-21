@@ -114,7 +114,7 @@ export const Search: React.FC = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto w-full space-y-6"
+          className="px-4 sm:px-6 lg:px-8 py-8 max-w-[82.47rem] mx-auto w-full space-y-6"
         >
       {/* Top Header with search bar */}
       <div className="space-y-4">
@@ -154,7 +154,7 @@ export const Search: React.FC = () => {
         {/* Filters Sidebar - Desktop */}
         <FilterSidebar
           {...sidebarProps}
-          className="hidden lg:block w-80 sticky top-24"
+          className="hidden lg:block w-[21.6rem] shrink-0 sticky top-24"
         />
 
         {/* Filters Drawer - Mobile */}

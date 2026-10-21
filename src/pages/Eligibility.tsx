@@ -156,7 +156,7 @@ export const Eligibility: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             data-testid="profile-gate"
-            className="px-4 sm:px-6 lg:px-8 py-8 max-w-2xl mx-auto w-full space-y-6"
+            className="px-4 sm:px-6 lg:px-8 py-8 max-w-[50.4rem] mx-auto w-full space-y-6"
           >
             <div>
               <h1 className="font-display text-2xl md:text-3xl font-extrabold text-primary dark:text-white">

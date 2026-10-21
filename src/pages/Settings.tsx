@@ -69,7 +69,7 @@ export const Settings: React.FC = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="px-4 sm:px-6 lg:px-8 py-8 max-w-2xl mx-auto w-full space-y-6"
+      className="px-4 sm:px-6 lg:px-8 py-8 max-w-[50.4rem] mx-auto w-full space-y-6"
     >
       {/* Header */}
       <div className="flex items-center gap-2 pb-2 border-b dark:border-zinc-800">
