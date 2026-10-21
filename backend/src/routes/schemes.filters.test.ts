@@ -3,7 +3,7 @@ import express from 'express';
 import request from 'supertest';
 
 const mockPrisma = vi.hoisted(() => ({
-  scheme: { findMany: vi.fn(), count: vi.fn() },
+  scheme: { findMany: vi.fn(), count: vi.fn(), groupBy: vi.fn() },
 }));
 
 // errorHandler -> config/env.ts exits the process when required vars are missing (CI has no .env).
@@ -12,6 +12,7 @@ vi.mock('../db/prisma.js', () => ({ default: mockPrisma }));
 
 const { default: schemesRouter } = await import('./schemes.js');
 const { errorHandler } = await import('../middleware/errorHandler.js');
+const { clearFilterOptionsCache } = await import('../filters/options.js');
 
 function buildApp() {
   const app = express();
@@ -54,5 +55,75 @@ describe('GET /api/schemes: gender, social category, age and income filters', ()
     const text = JSON.stringify(whereOf('findMany'));
     expect(text).toContain('Ministry Of Finance');
     expect(text).toContain('"equals":"male"');
+  });
+});
+
+describe('GET /api/schemes: topics, occupation and appliedFilters', () => {
+  beforeEach(() => {
+    mockPrisma.scheme.findMany.mockReset();
+    mockPrisma.scheme.count.mockReset();
+    mockPrisma.scheme.findMany.mockResolvedValue([]);
+    mockPrisma.scheme.count.mockResolvedValue(7);
+  });
+
+  it('echoes the filters as they were applied, dropping invalid ones', async () => {
+    const res = await request(buildApp()).get('/api/schemes?topic=health,nope&occupation=farmer&state=goa&gender=robot&category=Education');
+    expect(res.body.appliedFilters).toEqual({ topics: ['education', 'health'], occupation: 'farmer', state: 'Goa' });
+  });
+
+  it('puts topic and occupation in the database query, so the total is real', async () => {
+    await request(buildApp()).get('/api/schemes?topic=housing&occupation=student');
+    const where = JSON.stringify(mockPrisma.scheme.count.mock.calls[0][0].where);
+    expect(where).toContain('"Shelter"');
+    expect(where).toContain('"occupation":{"equals":"student"}');
+    expect(where).toBe(JSON.stringify(mockPrisma.scheme.findMany.mock.calls[0][0].where));
+  });
+});
+
+describe('GET /api/schemes/filters', () => {
+  beforeEach(() => {
+    clearFilterOptionsCache();
+    mockPrisma.scheme.count.mockReset();
+    mockPrisma.scheme.groupBy.mockReset();
+    mockPrisma.scheme.count.mockResolvedValue(5);
+    mockPrisma.scheme.groupBy.mockResolvedValue([
+      { authorityName: 'Ministry Of Finance', _count: { _all: 18 } },
+      { authorityName: 'Gujarat', _count: { _all: 638 } },
+      { authorityName: ' Ministry Of Finance ', _count: { _all: 2 } },
+      { authorityName: 'NITI Aayog (National Institution for Transforming India)', _count: { _all: 1 } },
+    ]);
+  });
+
+  it('returns every option list with counts in one response', async () => {
+    const res = await request(buildApp()).get('/api/schemes/filters');
+    expect(res.status).toBe(200);
+    const d = res.body.data;
+    expect(d.topics[0]).toEqual({ id: 'education', count: 5 });
+    expect(d.occupations.map((o: { id: string }) => o.id)).toContain('farmer');
+    expect(d.levels).toEqual([{ id: 'Central', count: 5 }, { id: 'State', count: 5 }]);
+    expect(d.states).toHaveLength(36);
+    expect(d.genders).toEqual(['male', 'female', 'other']);
+    expect(d.socialCategories).toEqual(['general', 'sc', 'st', 'obc']);
+  });
+
+  it('lists central authorities only (a state is reached through the State filter), merging spellings', async () => {
+    const res = await request(buildApp()).get('/api/schemes/filters');
+    expect(res.body.data.ministries).toEqual([
+      { name: 'Ministry Of Finance', count: 20 },
+      { name: 'NITI Aayog (National Institution for Transforming India)', count: 1 },
+    ]);
+  });
+
+  it('keeps the counts between requests instead of recounting', async () => {
+    await request(buildApp()).get('/api/schemes/filters');
+    const calls = mockPrisma.scheme.count.mock.calls.length;
+    await request(buildApp()).get('/api/schemes/filters');
+    expect(mockPrisma.scheme.count.mock.calls.length).toBe(calls);
+  });
+
+  it('does not keep a failed load', async () => {
+    mockPrisma.scheme.groupBy.mockRejectedValueOnce(new Error('db down'));
+    expect((await request(buildApp()).get('/api/schemes/filters')).status).toBe(500);
+    expect((await request(buildApp()).get('/api/schemes/filters')).status).toBe(200);
   });
 });

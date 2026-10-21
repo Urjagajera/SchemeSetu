@@ -1,355 +1,92 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { schemeService } from '../services/schemeService';
-import { isMockMode } from '../config/mockMode';
+import { schemeService, FilterOptions } from '../services/schemeService';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useBookmarks } from '../hooks/useBookmarks';
 import { useAuth } from '../contexts/AuthContext';
 import { Scheme } from '../types';
 import { SearchBar } from '../components/SearchBar';
 import { SchemeCard } from '../components/SchemeCard';
-import { FilterSidebar, FilterState } from '../components/FilterSidebar';
+import { FilterSidebar } from '../components/FilterSidebar';
+import { ActiveFilterChips } from '../components/ActiveFilterChips';
+import { useSearchFilters } from '../hooks/useSearchFilters';
 import { Pagination } from '../components/Pagination';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import { EmptyState } from '../components/EmptyState';
 import Sidebar from '../components/Sidebar';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { cn } from '../utils/cn';
-import { matchesEntrepreneur } from '../utils/occupationKeywords';
 import { motion } from 'framer-motion';
 
 export const Search: React.FC = () => {
   const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
-  const [searchParams, setSearchParams] = useSearchParams();
   const { bookmarks, toggleBookmark } = useBookmarks();
+  const { filters, page: currentPage, update, toggleTopic, clear, setPage, activeCount } = useSearchFilters();
 
   const [schemes, setSchemes] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // Lists for dropdown selectors
-  const [categories, setCategories] = useState<string[]>([]);
-  const [ministries, setMinistries] = useState<string[]>([]);
-  const [states, setStates] = useState<string[]>([]);
-  
-  // Occupations
-  const occupations = ['student', 'farmer', 'entrepreneur', 'senior citizen', 'unemployed', 'other'];
+  const [totalSchemes, setTotalSchemes] = useState(0);
+  const [options, setOptions] = useState<FilterOptions | null>(null);
 
   // UI responsive filter toggle for mobile screen
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
-
-  const [filters, setFilters] = useState<FilterState>({
-    category: searchParams.get('category') || '',
-    state: searchParams.get('state') || '',
-    occupation: searchParams.get('occupation') || '',
-    gender: searchParams.get('gender') || '',
-    socialCategory: searchParams.get('socialCategory') || '',
-    income: searchParams.get('income') ? parseInt(searchParams.get('income') as string) : null,
-    age: searchParams.get('age') || '',
-    level: searchParams.get('level') || '',
-    sidebarQuery: searchParams.get('q') || '', // search query
-    ministry: searchParams.get('ministry') || ''
-  });
-
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalSchemes, setTotalSchemes] = useState(0);
   const itemsPerPage = 15;
 
-  // Load initial categories, states and ministries
+  // Every option list (topics, occupations, states, ministries...) with counts, in one request.
   useEffect(() => {
-    const loadMetadata = async () => {
-      try {
-        const cats = await schemeService.getCategories();
-        setCategories(cats);
-
-        const sts = await schemeService.getStates();
-        setStates(sts);
-        
-        setMinistries(await schemeService.getMinistries());
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    loadMetadata();
+    let alive = true;
+    schemeService.getFilterOptions().then((o) => { if (alive) setOptions(o); }).catch(console.error);
+    return () => { alive = false; };
   }, []);
 
-  // Sync URL search parameters with filter state
+  // All filtering happens in the database (or, in mock mode, in schemeService): this page only asks for one page.
+  // Typed values (age, income, search) wait a moment so every keystroke is not a request.
+  const filterKey = JSON.stringify(filters);
   useEffect(() => {
-    const qParam = searchParams.get('q') || '';
-    const catParam = searchParams.get('category') || '';
-    setFilters(prev => ({
-      ...prev,
-      category: catParam,
-      sidebarQuery: qParam
-    }));
-  }, [searchParams]);
-
-  // Load Filtered Schemes
-  useEffect(() => {
-    const loadFiltered = async () => {
+    let alive = true;
+    setLoading(true);
+    const timer = setTimeout(async () => {
       try {
-        setLoading(true);
-
-        // Request schemes from service
+        const age = parseInt(filters.age, 10);
+        const income = parseInt(filters.income, 10);
         const results = await schemeService.getSchemes({
-          query: filters.sidebarQuery,
-          category: filters.category,
-          level: filters.level,
-          ...(isMockMode
-            ? {}
-            : {
-                ministry: filters.ministry,
-                state: filters.state,
-                // Who the scheme is for is decided in the database, so the count and pages are real.
-                gender: filters.gender || undefined,
-                socialCategory: filters.socialCategory || undefined,
-                age: filters.age && !isNaN(parseInt(filters.age)) ? parseInt(filters.age) : undefined,
-                income: filters.income ?? undefined,
-                page: currentPage,
-                limit: itemsPerPage,
-              })
+          query: filters.query || undefined,
+          topic: filters.topics.join(',') || undefined,
+          level: filters.level || undefined,
+          ministry: filters.ministry || undefined,
+          state: filters.state || undefined,
+          occupation: filters.occupation || undefined,
+          gender: filters.gender || undefined,
+          socialCategory: filters.socialCategory || undefined,
+          age: Number.isNaN(age) ? undefined : age,
+          income: Number.isNaN(income) ? undefined : income,
+          page: currentPage,
+          limit: itemsPerPage,
         });
-
-        // Defensive guard — service layer guarantees arrays now, but be safe
-        const safeResults = Array.isArray(results.data) ? results.data : [];
-
-        // Run local sub-filtering matching the sidebar criteria (primarily for local mock mode fallback)
-        const postFiltered = safeResults.filter(s => {
-          // Ministry check
-          if (filters.ministry && s.ministry !== filters.ministry) return false;
-
-          // Category check
-          if (filters.category) {
-            const catLower = filters.category.toLowerCase();
-            const hasCat = s.category?.toLowerCase() === catLower || s.categories?.some(c => c.toLowerCase() === catLower);
-            if (!hasCat) return false;
-          }
-
-          // State check
-          if (filters.state) {
-            if (s.level === 'State' && s.authorityName.toLowerCase() !== filters.state.toLowerCase()) {
-              return false;
-            }
-          }
-
-          // Occupation check
-          if (filters.occupation) {
-            const occ = filters.occupation.toLowerCase();
-            const titleLower = s.name.toLowerCase();
-            const descLower = s.description.toLowerCase();
-            const tagsLower = s.tags.map(t => t.toLowerCase());
-
-            let matchesOcc = false;
-
-            if (occ === 'student') {
-              const studentKeywords = [
-                'student', 'students', 'scholarship', 'education', 'fellowship', 'fellow',
-                'research', 'higher education', 'phd', 'internship', 'stipend', 'school',
-                'skill development', 'science', 'scientist'
-              ];
-              matchesOcc = s.category.toLowerCase() === 'student' || 
-                           s.categories?.some(c => c.toLowerCase() === 'student') ||
-                           tagsLower.some(t => studentKeywords.includes(t)) ||
-                           studentKeywords.some(kw => titleLower.includes(kw));
-            } else if (occ === 'farmer') {
-              const farmerKeywords = [
-                'agriculture', 'farmer', 'farming', 'animal husbandry', 'fishermen',
-                'fish farming', 'fish production', 'fish sellers', 'fish', 'poultry farming',
-                'biofloc', 'recirculating aquaculture system'
-              ];
-              matchesOcc = s.category.toLowerCase() === 'farmer' || 
-                           s.categories?.some(c => c.toLowerCase() === 'farmer') ||
-                           tagsLower.some(t => farmerKeywords.includes(t)) ||
-                           farmerKeywords.some(kw => titleLower.includes(kw));
-            } else if (occ === 'entrepreneur') {
-              matchesOcc = matchesEntrepreneur(tagsLower, titleLower, descLower);
-            } else if (occ === 'senior citizen') {
-              const seniorKeywords = ['senior citizen', 'pension', 'old age', 'elderly'];
-              matchesOcc = s.category.toLowerCase() === 'senior citizen' || 
-                           tagsLower.some(t => seniorKeywords.includes(t)) ||
-                           seniorKeywords.some(kw => titleLower.includes(kw) || descLower.includes(kw));
-            } else if (occ === 'unemployed') {
-              const unemployedKeywords = ['unemployed', 'job seeker', 'unemployment', 'youth employment'];
-              matchesOcc = tagsLower.some(t => unemployedKeywords.includes(t)) ||
-                           unemployedKeywords.some(kw => titleLower.includes(kw) || descLower.includes(kw));
-            } else if (occ === 'other') {
-              const allSpecialKeywords = [
-                'student', 'students', 'scholarship', 'education', 'fellowship',
-                'agriculture', 'farmer', 'farming', 'entrepreneur', 'business', 'start-up',
-                'senior citizen', 'pension', 'old age', 'unemployed', 'job seeker'
-              ];
-              const hasSpecialKeywords = allSpecialKeywords.some(kw => 
-                titleLower.includes(kw) || 
-                tagsLower.includes(kw) ||
-                s.category.toLowerCase() === kw
-              );
-              matchesOcc = !hasSpecialKeywords;
-            }
-
-            if (!matchesOcc) return false;
-          }
-
-          // Gender check
-          if (isMockMode && filters.gender) {
-            const gender = filters.gender.toLowerCase();
-            const titleLower = s.name.toLowerCase();
-            const descLower = s.description.toLowerCase();
-            const tagsLower = s.tags.map(t => t.toLowerCase());
-
-            const isFemaleRestricted = s.category.toLowerCase() === 'woman' ||
-                                       s.categories?.some(c => c.toLowerCase() === 'woman') ||
-                                       tagsLower.some(t => t === 'woman' || t === 'women' || t === 'female' || t === 'girl' || t === 'girls' || t === 'widow') ||
-                                       titleLower.includes('mahila') || titleLower.includes('kanya') || titleLower.includes('widow') ||
-                                       descLower.includes('only female') || descLower.includes('only women');
-
-            if (gender === 'male' && isFemaleRestricted) {
-              return false;
-            }
-          }
-
-          // Age check
-          if (isMockMode && filters.age) {
-            const age = parseInt(filters.age);
-            if (!isNaN(age)) {
-              const descLower = s.description.toLowerCase();
-              const titleLower = s.name.toLowerCase();
-
-              const seniorKeywords = ['senior citizen', 'old age', 'above 60', '60 years or above', '60 years of age or above'];
-              const isSeniorScheme = seniorKeywords.some(kw => titleLower.includes(kw) || descLower.includes(kw));
-              if (isSeniorScheme && age < 60) return false;
-
-              const aboveMatch = descLower.match(/above\s+(\d+)\s+years/);
-              if (aboveMatch) {
-                const minAge = parseInt(aboveMatch[1]);
-                if (age < minAge) return false;
-              }
-
-              const ageOfAboveMatch = descLower.match(/(\d+)\s+years\s+of\s+age\s+or\s+above/);
-              if (ageOfAboveMatch) {
-                const minAge = parseInt(ageOfAboveMatch[1]);
-                if (age < minAge) return false;
-              }
-
-              const belowMatch = descLower.match(/below\s+(\d+)\s+years/);
-              if (belowMatch) {
-                const maxAge = parseInt(belowMatch[1]);
-                if (age > maxAge) return false;
-              }
-
-              const uptoMatch = descLower.match(/up\s+to\s+(\d+)\s+years/);
-              if (uptoMatch) {
-                const maxAge = parseInt(uptoMatch[1]);
-                if (age > maxAge) return false;
-              }
-
-              const betweenMatch = descLower.match(/between\s+(\d+)\s+(?:to|and)\s+(\d+)\s+years/);
-              if (betweenMatch) {
-                const minAge = parseInt(betweenMatch[1]);
-                const maxAge = parseInt(betweenMatch[2]);
-                if (age < minAge || age > maxAge) return false;
-              }
-            }
-          }
-
-          // Income check
-          if (isMockMode && filters.income) {
-            const incomeVal = filters.income;
-            const descLower = s.description.toLowerCase();
-
-            const extractIncomeLimit = (text: string): number | null => {
-              if (!text.includes('income')) return null;
-
-              const lakhsMatch = text.match(/(?:income|family income|annual income|limit of)\s+(?:less than|below|not exceed|up to|maximum of|within)?\s*(?:rs\.?|rupees|₹)?\s*([0-9.]+)\s*(?:lakh|lakhs|l)/i);
-              if (lakhsMatch) {
-                const val = parseFloat(lakhsMatch[1]);
-                if (!isNaN(val)) return val * 100000;
-              }
-
-              const rawMatch = text.match(/(?:income|family income|annual income|limit of)\s+(?:less than|below|not exceed|up to|maximum of|within)?\s*(?:rs\.?|rupees|₹)?\s*([0-9,]+)/i);
-              if (rawMatch) {
-                const cleanNum = rawMatch[1].replace(/,/g, '');
-                const val = parseInt(cleanNum);
-                if (!isNaN(val) && val > 1000) return val;
-              }
-
-              return null;
-            };
-
-            const limit = extractIncomeLimit(descLower);
-            if (limit !== null && incomeVal > limit) {
-              return false;
-            }
-          }
-
-          return true;
-        });
-
-        setSchemes(postFiltered);
-        if (isMockMode) {
-          setTotalSchemes(postFiltered.length);
-        } else {
-          // Real total across every page, straight from the API — not this page's length.
-          setTotalSchemes(results.total);
-        }
+        if (!alive) return;
+        setSchemes(Array.isArray(results.data) ? results.data : []);
+        setTotalSchemes(results.total);
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
-    };
-    loadFiltered();
-  }, [filters, currentPage]);
+    }, 250);
+    return () => { alive = false; clearTimeout(timer); };
+    // filterKey stands for every field of `filters`
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterKey, currentPage]);
 
-  const handleSearchSubmit = (query: string) => {
-    setSearchParams(prev => {
-      if (query) prev.set('q', query);
-      else prev.delete('q');
-      return prev;
-    });
-    setFilters(prev => ({ ...prev, sidebarQuery: query } as any));
-    setCurrentPage(1);
-  };
-
-  const handleFilterChange = (updates: Partial<FilterState>) => {
-    setFilters(prev => {
-      const next = { ...prev, ...updates };
-      // Sync URL if category changes
-      if (updates.category !== undefined) {
-        setSearchParams(prevUrl => {
-          if (updates.category) prevUrl.set('category', updates.category);
-          else prevUrl.delete('category');
-          return prevUrl;
-        });
-      }
-      return next;
-    });
-    setCurrentPage(1);
-  };
-
-  const handleClearFilters = () => {
-    setFilters({
-      category: '',
-      state: '',
-      occupation: '',
-      gender: '',
-      socialCategory: '',
-      income: null,
-      age: '',
-      level: '',
-      sidebarQuery: ''
-    } as any);
-    setSearchParams({});
-    setCurrentPage(1);
-  };
-
-  // Pagination indices
   const totalPages = Math.ceil(totalSchemes / itemsPerPage) || 1;
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentSchemes = isMockMode 
-    ? schemes.slice(indexOfFirstItem, indexOfLastItem) 
-    : schemes;
+
+  const sidebarProps = {
+    filters,
+    options,
+    activeCount,
+    onChange: update,
+    onToggleTopic: toggleTopic,
+    onClear: clear,
+  };
 
   return (
     <div className={cn("flex-grow flex w-full", isAuthenticated ? "h-[calc(100vh-4rem)] overflow-hidden" : "min-h-[calc(100vh-4rem)]")}>
@@ -373,8 +110,8 @@ export const Search: React.FC = () => {
         </div>
 
         <SearchBar
-          initialValue={filters.sidebarQuery}
-          onSearch={handleSearchSubmit}
+          initialValue={filters.query}
+          onSearch={(query) => update({ query })}
           className="max-w-3xl"
         />
       </div>
@@ -385,20 +122,20 @@ export const Search: React.FC = () => {
         {/* Mobile Filter Toggle FAB */}
         <button
           onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
+          aria-label={t('refineSearch')}
           className="lg:hidden fixed bottom-20 right-6 z-40 bg-primary dark:bg-zinc-800 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center focus:outline-none"
         >
           <SlidersHorizontal className="w-5 h-5" />
+          {activeCount > 0 && (
+            <span className="absolute -top-1 -right-1 bg-secondary text-white text-[10px] font-bold rounded-full min-w-5 h-5 px-1 flex items-center justify-center">
+              {activeCount}
+            </span>
+          )}
         </button>
 
         {/* Filters Sidebar - Desktop */}
         <FilterSidebar
-          filters={filters}
-          categories={categories}
-          ministries={ministries}
-          states={states}
-          occupations={occupations}
-          onFilterChange={handleFilterChange}
-          onClear={handleClearFilters}
+          {...sidebarProps}
           className="hidden lg:block w-80 sticky top-24"
         />
 
@@ -417,20 +154,14 @@ export const Search: React.FC = () => {
                 </button>
               </div>
               <FilterSidebar
-                filters={filters}
-                categories={categories}
-                ministries={ministries}
-                states={states}
-                occupations={occupations}
-                onFilterChange={handleFilterChange}
-                onClear={handleClearFilters}
+                {...sidebarProps}
                 className="border-none shadow-none p-0 max-h-none overflow-visible"
               />
               <button
                 onClick={() => setMobileFilterOpen(false)}
                 className="w-full bg-secondary text-white py-2.5 rounded-lg text-sm font-bold mt-4"
               >
-                {t('applyFilters')}
+                {loading ? t('searching') : `${t('showResults')} (${totalSchemes})`}
               </button>
             </motion.div>
           </div>
@@ -443,22 +174,17 @@ export const Search: React.FC = () => {
             <span className="text-xs md:text-sm font-bold text-on-surface-variant dark:text-zinc-400">
               {loading ? t('searching') : `${totalSchemes} ${t('schemesFound')}`}
             </span>
-            {/* Occupation is the one filter with no stored data behind it, so it still only trims this page. Say so. */}
-            {!isMockMode && filters.occupation && (
-              <span className="text-[11px] font-semibold text-amber-800 dark:text-amber-300">
-                {t('occupationPageOnlyNote')}
-              </span>
-            )}
-
           </div>
+
+          <ActiveFilterChips filters={filters} onChange={update} onToggleTopic={toggleTopic} onClear={clear} />
 
           {/* Catalog view */}
           {loading ? (
             <LoadingSkeleton count={3} />
-          ) : currentSchemes.length > 0 ? (
+          ) : schemes.length > 0 ? (
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {currentSchemes.map(s => (
+                {schemes.map(s => (
                   <SchemeCard
                     key={s.id}
                     scheme={s}
@@ -472,7 +198,7 @@ export const Search: React.FC = () => {
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={(page) => setCurrentPage(page)}
+                onPageChange={setPage}
               />
             </div>
           ) : (
@@ -481,7 +207,7 @@ export const Search: React.FC = () => {
               title={t('noSchemesMatchedTitle')}
               description={t('noSchemesMatchedDesc')}
               actionText={t('resetFilters')}
-              onAction={handleClearFilters}
+              onAction={clear}
             />
           )}
         </div>

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildDemographicWhere } from './demographicFilters.js';
+import { buildDemographicWhere } from './demographics.js';
 
 // The builder only produces Prisma conditions; that they select the right rows is checked against
 // the real database (see the live-verification SQL comparison), these tests pin the construction.

@@ -6,6 +6,8 @@ const SCHEMES: Scheme[] = MOCK_SCHEMES;
 const API_URL = '/api/schemes';
 import { isMockMode } from '../config/mockMode';
 import { ingestCardText } from './titleTranslations';
+import { applyLocalFilters, localFilterCounts } from './localFilters';
+import { GENDER_IDS, SOCIAL_CATEGORY_IDS } from '../constants/searchFilters';
 
 /**
  * Guards against Vite's SPA HTML fallback being mistaken for valid API data.
@@ -127,36 +129,6 @@ function mapDbSchemeToFrontend(dbScheme: any): Scheme {
   });
 }
 
-function getLocalSchemes(filters?: { query?: string; category?: string; level?: string; sort?: string }): Scheme[] {
-  let result = [...SCHEMES].map(enrichScheme);
-
-  if (filters?.category && filters.category !== '') {
-    const catLower = filters.category.toLowerCase();
-    result = result.filter(s => s.categories?.some(c => c.toLowerCase() === catLower) || s.category.toLowerCase() === catLower);
-  }
-
-  if (filters?.query && filters.query !== '') {
-    const q = filters.query.toLowerCase();
-    result = result.filter(s =>
-      s.name.toLowerCase().includes(q) ||
-      s.description.toLowerCase().includes(q) ||
-      s.authorityName.toLowerCase().includes(q) ||
-      s.tags.some(t => t.toLowerCase().includes(q))
-    );
-  }
-
-  if (filters?.level && filters.level !== '') {
-    const lvlLower = filters.level.toLowerCase();
-    result = result.filter(s => s.level.toLowerCase() === lvlLower);
-  }
-
-  return result;
-}
-
-function getLocalMinistries(): string[] {
-  return Array.from(new Set(SCHEMES.map((s: any) => s.authorityName).filter(Boolean))).sort() as string[];
-}
-
 function getLocalSchemeById(id: string): Scheme | null {
   const localScheme = SCHEMES.find((s: any) => s.id === id) ?? null;
   return localScheme ? enrichScheme(localScheme) : null;
@@ -164,19 +136,6 @@ function getLocalSchemeById(id: string): Scheme | null {
 
 function getLocalFeaturedSchemes(): Scheme[] {
   return SCHEMES.filter((s: any) => s.featured).map(enrichScheme);
-}
-
-function getLocalCategories(): string[] {
-  const cats = new Set<string>();
-  SCHEMES.forEach((s: any) => {
-    if (s.categories) {
-      s.categories.forEach((c: any) => cats.add(c));
-    }
-    if (s.category) {
-      cats.add(s.category);
-    }
-  });
-  return Array.from(cats).filter(Boolean).sort();
 }
 
 function getLocalStates(): string[] {
@@ -247,10 +206,13 @@ const getActiveLang = (): string => {
 
 export interface SchemeListFilters {
   query?: string;
-  category?: string;
+  /** Comma-separated topic ids (constants/searchFilters.ts): schemes in ANY of them. */
+  topic?: string;
   level?: string;
   ministry?: string;
   state?: string;
+  /** student | farmer | entrepreneur | employee | unemployed | senior citizen: schemes meant for this occupation. */
+  occupation?: string;
   /** male | female | other: schemes available to this gender (server-side, real mode only). */
   gender?: string;
   /** general | sc | st | obc: schemes available to this social category (server-side, real mode only). */
@@ -268,9 +230,42 @@ export interface SchemeListResult {
   total: number;
 }
 
+/** The local schemes that fit the filters, one page of them, with the real local total. */
 function localSchemeList(filters?: SchemeListFilters): SchemeListResult {
-  const data = getLocalSchemes(filters);
-  return { data, total: data.length };
+  const all = applyLocalFilters(SCHEMES.map(enrichScheme), filters);
+  const limit = filters?.limit ?? all.length;
+  const page = filters?.page ?? 1;
+  return { data: all.slice((page - 1) * limit, page * limit), total: all.length };
+}
+
+/** One option of a Search filter and how many schemes it has on its own (null when not known). */
+export interface FilterOptionCount {
+  id: string;
+  count: number | null;
+}
+
+/** Everything the Search sidebar offers (GET /api/schemes/filters). */
+export interface FilterOptions {
+  topics: FilterOptionCount[];
+  occupations: FilterOptionCount[];
+  levels: FilterOptionCount[];
+  states: string[];
+  /** Central authorities only; a state's own schemes are reached through the State filter. */
+  ministries: Array<{ name: string; count: number | null }>;
+  genders: string[];
+  socialCategories: string[];
+}
+
+function localFilterOptions(): FilterOptions {
+  const schemes = SCHEMES.map(enrichScheme);
+  const central = Array.from(new Set(schemes.filter((s) => s.level !== 'State').map((s) => s.authorityName).filter(Boolean))).sort();
+  return {
+    ...localFilterCounts(schemes),
+    states: getLocalStates(),
+    ministries: central.map((name) => ({ name, count: schemes.filter((s) => s.authorityName === name).length })),
+    genders: [...GENDER_IDS],
+    socialCategories: [...SOCIAL_CATEGORY_IDS],
+  };
 }
 
 /** How many matches one page of results holds. */
@@ -303,16 +298,18 @@ export const schemeService = {
     }
   },
 
-  async getMinistries(): Promise<string[]> {
+  async getFilterOptions(): Promise<FilterOptions> {
     if (isMockMode) {
-      return getLocalMinistries();
+      return localFilterOptions();
     }
     try {
-      const response = await axios.get(`${API_URL}/ministries`);
-      return assertJsonArray<string>(response.data?.data ?? response.data, 'getMinistries');
+      const response = await axios.get(`${API_URL}/filters`);
+      const data = assertJsonObject<FilterOptions>(response.data?.data, 'getFilterOptions');
+      if (!Array.isArray(data.topics) || !Array.isArray(data.states)) throw new Error('[schemeService.getFilterOptions] Invalid response shape.');
+      return data;
     } catch (error) {
-      console.warn('[schemeService.getMinistries] Backend not available — deriving ministries locally.', (error as Error).message);
-      return getLocalMinistries();
+      console.warn('[schemeService.getFilterOptions] Backend not available — deriving filter options locally.', (error as Error).message);
+      return localFilterOptions();
     }
   },
 
@@ -349,24 +346,6 @@ export const schemeService = {
     } catch (error) {
       console.warn('[schemeService.getFeaturedSchemes] Backend not available — filtering featured schemes locally.', (error as Error).message);
       return getLocalFeaturedSchemes();
-    }
-  },
-
-  async getCategories(): Promise<string[]> {
-    if (isMockMode) {
-      return getLocalCategories();
-    }
-    try {
-      const response = await axios.get(`${API_URL.replace('/schemes', '')}/categories`);
-      const raw = response.data?.data ?? response.data;
-      // Backend returns [{ id, name }] — flatten to string[] that FilterSidebar expects
-      if (Array.isArray(raw) && raw.length > 0 && typeof raw[0] === 'object' && 'name' in raw[0]) {
-        return raw.map((c: { id: string; name: string }) => c.name);
-      }
-      return assertJsonArray<string>(raw, 'getCategories');
-    } catch (error) {
-      console.warn('[schemeService.getCategories] Backend not available — deriving categories locally.', (error as Error).message);
-      return getLocalCategories();
     }
   },
 

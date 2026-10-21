@@ -1,316 +1,214 @@
 import React from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
-import { X, RefreshCw, Layers, MapPin, User, Coins } from 'lucide-react';
+import { RefreshCw, User, Layers, Landmark } from 'lucide-react';
 import { cn } from '../utils/cn';
-import { translateValue } from '../utils/translationUtils';
-import { useVocabulary } from '../hooks/useVocabulary';
-import { stateLabel } from '../utils/stateLabel';
-
-/** Slider position that means "any income" (no income filter). */
-const INCOME_FILTER_OFF_AT = 1000000;
-
-export interface FilterState {
-  category: string;
-  state: string;
-  occupation: string;
-  gender: string;
-  /** "" (any) | general | sc | st | obc: schemes available to someone of this social category. */
-  socialCategory: string;
-  /** Annual income ceiling in rupees; null means no income filter. */
-  income: number | null;
-  age: string;
-  level: string;
-  sidebarQuery: string;
-  ministry: string;
-}
+import { SearchFilters } from '../hooks/useSearchFilters';
+import { FilterOptions } from '../services/schemeService';
+import { MAX_FILTER_AGE } from '../constants/searchFilters';
+import { useFilterLabels } from './filterLabels';
 
 interface FilterSidebarProps {
-  filters: FilterState;
-  categories: string[];
-  ministries: string[];
-  states: string[];
-  occupations: string[];
-  onFilterChange: (updates: Partial<FilterState>) => void;
+  filters: SearchFilters;
+  options: FilterOptions | null;
+  activeCount: number;
+  onChange: (changes: Partial<SearchFilters>) => void;
+  onToggleTopic: (id: string) => void;
   onClear: () => void;
   className?: string;
 }
 
-export const FilterSidebar: React.FC<FilterSidebarProps> = ({
-  filters,
-  categories,
-  states,
-  occupations,
-  ministries,
-  onFilterChange,
-  onClear,
-  className
-}) => {
-  const { t, language } = useTranslation();
-  const { vocab } = useVocabulary(language);
+const selectClass =
+  'w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-950 dark:text-white text-xs md:text-sm font-medium focus:ring-secondary focus:border-secondary py-2 px-3';
+const optionClass = 'dark:bg-zinc-900 dark:text-white';
+const fieldLabelClass = 'block text-[10px] font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider';
 
-  const handleIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    // The slider's far end means "any income" — same as not filtering at all.
-    onFilterChange({ income: value >= INCOME_FILTER_OFF_AT ? null : value });
-  };
+const Section: React.FC<{ icon: React.ReactNode; title: string; hint?: string; last?: boolean; children: React.ReactNode }> = ({ icon, title, hint, last, children }) => (
+  <section className={cn('space-y-3', !last && 'border-b border-outline-variant dark:border-zinc-800 pb-4')}>
+    <div>
+      <div className="flex items-center gap-2 text-primary dark:text-white">
+        {icon}
+        <h3 className="text-xs font-extrabold uppercase tracking-wider">{title}</h3>
+      </div>
+      {hint && <p className="mt-1 text-[11px] text-on-surface-variant dark:text-zinc-500">{hint}</p>}
+    </div>
+    {children}
+  </section>
+);
 
-  const genders = [
-    { label: t('allGenders'), value: '' },
-    { label: t('male'), value: 'male' },
-    { label: t('female'), value: 'female' },
-    { label: t('other'), value: 'other' }
-  ];
+const Field: React.FC<{ id: string; label: string; children: React.ReactNode }> = ({ id, label, children }) => (
+  <div className="space-y-1">
+    <label htmlFor={id} className={fieldLabelClass}>{label}</label>
+    {children}
+  </div>
+);
 
-  const socialCategories = [
-    { label: t('allSocialCategories'), value: '' },
-    { label: t('shCatGeneral'), value: 'general' },
-    { label: 'SC', value: 'sc' },
-    { label: 'ST', value: 'st' },
-    { label: 'OBC', value: 'obc' }
-  ];
+/** "(123)" after an option, when the count is known. */
+const countSuffix = (count: number | null | undefined) => (typeof count === 'number' ? ` (${count})` : '');
 
-  const levels = [
-    { label: t('allCategories') || 'All Levels', value: '' },
-    { label: t('centralGov'), value: 'Central' },
-    { label: t('stateGov'), value: 'State' }
-  ];
+/**
+ * The Search filters in three plain groups, in the order a person thinks about them:
+ * who I am (narrows to what I could get), what I need (topics), and who runs the scheme.
+ */
+export const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, options, activeCount, onChange, onToggleTopic, onClear, className }) => {
+  const { t } = useTranslation();
+  const labels = useFilterLabels();
 
-  const getCategoryLabel = (c: string) => {
-    if (c === '') return t('allCategories');
-    const localized = translateValue('main_category', c, language);
-    if (localized && localized !== c) return localized;
-
-    if (c.toLowerCase() === 'education') return t('scholarships');
-    if (c.toLowerCase() === 'healthcare') return t('healthInsurance');
-    if (c.toLowerCase() === 'agriculture') return t('farmerLoans');
-    if (c.toLowerCase() === 'senior citizens') return t('pensions');
-    return t(c.toLowerCase() as any) || c;
-  };
-
-  // Translated state name (see utils/stateLabel.ts). The old lookup answered with the raw `state_xxx` key for
-  // every state that had no locale entry.
-  const getStateLabel = (s: string) => stateLabel(s, vocab, t as (key: any) => string);
-
-  // The ministry list holds every authority (ministries and states): the Hindi vocabulary has a name for each one.
-  const getMinistryLabel = (m: string) => vocab?.names[m.trim()] ?? m;
-
-  const getOccupationLabel = (o: string) => {
-    const key = `occ_${o.replace(/\s+/g, '_').toLowerCase()}`;
-    return t(key as any) || o;
-  };
+  const states = options?.states ?? [];
+  const ministries = options?.ministries ?? [];
+  const levelCount = (id: string) => options?.levels.find((l) => l.id === id)?.count;
 
   return (
-    <aside className={cn(
-      "bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 shadow-sm space-y-5 max-h-[85vh] overflow-y-auto custom-scrollbar transition-colors w-full",
-      className
-    )}>
-      
-      {/* Header */}
+    <aside
+      aria-label={t('filterTitle')}
+      className={cn(
+        'bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 shadow-sm space-y-5 max-h-[85vh] overflow-y-auto custom-scrollbar transition-colors w-full',
+        className,
+      )}
+    >
       <div className="flex items-center justify-between pb-3 border-b border-outline-variant dark:border-zinc-800">
         <h2 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white">
           {t('filterTitle')}
+          {activeCount > 0 && (
+            <span className="ml-2 inline-flex items-center justify-center rounded-full bg-secondary text-white text-[10px] font-bold min-w-5 h-5 px-1.5">
+              {activeCount}
+            </span>
+          )}
         </h2>
         <button
+          type="button"
           onClick={onClear}
-          className="text-secondary dark:text-sky-400 text-xs font-bold flex items-center gap-1 hover:underline focus:outline-none cursor-pointer"
+          disabled={activeCount === 0}
+          className="text-secondary dark:text-sky-400 text-xs font-bold flex items-center gap-1 hover:underline focus:outline-none cursor-pointer disabled:opacity-40 disabled:no-underline disabled:cursor-default"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           {t('clearAll')}
         </button>
       </div>
 
-      {/* Group 1: Scheme Categories */}
-      <div className="border-b border-outline-variant dark:border-zinc-850 pb-4 space-y-2.5">
-        <div className="flex items-center gap-2 text-primary dark:text-white">
-          <Layers className="w-4 h-4 text-secondary dark:text-sky-400" />
-          <span className="text-xs font-extrabold uppercase tracking-wider">{t('categoryLabel')}</span>
-        </div>
-        <div className="space-y-2 max-h-40 overflow-y-auto custom-scrollbar pr-1">
-          <label className="flex items-center group cursor-pointer text-xs md:text-sm">
+      {/* 1. About you */}
+      <Section icon={<User className="w-4 h-4 text-secondary dark:text-sky-400" />} title={t('filterAboutYou')} hint={t('filterAboutYouHint')}>
+        <Field id="filter-state" label={t('stateLabel')}>
+          <select id="filter-state" value={filters.state} onChange={(e) => onChange({ state: e.target.value })} className={selectClass}>
+            <option value="" className={optionClass}>{t('allStates')}</option>
+            {states.map((s) => (
+              <option key={s} value={s} className={optionClass}>{labels.state(s)}</option>
+            ))}
+          </select>
+        </Field>
+
+        <div className="grid grid-cols-2 gap-3">
+          <Field id="filter-age" label={t('ageYearsLabel')}>
             <input
-              type="radio"
-              name="category"
-              checked={filters.category === ''}
-              onChange={() => onFilterChange({ category: '' })}
-              className="mr-2 w-4 h-4 text-secondary focus:ring-secondary border-outline-variant dark:bg-zinc-800 dark:border-zinc-700"
+              id="filter-age"
+              type="number"
+              inputMode="numeric"
+              min={0}
+              max={MAX_FILTER_AGE}
+              value={filters.age}
+              onChange={(e) => onChange({ age: e.target.value })}
+              placeholder={t('enterAge')}
+              className={selectClass}
             />
-            <span className="text-on-surface dark:text-zinc-300 group-hover:text-secondary dark:group-hover:text-sky-400 font-medium">
-              {t('allCategories')}
-            </span>
-          </label>
-          {categories.map(cat => (
-            <label key={cat} className="flex items-center group cursor-pointer text-xs md:text-sm">
-              <input
-                type="radio"
-                name="category"
-                checked={filters.category.toLowerCase() === cat.toLowerCase()}
-                onChange={() => onFilterChange({ category: cat })}
-                className="mr-2 w-4 h-4 text-secondary focus:ring-secondary border-outline-variant dark:bg-zinc-800 dark:border-zinc-700"
-              />
-              <span className="text-on-surface dark:text-zinc-300 group-hover:text-secondary dark:group-hover:text-sky-400 font-medium">
-                {getCategoryLabel(cat)}
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Group 2: Scope & Location */}
-      <div className="border-b border-outline-variant dark:border-zinc-850 pb-4 space-y-3">
-        <div className="flex items-center gap-2 text-primary dark:text-white">
-          <MapPin className="w-4 h-4 text-secondary dark:text-sky-400" />
-          <span className="text-xs font-extrabold uppercase tracking-wider">{t('shFilterScope')}</span>
+          </Field>
+          <Field id="filter-gender" label={t('genderLabel')}>
+            <select id="filter-gender" value={filters.gender} onChange={(e) => onChange({ gender: e.target.value })} className={selectClass}>
+              <option value="" className={optionClass}>{t('allGenders')}</option>
+              {(options?.genders ?? ['male', 'female', 'other']).map((g) => (
+                <option key={g} value={g} className={optionClass}>{labels.gender(g)}</option>
+              ))}
+            </select>
+          </Field>
         </div>
 
-        {/* Level */}
-        <div className="space-y-1">
-          <label className="block text-[10px] font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider">
-            {t('govtLevelLabel')}
-          </label>
-          <select
-            value={filters.level}
-            onChange={(e) => onFilterChange({ level: e.target.value })}
-            className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-950 dark:text-white text-xs md:text-sm font-medium focus:ring-secondary focus:border-secondary py-2 px-3"
-          >
-            {levels.map(l => (
-              <option key={l.value} value={l.value} className="dark:bg-zinc-900 dark:text-white">{l.label}</option>
+        <Field id="filter-social" label={t('socialCategory')}>
+          <select id="filter-social" value={filters.socialCategory} onChange={(e) => onChange({ socialCategory: e.target.value })} className={selectClass}>
+            <option value="" className={optionClass}>{t('allSocialCategories')}</option>
+            {(options?.socialCategories ?? ['general', 'sc', 'st', 'obc']).map((c) => (
+              <option key={c} value={c} className={optionClass}>{labels.socialCategory(c)}</option>
             ))}
           </select>
-        </div>
+        </Field>
 
-        {/* State */}
-        <div className="space-y-1">
-          <label className="block text-[10px] font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider">
-            {t('stateLabel')}
-          </label>
-          <select
-            value={filters.state}
-            onChange={(e) => onFilterChange({ state: e.target.value })}
-            className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-950 dark:text-white text-xs md:text-sm font-medium focus:ring-secondary focus:border-secondary py-2 px-3"
-          >
-            <option value="" className="dark:bg-zinc-900 dark:text-white">{t('allStates')}</option>
-            {states.map(s => (
-              <option key={s} value={s} className="dark:bg-zinc-900 dark:text-white">{getStateLabel(s)}</option>
+        <Field id="filter-occupation" label={t('occupationLabel')}>
+          <select id="filter-occupation" value={filters.occupation} onChange={(e) => onChange({ occupation: e.target.value })} className={selectClass}>
+            <option value="" className={optionClass}>{t('allOccupations')}</option>
+            {(options?.occupations ?? []).map((o) => (
+              <option key={o.id} value={o.id} className={optionClass}>{labels.occupation(o.id)}{countSuffix(o.count)}</option>
             ))}
           </select>
-        </div>
+        </Field>
 
-        {/* Ministry */}
-        <div className="space-y-1">
-          <label className="block text-[10px] font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider">
-            {t('ministryLabel')}
-          </label>
-          <select
-            value={filters.ministry}
-            onChange={(e) => onFilterChange({ ministry: e.target.value })}
-            className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-950 dark:text-white text-xs md:text-sm font-medium focus:ring-secondary focus:border-secondary py-2 px-3"
-          >
-            <option value="" className="dark:bg-zinc-900 dark:text-white">{t('allMinistries')}</option>
-            {ministries.map(m => (
-              <option key={m} value={m} className="dark:bg-zinc-900 dark:text-white">{getMinistryLabel(m)}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Group 3: Demographic Criteria */}
-      <div className="border-b border-outline-variant dark:border-zinc-850 pb-4 space-y-3">
-        <div className="flex items-center gap-2 text-primary dark:text-white">
-          <User className="w-4 h-4 text-secondary dark:text-sky-400" />
-          <span className="text-xs font-extrabold uppercase tracking-wider">{t('shFilterDemo')}</span>
-        </div>
-
-        {/* Occupation */}
-        <div className="space-y-1">
-          <label className="block text-[10px] font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider">
-            {t('occupationLabel')}
-          </label>
-          <select
-            value={filters.occupation}
-            onChange={(e) => onFilterChange({ occupation: e.target.value })}
-            className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-950 dark:text-white text-xs md:text-sm font-medium focus:ring-secondary focus:border-secondary py-2 px-3"
-          >
-            <option value="" className="dark:bg-zinc-900 dark:text-white">{t('allOccupations')}</option>
-            {occupations.map(o => (
-              <option key={o} value={o} className="dark:bg-zinc-900 dark:text-white">{getOccupationLabel(o)}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Gender */}
-        <div className="space-y-1">
-          <label className="block text-[10px] font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider">
-            {t('genderLabel')}
-          </label>
-          <select
-            value={filters.gender}
-            onChange={(e) => onFilterChange({ gender: e.target.value })}
-            className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-950 dark:text-white text-xs md:text-sm font-medium focus:ring-secondary focus:border-secondary py-2 px-3"
-          >
-            {genders.map(g => (
-              <option key={g.value} value={g.value} className="dark:bg-zinc-900 dark:text-white">{g.label}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Social category */}
-        <div className="space-y-1">
-          <label className="block text-[10px] font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider">
-            {t('socialCategory')}
-          </label>
-          <select
-            value={filters.socialCategory}
-            onChange={(e) => onFilterChange({ socialCategory: e.target.value })}
-            className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-950 dark:text-white text-xs md:text-sm font-medium focus:ring-secondary focus:border-secondary py-2 px-3"
-          >
-            {socialCategories.map(c => (
-              <option key={c.value} value={c.value} className="dark:bg-zinc-900 dark:text-white">{c.label}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Age */}
-        <div className="space-y-1">
-          <label className="block text-[10px] font-bold text-on-surface-variant dark:text-zinc-500 uppercase tracking-wider">
-            {t('ageLabel')}
-          </label>
+        <Field id="filter-income" label={t('annualIncomeLabel')}>
           <input
+            id="filter-income"
             type="number"
-            min="0"
-            max="110"
-            value={filters.age}
-            onChange={(e) => onFilterChange({ age: e.target.value })}
-            placeholder={t('enterAge')}
-            className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm font-medium focus:ring-secondary focus:border-secondary py-2 px-3"
+            inputMode="numeric"
+            min={0}
+            step={10000}
+            value={filters.income}
+            onChange={(e) => onChange({ income: e.target.value })}
+            placeholder={t('enterIncome')}
+            className={selectClass}
           />
-        </div>
-      </div>
+          {filters.income !== '' && !isNaN(Number(filters.income)) && (
+            <p className="text-[11px] font-semibold text-secondary dark:text-sky-400">{labels.income(filters.income)}</p>
+          )}
+        </Field>
+      </Section>
 
-      {/* Group 4: Finance */}
-      <div className="pb-2 space-y-3">
-        <div className="flex items-center gap-2 text-primary dark:text-white">
-          <Coins className="w-4 h-4 text-secondary dark:text-sky-400" />
-          <span className="text-xs font-extrabold uppercase tracking-wider">{t('incomeLabel')}</span>
+      {/* 2. What you need */}
+      <Section icon={<Layers className="w-4 h-4 text-secondary dark:text-sky-400" />} title={t('filterWhatYouNeed')} hint={t('filterWhatYouNeedHint')}>
+        <div className="flex flex-wrap gap-2" role="group" aria-label={t('filterWhatYouNeed')}>
+          {(options?.topics ?? []).map((topic) => {
+            const on = filters.topics.includes(topic.id);
+            return (
+              <button
+                key={topic.id}
+                type="button"
+                aria-pressed={on}
+                onClick={() => onToggleTopic(topic.id)}
+                className={cn(
+                  'rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors',
+                  on
+                    ? 'bg-secondary border-secondary text-white dark:bg-sky-500 dark:border-sky-500'
+                    : 'bg-white border-outline-variant text-on-surface hover:border-secondary hover:text-secondary dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:text-sky-400',
+                )}
+              >
+                {labels.topic(topic.id)}
+                {typeof topic.count === 'number' && <span className={cn('ml-1 font-normal', on ? 'text-white/80' : 'text-on-surface-variant dark:text-zinc-500')}>{topic.count}</span>}
+              </button>
+            );
+          })}
         </div>
-        <div className="space-y-2">
-          <input
-            type="range"
-            min="100000"
-            max="1000000"
-            step="50000"
-            value={filters.income ?? INCOME_FILTER_OFF_AT}
-            onChange={handleIncomeChange}
-            className="w-full h-1.5 bg-surface-container-highest dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-secondary dark:accent-sky-400"
-          />
-          <div className="flex justify-between text-xs text-on-surface-variant dark:text-zinc-500 font-bold">
-            <span>₹1L</span>
-            <span className="text-secondary dark:text-sky-400">
-              {filters.income === null ? t('anyIncome') : `₹${(filters.income / 100000).toFixed(1)}L`}
-            </span>
-          </div>
-        </div>
-      </div>
+      </Section>
 
+      {/* 3. Who runs it */}
+      <Section icon={<Landmark className="w-4 h-4 text-secondary dark:text-sky-400" />} title={t('filterWhoRuns')} last>
+        <Field id="filter-level" label={t('govtLevelLabel')}>
+          <select
+            id="filter-level"
+            value={filters.level}
+            // A ministry is a central body, so choosing State schemes drops it.
+            onChange={(e) => onChange(e.target.value === 'State' ? { level: 'State', ministry: '' } : { level: e.target.value })}
+            className={selectClass}
+          >
+            <option value="" className={optionClass}>{t('allLevels')}</option>
+            <option value="Central" className={optionClass}>{t('centralGov')}{countSuffix(levelCount('Central'))}</option>
+            <option value="State" className={optionClass}>{t('stateGov')}{countSuffix(levelCount('State'))}</option>
+          </select>
+        </Field>
+
+        {filters.level !== 'State' && (
+          <Field id="filter-ministry" label={t('ministryLabel')}>
+            <select id="filter-ministry" value={filters.ministry} onChange={(e) => onChange({ ministry: e.target.value })} className={selectClass}>
+              <option value="" className={optionClass}>{t('allMinistries')}</option>
+              {ministries.map((m) => (
+                <option key={m.name} value={m.name} className={optionClass}>{labels.ministry(m.name)}{countSuffix(m.count)}</option>
+              ))}
+            </select>
+          </Field>
+        )}
+      </Section>
     </aside>
   );
 };

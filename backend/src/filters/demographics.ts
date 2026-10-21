@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { canonicalState } from './states.js';
+import { canonicalState } from '../utils/states.js';
 
 /**
  * Search filters for who a scheme is FOR, applied in the database so the result
@@ -22,14 +22,14 @@ export interface DemographicQuery {
   income?: string;
 }
 
-const GENDERS = new Set(['male', 'female', 'other']);
-const SOCIAL_CATEGORIES = new Set(['general', 'sc', 'st', 'obc']);
-const MAX_AGE = 120;
+export const GENDERS = new Set(['male', 'female', 'other']);
+export const SOCIAL_CATEGORIES = new Set(['general', 'sc', 'st', 'obc']);
+export const MAX_AGE = 120;
 
 const noCriteriaRow: Prisma.SchemeWhereInput = { eligibilityCriteria: { is: null } };
 
 /** value is a member of a comma-separated set column; exact forms only, so "st" never matches inside another value. */
-export function setContains(field: 'gender' | 'category' | 'state', value: string): Prisma.EligibilityCriteriaWhereInput {
+export function setContains(field: 'gender' | 'category' | 'state' | 'occupation', value: string): Prisma.EligibilityCriteriaWhereInput {
   return {
     OR: [
       { [field]: { equals: value } },
@@ -40,7 +40,7 @@ export function setContains(field: 'gender' | 'category' | 'state', value: strin
   };
 }
 
-function parseWholeNumber(raw: string | undefined): number | null {
+export function parseWholeNumber(raw: string | undefined): number | null {
   if (raw === undefined || raw.trim() === '') return null;
   const n = Number(raw);
   return Number.isInteger(n) && n >= 0 ? n : null;

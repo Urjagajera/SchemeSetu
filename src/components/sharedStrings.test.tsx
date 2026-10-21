@@ -31,7 +31,8 @@ import { BookmarkButton } from './BookmarkButton';
 import { CompareButton } from './CompareButton';
 import { ThemeToggle } from './ThemeProvider';
 import { EligibilityCard } from './EligibilityCard';
-import { FilterSidebar, type FilterState } from './FilterSidebar';
+import { FilterSidebar } from './FilterSidebar';
+import { EMPTY_FILTERS } from '../hooks/useSearchFilters';
 import { MainLayout } from '../layouts/MainLayout';
 import { Footer } from './Footer';
 import { TRANSLATIONS } from '../constants/translations';
@@ -111,10 +112,8 @@ describe.each(LANGS)('shared parts in %s', (lang) => {
   });
 
   it('the filter sidebar group names and the General category', () => {
-    const filters: FilterState = { category: '', state: '', occupation: '', gender: '', socialCategory: '', income: null, age: '', level: '', sidebarQuery: '', ministry: '' };
-    wrap(<FilterSidebar filters={filters} categories={[]} ministries={[]} states={[]} occupations={[]} onFilterChange={() => {}} onClear={() => {}} />);
-    expect(text()).toContain(d.shFilterScope);
-    expect(text()).toContain(d.shFilterDemo);
+    wrap(<FilterSidebar filters={EMPTY_FILTERS} options={null} activeCount={0} onChange={() => {}} onToggleTopic={() => {}} onClear={() => {}} />);
+    for (const k of ['filterAboutYou', 'filterWhatYouNeed', 'filterWhoRuns']) expect(text()).toContain(d[k]);
     expect([...document.querySelectorAll('option')].map((o) => o.textContent)).toContain(d.shCatGeneral);
   });
 

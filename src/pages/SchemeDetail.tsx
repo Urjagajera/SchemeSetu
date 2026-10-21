@@ -80,8 +80,8 @@ export const SchemeDetail: React.FC = () => {
         setScheme(data);
 
         if (data) {
-          // Fetch related
-          const catalog = await schemeService.getSchemes({ category: data.category });
+          // Related = other schemes from the same authority (the scheme's Category row is its authority).
+          const catalog = await schemeService.getSchemes({ ministry: data.authorityName, limit: 4 });
           setRelated(catalog.data.filter(s => s.id !== data.id).slice(0, 3));
         }
       } catch (err) {

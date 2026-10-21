@@ -6,7 +6,9 @@ import { levelWhereClause } from '../utils/schemeLevel.js';
 import { INDIAN_STATES_AND_UTS, canonicalState } from '../utils/states.js';
 import { serializeScheme } from '../utils/serializeScheme.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
-import { buildDemographicWhere, setContains } from '../utils/demographicFilters.js';
+import { setContains } from '../filters/demographics.js';
+import { buildSchemeWhere, parseSchemeFilters } from '../filters/schemeFilters.js';
+import { getFilterOptions } from '../filters/options.js';
 import { enabledLanguage } from '../translation/languages.js';
 import { translationService } from '../translation/index.js';
 import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
@@ -38,48 +40,16 @@ function parsePagination(req: Request): { page: number; limit: number; skip: num
 
 /**
  * GET /api/schemes
- * Query params sent by the frontend (see schemeService.ts / Search.tsx):
- *   query    — free-text search across name/description/authorityName
- *   category — Category.name (join is empty until Category ingestion runs — see report)
- *   level    — "Central" | "State", derived from authorityName (see schemeLevel.ts)
- *   ministry — exact authorityName match (case-insensitive); feeds the Ministry dropdown
- *   state    — keeps central schemes plus state-level schemes of that one state, same
- *              rule the frontend's mock-mode filter uses
- *   gender, socialCategory, age, income — who the scheme is for, from the stored criteria
- *              ("schemes available to me": unrestricted schemes always stay); see utils/demographicFilters.ts
- *   page, limit — pagination (only sent by Search.tsx in non-mock mode)
+ * Every filter is read and checked by filters/schemeFilters.ts (see the list there); invalid values are dropped.
+ * The response carries `appliedFilters`, the filters as they were actually applied, next to the page and the
+ * real `total` across all pages. page, limit: pagination.
  */
 router.get(
   '/',
   asyncHandler(async (req: Request, res: Response) => {
-    const { query, category, level, ministry, state, gender, socialCategory, age, income } = req.query as Record<string, string | undefined>;
     const { limit, skip } = parsePagination(req);
-
-    const where: Prisma.SchemeWhereInput = {
-      AND: [
-        query
-          ? {
-              OR: [
-                { name: { contains: query, mode: 'insensitive' } },
-                { description: { contains: query, mode: 'insensitive' } },
-                { authorityName: { contains: query, mode: 'insensitive' } },
-              ],
-            }
-          : {},
-        category ? { categories: { some: { name: { equals: category, mode: 'insensitive' } } } } : {},
-        levelWhereClause(level) ?? {},
-        ministry ? { authorityName: { equals: ministry, mode: 'insensitive' } } : {},
-        state
-          ? {
-              OR: [
-                levelWhereClause('central') ?? {},
-                { authorityName: { equals: canonicalState(state) ?? state, mode: 'insensitive' } },
-              ],
-            }
-          : {},
-        ...buildDemographicWhere({ state, gender, socialCategory, age, income }),
-      ],
-    };
+    const appliedFilters = parseSchemeFilters(req.query);
+    const where = buildSchemeWhere(appliedFilters);
 
     const [rows, total] = await Promise.all([
       prisma.scheme.findMany({
@@ -92,7 +62,19 @@ router.get(
       prisma.scheme.count({ where }),
     ]);
 
-    res.json({ data: rows.map((s) => serializeScheme(s)), total, ...(await cardTranslation(rows, req.query.lang)) });
+    res.json({ data: rows.map((s) => serializeScheme(s)), total, appliedFilters, ...(await cardTranslation(rows, req.query.lang)) });
+  }),
+);
+
+/**
+ * GET /api/schemes/filters
+ * Every option the Search sidebar offers (topics, occupations, levels, states, central ministries, genders,
+ * social categories) with scheme counts, in one call. See filters/options.ts.
+ */
+router.get(
+  '/filters',
+  asyncHandler(async (_req: Request, res: Response) => {
+    res.json({ data: await getFilterOptions() });
   }),
 );
 
@@ -300,7 +282,7 @@ router.get(
 
 /**
  * GET /api/schemes/:id
- * MUST be registered after the static sub-paths above (/featured, /states,
+ * MUST be registered after the static sub-paths above (/featured, /filters, /states,
  * /recommended) or Express would match them here as an :id value instead.
  */
 /**
