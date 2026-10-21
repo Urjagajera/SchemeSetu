@@ -12,6 +12,7 @@ import { getFilterOptions } from '../filters/options.js';
 import { enabledLanguage } from '../translation/languages.js';
 import { translationService } from '../translation/index.js';
 import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
+import { matchPercent } from '../utils/matchPercent.js';
 
 const router = Router();
 
@@ -146,8 +147,10 @@ router.get(
  *      (nothing to disqualify it on) with score 0. Since the Phase B ingestion
  *      run, 1,341 of 4,722 schemes have a real EligibilityCriteria row and go
  *      through path 1; the rest fall into path 2 or 3 depending on tags.
+ * Order: by the same "Overall match" percentage the eligibility card shows (utils/matchPercent.ts), so 100% matches
+ * come first; then (above 0%) fewer unanswered criteria; then relevance (criteria confirmed / tags shared, occupation +-1).
  * Paged: the body may also carry `page` (default 1) and `limit` (default 20, at most 50), whole numbers >= 1 or the
- * request is a 400. The ranking is the same as before (best score first); ties are now broken by scheme id so a page
+ * request is a 400. Ties are broken by scheme id so a page
  * boundary is stable and the next page never repeats a scheme. The response adds `page`, `limit`, `total` (everything
  * that matched, not just this page) and `hasMore`.
  * A real, always-available signal doesn't wait on structured criteria being
@@ -236,13 +239,30 @@ router.post(
           matchScore = 0;
         }
 
-        // Sorted on the raw score (a demoted scheme can sink below an unscored one); the number sent to the app never goes below 0.
+        // The "Overall match" the eligibility card will show for this scheme (utils/matchPercent.ts).
+        const percent = matchPercent({
+          structuredChecked,
+          structuredPassed,
+          unverifiedCount: unverified.length,
+          tagMatchCount,
+          tagCount: tagNames.length,
+        });
+        // Relevance inside one percentage: more criteria confirmed (or more tags shared) first, an occupation
+        // match up and a mismatch down. The number sent to the app never goes below 0.
         const rank = matchScore + softDelta;
-        return { s, matchScore: Math.max(0, rank), rank, include, unverified };
+        return { s, matchScore: Math.max(0, rank), rank, percent, include, unverified };
       })
       .filter((r) => r.include)
-      // best score first; equal scores in id order, so the same profile always gets the same order
-      .sort((a, b) => b.rank - a.rank || (a.s.id < b.s.id ? -1 : a.s.id > b.s.id ? 1 : 0));
+      // 100% matches first, then the closest; at the same percentage the one with fewer unanswered criteria (only
+      // above 0%: at 0% nothing was confirmed either way), then the more relevant one; finally id order, so the same
+      // profile always gets the same order.
+      .sort(
+        (a, b) =>
+          b.percent - a.percent ||
+          (a.percent > 0 ? a.unverified.length - b.unverified.length : 0) ||
+          b.rank - a.rank ||
+          (a.s.id < b.s.id ? -1 : a.s.id > b.s.id ? 1 : 0),
+      );
 
     const total = ranked.length;
     const scored = ranked.slice((page - 1) * limit, page * limit);

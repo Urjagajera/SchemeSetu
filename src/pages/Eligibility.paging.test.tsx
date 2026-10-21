@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { makeScheme } from '../test/factories';
@@ -8,12 +8,17 @@ import type { Scheme } from '../types';
 const mocks = vi.hoisted(() => ({
   language: 'en' as 'en' | 'hi' | 'gu',
   authed: false,
+  half: false,
   getPage: vi.fn(),
   getReport: vi.fn(),
 }));
 
-const STABLE_PROFILE = vi.hoisted(() => ({ age: '30', state: 'Gujarat' }));
-vi.mock('../contexts/AuthContext', () => ({ useAuth: () => ({ isAuthenticated: mocks.authed, profile: mocks.authed ? STABLE_PROFILE : {} }) }));
+// Every answer the check needs (utils/profileCompleteness.ts), so the signed-in page goes straight to results.
+const STABLE_PROFILE = vi.hoisted(() => ({ age: '30', gender: 'female', state: 'Gujarat', category: 'sc', occupation: 'student', income: '100000', residence: 'rural' }));
+const HALF_PROFILE = vi.hoisted(() => ({ age: '30', state: 'Gujarat' }));
+vi.mock('../contexts/AuthContext', () => ({
+  useAuth: () => ({ isAuthenticated: mocks.authed, profile: mocks.authed ? (mocks.half ? HALF_PROFILE : STABLE_PROFILE) : {} }),
+}));
 vi.mock('../components/Sidebar', () => ({ default: () => null }));
 vi.mock('../contexts/LanguageContext', async () => {
   const { TRANSLATIONS } = await import('../constants/translations');
@@ -38,6 +43,7 @@ const cards = () => [...document.body.textContent!.matchAll(/Scheme \d+/g)].map(
 beforeEach(() => {
   mocks.language = 'en';
   mocks.authed = false;
+  mocks.half = false;
   mocks.getPage.mockReset();
   mocks.getReport.mockReset().mockImplementation(report);
 });
@@ -162,5 +168,33 @@ describe('Eligibility results when signed in: Show more', () => {
     expect(header()).toBe('5');
     expect(showMore()).toBeNull();
     expect(mocks.getPage.mock.calls[1][0]).toBe(STABLE_PROFILE);
+  });
+});
+
+describe('Eligibility when signed in with an incomplete profile', () => {
+  beforeEach(() => { mocks.authed = true; mocks.half = true; });
+
+  it('asks for the profile first: no results are worked out, and it says what is missing', async () => {
+    render(<MemoryRouter><Eligibility /></MemoryRouter>);
+    await act(async () => {});
+    expect(screen.getByTestId('profile-gate')).not.toBeNull();
+    expect(text()).toContain('Complete your profile first');
+    expect(mocks.getPage).not.toHaveBeenCalled();
+    expect(text()).toContain('29% Complete');
+    for (const missing of ['Gender', 'Social Category', 'Occupation', 'Residence']) expect(text()).toContain(missing);
+  });
+
+  it('the button goes to the profile and asks it to come back here', async () => {
+    render(<MemoryRouter><Eligibility /></MemoryRouter>);
+    await act(async () => {});
+    const link = within(screen.getByTestId('profile-gate')).getByRole('link');
+    expect(link.getAttribute('href')).toBe('/profile?next=/eligibility');
+  });
+
+  it('a guest still uses the wizard, without the gate', async () => {
+    mocks.authed = false;
+    render(<MemoryRouter><Eligibility /></MemoryRouter>);
+    await act(async () => {});
+    expect(screen.queryByTestId('profile-gate')).toBeNull();
   });
 });

@@ -461,5 +461,8 @@
   "topic_loans": "Loans & credit",
   "topic_welfare": "Social welfare",
   "topic_research": "Research & awards",
-  "topic_exservicemen": "Ex-servicemen"
+  "topic_exservicemen": "Ex-servicemen",
+  "elGateTitle": "Complete your profile first",
+  "elGateDesc": "The eligibility check needs a few answers about you to find the schemes that fit. Fill them in once and your matches appear here.",
+  "elSortedHint": "100% matches first, then the closest ones"
 }

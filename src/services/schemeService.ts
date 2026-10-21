@@ -194,7 +194,9 @@ function getLocalEligibleSchemes(profile: UserProfile): Scheme[] {
     }
   });
 
-  return results.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
+  // Highest match percentage first (the share of a scheme's tags matched, what its eligibility card shows), then more tags matched.
+  const percent = (s: Scheme) => (s.matchScore || 0) / (s.tags.length || 1);
+  return results.sort((a, b) => percent(b) - percent(a) || (b.matchScore || 0) - (a.matchScore || 0));
 }
 
 const getActiveLang = (): string => {

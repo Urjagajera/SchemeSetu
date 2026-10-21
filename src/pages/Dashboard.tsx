@@ -6,6 +6,7 @@ import { useBookmarks } from '../hooks/useBookmarks';
 import { schemeService } from '../services/schemeService';
 import { Scheme } from '../types';
 import { ProfileCompletion } from '../components/ProfileCompletion';
+import { ELIGIBILITY_FIELD_LABELS, profileCompleteness } from '../utils/profileCompleteness';
 import { SchemeCard } from '../components/SchemeCard';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import { 
@@ -28,28 +29,10 @@ export const Dashboard: React.FC = () => {
   const [trending, setTrending] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Determine profile completeness
-  const checkProfileCompleteness = () => {
-    let completedFields = 0;
-    const fieldsToCheck = ['age', 'gender', 'state', 'category', 'occupation', 'income', 'residence'];
-    // what each is called in the "Missing:" list (locale keys)
-    const fieldNames: Record<string, Parameters<typeof t>[0]> = { age: 'pfAge', gender: 'genderLabel', state: 'stateLabel', category: 'socialCategory', occupation: 'occupationLabel', income: 'pfFIncome', residence: 'residence' };
-    const missing: string[] = [];
-
-    fieldsToCheck.forEach(f => {
-      const val = (profile as any)[f];
-      if (val && val !== '') {
-        completedFields++;
-      } else {
-        missing.push(t(fieldNames[f]));
-      }
-    });
-
-    const pct = Math.round((completedFields / fieldsToCheck.length) * 100);
-    return { percentage: pct, missingFields: missing, isComplete: pct === 100 };
-  };
-
-  const { percentage, missingFields, isComplete } = checkProfileCompleteness();
+  // Determine profile completeness (the same fields the Eligibility page asks for, utils/profileCompleteness.ts)
+  const completeness = profileCompleteness(profile);
+  const { percentage, isComplete } = completeness;
+  const missingFields = completeness.missing.map((f) => t(ELIGIBILITY_FIELD_LABELS[f]));
 
   useEffect(() => {
     const loadDashboardData = async () => {

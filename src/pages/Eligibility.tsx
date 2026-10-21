@@ -12,6 +12,8 @@ import { SchemeCard } from '../components/SchemeCard';
 import { EligibilityCard } from '../components/EligibilityCard';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import Sidebar from '../components/Sidebar';
+import { ProfileCompletion } from '../components/ProfileCompletion';
+import { ELIGIBILITY_FIELD_LABELS, profileCompleteness } from '../utils/profileCompleteness';
 import { cn } from '../utils/cn';
 import { 
   User, 
@@ -125,12 +127,15 @@ export const Eligibility: React.FC = () => {
     </div>
   ) : null;
 
+  // A signed-in user fills in the profile answers the check needs FIRST; results are only worked out once it is complete.
+  const completeness = profileCompleteness(loggedInProfile);
+
   // Evaluate automatically if logged in
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && completeness.isComplete) {
       evaluateEligibility(loggedInProfile);
     }
-  }, [isAuthenticated, loggedInProfile]);
+  }, [isAuthenticated, loggedInProfile, completeness.isComplete]);
 
   const handleGuestSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,6 +146,36 @@ export const Eligibility: React.FC = () => {
   const handleInputChange = (field: keyof UserProfile, value: string) => {
     setGuestProfile(prev => ({ ...prev, [field]: value }));
   };
+
+  if (isAuthenticated && !completeness.isComplete) {
+    return (
+      <div className="flex h-[calc(100vh-4rem)] overflow-hidden bg-background dark:bg-zinc-950 transition-colors w-full">
+        <Sidebar activePage="eligibility" />
+        <main className="flex-1 overflow-y-auto custom-scrollbar">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            data-testid="profile-gate"
+            className="px-4 sm:px-6 lg:px-8 py-8 max-w-2xl mx-auto w-full space-y-6"
+          >
+            <div>
+              <h1 className="font-display text-2xl md:text-3xl font-extrabold text-primary dark:text-white">
+                {t('elGateTitle')}
+              </h1>
+              <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 mt-1">
+                {t('elGateDesc')}
+              </p>
+            </div>
+            <ProfileCompletion
+              percentage={completeness.percentage}
+              missingFields={completeness.missing.map((f) => t(ELIGIBILITY_FIELD_LABELS[f]))}
+              to="/profile?next=/eligibility"
+            />
+          </motion.div>
+        </main>
+      </div>
+    );
+  }
 
   if (isAuthenticated) {
     const getStateLabel = (s: string) => stateLabel(s, vocab, t as (key: any) => string);
@@ -197,7 +232,7 @@ export const Eligibility: React.FC = () => {
         <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 shadow-sm transition-colors space-y-4">
           <h2 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white flex items-center justify-between">
             <span>{t('profileSummary')}</span>
-            {summaryItems.some(i => !i.set) ? (
+            {!completeness.isComplete ? (
               <Link to="/profile" className="bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300 px-3 py-0.5 rounded-full text-[10px] font-bold hover:underline">
                 {t('profileIncomplete')}
               </Link>
@@ -220,9 +255,12 @@ export const Eligibility: React.FC = () => {
 
         {/* Eligible schemes reports */}
         <div className="space-y-6">
-          <h3 className="font-heading text-base md:text-lg font-bold text-primary dark:text-white pt-4">
-            {t('availableMatches')} ({schemes.length}{paging.total > schemes.length ? ` / ${paging.total}` : ''})
-          </h3>
+          <div className="pt-4">
+            <h3 className="font-heading text-base md:text-lg font-bold text-primary dark:text-white">
+              {t('availableMatches')} ({schemes.length}{paging.total > schemes.length ? ` / ${paging.total}` : ''})
+            </h3>
+            <p className="text-[11px] md:text-xs text-on-surface-variant dark:text-zinc-400 mt-0.5">{t('elSortedHint')}</p>
+          </div>
 
           {loading ? (
             <LoadingSkeleton type="list" count={2} />

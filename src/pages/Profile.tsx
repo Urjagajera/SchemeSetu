@@ -20,6 +20,8 @@ import {
 } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { profileCompleteness } from '../utils/profileCompleteness';
 
 // Only the name is required. Every other answer is optional: a blank means "unknown", and the eligibility
 // engine never rules a scheme out because of an unknown. What IS filled in must still be sensible.
@@ -89,6 +91,12 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 export const Profile: React.FC = () => {
   const { user, profile, updateProfile } = useAuth();
   const { t, language } = useTranslation();
+  const navigate = useNavigate();
+  // ?next=/eligibility: where to go back to once the profile has every answer the eligibility check needs.
+  // Only a path inside the app is followed.
+  const [searchParams] = useSearchParams();
+  const rawNext = searchParams.get('next') ?? '';
+  const next = rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '';
   const states = useStates();
   const { vocab } = useVocabulary(language);
   
@@ -212,6 +220,10 @@ export const Profile: React.FC = () => {
         interests: selectedTags,
         profileTags: selectedTags
       });
+      if (next && profileCompleteness(values).isComplete) {
+        navigate(next);
+        return;
+      }
       setSuccessMsg('pfSaved');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import type { UserProfile } from '../types';
 import { ProfileSaveError } from '../contexts/AuthContext';
 
@@ -32,8 +33,15 @@ const SUCCESS = 'Your eligibility profile has been successfully saved!';
 
 const field = (container: HTMLElement, name: string) => container.querySelector(`input[name="${name}"]`) as HTMLInputElement;
 
-function setup() {
-  const view = render(<Profile />);
+function setup(url = '/profile') {
+  const view = render(
+    <MemoryRouter initialEntries={[url]}>
+      <Routes>
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/eligibility" element={<div>ELIGIBILITY PAGE</div>} />
+      </Routes>
+    </MemoryRouter>,
+  );
   return { ...view, user: userEvent.setup() };
 }
 
@@ -189,5 +197,31 @@ describe('Profile form in Hindi and Gujarati', () => {
     await user.click(screen.getByRole('button', { name: 'बदलाव सहेजें' }));
     const alert = await screen.findByRole('alert');
     expect(alert.textContent).toContain('Server says no');
+  });
+});
+
+describe('Profile form: coming from the eligibility check (?next=)', () => {
+  const COMPLETE: Partial<UserProfile> = { age: '30', gender: 'female', state: 'Gujarat', category: 'sc', occupation: 'student', income: '100000', residence: 'rural' };
+
+  it('goes back once every answer the check needs is saved', async () => {
+    mocks.profile = COMPLETE;
+    const { user } = setup('/profile?next=/eligibility');
+    await user.click(screen.getByRole('button', { name: SAVE }));
+    expect(await screen.findByText('ELIGIBILITY PAGE')).not.toBeNull();
+  });
+
+  it('stays (and says it saved) while something the check needs is still blank', async () => {
+    mocks.profile = { ...COMPLETE, residence: '' };
+    const { user } = setup('/profile?next=/eligibility');
+    await user.click(screen.getByRole('button', { name: SAVE }));
+    expect(await screen.findByText(SUCCESS)).not.toBeNull();
+    expect(screen.queryByText('ELIGIBILITY PAGE')).toBeNull();
+  });
+
+  it('never follows a next that leaves the app', async () => {
+    mocks.profile = COMPLETE;
+    const { user } = setup('/profile?next=//evil.example');
+    await user.click(screen.getByRole('button', { name: SAVE }));
+    expect(await screen.findByText(SUCCESS)).not.toBeNull();
   });
 });

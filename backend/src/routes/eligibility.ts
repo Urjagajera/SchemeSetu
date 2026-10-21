@@ -3,6 +3,7 @@ import prisma from '../db/prisma.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
 import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
+import { matchPercent } from '../utils/matchPercent.js';
 
 const router = Router();
 
@@ -74,7 +75,6 @@ router.post(
 
     const interests = buildInterestTags(profile);
     const tags = scheme.tags.map((t) => t.name);
-    const totalTags = tags.length || 1;
     let tagPassedCount = 0;
     const tagPassed: string[] = [];
     const tagFailed: string[] = [];
@@ -87,12 +87,18 @@ router.post(
       }
     });
 
-    let overallMatch: number;
+    // Same percentage the recommended list is ordered by (utils/matchPercent.ts).
+    const overallMatch = matchPercent({
+      structuredChecked,
+      structuredPassed: hardPassed,
+      unverifiedCount: unverifiedCriteria.length,
+      tagMatchCount: tagPassedCount,
+      tagCount: tags.length,
+    });
     let isEligible: boolean;
     let reasons: string[];
 
     if (structuredChecked > 0) {
-      overallMatch = Math.round((hardPassed / structuredChecked) * 100);
       isEligible = failedCriteria.length === 0;
       reasons = [
         `Matched ${hardPassed} of ${structuredChecked} structured eligibility criteria on file for this scheme.`,
@@ -100,13 +106,11 @@ router.post(
     } else if (unverifiedCriteria.length > 0) {
       // Criteria are on file but the profile answers none of them (empty fields). We simply can't tell, so:
       // not ineligible, no match percentage, and no keyword-mismatch noise posing as "missing requirements".
-      overallMatch = 0;
       isEligible = true;
       reasons = [
         `This scheme has eligibility criteria on file, but your profile doesn't say: ${unverifiedCriteria.join(', ')}. Add them to your profile to check.`,
       ];
     } else {
-      overallMatch = Math.round((tagPassedCount / totalTags) * 100);
       isEligible = overallMatch >= 50;
       passedCriteria.push(...tagPassed);
       failedCriteria.push(...tagFailed);

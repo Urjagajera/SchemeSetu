@@ -7,12 +7,15 @@ import { cn } from '../utils/cn';
 interface ProfileCompletionProps {
   percentage: number;
   missingFields: string[];
+  /** Where the button goes; defaults to the profile page. */
+  to?: string;
   className?: string;
 }
 
 export const ProfileCompletion: React.FC<ProfileCompletionProps> = ({
   percentage,
   missingFields,
+  to = '/profile',
   className
 }) => {
   const { t } = useTranslation();
@@ -57,7 +60,7 @@ export const ProfileCompletion: React.FC<ProfileCompletionProps> = ({
       {/* CTA Button */}
       <div className="flex justify-end">
         <Link
-          to="/profile"
+          to={to}
           className="bg-primary text-white dark:bg-sky-500 dark:text-zinc-950 px-5 py-2 rounded-lg font-heading text-xs font-bold hover:bg-secondary dark:hover:opacity-90 transition-all active:scale-95 shadow-sm"
         >
           {t('completeProfileBtn')}
