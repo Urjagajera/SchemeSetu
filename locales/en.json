@@ -464,5 +464,11 @@
   "topic_exservicemen": "Ex-servicemen",
   "elGateTitle": "Complete your profile first",
   "elGateDesc": "The eligibility check needs a few answers about you to find the schemes that fit. Fill them in once and your matches appear here.",
-  "elSortedHint": "100% matches first, then the closest ones"
+  "elSortedHint": "100% matches first, then the closest ones",
+  "qpTitle": "Tell us a little about you",
+  "qpDesc": "Answer these once to see the schemes you could get. They are saved to your profile, and you can change them any time.",
+  "qpSave": "Save and see my schemes",
+  "qpSaving": "Saving…",
+  "qpMoreLink": "Add more details in your profile",
+  "qpNothingToSave": "Answer at least one question to save."
 }

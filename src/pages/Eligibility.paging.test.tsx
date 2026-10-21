@@ -184,11 +184,15 @@ describe('Eligibility when signed in with an incomplete profile', () => {
     for (const missing of ['Gender', 'Social Category', 'Occupation', 'Residence']) expect(text()).toContain(missing);
   });
 
-  it('the button goes to the profile and asks it to come back here', async () => {
+  it('asks only the missing questions right on the page, instead of sending the user to the profile', async () => {
     render(<MemoryRouter><Eligibility /></MemoryRouter>);
     await act(async () => {});
-    const link = within(screen.getByTestId('profile-gate')).getByRole('link');
-    expect(link.getAttribute('href')).toBe('/profile?next=/eligibility');
+    const gate = within(screen.getByTestId('profile-gate'));
+    expect(gate.getByTestId('quick-profile')).not.toBeNull();
+    for (const label of ['Gender', 'Social Category', 'Occupation', 'Annual family income', 'Residence']) expect(gate.getByLabelText(label)).not.toBeNull();
+    // age and state are already in the profile
+    expect(gate.queryByLabelText('Age')).toBeNull();
+    expect(gate.queryByLabelText('State')).toBeNull();
   });
 
   it('a guest still uses the wizard, without the gate', async () => {

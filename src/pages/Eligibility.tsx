@@ -12,8 +12,8 @@ import { SchemeCard } from '../components/SchemeCard';
 import { EligibilityCard } from '../components/EligibilityCard';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import Sidebar from '../components/Sidebar';
-import { ProfileCompletion } from '../components/ProfileCompletion';
-import { ELIGIBILITY_FIELD_LABELS, profileCompleteness } from '../utils/profileCompleteness';
+import { QuickProfileForm } from '../components/QuickProfileForm';
+import { profileCompleteness } from '../utils/profileCompleteness';
 import { cn } from '../utils/cn';
 import { 
   User, 
@@ -166,11 +166,8 @@ export const Eligibility: React.FC = () => {
                 {t('elGateDesc')}
               </p>
             </div>
-            <ProfileCompletion
-              percentage={completeness.percentage}
-              missingFields={completeness.missing.map((f) => t(ELIGIBILITY_FIELD_LABELS[f]))}
-              to="/profile?next=/eligibility"
-            />
+            {/* Answered and saved right here; once complete, the results below replace this. */}
+            <QuickProfileForm />
           </motion.div>
         </main>
       </div>

@@ -5,8 +5,8 @@ import { useTranslation } from '../contexts/LanguageContext';
 import { useBookmarks } from '../hooks/useBookmarks';
 import { schemeService } from '../services/schemeService';
 import { Scheme } from '../types';
-import { ProfileCompletion } from '../components/ProfileCompletion';
-import { ELIGIBILITY_FIELD_LABELS, profileCompleteness } from '../utils/profileCompleteness';
+import { QuickProfileForm } from '../components/QuickProfileForm';
+import { profileCompleteness } from '../utils/profileCompleteness';
 import { SchemeCard } from '../components/SchemeCard';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import { 
@@ -31,8 +31,7 @@ export const Dashboard: React.FC = () => {
 
   // Determine profile completeness (the same fields the Eligibility page asks for, utils/profileCompleteness.ts)
   const completeness = profileCompleteness(profile);
-  const { percentage, isComplete } = completeness;
-  const missingFields = completeness.missing.map((f) => t(ELIGIBILITY_FIELD_LABELS[f]));
+  const { isComplete } = completeness;
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -100,7 +99,8 @@ export const Dashboard: React.FC = () => {
           
           {/* Profile Completion Card (if incomplete) */}
           {!isComplete && (
-            <ProfileCompletion percentage={percentage} missingFields={missingFields} />
+            // The missing answers are asked right here and saved to the profile.
+            <QuickProfileForm />
           )}
 
           {/* Recommendations / Trending Schemes Section */}
