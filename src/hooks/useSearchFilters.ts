@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { TOPIC_IDS, toTopicId } from '../constants/searchFilters';
+import { GENDER_IDS, MAX_FILTER_AGE, OCCUPATION_IDS, SOCIAL_CATEGORY_IDS, TOPIC_IDS, toTopicId } from '../constants/searchFilters';
+import type { UserProfile } from '../types';
 
 /**
  * The Search page's filters, kept in ONE place: the URL. A reload, the back button or a shared link
@@ -54,6 +55,36 @@ export function paramsFromFilters(f: SearchFilters, page = 1): URLSearchParams {
   if (f.topics.length) params.set('topic', TOPIC_IDS.filter((id) => f.topics.includes(id)).join(','));
   if (page > 1) params.set('page', String(page));
   return params;
+}
+
+/** The "About you" filters: the ones a saved profile can answer. */
+export const ABOUT_YOU_FIELDS = ['state', 'age', 'gender', 'socialCategory', 'occupation', 'income'] as const;
+
+export function hasAboutYou(f: SearchFilters): boolean {
+  return ABOUT_YOU_FIELDS.some((k) => f[k].trim() !== '');
+}
+
+/**
+ * The "About you" filters a saved profile fills in. Only values the filters accept are taken: an occupation of
+ * "other" or an age the filter can't use is left blank instead of being guessed at.
+ */
+export function aboutYouFromProfile(profile: Partial<UserProfile> | null | undefined): Partial<SearchFilters> {
+  if (!profile) return {};
+  const clean = (v: unknown) => (typeof v === 'string' ? v.trim() : '');
+  const out: Partial<SearchFilters> = {};
+  const state = clean(profile.state);
+  if (state) out.state = state;
+  const age = clean(profile.age);
+  if (/^\d{1,3}$/.test(age) && Number(age) <= MAX_FILTER_AGE) out.age = age;
+  const gender = clean(profile.gender).toLowerCase();
+  if ((GENDER_IDS as readonly string[]).includes(gender)) out.gender = gender;
+  const category = clean(profile.category).toLowerCase();
+  if ((SOCIAL_CATEGORY_IDS as readonly string[]).includes(category)) out.socialCategory = category;
+  const occupation = clean(profile.occupation).toLowerCase();
+  if ((OCCUPATION_IDS as readonly string[]).includes(occupation)) out.occupation = occupation;
+  const income = clean(profile.income);
+  if (/^\d{1,12}$/.test(income)) out.income = income;
+  return out;
 }
 
 /** How many filters are on (each topic counts once; the search text is not a filter). */

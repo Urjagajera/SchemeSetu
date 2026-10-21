@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { schemeService, FilterOptions } from '../services/schemeService';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useBookmarks } from '../hooks/useBookmarks';
@@ -8,7 +8,7 @@ import { SearchBar } from '../components/SearchBar';
 import { SchemeCard } from '../components/SchemeCard';
 import { FilterSidebar } from '../components/FilterSidebar';
 import { ActiveFilterChips } from '../components/ActiveFilterChips';
-import { useSearchFilters } from '../hooks/useSearchFilters';
+import { ABOUT_YOU_FIELDS, aboutYouFromProfile, hasAboutYou, useSearchFilters } from '../hooks/useSearchFilters';
 import { Pagination } from '../components/Pagination';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import { EmptyState } from '../components/EmptyState';
@@ -19,7 +19,7 @@ import { motion } from 'framer-motion';
 
 export const Search: React.FC = () => {
   const { t } = useTranslation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, profile } = useAuth();
   const { bookmarks, toggleBookmark } = useBookmarks();
   const { filters, page: currentPage, update, toggleTopic, clear, setPage, activeCount } = useSearchFilters();
 
@@ -27,6 +27,21 @@ export const Search: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [totalSchemes, setTotalSchemes] = useState(0);
   const [options, setOptions] = useState<FilterOptions | null>(null);
+
+  // A signed-in user's "About you" filters start from their saved profile, once per visit, unless the link already
+  // says something about them. Clearing them afterwards is respected; "Use my profile" puts them back.
+  const fromProfile = useMemo(() => (isAuthenticated ? aboutYouFromProfile(profile) : {}), [isAuthenticated, profile]);
+  const prefilled = useRef(false);
+  useEffect(() => {
+    if (prefilled.current || Object.keys(fromProfile).length === 0) return;
+    prefilled.current = true;
+    if (!hasAboutYou(filters)) update(fromProfile);
+    // only when the profile arrives; `filters` is read at that moment on purpose
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fromProfile]);
+  const matchesProfile =
+    Object.keys(fromProfile).length > 0 &&
+    ABOUT_YOU_FIELDS.every((k) => (fromProfile[k] ?? '') === filters[k]);
 
   // UI responsive filter toggle for mobile screen
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
@@ -86,6 +101,9 @@ export const Search: React.FC = () => {
     onChange: update,
     onToggleTopic: toggleTopic,
     onClear: clear,
+    // Offered when there is a profile to use and the "About you" filters don't already match it.
+    onUseProfile: Object.keys(fromProfile).length > 0 && !matchesProfile ? () => update({ ...Object.fromEntries(ABOUT_YOU_FIELDS.map((k) => [k, ''])), ...fromProfile }) : undefined,
+    fromProfile: matchesProfile,
   };
 
   return (

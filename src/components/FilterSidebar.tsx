@@ -14,6 +14,10 @@ interface FilterSidebarProps {
   onChange: (changes: Partial<SearchFilters>) => void;
   onToggleTopic: (id: string) => void;
   onClear: () => void;
+  /** Fill the "About you" filters from the saved profile (only given when that would change something). */
+  onUseProfile?: () => void;
+  /** The "About you" filters are exactly the saved profile's answers. */
+  fromProfile?: boolean;
   className?: string;
 }
 
@@ -49,7 +53,7 @@ const countSuffix = (count: number | null | undefined) => (typeof count === 'num
  * The Search filters in three plain groups, in the order a person thinks about them:
  * who I am (narrows to what I could get), what I need (topics), and who runs the scheme.
  */
-export const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, options, activeCount, onChange, onToggleTopic, onClear, className }) => {
+export const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, options, activeCount, onChange, onToggleTopic, onClear, onUseProfile, fromProfile, className }) => {
   const { t } = useTranslation();
   const labels = useFilterLabels();
 
@@ -87,6 +91,18 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ filters, options, 
 
       {/* 1. About you */}
       <Section icon={<User className="w-4 h-4 text-secondary dark:text-sky-400" />} title={t('filterAboutYou')} hint={t('filterAboutYouHint')}>
+        {fromProfile && (
+          <p className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">{t('filterFromProfile')}</p>
+        )}
+        {onUseProfile && (
+          <button
+            type="button"
+            onClick={onUseProfile}
+            className="text-xs font-bold text-secondary dark:text-sky-400 hover:underline"
+          >
+            {t('filterUseProfile')}
+          </button>
+        )}
         <Field id="filter-state" label={t('stateLabel')}>
           <select id="filter-state" value={filters.state} onChange={(e) => onChange({ state: e.target.value })} className={selectClass}>
             <option value="" className={optionClass}>{t('allStates')}</option>

@@ -470,5 +470,7 @@
   "qpSave": "Save and see my schemes",
   "qpSaving": "Saving…",
   "qpMoreLink": "Add more details in your profile",
-  "qpNothingToSave": "Answer at least one question to save."
+  "qpNothingToSave": "Answer at least one question to save.",
+  "filterFromProfile": "Filled in from your profile",
+  "filterUseProfile": "Use my profile"
 }

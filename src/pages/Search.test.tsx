@@ -9,9 +9,12 @@ const mocks = vi.hoisted(() => ({
   getSchemes: vi.fn(),
   getFilterOptions: vi.fn(),
   location: '',
+  authed: false,
+  profile: {} as Record<string, string>,
 }));
 
-vi.mock('../contexts/AuthContext', () => ({ useAuth: () => ({ isAuthenticated: false }) }));
+// A stable profile object per test, like the real context, so the page doesn't see a "new" profile every render.
+vi.mock('../contexts/AuthContext', () => ({ useAuth: () => ({ isAuthenticated: mocks.authed, profile: mocks.profile }) }));
 vi.mock('../components/Sidebar', () => ({ default: () => null }));
 vi.mock('../contexts/LanguageContext', async () => {
   const { TRANSLATIONS } = await import('../constants/translations');
@@ -57,6 +60,8 @@ beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true });
   mocks.getSchemes.mockReset().mockResolvedValue({ data: [makeScheme({ id: 'a', name: 'Scheme A' })], total: 41 });
   mocks.getFilterOptions.mockReset().mockResolvedValue(OPTIONS);
+  mocks.authed = false;
+  mocks.profile = {};
 });
 
 describe('Search page filters', () => {
@@ -131,5 +136,55 @@ describe('Search page filters', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     await renderAt('/search?state=Goa');
     expect(lastQuery()).toMatchObject({ state: 'Goa' });
+  });
+});
+
+describe('Search page: About you starts from the saved profile', () => {
+  const PROFILE = { state: 'Gujarat', age: '34', gender: 'female', category: 'sc', occupation: 'farmer', income: '120000', residence: 'rural' };
+  beforeEach(() => {
+    mocks.authed = true;
+    mocks.profile = PROFILE;
+  });
+
+  it('fills State, Age, Gender, Social category, Occupation and Income from the profile and searches with them', async () => {
+    await renderAt('/search');
+    expect(lastQuery()).toMatchObject({ state: 'Gujarat', age: 34, gender: 'female', socialCategory: 'sc', occupation: 'farmer', income: 120000 });
+    expect((within(desktop()).getByLabelText('State') as HTMLSelectElement).value).toBe('Gujarat');
+    expect(within(desktop()).getByText('Filled in from your profile')).toBeTruthy();
+    expect(within(desktop()).queryByRole('button', { name: 'Use my profile' })).toBeNull();
+  });
+
+  it('keeps other filters from the link, such as a topic', async () => {
+    await renderAt('/search?topic=health');
+    expect(lastQuery()).toMatchObject({ topic: 'health', state: 'Gujarat', occupation: 'farmer' });
+  });
+
+  it('does not override About-you values the link already gives', async () => {
+    await renderAt('/search?state=Goa');
+    expect(lastQuery()).toMatchObject({ state: 'Goa', age: undefined, occupation: undefined });
+  });
+
+  it('leaves out profile answers the filter cannot use', async () => {
+    mocks.profile = { state: 'Gujarat', occupation: 'other', age: 'abc' };
+    await renderAt('/search');
+    expect(lastQuery()).toMatchObject({ state: 'Gujarat', occupation: undefined, age: undefined });
+  });
+
+  it('Clear all stays cleared, and "Use my profile" puts the answers back', async () => {
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    await renderAt('/search');
+    await user.click(within(desktop()).getByRole('button', { name: /Clear All/ }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(300); });
+    expect(lastQuery()).toMatchObject({ state: undefined, occupation: undefined });
+    await user.click(within(desktop()).getByRole('button', { name: 'Use my profile' }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(300); });
+    expect(lastQuery()).toMatchObject({ state: 'Gujarat', age: 34, occupation: 'farmer' });
+  });
+
+  it('a guest gets no prefill and no profile button', async () => {
+    mocks.authed = false;
+    await renderAt('/search');
+    expect(lastQuery()).toMatchObject({ state: undefined, age: undefined });
+    expect(within(desktop()).queryByRole('button', { name: 'Use my profile' })).toBeNull();
   });
 });
