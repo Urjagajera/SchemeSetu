@@ -79,17 +79,10 @@ export const Navbar: React.FC = () => {
                 to="/dashboard"
                 className="flex items-center gap-2 hover:opacity-90 transition-opacity"
               >
-                {user?.picture ? (
-                  <img
-                    src={user.picture}
-                    alt={user.name}
-                    className="h-8 w-8 rounded-full border border-secondary"
-                  />
-                ) : (
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-white font-bold text-sm">
-                    {user?.name?.charAt(0).toUpperCase()}
-                  </div>
-                )}
+                {/* No Google photo: it often fails to load and showed a broken-image icon. The initial is always there. */}
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-white font-bold text-sm">
+                  {user?.name?.charAt(0).toUpperCase()}
+                </div>
                 <span className="text-sm font-bold text-primary dark:text-white max-w-[120px] truncate">
                   {user?.name.split(' ')[0]}
                 </span>
