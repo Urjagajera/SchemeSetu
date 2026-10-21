@@ -1,0 +1,370 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 6,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "timeline_track_too_dense",
+        "severity": "warning",
+        "message": "Track 0 has 5 timed elements in this HTML file. Smaller sub-compositions keep timelines easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "D:\\ANTI\\SchemeSetu\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move coherent scene groups into separate .html files under compositions/ and mount them from the parent with data-composition-src so the timeline stays easier to inspect, revise, and validate."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"s1\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#s1",
+        "dataAttributes": {},
+        "sourceFile": "D:\\ANTI\\SchemeSetu\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"s1\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"s2\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#s2",
+        "dataAttributes": {},
+        "sourceFile": "D:\\ANTI\\SchemeSetu\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"s2\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"s3\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#s3",
+        "dataAttributes": {},
+        "sourceFile": "D:\\ANTI\\SchemeSetu\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"s3\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"s4\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#s4",
+        "dataAttributes": {},
+        "sourceFile": "D:\\ANTI\\SchemeSetu\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"s4\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"s5\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#s5",
+        "dataAttributes": {},
+        "sourceFile": "D:\\ANTI\\SchemeSetu\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"s5\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 5,
+    "findings": [
+      {
+        "code": "clipped_text",
+        "severity": "info",
+        "time": 12.5,
+        "selector": "#b1 > div:nth-of-type(2) > div:nth-of-type(4)",
+        "message": "Text content is clipped by its own box.",
+        "rect": {
+          "left": 1038,
+          "top": 456,
+          "right": 1058,
+          "bottom": 512,
+          "width": 20,
+          "height": 56
+        },
+        "text": "})",
+        "fixHint": "Text is 20px x 56px inside 20px x 56px and overflows by up to 15px; widen the text box to at least ~35px, or allow wrapping with max-width/fitTextFontSize.",
+        "overflow": {
+          "right": 15
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1038,
+          "y": 456,
+          "width": 20,
+          "height": 56
+        },
+        "firstSeen": 12.5,
+        "lastSeen": 12.5,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          12.5
+        ]
+      },
+      {
+        "code": "clipped_text",
+        "severity": "info",
+        "time": 15.278,
+        "selector": "#b2 > div:nth-of-type(2) > div:nth-of-type(2)",
+        "message": "Text content is clipped by its own box.",
+        "rect": {
+          "left": 1038,
+          "top": 344,
+          "right": 1211,
+          "bottom": 400,
+          "width": 173,
+          "height": 56
+        },
+        "text": "status: 'failed',",
+        "fixHint": "Text is 173px x 56px inside 173px x 56px and overflows by up to 158px; widen the text box to at least ~331px, or allow wrapping with max-width/fitTextFontSize.",
+        "overflow": {
+          "right": 158
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1038,
+          "y": 344,
+          "width": 173,
+          "height": 56
+        },
+        "firstSeen": 15.278,
+        "lastSeen": 15.278,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          15.278
+        ]
+      },
+      {
+        "code": "clipped_text",
+        "severity": "info",
+        "time": 18.056,
+        "selector": "#b3 > div:nth-of-type(2) > div:nth-of-type(3)",
+        "message": "Text content is clipped by its own box.",
+        "rect": {
+          "left": 1038,
+          "top": 400,
+          "right": 1397,
+          "bottom": 456,
+          "width": 359,
+          "height": 56
+        },
+        "text": "hasMore: page * limit < total,",
+        "fixHint": "Text is 359px x 56px inside 359px x 56px and overflows by up to 163px; widen the text box to at least ~522px, or allow wrapping with max-width/fitTextFontSize.",
+        "overflow": {
+          "right": 163
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1038,
+          "y": 400,
+          "width": 359,
+          "height": 56
+        },
+        "firstSeen": 18.056,
+        "lastSeen": 18.056,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          18.056
+        ]
+      },
+      {
+        "code": "text_box_overflow",
+        "severity": "info",
+        "time": 18.056,
+        "selector": "#b3 > div:nth-of-type(2) > div:nth-of-type(3) > b:nth-of-type(1)",
+        "message": "Text extends outside its nearest visual/container box.",
+        "rect": {
+          "left": 1194.61,
+          "top": 408,
+          "right": 1542.61,
+          "bottom": 447,
+          "width": 348,
+          "height": 39
+        },
+        "containerSelector": "#b3 > div:nth-of-type(2) > div:nth-of-type(3)",
+        "text": "page * limit < total",
+        "fixHint": "Text is 348px x 39px inside 359px x 56px and overflows by up to 146px; widen the container to at least ~505px, or allow wrapping with max-width/fitTextFontSize.",
+        "containerRect": {
+          "left": 1038,
+          "top": 400,
+          "right": 1397,
+          "bottom": 456,
+          "width": 359,
+          "height": 56
+        },
+        "overflow": {
+          "right": 145.61
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1194.61,
+          "y": 408,
+          "width": 348,
+          "height": 39
+        },
+        "firstSeen": 18.056,
+        "lastSeen": 18.056,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          18.056
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 18.056,
+        "selector": "#b3 > div:nth-of-type(2) > div:nth-of-type(3) > b:nth-of-type(1)",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 1194.61,
+          "top": 408,
+          "right": 1542.61,
+          "bottom": 447,
+          "width": 348,
+          "height": 39
+        },
+        "containerSelector": "#b3 > div:nth-of-type(2) > div:nth-of-type(3)",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 1038,
+          "top": 400,
+          "right": 1397,
+          "bottom": 456,
+          "width": 359,
+          "height": 56
+        },
+        "overflow": {
+          "right": 145.61
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1194.61,
+          "y": 408,
+          "width": 348,
+          "height": 39
+        },
+        "firstSeen": 18.056,
+        "lastSeen": 18.056,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          18.056
+        ]
+      }
+    ],
+    "duration": 25,
+    "samples": [
+      1.389,
+      4.167,
+      6.944,
+      9.722,
+      12.5,
+      15.278,
+      18.056,
+      20.833,
+      23.611
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 5,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      1.389,
+      6.944,
+      12.5,
+      18.056,
+      23.611
+    ],
+    "checked": 41,
+    "passed": 41
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

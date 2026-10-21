@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Nirmala UI"; src: local("Nirmala UI"), local("NirmalaUI"); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #f4f2ee; }
+      :root { --ink: #111111; --paper: #f4f2ee; --red: #e3000f; --mute: #6b6a66; }
+      #root { position: relative; width: 1920px; height: 1080px; background: var(--paper); color: var(--ink);
+        font-family: "Helvetica Neue", Helvetica, Arial, "Nirmala UI", sans-serif; overflow: hidden; }
+      .scene { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: var(--paper); }
+      .abs { position: absolute; }
+      .head-brand { left: 120px; top: 62px; font-size: 26px; font-weight: 700; letter-spacing: 0.02em; }
+      .head-idx { right: 120px; top: 62px; font-size: 26px; font-weight: 400; color: var(--mute); font-variant-numeric: tabular-nums; }
+      .rule { left: 120px; top: 116px; height: 2px; width: 1680px; background: var(--ink); transform-origin: left center; }
+      .label { left: 120px; top: 150px; font-size: 28px; font-weight: 700; color: var(--red); letter-spacing: 0.02em; }
+      .mono { font-family: Consolas, "Courier New", monospace; }
+      .red { color: var(--red); }
+
+      /* scene 1 */
+      #n1 { left: 100px; top: 215px; font-size: 520px; line-height: 1; font-weight: 800; letter-spacing: -0.055em; white-space: nowrap; }
+      #dot1 { display: inline-block; color: var(--red); }
+      #cap1 { left: 124px; top: 800px; font-size: 60px; font-weight: 400; letter-spacing: -0.01em; }
+
+      /* scene 2 */
+      .q { left: 112px; font-size: 210px; line-height: 1; font-weight: 800; letter-spacing: -0.05em; white-space: nowrap; }
+      .q span { display: inline-block; }
+      #q-rule { left: 120px; top: 840px; height: 14px; width: 420px; background: var(--red); transform-origin: left center; }
+
+      /* scene 3 */
+      .card { left: 120px; width: 780px; height: 210px; border-top: 2px solid var(--ink); }
+      .card .num { position: absolute; left: 0; top: 26px; font-size: 52px; font-weight: 800; color: var(--red); font-variant-numeric: tabular-nums; }
+      .card .note { position: absolute; left: 130px; top: 26px; width: 620px; font-size: 44px; line-height: 1.15; font-weight: 400; letter-spacing: -0.01em; }
+      .card .bar { position: absolute; left: -24px; top: 2px; width: 12px; height: 208px; background: var(--red); transform-origin: top center; }
+      #panel { left: 1000px; top: 190px; width: 800px; height: 690px; border: 2px solid var(--ink); }
+      .file { position: absolute; left: 36px; top: 28px; font-size: 24px; color: var(--mute); }
+      .code { position: absolute; left: 36px; top: 96px; width: 730px; }
+      .ln { height: 56px; line-height: 56px; font-size: 29px; overflow: hidden; white-space: pre; width: 0; }
+      .ln b { font-weight: 400; color: var(--red); }
+
+      /* scene 4 */
+      .row { left: 120px; width: 900px; height: 230px; border-top: 2px solid var(--ink); }
+      .row .en { position: absolute; left: 0; top: 34px; font-size: 46px; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; }
+      .row .hi { position: absolute; left: 0; top: 112px; font-size: 46px; font-weight: 400; white-space: nowrap; }
+      #big20 { left: 1090px; top: 215px; font-size: 440px; line-height: 1; font-weight: 800; letter-spacing: -0.06em; color: var(--red); }
+      #cap20 { left: 1100px; top: 690px; font-size: 56px; font-weight: 400; }
+      #btn { left: 1100px; top: 790px; width: 330px; height: 84px; border: 2px solid var(--ink); font-size: 34px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+      /* scene 5 */
+      #word5 { left: 104px; top: 285px; font-size: 270px; line-height: 1; font-weight: 800; letter-spacing: -0.055em; white-space: nowrap; }
+      #tag5 { left: 124px; top: 640px; font-size: 80px; font-weight: 400; letter-spacing: -0.015em; }
+      #foot-rule { left: 120px; top: 900px; height: 2px; width: 1680px; background: var(--ink); transform-origin: left center; }
+      #foot5 { left: 120px; top: 925px; font-size: 34px; font-weight: 400; color: var(--ink); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25" data-width="1920" data-height="1080">
+
+      <!-- Scene 1: hook -->
+      <div id="s1" class="scene clip" data-start="0" data-duration="3.9" data-track-index="0">
+        <div class="abs head-brand">SchemeSetu</div>
+        <div class="abs head-idx">01 / 05</div>
+        <div id="r1" class="abs rule"></div>
+        <div id="n1" class="abs"><span id="n1num">0</span><span id="dot1">.</span></div>
+        <div id="cap1" class="abs">government schemes in India</div>
+      </div>
+
+      <!-- Scene 2: the question -->
+      <div id="s2" class="scene clip" data-start="3.9" data-duration="6.05" data-track-index="0">
+        <div class="abs head-brand">SchemeSetu</div>
+        <div class="abs head-idx">02 / 05</div>
+        <div id="r2" class="abs rule"></div>
+        <div class="abs label">02 &mdash; The question</div>
+        <div class="abs q" style="top: 270px;"><span class="w2">Which</span> <span class="w2">schemes</span></div>
+        <div class="abs q" style="top: 500px;"><span class="w2">fit</span> <span class="w2 red">you?</span></div>
+        <div id="q-rule" class="abs"></div>
+      </div>
+
+      <!-- Scene 3: ideas written as code -->
+      <div id="s3" class="scene clip" data-start="9.95" data-duration="8.75" data-track-index="0">
+        <div class="abs head-brand">SchemeSetu</div>
+        <div class="abs head-idx">03 / 05</div>
+        <div id="r3" class="abs rule"></div>
+        <div class="abs label">03 &mdash; Ideas, written as code</div>
+
+        <div id="c1" class="abs card" style="top: 215px;"><div class="bar"></div><div class="num">01</div><div class="note">A blank answer means unknown.</div></div>
+        <div id="c2" class="abs card" style="top: 455px;"><div class="bar"></div><div class="num">02</div><div class="note">Occupation changes the order. It never removes a scheme.</div></div>
+        <div id="c3" class="abs card" style="top: 695px;"><div class="bar"></div><div class="num">03</div><div class="note">Each page of results has no repeats.</div></div>
+
+        <div id="panel" class="abs">
+          <div id="b1" class="blk">
+            <div class="file mono">backend/src/utils/criteriaMatch.ts</div>
+            <div class="code mono">
+              <div class="ln">const unknown = (label) =&gt; ({</div>
+              <div class="ln">  label,</div>
+              <div class="ln">  status: <b>'unknown'</b>,</div>
+              <div class="ln">})</div>
+            </div>
+          </div>
+          <div id="b2" class="blk">
+            <div class="file mono">backend/src/utils/criteriaMatch.ts</div>
+            <div class="code mono">
+              <div class="ln">{ label: 'Occupation',</div>
+              <div class="ln">  status: 'failed',</div>
+              <div class="ln">  soft: <b>true</b>,</div>
+              <div class="ln">  message: `This scheme is meant for ...` }</div>
+            </div>
+          </div>
+          <div id="b3" class="blk">
+            <div class="file mono">backend/src/routes/schemes.ts</div>
+            <div class="code mono">
+              <div class="ln">const MAX_RECOMMENDED_LIMIT = <b>50</b>;</div>
+              <div class="ln"> </div>
+              <div class="ln">hasMore: <b>page * limit &lt; total</b>,</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 4: results -->
+      <div id="s4" class="scene clip" data-start="18.7" data-duration="3.15" data-track-index="0">
+        <div class="abs head-brand">SchemeSetu</div>
+        <div class="abs head-idx">04 / 05</div>
+        <div id="r4" class="abs rule"></div>
+        <div class="abs label">04 &mdash; The list</div>
+        <div class="abs row" style="top: 215px;"><div class="en">Pradhan Mantri Kisan Samman Nidhi</div><div class="hi">प्रधानमंत्री किसान सम्मान निधि</div></div>
+        <div class="abs row" style="top: 445px;"><div class="en">Ayushman Bharat - Jan Arogya Yojana</div><div class="hi">आयुष्मान भारत - जन आरोग्य योजना</div></div>
+        <div class="abs row" style="top: 675px;"><div class="en">PM Vishwakarma</div><div class="hi">पीएम विश्वकर्मा</div></div>
+        <div id="big20" class="abs">20</div>
+        <div id="cap20" class="abs">at a time</div>
+        <div id="btn" class="abs">Show more</div>
+      </div>
+
+      <!-- Scene 5: outro -->
+      <div id="s5" class="scene clip" data-start="21.85" data-duration="3.15" data-track-index="0">
+        <div class="abs head-brand">SchemeSetu</div>
+        <div class="abs head-idx">05 / 05</div>
+        <div id="r5" class="abs rule"></div>
+        <div id="word5" class="abs">SchemeSetu<span class="red">.</span></div>
+        <div id="tag5" class="abs">Find the schemes that fit.</div>
+        <div id="foot-rule" class="abs"></div>
+        <div id="foot5" class="abs">4,722 schemes &nbsp;/&nbsp; 36 states and territories &nbsp;/&nbsp; English and Hindi</div>
+      </div>
+
+      <audio id="mix" src="audio/mix.wav" data-start="0" data-duration="25" data-track-index="5" data-volume="1"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out";
+      const rules = (id, at) => tl.fromTo(id, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, at);
+
+      // ---------- scene 1 (0 - 3.9)
+      rules("#r1", 0.0);
+      const counter = { v: 0 };
+      const num = document.getElementById("n1num");
+      tl.to(counter, { v: 4722, duration: 1.1, ease: "power3.out", onUpdate: () => { num.textContent = Math.round(counter.v).toLocaleString("en-US"); } }, 0.5);
+      tl.fromTo("#dot1", { opacity: 0, y: -90 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.in" }, 1.7);
+      tl.fromTo("#cap1", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.6, ease: E }, 2.0);
+
+      // ---------- scene 2 (3.9 - 9.95): times are absolute
+      rules("#r2", 3.9);
+      tl.fromTo(".w2", { opacity: 0, x: -120 }, { opacity: 1, x: 0, duration: 0.55, ease: E, stagger: 0.3 }, 4.2);
+      tl.fromTo("#q-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 6.0);
+
+      // ---------- scene 3 (9.95 - 18.7)
+      rules("#r3", 9.95);
+      const T3 = 9.95;
+      const card = (id, at) => {
+        tl.fromTo(id, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.45, ease: E }, T3 + at);
+        tl.fromTo(id + " .bar", { scaleY: 0 }, { scaleY: 1, duration: 0.35, ease: E }, T3 + at + 0.1);
+      };
+      const dim = (id, at) => {
+        tl.to(id, { opacity: 0.32, duration: 0.3 }, T3 + at);
+        tl.to(id + " .bar", { opacity: 0, duration: 0.2 }, T3 + at);
+      };
+      const block = (id, at, dur) => {
+        const lines = document.querySelectorAll(id + " .ln");
+        // Measure each line's real width (an estimate from the character count clipped the last letters), then hide it.
+        const full = Array.from(lines).map((el) => {
+          el.style.width = "max-content";
+          const w = Math.ceil(el.getBoundingClientRect().width) + 4;
+          el.style.width = "0px";
+          return w;
+        });
+        tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.15 }, T3 + at);
+        lines.forEach((el, i) => tl.to(el, { width: full[i], duration: dur / lines.length, ease: "none" }, T3 + at + (dur / lines.length) * i));
+      };
+      card("#c1", 0.2);
+      block("#b1", 1.5, 1.2);
+      dim("#c1", 4.1); card("#c2", 4.2);
+      tl.to("#b1", { opacity: 0, duration: 0.2 }, T3 + 4.1);
+      block("#b2", 4.9, 1.1);
+      dim("#c2", 6.5); card("#c3", 6.6);
+      tl.to("#b2", { opacity: 0, duration: 0.2 }, T3 + 6.5);
+      block("#b3", 7.1, 1.1);
+      // keep blocks hidden before their time
+      gsap.set(".blk", { opacity: 0 });
+
+      // ---------- scene 4 (18.7 - 21.85)
+      rules("#r4", 18.7);
+      tl.fromTo(".row", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.45, ease: E, stagger: 0.15 }, 18.85);
+      tl.fromTo("#big20", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5, ease: E }, 19.3);
+      tl.fromTo("#cap20", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.45, ease: E }, 19.8);
+      tl.fromTo("#btn", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: E }, 20.2);
+
+      // ---------- scene 5 (21.85 - 25.0)
+      rules("#r5", 21.85);
+      tl.fromTo("#word5", { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: 0.7, ease: E }, 22.0);
+      tl.fromTo("#tag5", { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.6, ease: E }, 22.7);
+      rules("#foot-rule", 23.2);
+      tl.fromTo("#foot5", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 23.5);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
