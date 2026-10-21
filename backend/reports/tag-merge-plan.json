@@ -1,0 +1,5847 @@
+{
+ "generated": "2026-10-04T10:17:04.506Z",
+ "renames": {
+  "Entrepreneurs": "Entrepreneur",
+  "Loans": "Loan",
+  "Artists": "Artist",
+  "ARTISTS": "Artist",
+  "Senior Citizens": "Senior Citizen",
+  "Veterans": "Veteran",
+  "Marriages": "Marriage",
+  "Orphans": "Orphan",
+  "Widows": "Widow",
+  "Daughters": "Daughter",
+  "Studies": "Study",
+  "Students": "Student",
+  "Post Matric": "Post-Matric",
+  "Post-matric": "Post-Matric",
+  "Post-Matrics": "Post-Matric",
+  "Scholarships": "Scholarship",
+  "Stipends": "Stipend",
+  "Subsidies": "Subsidy",
+  "Artisans": "Artisan",
+  "Minorities": "Minority",
+  "Grant-in-Aid": "Grant-in-aid",
+  "Grant In Aid": "Grant-in-aid",
+  "Construction Workers": "Construction Worker",
+  "Diseases": "Disease",
+  "Building Workers": "Building Worker",
+  "Girls": "Girl",
+  "Person With Disabilities": "Person With Disability",
+  "Differently-abled": "Differently Abled",
+  "Awards": "Award",
+  "Schools": "School",
+  "Prizes": "Prize",
+  "Institutions": "Institution",
+  "Persons With Disabilities": "Persons With Disability",
+  "Jobs": "Job",
+  "Scheduled Castes": "Scheduled Caste",
+  "Enterprises": "Enterprise",
+  "Skills": "Skill",
+  "Trainings": "Training",
+  "Youths": "Youth",
+  "State Government Employees": "State Government Employee",
+  "Patients": "Patient",
+  "Disabilities": "Disability",
+  "Cash Prizes": "Cash Prize",
+  "Nomadic Tribe": "Nomadic Tribes",
+  "Other Backward Classes": "Other Backward Class",
+  "Vimukta Jatis": "Vimukta Jati",
+  "Incentive": "Incentives",
+  "Grants": "Grant",
+  "Tool": "Tools",
+  "Parent": "Parents",
+  "Scheduled Tribes": "Scheduled Tribe",
+  "Dependents": "Dependent",
+  "Self-Employment": "Self-employment",
+  "Self Employment": "Self-employment",
+  "Victims": "Victim",
+  "MSME": "MSMEs",
+  "MsmeS": "MSMEs",
+  "Micro Small Medium Enterprise": "Micro Small Medium Enterprises",
+  "HIV & AIDS": "HIV / AIDS",
+  "Medical Expense": "Medical Expenses",
+  "Researchers": "Researcher",
+  "Cadets": "Cadet",
+  "Post-Doctoral": "Post Doctoral",
+  "Scientists": "Scientist",
+  "Pre-matric": "Pre-Matric",
+  "Pre Matric": "Pre-Matric",
+  "Pre-Matrics": "Pre-Matric",
+  "Vehicles": "Vehicle",
+  "Death Benefit": "Death Benefits",
+  "Patents": "Patent",
+  "Technologies": "Technology",
+  "Fisheries": "Fishery",
+  "Farmers": "Farmer",
+  "Two-Wheeler": "Two Wheeler",
+  "Two-wheelers": "Two Wheeler",
+  "Colleges": "College",
+  "Hostels": "Hostel",
+  "Residential Facilities": "Residential Facility",
+  "Scavengers": "Scavenger",
+  "Doctors": "Doctor",
+  "Illnesses": "Illness",
+  "Co-Operative Societies": "Co-operative Societies",
+  "Co-operative Society": "Co-operative Societies",
+  "Co-Operative Society": "Co-operative Societies",
+  "Post-harvest": "Post Harvest",
+  "Post-Harvest": "Post Harvest",
+  "Flowers": "Flower",
+  "Crafts": "Craft",
+  "Handicrafts": "Handicraft",
+  "Trainees": "Trainee",
+  "Academics": "Academic",
+  "Under Graduates": "Under Graduate",
+  "Sport": "Sports",
+  "Sportspersons": "Sportsperson",
+  "Families": "Family",
+  "Equipments": "Equipment",
+  "E-Rickshaw": "E-rickshaw",
+  "Three Wheelers": "Three Wheeler",
+  "Tricycles": "Tricycle",
+  "Organized Workers": "Organized Worker",
+  "Workers": "Worker",
+  "Crops": "Crop",
+  "Professional Course": "Professional Courses",
+  "Ex-serviceman": "Ex-Serviceman",
+  "Industrial Workers": "Industrial Worker",
+  "Books": "Book",
+  "Tablets": "Tablet",
+  "Employees": "Employee",
+  "Tuition Fees": "Tuition Fee",
+  "Differently-abled Person": "Differently Abled Person",
+  "Differently Abled Persons": "Differently Abled Person",
+  "Infants": "Infant",
+  "Unorganized Workers": "Unorganized Worker",
+  "Association": "Associations",
+  "Small Businesses": "Small Business",
+  "Opportunities": "Opportunity",
+  "Disabled Persons": "Disabled Person",
+  "Thrust Sector": "Thrust Sectors",
+  "NGOs": "NGO",
+  "Fish Farmers": "Fish Farmer",
+  "Ponds": "Pond",
+  "Pilgrims": "Pilgrim",
+  "Skill-upgradation": "Skill Upgradation",
+  "Artificial Limb": "Artificial Limbs",
+  "SHGs": "SHG",
+  "Cooperative Societies": "Cooperative Society",
+  "Interest-Free Loan": "Interest Free Loan",
+  "Schedule Castes": "Schedule Caste",
+  "Athlete": "Athletes",
+  "Backward Class": "Backward Classes",
+  "Migrant Workers": "Migrant Worker",
+  "Laptops": "Laptop",
+  "Employment Opportunities": "Employment Opportunity",
+  "Fruits": "Fruit",
+  "Vegetables": "Vegetable",
+  "Extremely Backward Class": "Extremely Backward Classes",
+  "Ex-Servicemen": "Ex-servicemen",
+  "Cows": "Cow",
+  "Polytechnics": "Polytechnic",
+  "Exhibitions": "Exhibition",
+  "Agitators": "Agitator",
+  "Cultural Programs": "Cultural Program",
+  "Research Scholars": "Research Scholar",
+  "Economically Weaker Sections": "Economically Weaker Section",
+  "Economically-weaker Sections": "Economically Weaker Section",
+  "Hatcheries": "Hatchery",
+  "Residential Schools": "Residential School",
+  "Industries": "Industry",
+  "Textiles": "Textile",
+  "Weavers": "Weaver",
+  "Post Harvest Management": "Post-Harvest Management",
+  "Post-harvest Management": "Post-Harvest Management",
+  "Nurseries": "Nursery",
+  "Adolescent Girl": "Adolescent Girls",
+  "Teenage Girls": "Teenage Girl",
+  "Planting Materials": "Planting Material",
+  "Fertilizers": "Fertilizer",
+  "Seeds": "Seed",
+  "Fish Seller": "Fish Sellers",
+  "Post-graduation": "Post-Graduation",
+  "Post Graduation": "Post-Graduation",
+  "Meritorious Students": "Meritorious Student",
+  "Postgraduates": "Postgraduate",
+  "Free Bicycles": "Free Bicycle",
+  "Medicinal Plants": "Medicinal Plant",
+  "Child Victims": "Child Victim",
+  "Professors": "Professor",
+  "Laboratories": "Laboratory",
+  "Sciences": "Science",
+  "Plants": "Plant",
+  "Sanitary Napkins": "Sanitary Napkin",
+  "Citizens": "Citizen",
+  "Self-Help Group": "Self-help Group",
+  "Self Help Group": "Self-help Group",
+  "Self Help Groups": "Self-help Group",
+  "Self-Help Groups": "Self-help Group",
+  "Urban Areas": "Urban Area",
+  "StartUp": "Startup",
+  "Startups": "Startup",
+  "Start-up": "Start Up",
+  "Start-ups": "Start Up",
+  "Exports": "Export",
+  "Sanitary Pads": "Sanitary Pad",
+  "Engineering Courses": "Engineering Course",
+  "Bicycles": "Bicycle",
+  "Disasters": "Disaster",
+  "Training Programs": "Training Program",
+  "Competitive Examinations": "Competitive Examination",
+  "Lactating Mothers": "Lactating Mother",
+  "Take-home Ration": "Take Home Ration",
+  "Post-Graduate": "Post Graduate",
+  "Post-graduate": "Post Graduate",
+  "Scholars": "Scholar",
+  "Litterateur": "Litterateurs",
+  "Course": "Courses",
+  "Youth Clubs": "Youth Club",
+  "Fruit Crops": "Fruit Crop",
+  "Toppers": "Topper",
+  "Safai Karamchari": "Safai Karamcharis",
+  "Drivers": "Driver",
+  "Vegetable Crops": "Vegetable Crop",
+  "Socially And Educationally Backward Classes": "Socially And Educationally Backward Class",
+  "Competitive Exam": "Competitive Exams",
+  "Seminars": "Seminar",
+  "Teachers": "Teacher",
+  "E-commerce": "E Commerce",
+  "Handloom Weavers": "Handloom Weaver",
+  "Civil Services": "Civil Service",
+  "Academicians": "Academician",
+  "Institutes": "Institute",
+  "Operators": "Operator",
+  "Persons With DisabilitiesPwDs": "Persons With DisabilitiesPwD",
+  "Millet": "Millets",
+  "Day Scholars": "Day Scholar",
+  "Special Backward Class": "Special Backward Classes",
+  "Natural Calamity": "Natural Calamities",
+  "Maternity Benefits": "Maternity Benefit",
+  "Natural Disasters": "Natural Disaster",
+  "Auto Rickshaws": "Auto Rickshaw",
+  "Crimes": "Crime",
+  "Graduates": "Graduate",
+  "Medical Treatments": "Medical Treatment",
+  "Higher Studies": "Higher Study",
+  "Financial Benefit": "Financial Benefits",
+  "Spices": "Spice",
+  "Bio-pesticide": "Bio Pesticide",
+  "Bio-pesticides": "Bio Pesticide",
+  "Health Check-up": "Health Check Up",
+  "Health Check-ups": "Health Check Up",
+  "Inter-caste": "Inter Caste",
+  "Inter-Caste": "Inter Caste",
+  "Accommodation Facility": "Accommodation Facilities",
+  "Costumes": "Costume",
+  "Instruments": "Instrument",
+  "Law Graduates": "Law Graduate",
+  "Aids": "AIDS",
+  "Migrants": "Migrant",
+  "Tool Kits": "Tool Kit",
+  "Milch Animal": "Milch Animals",
+  "Feeder": "Feeders",
+  "Micro Enterprise": "Micro Enterprises",
+  "Crop Losses": "Crop Loss",
+  "Hearing Aids": "Hearing Aid",
+  "Appliances": "Appliance",
+  "Guardian": "Guardians",
+  "Funeral Expense": "Funeral Expenses",
+  "Oilseeds": "Oilseed",
+  "Pre-School": "Pre-school",
+  "Meals": "Meal",
+  "Couples": "Couple",
+  "Pregnant Mothers": "Pregnant Mother",
+  "Injuries": "Injury",
+  "Consumers": "Consumer",
+  "Small Enterprise": "Small Enterprises",
+  "Fodder Minikit": "Fodder Minikits",
+  "Denotified Tribe": "Denotified Tribes",
+  "Sports Awards": "Sports Award",
+  "Medal Winners": "Medal Winner",
+  "Writers": "Writer",
+  "Traditions": "Tradition",
+  "Theatres": "Theatre",
+  "Hybrid Seeds": "Hybrid Seed",
+  "Homestays": "Homestay",
+  "Soldiers": "Soldier",
+  "Pond Clusters": "Pond Cluster",
+  "Government Employees": "Government Employee",
+  "Pensioners": "Pensioner",
+  "Marginal Farmers": "Marginal Farmer",
+  "Small Farmers": "Small Farmer",
+  "Mushrooms": "Mushroom",
+  "Nano Fertilizers": "Nano Fertilizer",
+  "Enterpreneurs": "Enterpreneur",
+  "Engineering Students": "Engineering Student",
+  "Companies": "Company",
+  "Free Books": "Free Book",
+  "PWD": "PwD",
+  "Interns": "Intern",
+  "Sports Competitions": "Sports Competition",
+  "Poor Family": "Poor Families",
+  "Group Marriages": "Group Marriage",
+  "Family Benefits": "Family Benefit",
+  "Farms": "Farm",
+  "Dentures": "Denture",
+  "Notebooks": "Notebook",
+  "Ex-gratia": "Ex-Gratia",
+  "Engineers": "Engineer",
+  "Legal Heirs": "Legal Heir",
+  "Non-Farm Sector Activities": "Non-farm Sector Activities",
+  "Old-age Home": "Old Age Home",
+  "Old-age Homes": "Old Age Home",
+  "Traders": "Trader",
+  "Food Grain": "Food Grains",
+  "Raw Materials": "Raw Material",
+  "Self-reliant": "Self Reliant",
+  "Entrance Examinations": "Entrance Examination",
+  "Poly House": "Poly Houses",
+  "Projects": "Project",
+  "Wild Animal Attack": "Wild Animal Attacks",
+  "Producers": "Producer",
+  "Custom Hiring Centres": "Custom Hiring Centre",
+  "Vegetable Seed": "Vegetable Seeds",
+  "Trees": "Tree",
+  "Legal Service": "Legal Services",
+  "Anganwadi Centers": "Anganwadi Center",
+  "Conductors": "Conductor",
+  "Machines": "Machine",
+  "Technical Courses": "Technical Course",
+  "Most Backward Class": "Most Backward Classes",
+  "Telecommunication": "Telecommunications",
+  "Conferences": "Conference",
+  "Lecturers": "Lecturer",
+  "Shelter Home": "Shelter Homes",
+  "Examination Fee": "Examination Fees",
+  "Covid-19": "COVID-19",
+  "COVID 19": "COVID-19",
+  "Carpenters": "Carpenter",
+  "Sanitation Workers": "Sanitation Worker",
+  "Technologists": "Technologist",
+  "Designs": "Design",
+  "Folk Artists": "Folk Artist",
+  "Organizations": "Organization",
+  "Lawyers": "Lawyer",
+  "Spice Seeds": "Spice Seed",
+  "Specially Abled Person": "Specially-Abled Person",
+  "Small-scale Business": "Small Scale Business",
+  "Societies": "Society",
+  "Silkworms": "Silkworm",
+  "Tribal Area": "Tribal Areas",
+  "Health & Education": "Health Education",
+  "Research Institutions": "Research Institution",
+  "Special Schools": "Special School",
+  "Self-employement": "Self Employement",
+  "Diploma Courses": "Diploma Course",
+  "Silicosis Disease": "Silicosis Diseases",
+  "Go-Green": "Go Green",
+  "E-Learning": "E-learning",
+  "Electric Vehicles": "Electric Vehicle",
+  "Incubators": "Incubator",
+  "Musical Instruments": "Musical Instrument",
+  "Training Camps": "Training Camp",
+  "POWER": "Power",
+  "Trademarks": "Trademark",
+  "Events": "Event",
+  "Medical Benefits": "Medical Benefit",
+  "Re-Marriage": "Re-marriage",
+  "Parks": "Park",
+  "Librarians": "Librarian",
+  "Academic Institutions": "Academic Institution",
+  "Harvesting Tools": "Harvesting Tool",
+  "Registration Fees": "Registration Fee",
+  "Zed Certification": "ZED Certification",
+  "Cooperative Unions": "Cooperative Union",
+  "Educational Institutions": "Educational Institution",
+  "Industrial Parks": "Industrial Park",
+  "Market Committee": "Market Committees",
+  "Community Radio Stations": "Community Radio Station",
+  "Small Units": "Small Unit",
+  "Auto Components": "Auto Component",
+  "Boat-net": "Boat Net",
+  "Incubation Centres": "Incubation Centre",
+  "Bio-agents": "Bio Agent"
+ },
+ "groups": [
+  {
+   "canonical": "Student",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Student",
+     "schemes": 701,
+     "hindi": "छात्र"
+    },
+    {
+     "name": "Students",
+     "schemes": 55,
+     "hindi": "छात्र"
+    }
+   ]
+  },
+  {
+   "canonical": "Subsidy",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Subsidy",
+     "schemes": 519,
+     "hindi": "सब्सिडी"
+    },
+    {
+     "name": "Subsidies",
+     "schemes": 8,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Scholarship",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Scholarship",
+     "schemes": 437,
+     "hindi": "छात्रवृत्ति"
+    },
+    {
+     "name": "Scholarships",
+     "schemes": 16,
+     "hindi": "छात्रवृत्तियाँ"
+    }
+   ]
+  },
+  {
+   "canonical": "Farmer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Farmer",
+     "schemes": 388,
+     "hindi": "किसान"
+    },
+    {
+     "name": "Farmers",
+     "schemes": 36,
+     "hindi": "किसान"
+    }
+   ]
+  },
+  {
+   "canonical": "Stipend",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Stipend",
+     "schemes": 421,
+     "hindi": "वजीफ़ा"
+    },
+    {
+     "name": "Stipends",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Grant-in-aid",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Grant-in-aid",
+     "schemes": 303,
+     "hindi": "अनुदान"
+    },
+    {
+     "name": "Grant-in-Aid",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Grant In Aid",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Construction Worker",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Construction Worker",
+     "schemes": 259,
+     "hindi": "निर्माण श्रमिक"
+    },
+    {
+     "name": "Construction Workers",
+     "schemes": 44,
+     "hindi": "निर्माण श्रमिक"
+    }
+   ]
+  },
+  {
+   "canonical": "Building Worker",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Building Worker",
+     "schemes": 255,
+     "hindi": "निर्माण श्रमिक"
+    },
+    {
+     "name": "Building Workers",
+     "schemes": 39,
+     "hindi": "निर्माण श्रमिक"
+    }
+   ]
+  },
+  {
+   "canonical": "Scheduled Caste",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Scheduled Caste",
+     "schemes": 258,
+     "hindi": "अनुसूचित जाति"
+    },
+    {
+     "name": "Scheduled Castes",
+     "schemes": 20,
+     "hindi": "अनुसूचित जाति"
+    }
+   ]
+  },
+  {
+   "canonical": "Loan",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Loan",
+     "schemes": 244,
+     "hindi": "ऋण"
+    },
+    {
+     "name": "Loans",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Incentives",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Incentives",
+     "schemes": 126,
+     "hindi": "प्रोत्साहन"
+    },
+    {
+     "name": "Incentive",
+     "schemes": 111,
+     "hindi": "प्रोत्साहन"
+    }
+   ]
+  },
+  {
+   "canonical": "Enterprise",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Enterprise",
+     "schemes": 214,
+     "hindi": "उद्यम"
+    },
+    {
+     "name": "Enterprises",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Training",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Training",
+     "schemes": 208,
+     "hindi": "प्रशिक्षण"
+    },
+    {
+     "name": "Trainings",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Scheduled Tribe",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Scheduled Tribe",
+     "schemes": 153,
+     "hindi": "अनुसूचित जनजाति"
+    },
+    {
+     "name": "Scheduled Tribes",
+     "schemes": 25,
+     "hindi": "अनुसूचित जनजाति"
+    }
+   ]
+  },
+  {
+   "canonical": "Award",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Award",
+     "schemes": 162,
+     "hindi": "पुरस्कार"
+    },
+    {
+     "name": "Awards",
+     "schemes": 14,
+     "hindi": "पुरस्कार"
+    }
+   ]
+  },
+  {
+   "canonical": "Self-employment",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Self-employment",
+     "schemes": 82,
+     "hindi": "स्वरोजगार"
+    },
+    {
+     "name": "Self Employment",
+     "schemes": 67,
+     "hindi": "स्वरोजगार"
+    },
+    {
+     "name": "Self-Employment",
+     "schemes": 23,
+     "hindi": "स्वरोजगार"
+    }
+   ]
+  },
+  {
+   "canonical": "Prize",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Prize",
+     "schemes": 162,
+     "hindi": "इनाम"
+    },
+    {
+     "name": "Prizes",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Disability",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Disability",
+     "schemes": 141,
+     "hindi": "दिव्यांगता"
+    },
+    {
+     "name": "Disabilities",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "MSMEs",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "MSMEs",
+     "schemes": 74,
+     "hindi": "MSME"
+    },
+    {
+     "name": "MSME",
+     "schemes": 65,
+     "hindi": "MSME"
+    },
+    {
+     "name": "MsmeS",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Entrepreneur",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Entrepreneur",
+     "schemes": 114,
+     "hindi": "उद्यमी"
+    },
+    {
+     "name": "Entrepreneurs",
+     "schemes": 21,
+     "hindi": "उद्यमी"
+    }
+   ]
+  },
+  {
+   "canonical": "Job",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Job",
+     "schemes": 128,
+     "hindi": "नौकरी"
+    },
+    {
+     "name": "Jobs",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Institution",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Institution",
+     "schemes": 123,
+     "hindi": "संस्था"
+    },
+    {
+     "name": "Institutions",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Widow",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Widow",
+     "schemes": 103,
+     "hindi": "विधवा"
+    },
+    {
+     "name": "Widows",
+     "schemes": 4,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Artist",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Artist",
+     "schemes": 88,
+     "hindi": "कलाकार"
+    },
+    {
+     "name": "Artists",
+     "schemes": 17,
+     "hindi": "कलाकार"
+    },
+    {
+     "name": "ARTISTS",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Marriage",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Marriage",
+     "schemes": 105,
+     "hindi": "विवाह"
+    },
+    {
+     "name": "Marriages",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Study",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Study",
+     "schemes": 102,
+     "hindi": "अध्ययन"
+    },
+    {
+     "name": "Studies",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Worker",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Worker",
+     "schemes": 100,
+     "hindi": "श्रमिक"
+    },
+    {
+     "name": "Workers",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Micro Small Medium Enterprises",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Micro Small Medium Enterprises",
+     "schemes": 58,
+     "hindi": "सूक्ष्म लघु मध्यम उद्यम"
+    },
+    {
+     "name": "Micro Small Medium Enterprise",
+     "schemes": 39,
+     "hindi": "सूक्ष्म लघु मध्यम उद्यम"
+    }
+   ]
+  },
+  {
+   "canonical": "Senior Citizen",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Senior Citizen",
+     "schemes": 85,
+     "hindi": "वरिष्ठ नागरिक"
+    },
+    {
+     "name": "Senior Citizens",
+     "schemes": 6,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "School",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "School",
+     "schemes": 81,
+     "hindi": "विद्यालय"
+    },
+    {
+     "name": "Schools",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Youth",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Youth",
+     "schemes": 82,
+     "hindi": "युवा"
+    },
+    {
+     "name": "Youths",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Grant",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Grant",
+     "schemes": 79,
+     "hindi": "अनुदान"
+    },
+    {
+     "name": "Grants",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Fishery",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Fishery",
+     "schemes": 55,
+     "hindi": "मत्स्य पालन"
+    },
+    {
+     "name": "Fisheries",
+     "schemes": 24,
+     "hindi": "मत्स्य पालन"
+    }
+   ]
+  },
+  {
+   "canonical": "Industry",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Industry",
+     "schemes": 71,
+     "hindi": "उद्योग"
+    },
+    {
+     "name": "Industries",
+     "schemes": 6,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Start Up",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Start Up",
+     "schemes": 64,
+     "hindi": "स्टार्टअप"
+    },
+    {
+     "name": "Start-up",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Start-ups",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Startup",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Startup",
+     "schemes": 50,
+     "hindi": "स्टार्टअप"
+    },
+    {
+     "name": "Startups",
+     "schemes": 11,
+     "hindi": "स्टार्टअप्स"
+    },
+    {
+     "name": "StartUp",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Girl",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Girl",
+     "schemes": 52,
+     "hindi": "लड़की"
+    },
+    {
+     "name": "Girls",
+     "schemes": 8,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Differently Abled",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Differently Abled",
+     "schemes": 56,
+     "hindi": "दिव्यांग"
+    },
+    {
+     "name": "Differently-abled",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Artisan",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Artisan",
+     "schemes": 32,
+     "hindi": "कारीगर"
+    },
+    {
+     "name": "Artisans",
+     "schemes": 25,
+     "hindi": "शिल्पकार"
+    }
+   ]
+  },
+  {
+   "canonical": "Family",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Family",
+     "schemes": 52,
+     "hindi": "परिवार"
+    },
+    {
+     "name": "Families",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Daughter",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Daughter",
+     "schemes": 51,
+     "hindi": "बेटी"
+    },
+    {
+     "name": "Daughters",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Person With Disability",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Person With Disability",
+     "schemes": 48,
+     "hindi": "दिव्यांग व्यक्ति"
+    },
+    {
+     "name": "Person With Disabilities",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Skill",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Skill",
+     "schemes": 51,
+     "hindi": "कौशल"
+    },
+    {
+     "name": "Skills",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Sports",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Sports",
+     "schemes": 50,
+     "hindi": "खेल"
+    },
+    {
+     "name": "Sport",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Backward Classes",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Backward Classes",
+     "schemes": 23,
+     "hindi": "पिछड़ा वर्ग"
+    },
+    {
+     "name": "Backward Class",
+     "schemes": 19,
+     "hindi": "पिछड़ा वर्ग"
+    }
+   ]
+  },
+  {
+   "canonical": "Tools",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Tools",
+     "schemes": 38,
+     "hindi": "उपकरण"
+    },
+    {
+     "name": "Tool",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "College",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "College",
+     "schemes": 37,
+     "hindi": "कॉलेज"
+    },
+    {
+     "name": "Colleges",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Other Backward Class",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Other Backward Class",
+     "schemes": 32,
+     "hindi": "अन्य पिछड़ा वर्ग"
+    },
+    {
+     "name": "Other Backward Classes",
+     "schemes": 7,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Equipment",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Equipment",
+     "schemes": 37,
+     "hindi": "उपकरण"
+    },
+    {
+     "name": "Equipments",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Hostel",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Hostel",
+     "schemes": 37,
+     "hindi": "हॉस्टल"
+    },
+    {
+     "name": "Hostels",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Pre-Matric",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Pre-Matric",
+     "schemes": 23,
+     "hindi": "प्री-मैट्रिक"
+    },
+    {
+     "name": "Pre Matric",
+     "schemes": 10,
+     "hindi": "प्री मैट्रिक"
+    },
+    {
+     "name": "Pre-matric",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Pre-Matrics",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Post-Matric",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Post-Matric",
+     "schemes": 19,
+     "hindi": "पोस्ट-मैट्रिक"
+    },
+    {
+     "name": "Post Matric",
+     "schemes": 15,
+     "hindi": "पोस्ट मैट्रिक"
+    },
+    {
+     "name": "Post-matric",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Post-Matrics",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Differently Abled Person",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Differently Abled Person",
+     "schemes": 19,
+     "hindi": "दिव्यांग व्यक्ति"
+    },
+    {
+     "name": "Differently-abled Person",
+     "schemes": 12,
+     "hindi": "दिव्यांग व्यक्ति"
+    },
+    {
+     "name": "Differently Abled Persons",
+     "schemes": 4,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Fish Farmer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Fish Farmer",
+     "schemes": 28,
+     "hindi": "मछलीपालक"
+    },
+    {
+     "name": "Fish Farmers",
+     "schemes": 7,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Minority",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Minority",
+     "schemes": 30,
+     "hindi": "अल्पसंख्यक"
+    },
+    {
+     "name": "Minorities",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Researcher",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Researcher",
+     "schemes": 33,
+     "hindi": "शोधकर्ता"
+    },
+    {
+     "name": "Researchers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Residential Facility",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Residential Facility",
+     "schemes": 33,
+     "hindi": "आवासीय सुविधा"
+    },
+    {
+     "name": "Residential Facilities",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Science",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Science",
+     "schemes": 33,
+     "hindi": "विज्ञान"
+    },
+    {
+     "name": "Sciences",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Ex-Serviceman",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Ex-Serviceman",
+     "schemes": 28,
+     "hindi": "पूर्व सैनिक"
+    },
+    {
+     "name": "Ex-serviceman",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Scientist",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Scientist",
+     "schemes": 32,
+     "hindi": "वैज्ञानिक"
+    },
+    {
+     "name": "Scientists",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Technology",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Technology",
+     "schemes": 29,
+     "hindi": "प्रौद्योगिकी"
+    },
+    {
+     "name": "Technologies",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Handicraft",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Handicraft",
+     "schemes": 19,
+     "hindi": "हस्तशिल्प"
+    },
+    {
+     "name": "Handicrafts",
+     "schemes": 11,
+     "hindi": "हस्तशिल्प"
+    }
+   ]
+  },
+  {
+   "canonical": "Disease",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Disease",
+     "schemes": 21,
+     "hindi": "रोग"
+    },
+    {
+     "name": "Diseases",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "NGO",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "NGO",
+     "schemes": 24,
+     "hindi": "NGO"
+    },
+    {
+     "name": "NGOs",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Vehicle",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Vehicle",
+     "schemes": 25,
+     "hindi": "वाहन"
+    },
+    {
+     "name": "Vehicles",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Veteran",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Veteran",
+     "schemes": 25,
+     "hindi": "पूर्व सैनिक"
+    },
+    {
+     "name": "Veterans",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Exhibition",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Exhibition",
+     "schemes": 24,
+     "hindi": "प्रदर्शनी"
+    },
+    {
+     "name": "Exhibitions",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Weaver",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Weaver",
+     "schemes": 20,
+     "hindi": "बुनकर"
+    },
+    {
+     "name": "Weavers",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Crop",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Crop",
+     "schemes": 20,
+     "hindi": "फसल"
+    },
+    {
+     "name": "Crops",
+     "schemes": 4,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Orphan",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Orphan",
+     "schemes": 22,
+     "hindi": "अनाथ"
+    },
+    {
+     "name": "Orphans",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Seed",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Seed",
+     "schemes": 14,
+     "hindi": "बीज"
+    },
+    {
+     "name": "Seeds",
+     "schemes": 9,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Company",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Company",
+     "schemes": 17,
+     "hindi": "कंपनी"
+    },
+    {
+     "name": "Companies",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Self-help Group",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Self-help Group",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Self-Help Group",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Self Help Group",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Self Help Groups",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Self-Help Groups",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "SHG",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "SHG",
+     "schemes": 16,
+     "hindi": "SHG"
+    },
+    {
+     "name": "SHGs",
+     "schemes": 6,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Sportsperson",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Sportsperson",
+     "schemes": 18,
+     "hindi": "खिलाड़ी"
+    },
+    {
+     "name": "Sportspersons",
+     "schemes": 4,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Ex-servicemen",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Ex-servicemen",
+     "schemes": 12,
+     "hindi": "पूर्व सैनिक"
+    },
+    {
+     "name": "Ex-Servicemen",
+     "schemes": 9,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Book",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Book",
+     "schemes": 12,
+     "hindi": "पुस्तक"
+    },
+    {
+     "name": "Books",
+     "schemes": 7,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Employee",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Employee",
+     "schemes": 18,
+     "hindi": "कर्मचारी"
+    },
+    {
+     "name": "Employees",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Medical Treatment",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Medical Treatment",
+     "schemes": 18,
+     "hindi": "चिकित्सा उपचार"
+    },
+    {
+     "name": "Medical Treatments",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Opportunity",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Opportunity",
+     "schemes": 15,
+     "hindi": "अवसर"
+    },
+    {
+     "name": "Opportunities",
+     "schemes": 4,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Patient",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Patient",
+     "schemes": 11,
+     "hindi": "रोगी"
+    },
+    {
+     "name": "Patients",
+     "schemes": 8,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Pilgrim",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Pilgrim",
+     "schemes": 16,
+     "hindi": "तीर्थयात्री"
+    },
+    {
+     "name": "Pilgrims",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Post-Graduation",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Post-Graduation",
+     "schemes": 9,
+     "hindi": null
+    },
+    {
+     "name": "Post Graduation",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Post-graduation",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Postgraduate",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Postgraduate",
+     "schemes": 16,
+     "hindi": "स्नातकोत्तर"
+    },
+    {
+     "name": "Postgraduates",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Tuition Fee",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Tuition Fee",
+     "schemes": 13,
+     "hindi": "ट्यूशन शुल्क"
+    },
+    {
+     "name": "Tuition Fees",
+     "schemes": 4,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Cash Prize",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Cash Prize",
+     "schemes": 15,
+     "hindi": "नकद पुरस्कार"
+    },
+    {
+     "name": "Cash Prizes",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Persons With Disability",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Persons With Disability",
+     "schemes": 13,
+     "hindi": "दिव्यांग व्यक्ति"
+    },
+    {
+     "name": "Persons With Disabilities",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Post Graduate",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Post Graduate",
+     "schemes": 12,
+     "hindi": "स्नातकोत्तर"
+    },
+    {
+     "name": "Post-graduate",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Post-Graduate",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Teacher",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Teacher",
+     "schemes": 10,
+     "hindi": "शिक्षक"
+    },
+    {
+     "name": "Teachers",
+     "schemes": 6,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Cooperative Society",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Cooperative Society",
+     "schemes": 14,
+     "hindi": "सहकारी समाज"
+    },
+    {
+     "name": "Cooperative Societies",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Dependent",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Dependent",
+     "schemes": 11,
+     "hindi": "आश्रित"
+    },
+    {
+     "name": "Dependents",
+     "schemes": 4,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Disaster",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Disaster",
+     "schemes": 14,
+     "hindi": "आपदा"
+    },
+    {
+     "name": "Disasters",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Economically Weaker Section",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Economically Weaker Section",
+     "schemes": 10,
+     "hindi": "आर्थिक रूप से कमजोर वर्ग"
+    },
+    {
+     "name": "Economically Weaker Sections",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Economically-weaker Sections",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Fertilizer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Fertilizer",
+     "schemes": 12,
+     "hindi": "उर्वरक"
+    },
+    {
+     "name": "Fertilizers",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Unorganized Worker",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Unorganized Worker",
+     "schemes": 9,
+     "hindi": null
+    },
+    {
+     "name": "Unorganized Workers",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Bicycle",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Bicycle",
+     "schemes": 12,
+     "hindi": "साइकिल"
+    },
+    {
+     "name": "Bicycles",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Meritorious Student",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Meritorious Student",
+     "schemes": 10,
+     "hindi": "मेधावी छात्र"
+    },
+    {
+     "name": "Meritorious Students",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Plant",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Plant",
+     "schemes": 12,
+     "hindi": "पौधा"
+    },
+    {
+     "name": "Plants",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Professional Courses",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Professional Courses",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Professional Course",
+     "schemes": 6,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Safai Karamcharis",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Safai Karamcharis",
+     "schemes": 8,
+     "hindi": null
+    },
+    {
+     "name": "Safai Karamchari",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Disabled Person",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Disabled Person",
+     "schemes": 11,
+     "hindi": "दिव्यांग व्यक्ति"
+    },
+    {
+     "name": "Disabled Persons",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Fish Sellers",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Fish Sellers",
+     "schemes": 11,
+     "hindi": "मछली विक्रेता"
+    },
+    {
+     "name": "Fish Seller",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Post Doctoral",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Post Doctoral",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Post-Doctoral",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Skill Upgradation",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Skill Upgradation",
+     "schemes": 11,
+     "hindi": "कौशल उन्नयन"
+    },
+    {
+     "name": "Skill-upgradation",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Textile",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Textile",
+     "schemes": 11,
+     "hindi": "वस्त्र"
+    },
+    {
+     "name": "Textiles",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Theatre",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Theatre",
+     "schemes": 11,
+     "hindi": "रंगमंच"
+    },
+    {
+     "name": "Theatres",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Cow",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Cow",
+     "schemes": 9,
+     "hindi": null
+    },
+    {
+     "name": "Cows",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Death Benefits",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Death Benefits",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Death Benefit",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Driver",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Driver",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Drivers",
+     "schemes": 4,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Inter Caste",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Inter Caste",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Inter-Caste",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Inter-caste",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Laptop",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Laptop",
+     "schemes": 9,
+     "hindi": null
+    },
+    {
+     "name": "Laptops",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Parents",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Parents",
+     "schemes": 8,
+     "hindi": null
+    },
+    {
+     "name": "Parent",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Pond",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Pond",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Ponds",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Tool Kit",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Tool Kit",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Tool Kits",
+     "schemes": 5,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Trainee",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Trainee",
+     "schemes": 10,
+     "hindi": "प्रशिक्षु"
+    },
+    {
+     "name": "Trainees",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Adolescent Girls",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Adolescent Girls",
+     "schemes": 8,
+     "hindi": null
+    },
+    {
+     "name": "Adolescent Girl",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Meal",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Meal",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Meals",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Organized Worker",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Organized Worker",
+     "schemes": 9,
+     "hindi": null
+    },
+    {
+     "name": "Organized Workers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Scholar",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Scholar",
+     "schemes": 9,
+     "hindi": null
+    },
+    {
+     "name": "Scholars",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Special Backward Classes",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Special Backward Classes",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Special Backward Class",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Athletes",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Athletes",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Athlete",
+     "schemes": 4,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Export",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Export",
+     "schemes": 8,
+     "hindi": null
+    },
+    {
+     "name": "Exports",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Graduate",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Graduate",
+     "schemes": 8,
+     "hindi": null
+    },
+    {
+     "name": "Graduates",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Industrial Worker",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Industrial Worker",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Industrial Workers",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Laboratory",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Laboratory",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Laboratories",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Patent",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Patent",
+     "schemes": 8,
+     "hindi": null
+    },
+    {
+     "name": "Patents",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Society",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Society",
+     "schemes": 8,
+     "hindi": null
+    },
+    {
+     "name": "Societies",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Soldier",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Soldier",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Soldiers",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Victim",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Victim",
+     "schemes": 8,
+     "hindi": null
+    },
+    {
+     "name": "Victims",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Artificial Limbs",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Artificial Limbs",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Artificial Limb",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Competitive Examination",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Competitive Examination",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Competitive Examinations",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Conductor",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Conductor",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Conductors",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Craft",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Craft",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Crafts",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Financial Benefits",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Financial Benefits",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Financial Benefit",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Higher Study",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Higher Study",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Higher Studies",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Industrial Park",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Industrial Park",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Industrial Parks",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Injury",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Injury",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Injuries",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Lactating Mother",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Lactating Mother",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Lactating Mothers",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Organization",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Organization",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Organizations",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Project",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Project",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Projects",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Schedule Caste",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Schedule Caste",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Schedule Castes",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Seminar",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Seminar",
+     "schemes": 7,
+     "hindi": null
+    },
+    {
+     "name": "Seminars",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Competitive Exams",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Competitive Exams",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Competitive Exam",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Courses",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Courses",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Course",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Enterpreneur",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Enterpreneur",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Enterpreneurs",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Ex-Gratia",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Ex-Gratia",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Ex-gratia",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Extremely Backward Classes",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Extremely Backward Classes",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Extremely Backward Class",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Homestay",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Homestay",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Homestays",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Illness",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Illness",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Illnesses",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Litterateurs",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Litterateurs",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Litterateur",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Machine",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Machine",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Machines",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Micro Enterprises",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Micro Enterprises",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Micro Enterprise",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Migrant",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Migrant",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Migrants",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Natural Calamities",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Natural Calamities",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Natural Calamity",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Nomadic Tribes",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Nomadic Tribes",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Nomadic Tribe",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Nursery",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Nursery",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Nurseries",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Polytechnic",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Polytechnic",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Polytechnics",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Post-Harvest Management",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Post-Harvest Management",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Post Harvest Management",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Post-harvest Management",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Power",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Power",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "POWER",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Thrust Sectors",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Thrust Sectors",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Thrust Sector",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Under Graduate",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Under Graduate",
+     "schemes": 6,
+     "hindi": null
+    },
+    {
+     "name": "Under Graduates",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Academic",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Academic",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Academics",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Farm",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Farm",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Farms",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Funeral Expenses",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Funeral Expenses",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Funeral Expense",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Group Marriage",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Group Marriage",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Group Marriages",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Incubator",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Incubator",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Incubators",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Infant",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Infant",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Infants",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Interest Free Loan",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Interest Free Loan",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Interest-Free Loan",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Intern",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Intern",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Interns",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Maternity Benefit",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Maternity Benefit",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Maternity Benefits",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Professor",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Professor",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Professors",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Scavenger",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Scavenger",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Scavengers",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Sports Competition",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Sports Competition",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Sports Competitions",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Vegetable",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Vegetable",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Vegetables",
+     "schemes": 3,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Writer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Writer",
+     "schemes": 5,
+     "hindi": null
+    },
+    {
+     "name": "Writers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Crop Loss",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Crop Loss",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Crop Losses",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Denotified Tribes",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Denotified Tribes",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Denotified Tribe",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Denture",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Denture",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Dentures",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Doctor",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Doctor",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Doctors",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Fruit",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Fruit",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Fruits",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Hearing Aid",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Hearing Aid",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Hearing Aids",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Institute",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Institute",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Institutes",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Market Committees",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Market Committees",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Market Committee",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Medical Expenses",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Medical Expenses",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Medical Expense",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Milch Animals",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Milch Animals",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Milch Animal",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Producer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Producer",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Producers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "PwD",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "PwD",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "PWD",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Research Scholar",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Research Scholar",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Research Scholars",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Small Business",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Small Business",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Small Businesses",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Small Enterprises",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Small Enterprises",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Small Enterprise",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Spice",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Spice",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Spices",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Sports Award",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Sports Award",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Sports Awards",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Tablet",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Tablet",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Tablets",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Technical Course",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Technical Course",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Technical Courses",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Tradition",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Tradition",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Traditions",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Training Program",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Training Program",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Training Programs",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Tricycle",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Tricycle",
+     "schemes": 4,
+     "hindi": null
+    },
+    {
+     "name": "Tricycles",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Boat Net",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Boat Net",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Boat-net",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Cadet",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Cadet",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Cadets",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Civil Service",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Civil Service",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Civil Services",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Co-operative Societies",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Co-operative Societies",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Co-Operative Societies",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Co-operative Society",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Co-Operative Society",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Conference",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Conference",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Conferences",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Consumer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Consumer",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Consumers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "COVID-19",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "COVID-19",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "COVID 19",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Covid-19",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Electric Vehicle",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Electric Vehicle",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Electric Vehicles",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Engineer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Engineer",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Engineers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Flower",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Flower",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Flowers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Fodder Minikits",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Fodder Minikits",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Fodder Minikit",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Free Book",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Free Book",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Free Books",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Instrument",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Instrument",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Instruments",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Law Graduate",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Law Graduate",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Law Graduates",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Marginal Farmer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Marginal Farmer",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Marginal Farmers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Most Backward Classes",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Most Backward Classes",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Most Backward Class",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Natural Disaster",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Natural Disaster",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Natural Disasters",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Poly Houses",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Poly Houses",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Poly House",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Pre-school",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Pre-school",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Pre-School",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Raw Material",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Raw Material",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Raw Materials",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Registration Fee",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Registration Fee",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Registration Fees",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Sanitary Napkin",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Sanitary Napkin",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Sanitary Napkins",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Sanitation Worker",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Sanitation Worker",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Sanitation Workers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Small Farmer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Small Farmer",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Small Farmers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Trademark",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Trademark",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Trademarks",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Trader",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Trader",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Traders",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Tree",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Tree",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Trees",
+     "schemes": 2,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Urban Area",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Urban Area",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Urban Areas",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "ZED Certification",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "ZED Certification",
+     "schemes": 3,
+     "hindi": null
+    },
+    {
+     "name": "Zed Certification",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Agitator",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Agitator",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Agitators",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "AIDS",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "AIDS",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Aids",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Associations",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Associations",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Association",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Auto Rickshaw",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Auto Rickshaw",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Auto Rickshaws",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Bio Pesticide",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Bio Pesticide",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Bio-pesticide",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Bio-pesticides",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Citizen",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Citizen",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Citizens",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Couple",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Couple",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Couples",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Custom Hiring Centre",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Custom Hiring Centre",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Custom Hiring Centres",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Design",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Design",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Designs",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "E-rickshaw",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "E-rickshaw",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "E-Rickshaw",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Employment Opportunity",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Employment Opportunity",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Employment Opportunities",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Engineering Course",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Engineering Course",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Engineering Courses",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Entrance Examination",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Entrance Examination",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Entrance Examinations",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Examination Fees",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Examination Fees",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Examination Fee",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Feeders",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Feeders",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Feeder",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Folk Artist",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Folk Artist",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Folk Artists",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Food Grains",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Food Grains",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Food Grain",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Free Bicycle",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Free Bicycle",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Free Bicycles",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Fruit Crop",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Fruit Crop",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Fruit Crops",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Government Employee",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Government Employee",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Government Employees",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Guardians",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Guardians",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Guardian",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Harvesting Tool",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Harvesting Tool",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Harvesting Tools",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Hatchery",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Hatchery",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Hatcheries",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Health Check Up",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Health Check Up",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Health Check-up",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Health Check-ups",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Legal Services",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Legal Services",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Legal Service",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Medical Benefit",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Medical Benefit",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Medical Benefits",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Medicinal Plant",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Medicinal Plant",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Medicinal Plants",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Millets",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Millets",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Millet",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Mushroom",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Mushroom",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Mushrooms",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Old Age Home",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Old Age Home",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Old-age Home",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Old-age Homes",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Persons With DisabilitiesPwD",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Persons With DisabilitiesPwD",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Persons With DisabilitiesPwDs",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Poor Families",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Poor Families",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Poor Family",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Post Harvest",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Post Harvest",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Post-harvest",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Post-Harvest",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Residential School",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Residential School",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Residential Schools",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Sanitary Pad",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Sanitary Pad",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Sanitary Pads",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Self Reliant",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Self Reliant",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Self-reliant",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Shelter Homes",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Shelter Homes",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Shelter Home",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Silicosis Diseases",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Silicosis Diseases",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Silicosis Disease",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Silkworm",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Silkworm",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Silkworms",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Socially And Educationally Backward Class",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Socially And Educationally Backward Class",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Socially And Educationally Backward Classes",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Specially-Abled Person",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Specially-Abled Person",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Specially Abled Person",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Take Home Ration",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Take Home Ration",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Take-home Ration",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Telecommunications",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Telecommunications",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Telecommunication",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Topper",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Topper",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Toppers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Tribal Areas",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Tribal Areas",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Tribal Area",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Two Wheeler",
+   "kind": "typographic + plural",
+   "members": [
+    {
+     "name": "Two Wheeler",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Two-Wheeler",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Two-wheelers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Vegetable Seeds",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Vegetable Seeds",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Vegetable Seed",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Wild Animal Attacks",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Wild Animal Attacks",
+     "schemes": 2,
+     "hindi": null
+    },
+    {
+     "name": "Wild Animal Attack",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Academic Institution",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Academic Institution",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Academic Institutions",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Academician",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Academician",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Academicians",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Accommodation Facilities",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Accommodation Facilities",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Accommodation Facility",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Anganwadi Center",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Anganwadi Center",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Anganwadi Centers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Appliance",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Appliance",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Appliances",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Auto Component",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Auto Component",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Auto Components",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Bio Agent",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Bio Agent",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Bio-agents",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Carpenter",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Carpenter",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Carpenters",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Child Victim",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Child Victim",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Child Victims",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Community Radio Station",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Community Radio Station",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Community Radio Stations",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Cooperative Union",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Cooperative Union",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Cooperative Unions",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Costume",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Costume",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Costumes",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Crime",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Crime",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Crimes",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Cultural Program",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Cultural Program",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Cultural Programs",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Day Scholar",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Day Scholar",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Day Scholars",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Diploma Course",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Diploma Course",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Diploma Courses",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "E Commerce",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "E Commerce",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "E-commerce",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "E-learning",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "E-learning",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "E-Learning",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Educational Institution",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Educational Institution",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Educational Institutions",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Engineering Student",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Engineering Student",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Engineering Students",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Event",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Event",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Events",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Family Benefit",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Family Benefit",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Family Benefits",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Go Green",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Go Green",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Go-Green",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Handloom Weaver",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Handloom Weaver",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Handloom Weavers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Health Education",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Health & Education",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Health Education",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "HIV / AIDS",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "HIV / AIDS",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "HIV & AIDS",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Hybrid Seed",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Hybrid Seed",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Hybrid Seeds",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Incubation Centre",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Incubation Centre",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Incubation Centres",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Lawyer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Lawyer",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Lawyers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Lecturer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Lecturer",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Lecturers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Legal Heir",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Legal Heir",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Legal Heirs",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Librarian",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Librarian",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Librarians",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Medal Winner",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Medal Winner",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Medal Winners",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Migrant Worker",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Migrant Worker",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Migrant Workers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Musical Instrument",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Musical Instrument",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Musical Instruments",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Nano Fertilizer",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Nano Fertilizer",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Nano Fertilizers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Non-farm Sector Activities",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Non-farm Sector Activities",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Non-Farm Sector Activities",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Notebook",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Notebook",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Notebooks",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Oilseed",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Oilseed",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Oilseeds",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Operator",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Operator",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Operators",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Park",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Park",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Parks",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Pensioner",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Pensioner",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Pensioners",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Planting Material",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Planting Material",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Planting Materials",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Pond Cluster",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Pond Cluster",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Pond Clusters",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Pregnant Mother",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Pregnant Mother",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Pregnant Mothers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Re-marriage",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Re-marriage",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Re-Marriage",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Research Institution",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Research Institution",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Research Institutions",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Self Employement",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Self Employement",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Self-employement",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Small Scale Business",
+   "kind": "typographic",
+   "members": [
+    {
+     "name": "Small Scale Business",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Small-scale Business",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Small Unit",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Small Unit",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Small Units",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Special School",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Special School",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Special Schools",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Spice Seed",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Spice Seed",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Spice Seeds",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "State Government Employee",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "State Government Employee",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "State Government Employees",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Technologist",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Technologist",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Technologists",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Teenage Girl",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Teenage Girl",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Teenage Girls",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Three Wheeler",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Three Wheeler",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Three Wheelers",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Training Camp",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Training Camp",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Training Camps",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Vegetable Crop",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Vegetable Crop",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Vegetable Crops",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Vimukta Jati",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Vimukta Jati",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Vimukta Jatis",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  },
+  {
+   "canonical": "Youth Club",
+   "kind": "plural",
+   "members": [
+    {
+     "name": "Youth Club",
+     "schemes": 1,
+     "hindi": null
+    },
+    {
+     "name": "Youth Clubs",
+     "schemes": 1,
+     "hindi": null
+    }
+   ]
+  }
+ ]
+}

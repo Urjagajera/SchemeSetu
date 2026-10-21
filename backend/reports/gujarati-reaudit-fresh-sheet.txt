@@ -1,0 +1,1140 @@
+=== #1 [openai/gpt-oss-120b] Rajasthan Chief Minister's Relief Fund - Accident Assistance
+T EN: Rajasthan Chief Minister's Relief Fund - Accident Assistance
+   GU: રાજસ્થાન મુખ્યમંત્રીનું રાહત નાણાં - અકસ્માત સહાયતા
+   BK: Rajasthan Chief Minister's Relief Fund - Accident Assistance
+E0 EN: The victim should be a resident of the state of Rajasthan.
+   GU: પીડિતને રાજસ્થાન રાજ્યનો નિવાસી હોવો જોઈએ.
+   BK: The victim should be a resident of the state of Rajasthan.
+E1 EN: The victim should have suffered serious injury / death.
+   GU: પીડિતને ગંભીર ઈજા / મૃત્યુ થયેલ હોવું જોઈએ.
+   BK: The victim should have suffered serious injury / death.
+E2 EN: In case of death, the assistance is payable only to the dependent parents/husband-wife/son-daughter of the deceased in the accident.
+   GU: મૃત્યુની સ્થિતિમાં, સહાયતા માત્ર અકસ્માતમાં મૃત્યુ પામેલા વ્યક્તિના આધારિત માતાપિતા/પતિ-પત્ની/પુત્ર-પુત્રીને જ ચૂકવવામાં આવે છે.
+   BK: In case of death, assistance is paid only to the dependent parents/husband-wife/son-daughter of the person who died in the accident.
+E3 EN: Under special circumstances, assistance can be given to grandparents/dependent siblings with the consent of the Chief Minister's Office.
+   GU: વિશેષ પરિસ્થિતિઓમાં, મુખ્યમંત્રાલય ઓફિસની મંજૂરી સાથે દાદા-દાદી/આધારિત ભાઈ-બહેનને સહાયતા આપી શકાય છે.
+   BK: In special circumstances, assistance can be given to grandparents/dependent siblings with the approval of the Chief Minister's Office.
+B0 EN: In case of death due to accident, ₹ 1,00,000 is provided to the dependent of the deceased.
+   GU: દુર્ઘટનાથી મૃત્યુની સ્થિતિમાં, ₹ 1,00,000 મૃત્યુ પામેલ વ્યક્તિના નિર્ભર વ્યક્તિને આપવામાં આવે છે.
+   BK: In case of death due to an accident, ₹ 1,00,000 is given to the dependent person of the deceased person.
+B1 EN: In case of serious injury, assistance should be approved up to ₹ 20,000, keeping in view the seriousness of the injury to the ordinary injured.
+   GU: ગંભીર ઈજાની સ્થિતિમાં, સામાન્ય રીતે ઇજાગ્રસ્ત વ્યક્તિની ઈજાની ગંભીરતા ધ્યાનમાં રાખીને, સહાયતા ₹ 20,000 સુધી મંજૂર કરવી જોઈએ.
+   BK: In case of serious injury, generally considering the severity of the injury of the injured person, assistance up to ₹ 20,000 should be approved.
+B2 EN: A revolving fund of ₹20,00,000 each has been made available to all district collectors.
+   GU: દરેક માટે ₹20,00,000 નો ફરતી નાણાંનો ભંડોળ તમામ જિલ્લા કલેક્ટરોને ઉપલબ્ધ કરાવવામાં આવ્યો છે.
+   BK: A revolving fund of ₹20,00,000 for each has been made available to all District Collectors.
+B3 EN: The assistance is "one-time full-support" and is sanctioned by the concerned District Collector.
+   GU: સહાયતા "એક વખતની સંપૂર્ણ સહાય" છે અને સંબંધિત જિલ્લા કલેક્ટર દ્વારા મંજૂર કરવામાં આવે છે.
+   BK: Assistance is a "one-time full assistance" and is approved by the concerned District Collector.
+=== #2 [openai/gpt-oss-120b] Journalists’ Family Benefit Fund
+T EN: Journalists’ Family Benefit Fund
+   GU: જર્નાલિસ્ટ્સનું પરિવાર લાભ નાણાં ફંડ
+   BK: Journalists' Family Benefit Fund
+E0 EN: The deceased should have been an editor/sub-editor/reporter/photographer and proofreader.
+   GU: મૃત વ્યક્તિએ સંપાદક/સબ-સંપાદક/રિપોર્ટર/ફોટોગ્રાફર અને પ્રૂફરીડર તરીકે કામ કર્યું હોવું જોઈએ.
+   BK: The deceased person should have worked as an editor/sub-editor/reporter/photographer and proofreader.
+E1 EN: The benefit of the scheme will be given only on the death of the journalist while working in Journalism.
+   GU: યોજનાનો લાભ માત્ર ત્યારે જ આપવામાં આવશે જ્યારે પત્રકારની પત્રકારિતામાં કામ કરતી વખતે મૃત્યુ થાય.
+   BK: The benefit of the scheme will be given only when the death of the journalist occurs while working in journalism.
+E2 EN: The editor, sub-editor, journalist, and photographer should have worked full-time in a newspaper or daily periodicals published in Tamil Nadu.
+   GU: સંપાદક, સબ-સંપાદક, પત્રકાર અને ફોટોગ્રાફરે તામિલ નાડુમાં પ્રકાશિત અખબાર અથવા દૈનિક પત્રિકાઓમાં પૂર્ણ સમય કામ કર્યું હોવું જોઈએ.
+   BK: The editor, sub-editor, journalist and photographer should have worked full time in newspapers or daily publications published in Tamil Nadu.
+E3 EN: In case of sudden death due to an accident or fatal disease, five years of service is mandatory.
+   GU: દુર્ઘટના અથવા ઘાતક રોગને કારણે અચાનક મૃત્યુ થાય તો પાંચ વર્ષની સેવા આવશ્યક છે.
+   BK: Five years of service is necessary if death occurs suddenly due to an accident or fatal disease.
+B0 EN: Financial Assistance:
+   GU: આર્થિક સહાય:
+   BK: Financial assistance:
+B1 EN: ₹50,000/- for 5 years of service.
+   GU: સેવામાં 5 વર્ષ માટે ₹50,000/-.
+   BK: ₹50,000/- for 5 years of service.
+B2 EN: ₹1,00,000/- for 10 years of service.
+   GU: સેવામાં 10 વર્ષ માટે ₹1,00,000/-.
+   BK: ₹1,00,000/- for 10 years of service.
+B3 EN: ₹1,50,000/- for 15 years of service.
+   GU: સેવામાં 15 વર્ષ માટે ₹1,50,000/-.
+   BK: ₹1,50,000/- for 15 years of service.
+=== #3 [openai/gpt-oss-120b] Domestic Funding Of Foreign Training
+T EN: Domestic Funding Of Foreign Training
+   GU: વિદેશી તાલીમ માટેનું ઘરેલુ નાણાંદાન
+   BK: Domestic funding for foreign training
+E0 EN: All Indian Administrative Service (IAS) Officers / Group ‘A’ officers belonging to Central Secretariat Service (CSS), Central Secretariat Stenographer Service (CSSS), and State Civil Service (SCS).
+   GU: સર્વ ભારતીય પ્રશાસન સેવા (IAS) અધિકારીઓ / ગ્રુપ ‘A’ અધિકારીઓ જે સેન્ટ્રલ સેક્રેટેરિયેટ સર્વિસ (CSS), સેન્ટ્રલ સેક્રેટેરિયેટ સ્ટેનોગ્રાફર સર્વિસ (CSSS), અને સ્ટેટ સિવિલ સર્વિસ (SCS) માં આવે છે.
+   BK: All India Administrative Service (IAS) officers / Group 'A' officers who are in the Central Secretariat Service (CSS), Central Secretariat Stenographer Service (CSSS), and State Civil Service (SCS).
+E1 EN: Indian Police Service (IPS), Indian Forest Service (IFoS), and Group ‘A’ Central Civil Service Officers during the tenure of deputation under the Central Staffing Scheme of DoPT.
+   GU: ભારતીય પોલીસ સેવા (IPS), ભારતીય વન સેવા (IFoS), અને ગ્રુપ ‘A’ સેન્ટ્રલ સિવિલ સર્વિસ અધિકારીઓ, DoPT ની સેન્ટ્રલ સ્ટાફિંગ સ્કીમ હેઠળ ડેપ્યુટેશનની અવધિ દરમિયાન.
+   BK: Indian Police Service (IPS), Indian Forest Service (IFoS), and Group 'A' Central Civil Service officers, during the period of deputation under the Central Staffing Scheme of DoPT.
+B0 EN: Under the scheme, different international training programmes will be offered to eligible government officers as mentioned below:
+   GU: યોજનાના અંતર્ગત, યોગ્ય સરકાર અધિકારીઓને નીચે મુજબ વિવિધ આંતરરાષ્ટ્રીય તાલીમ કાર્યક્રમો પ્રદાન કરવામાં આવશે:
+   BK: Under the scheme, eligible government officers will be provided with various international training programs as follows:
+B1 EN: Long-Term Foreign Training Programmes (6-12 months)
+   GU: દીર્ઘકાલીન વિદેશી તાલીમ કાર્યક્રમો (6-12 મહિના)
+   BK: Long-term foreign training programs (6-12 months)
+B2 EN: Short Term Foreign Training Programmes (up to 6 months)
+   GU: લઘુકાલીન વિદેશી તાલીમ કાર્યક્રમો (6 મહિના સુધી)
+   BK: Short-term foreign training programs (up to 6 months)
+B3 EN: Partial Funding of Foreign Study (of more than 6 months)
+   GU: વિદેશી અભ્યાસનું આંશિક નાણાં પ્રદાન (6 મહિના કરતાં વધુ માટે)
+   BK: Partial funding for foreign study (for more than 6 months)
+=== #4 [openai/gpt-oss-120b] Scheme for Plantation Development (New planting & Replanting) under Medium Term Framework Plan (MTFP) in Traditional Areas (Kerala and Tamil Nadu), Non-Traditional and North Eastern Region
+T EN: Scheme for Plantation Development (New planting & Replanting) under Medium Term Framework Plan (MTFP) in Traditional Areas (Kerala and Tamil Nadu), Non-Traditional and North Eastern Region
+   GU: મધ્યમ સમયગાળાની ફ્રેમવર્ક યોજના (MTFP) હેઠળ પરંપરાગત વિસ્તારો (કેરળા અને તામિલ નાડુ), અપરંપરાગત અને ઉત્તરપૂર્વીય પ્રદેશોમાં વનસ્પતિ વિકાસ (નવું વાવેતર અને પુનર્વાવેતર) માટેની યોજના.
+   BK: Scheme for plant development (new planting and replanting) in traditional areas (Kerala and Tamil Nadu), non-traditional and northeastern states under the Medium Term Framework Plan (MTFP).
+E0 EN: The growers owning rubber areas not exceeding 2.00 ha shall be eligible for assistance under Rule VI of the scheme.
+   GU: યોજનાના નિયમ VI હેઠળ 2.00 હેક્ટરથી વધુ ન હોય તેવી રબર ક્ષેત્ર ધરાવતા ખેડૂત સહાય માટે પાત્ર રહેશે.
+   BK: Farmers having rubber fields not more than 2.00 hectares shall be eligible for assistance under Rule VI of the scheme.
+E1 EN: The planting grant payable will be limited to an area of 1.00 ha.
+   GU: લાગુ કરાતી વાવણી ગ્રાન્ટ 1.00 હેક્ટરની ક્ષેત્ર સુધી મર્યાદિત રહેશે.
+   BK: The applicable planting grant shall be limited to an area of 1.00 hectare.
+E2 EN: The growers who undertake new planting/replanting rubber in a minimum area of 0.10 ha will be eligible for assistance.
+   GU: ન્યૂનતમ 0.10 હેક્ટરની ક્ષેત્રમાં નવી વાવણી/પુનર્વાવણી રબર કરનાર ખેડૂત સહાય માટે પાત્ર રહેશે.
+   BK: Farmers doing new planting/replanting of rubber in a minimum area of 0.10 hectare shall be eligible for assistance.
+E3 EN: The applicant should have absolute possession over the land in respect of which assistance is sought.
+   GU: અરજદારને તે જમીન પર સંપૂર્ણ કબજા હોવો જોઈએ, જેના માટે સહાય માંગવામાં આવી રહી છે.
+   BK: The applicant should have complete possession of the land for which assistance is being sought.
+B0 EN: Rate of Subsidy
+   GU: સબસિડી દર
+   BK: Subsidy rate
+B1 EN: Traditional Region
+   GU: પરંપરાગત પ્રદેશ
+   BK: Traditional area
+B2 EN: General Category: ₹ 20,000/- ha + ₹ 5,000 /ha for planting material (Polybag/ Root trainer plants) of advanced growth. The assistance will be @ ₹ 10/- per plant limited to 500 plants per ha.
+   GU: જનરલ કેટેગરી: ₹ 20,000/- ha + ₹ 5,000 /ha અદ્યતન વૃદ્ધિ માટેની પ્લાન્ટિંગ મટીરિયલ (Polybag/ Root trainer plants) માટે. સહાયતા ₹ 10/- પ્રતિ છોડ તરીકે, પ્રતિ ha 500 છોડ સુધી મર્યાદિત રહેશે.
+   BK: General Category: ₹ 20,000/- ha + ₹ 5,000 /ha for planting material (Polybag/ Root trainer plants) for advanced growth. Assistance as ₹ 10/- per plant, limited to 500 plants per ha.
+B3 EN: SC Category: ₹ 35000/- ha + ₹ 5,000 /ha for planting material (Polybag/ Root trainer plants) of advanced growth. The assistance will be @ ₹ 10/- per plant limited to 500 plants per ha.
+   GU: SC કેટેગરી: ₹ 35000/- ha + ₹ 5,000 /ha અદ્યતન વૃદ્ધિ માટેની પ્લાન્ટિંગ મટીરિયલ (Polybag/ Root trainer plants) માટે. સહાયતા ₹ 10/- પ્રતિ છોડ તરીકે, પ્રતિ ha 500 છોડ સુધી મર્યાદિત રહેશે.
+   BK: SC Category: ₹ 35000/- ha + ₹ 5,000 /ha for planting material (Polybag/ Root trainer plants) for advanced growth. Assistance as ₹ 10/- per plant, limited to 500 plants per ha.
+=== #5 [openai/gpt-oss-120b] Grant to Meritorious Wards of ESM in Sports: National / International Level (Sainik Welfare)
+T EN: Grant to Meritorious Wards of ESM in Sports: National / International Level (Sainik Welfare)
+   GU: મેરિટોરિયસ વોર્ડ્સ ઓફ ESM માટે ક્રીડામાં ગ્રાન્ટ: રાષ્ટ્રીય / આંતરરાષ્ટ્રીય સ્તર (સૈનિક કલ્યાણ)
+   BK: Merit-based words for ESM in sports grant: National / International level (Soldier Welfare)
+E0 EN: The applicant should be a Ward of an ESM / Ward of the Widow of an Ex-Serviceman (ESM).
+   GU: અરજદાર એ ESM નો વોર્ડ / પૂર્વ-સૈનિક (ESM) ની વિધવા નો વોર્ડ હોવો જોઈએ.
+   BK: The applicant must be the ward of ESM / Ex-serviceman (ESM) or the ward of the widow of ESM / Ex-serviceman (ESM).
+E1 EN: The ESM / Ward of the Widow of an ESM should be registered with the Department of Sainik Welfare, Puducherry.
+   GU: ESM / પૂર્વ-સૈનિક (ESM) ની વિધવા નો વોર્ડ પુડુચેરીના સૈનિક કલ્યાણ વિભાગમાં નોંધાયેલો હોવો જોઈએ.
+   BK: The ward of ESM / Ex-serviceman (ESM) or the widow of ESM / Ex-serviceman (ESM) must be registered in the Soldier Welfare Department of Puducherry.
+E2 EN: The event should be organised by a body approved/recognized by the Government.
+   GU: કાર્યક્રમ સરકાર દ્વારા મંજૂર/માનીતા કોઈ સંસ્થા દ્વારા આયોજિત કરવો જોઈએ.
+   BK: The program must be organized by an institution approved/recognized by the government.
+E3 EN: The applicant should have achieved merit in a sport at the national/international level.
+   GU: અરજદારને ક્રીડામાં રાષ્ટ્રીય/આંતરરાષ્ટ્રીય સ્તરે પ્રતિભા પ્રાપ્ત કરેલી હોવી જોઈએ.
+   BK: The applicant must have achieved excellence at the national/international level in sports.
+B0 EN: Grant of ₹50,000/- for achievements in sports at the international level.
+   GU: અંતરરાષ્ટ્રીય સ્તરે ક્રીડાઓમાં સિદ્ધિઓ માટે ₹50,000/- નો ગ્રાન્ટ.
+   BK: Grant of ₹50,000/- for achievements in sports at the international level.
+B1 EN: Grant of ₹30,000/- for achievements in sports at the national level.
+   GU: રાષ્ટ્રીય સ્તરે ક્રીડાઓમાં સિદ્ધિઓ માટે ₹30,000/- નો ગ્રાન્ટ.
+   BK: Grant of ₹30,000/- for achievements in sports at the national level.
+B2 EN: The amount is credited to the beneficiary’s Bank Account through RTGS/ NEFT.
+   GU: રકમને લાભાર્થીના બેંક ખાતામાં RTGS/ NEFT દ્વારા ક્રેડિટ કરવામાં આવે છે.
+   BK: The amount is credited to the beneficiary's bank account via RTGS/ NEFT.
+=== #6 [openai/gpt-oss-120b] Bihar State Madarsa Strengthening Scheme
+T EN: Bihar State Madarsa Strengthening Scheme
+   GU: બિહાર રાજ્ય મદરસા મજબૂતિકરણ યોજના
+   BK: Bihar State Madrasa Strengthening Scheme
+E0 EN: The Madarsa should be located in Bihar.
+   GU: મદરસા બિહારમાં સ્થિત હોવો જોઈએ.
+   BK: The madrasa should be located in Bihar.
+E1 EN: The Madarsa should be recognized by the Bihar State Madarsa Board or other Government-Recognized Madarsas.
+   GU: મદરસાને બિહાર સ્ટેટ મદરસા બોર્ડ અથવા અન્ય સરકાર-મંજૂર મદરસાઓ દ્વારા માન્યતા પ્રાપ્ત હોવી જોઈએ.
+   BK: The madrasa should have recognition obtained by the Bihar State Madrasa Board or other government-approved madrasas.
+E2 EN: The Madarsa Management Committee should not have been subject to any disciplinary actions in the past three years.
+   GU: મદરસા મેનેજમેન્ટ કમિટી છેલ્લા ત્રણ વર્ષમાં કોઈ શિસ્તબદ્ધ કાર્યવાહીનો સામનો ન કર્યો હોવો જોઈએ.
+   BK: The madrasa management committee should not have faced any disciplinary action in the last three years.
+E3 EN: The Madarsa should possess sufficient land, which should be legally owned and free from disputes.
+   GU: મદરસા પાસે પૂરતી જમીન હોવી જોઈએ, જે કાનૂની રીતે માલિકી ધરાવે અને વિવાદમુક્ત હોવી જોઈએ.
+   BK: The madrasa should have sufficient land, which should be legally owned and dispute-free.
+B0 EN: Under this scheme, basic facilities and infrastructure will be provided to madrasas recognized by the Bihar State Madarsa Board and other government madarsas to enhance educational quality. The support includes:
+   GU: આ યોજના હેઠળ, બિહાર સ્ટેટ મદરસા બોર્ડ દ્વારા માન્યતા પ્રાપ્ત મદરસાઓ અને અન્ય સરકારી મદરસાઓને શૈક્ષણિક ગુણવત્તા સુધારવા માટે મૂળભૂત સુવિધાઓ અને ઢાંચો પ્રદાન કરવામાં આવશે. સહાયમાં સમાવેશ થાય છે:
+   BK: Under this scheme, madrasas recognized by the Bihar State Madrasa Board and other government madrasas will be provided with basic facilities and infrastructure to improve educational quality. The assistance includes:
+B1 EN: Construction of buildings, office rooms, multipurpose halls, hostels, and vocational training halls.
+   GU: મકાનો, ઓફિસ રૂમો, બહુઉદ્દેશીય હોલ, હોસ્ટેલ અને વ્યવસાયિક તાલીમ હોલનું નિર્માણ.
+   BK: Construction of buildings, office rooms, multi-purpose hall, hostel and vocational training hall.
+B2 EN: Establishment of computer and science labs, additional classrooms, and libraries.
+   GU: કમ્પ્યુટર અને વિજ્ઞાન લેબ, વધારાના વર્ગખંડો અને પુસ્તકાલયની સ્થાપના.
+   BK: Establishment of computer and science lab, additional classrooms and library.
+B3 EN: Provision of essential amenities such as kitchens, mess halls, and toilets.
+   GU: રસોડા, મેસ હોલ અને શૌચાલય જેવી આવશ્યક સુવિધાઓનું પ્રદાન.
+   BK: Provision of essential facilities such as kitchen, mess hall and toilets.
+=== #7 [openai/gpt-oss-120b] "Outstanding Artisan of the Year" under “Motivation of Entrepreneurs to Start Industries and Fiscal Assistance to Industries - State Awards to Micro, Small and Medium Enterprises”
+T EN: "Outstanding Artisan of the Year" under “Motivation of Entrepreneurs to Start Industries and Fiscal Assistance to Industries - State Awards to Micro, Small and Medium Enterprises”
+   GU: "વર્ષનું ઉત્તમ કારીગર" “ઉદ્યોગકારોને ઉદ્યોગ શરૂ કરવા માટે પ્રોત્સાહન અને ઉદ્યોગોને નાણાકીય સહાય - માઇક્રો, સ્મોલ અને મિડિયમ એન્ટરપ્રાઇઝિસને રાજ્ય પુરસ્કારો” હેઠળ.
+   BK: Under "Best Craftsman of the Year" "Encouragement and financial assistance to entrepreneurs to start industries - State Awards to Micro, Small and Medium Enterprises".
+E0 EN: The applicant should be an Artisan.
+   GU: અરજદાર કારીગર હોવો જોઈએ.
+   BK: The applicant should be a craftsman.
+E1 EN: The applicant should have been a participant for 3 years in National / International handicraft exhibitions/fairs.
+   GU: અરજદારને રાષ્ટ્રીય / આંતરરાષ્ટ્રીય હસ્તકલા પ્રદર્શનો/મેળાઓમાં 3 વર્ષ સુધી ભાગ લેનાર હોવો જોઈએ.
+   BK: The applicant should have participated in national / international handicraft exhibitions / fairs for 3 years.
+B0 EN: Cash Award of ₹2,00,000/- and a Citation.
+   GU: ₹2,00,000/- નો નાણાકીય પુરસ્કાર અને સિટેશન.
+   BK: ₹2,00,000/- financial award and citation.
+=== #8 [openai/gpt-oss-120b] Anya Pichhda Varg Kalyan Chhatravaas
+T EN: Anya Pichhda Varg Kalyan Chhatravaas
+   GU: અન્ય પિછડા વર્ગ કલ્યાણ છાત્રવાસ
+   BK: Other Backward Class Welfare Hostel
+E0 EN: The applicant must be a resident of Bihar.
+   GU: અરજદારને બિહારનો રહેવાસી હોવો આવશ્યક છે.
+   BK: The applicant must be a resident of Bihar.
+E1 EN: The applicant’s age should be between 11 to 40 years.
+   GU: અરજદારની ઉંમર 11 થી 40 વર્ષ વચ્ચે હોવી જોઈએ.
+   BK: The age of the applicant should be between 11 and 40 years.
+E2 EN: The applicant should belong to the Backward Class (BC) or Extremely Backward Class (EBC).
+   GU: અરજદારને પછાત વર્ગ (BC) અથવા અત્યંત પછાત વર્ગ (EBC) માં આવવું જોઈએ.
+   BK: The applicant should belong to the Backward Class (BC) or Extremely Backward Class (EBC).
+B0 EN: ₹1,000/- per month hostel grant for each student.
+   GU: દરેક વિદ્યાર્થી માટે પ્રતિ મહિનો ₹1,000/- હોસ્ટેલ ગ્રાન્ટ.
+   BK: ₹1,000/- hostel grant per month for each student.
+B1 EN: 15 kg of free food grains per month (9 kg rice + 6 kg wheat).
+   GU: પ્રતિ મહિનો 15 કિગ્રા મફત ખાદ્ય અનાજ (9 કિગ્રા ચોખા + 6 કિગ્રા ગહું).
+   BK: 15 kg free food grain per month (9 kg rice + 6 kg wheat).
+B2 EN: Free facilities like cot, mattress, bedsheet, and cooking utensils.
+   GU: મફત સુવિધાઓ જેમ કે ખાટલો, ગાદો, બેડશીટ અને રસોડાના સાધનો.
+   BK: Free facilities such as bed, mattress, bedsheet and kitchen utensils.
+B3 EN: Food arrangements under superintendent's supervision; students bear actual meal costs.
+   GU: સુપરિન્ટેન્ડન્ટની દેખરેખ હેઠળ ખોરાકની વ્યવસ્થા; વિદ્યાર્થીઓ વાસ્તવિક ભોજન ખર્ચ ઉઠાવે છે.
+   BK: Food arrangement under the supervision of the Superintendent; students bear the actual food cost.
+=== #9 [openai/gpt-oss-120b] Cultural Function And Production Grant Scheme
+T EN: Cultural Function And Production Grant Scheme
+   GU: સાંસ્કૃતિક કાર્ય અને ઉત્પાદન ગ્રાન્ટ યોજના
+   BK: Cultural Work and Production Grant Scheme
+E0 EN: The applicant organizations that are voluntary organizations or NGOs, should, in order to qualify for the grant, have a properly constituted managing body with its powers, duties and responsibilities clearly defined and laid down in the form of a written constitution.
+   GU: ગ્રાન્ટ માટે લાયક થવા માટે, સ્વયંસેવક સંસ્થાઓ અથવા NGOs તરીકે અરજી કરનારી સંસ્થાઓ પાસે યોગ્ય રીતે રચાયેલ વ્યવસ્થાપન બોડી હોવી જોઈએ, જેના શક્તિઓ, ફરજીઓ અને જવાબદારીઓ સ્પષ્ટ રીતે નિર્ધારિત અને લેખિત બંધારણ રૂપે મૂકવામાં આવી હોય.
+   BK: To be eligible for the grant, organizations applying as voluntary organizations or NGOs should have a properly constituted management body, whose powers, duties and responsibilities are clearly defined and set out in a written constitution.
+E1 EN: The Organization should have been functioning and registered under the Societies Registration Act (XXI of 1860), Trusts Act, Companies Act, or any Central or State Act for at least three years.
+   GU: સંસ્થા ઓછામાં ઓછા ત્રણ વર્ષ માટે સમાજોનું નોંધણી અધિનિયમ (XXI of 1860), ટ્રસ્ટ્સ અધિનિયમ, કંપની અધિનિયમ અથવા કોઈપણ કેન્દ્રિય કે રાજ્ય અધિનિયમ હેઠળ કાર્યરત અને નોંધાયેલ હોવી જોઈએ.
+   BK: The organization should be functioning and registered for at least three years under the Societies Registration Act (XXI of 1860), Trusts Act, Companies Act or any central or state act.
+E2 EN: The applicant organizations that are voluntary organizations or NGOs must register themselves on the NGO Darpan Portal of NITI Aayog and obtain a Unique ID from the Portal. The organizations are required to intimate the Unique ID as obtained from the NGO Darpan Portal and PAN Number of the organization while applying under the Scheme.
+   GU: સ્વયંસેવક સંસ્થાઓ અથવા NGOs તરીકે અરજી કરનારી સંસ્થાઓને NITI Aayog ના NGO દર્શન પોર્ટલ પર નોંધણી કરીને પોર્ટલમાંથી યુનિક આઈડી મેળવવી આવશ્યક છે. યોજના હેઠળ અરજી કરતી વખતે સંસ્થાઓને NGO દર્શન પોર્ટલમાંથી પ્રાપ્ત થયેલ યુનિક આઈડી અને સંસ્થાનો PAN નંબર જણાવવો જરૂરી છે.
+   BK: It is mandatory for organizations applying as voluntary organizations or NGOs to register on the NITI Aayog NGO Darshan portal and obtain a unique ID from the portal. When applying under the scheme, organizations are required to state the unique ID obtained from the NGO Darshan portal and the PAN number of the organization.
+E3 EN: The Organization must have tied up or planned the matching resources at least to the extent of 25 % of the project cost.
+   GU: સંસ્થાએ પ્રોજેક્ટ ખર્ચના ઓછામાં ઓછા 25 % સુધીની મેળ ખાતી સંસાધનો જોડેલી હોવી અથવા આયોજન કરેલી હોવી જોઈએ.
+   BK: The organization should have committed or planned matching resources up to a minimum of 25% of the project cost.
+B0 EN: The grant for specific projects shall be restricted to 75% of the expenditure, subject to a maximum of ₹5.00 lakhs per project as recommended by the Expert Committee.
+   GU: વિશિષ્ટ પ્રોજેક્ટ્સ માટેનો ગ્રાન્ટ ખર્ચનું 75% સુધી મર્યાદિત રહેશે, પ્રત્યેક પ્રોજેક્ટ માટે મહત્તમ ₹5.00 લાખ સુધી, જેમ કે નિષ્ણાત સમિતિની ભલામણ મુજબ.
+   BK: The grant expenditure for specific projects will be limited to up to 75%, up to a maximum of ₹5.00 lakh per project, as per the recommendation of the expert committee.
+B1 EN: The Ministry may in exceptional circumstances, increase the assistance to any project of outstanding merit and relevance up to ₹20 Lakhs with the approval of Hon’ble Minister of Culture.
+   GU: મંત્રાલય અપવાદરૂપ પરિસ્થિતિઓમાં, ઉત્તમ ગુણવત્તા અને સંબંધિતતા ધરાવતા કોઈપણ પ્રોજેક્ટ માટે સહાયતા ₹20 લાખ સુધી વધારી શકે છે, માનનીય સંસ્કૃતિ મંત્રીની મંજૂરી સાથે.
+   BK: The Ministry, in exceptional circumstances, may increase the assistance up to ₹20 lakh for any project of excellent quality and relevance, with the approval of the Honorable Minister of Culture.
+=== #10 [openai/gpt-oss-120b] Observation Home and Special School
+T EN: Observation Home and Special School
+   GU: ઓબ્ઝર્વેશન હોમ અને સ્પેશિયલ સ્કૂલ
+   BK: Observation Home and Special School
+E0 EN: The child should be under 18 years of age.
+   GU: બાળકની ઉંમર 18 વર્ષથી ઓછી હોવી જોઈએ.
+   BK: The child's age should be less than 18 years.
+E1 EN: The child should be in conflict with the law.
+   GU: બાળક કાયદા સાથે વિરુદ્ધ હોવો જોઈએ.
+   BK: The child should be against the law.
+E2 EN: The child should have been admitted to the Juvenile Welfare Board.
+   GU: બાળકને કિશોર કલ્યાણ બોર્ડમાં દાખલ કરવામાં આવવું જોઈએ.
+   BK: The child should be admitted in the Juvenile Welfare Board.
+B0 EN: Free Boarding and Lodging.
+   GU: મફત રહેઠાણ અને ભોજન.
+   BK: Free accommodation and food.
+B1 EN: Recreations Like Library, Play Materials With Sufficient Playground Area (Indoor and Outdoor).
+   GU: લાઇબ્રેરી, રમવાના સામગ્રી જેવી મનોરંજન, પૂરતી રમણસ્થળ વિસ્તાર (ઇન્ડોર અને આઉટડોર) સાથે.
+   BK: With entertainment like library, play materials, sufficient playground area (indoor and outdoor).
+B2 EN: Once a Year, Various Competitions Are Conducted in Sports, Games, Drawing, Singing, Essay Writing, Etc., the Winners Are Given Prizes During the Annual Day Celebration.
+   GU: વર્ષમાં એક વખત, ક્રીડા, રમતો, ચિત્રકલા, ગાયન, નિબંધ લેખન વગેરેમાં વિવિધ સ્પર્ધાઓનું આયોજન થાય છે, અને વિજેતાઓને વાર્ષિક દિવસ ઉજવણી દરમિયાન પુરસ્કારો આપવામાં આવે છે.
+   BK: Once a year, various competitions are organized in sports, games, painting, singing, essay writing, etc., and prizes are given to the winners during the annual day celebration.
+B3 EN: Educational Tours to Places of Interest Once in a Year.
+   GU: વર્ષમાં એક વખત રસપ્રદ સ્થળોની શૈક્ષણિક યાત્રાઓ.
+   BK: Educational trips to interesting places once a year.
+=== #11 [openai/gpt-oss-120b] Shri Varun Panwar Memorial Award for B.Sc. Agriculture (2nd Year, 3rd Year, and 4th Year) Students
+T EN: Shri Varun Panwar Memorial Award for B.Sc. Agriculture (2nd Year, 3rd Year, and 4th Year) Students
+   GU: શ્રી વરુણ પનવાર સ્મૃતિ પુરસ્કાર B.Sc. કૃષિ (બીજા વર્ષ, ત્રીજા વર્ષ, અને ચોથા વર્ષ) વિદ્યાર્થીઓ માટે
+   BK: Shri Varun Panwar Memory Award for B.Sc. Agriculture (Second Year, Third Year, and Fourth Year) students
+E0 EN: The applicant must be a student.
+   GU: અરજદાર વિદ્યાર્થી હોવો જોઈએ.
+   BK: The applicant should be a student.
+E1 EN: The applicant must be enrolled in the B.Sc. Agriculture program and be in their 2nd, 3rd, or 4th year of study at Govind Ballabh Pant University of Agriculture and Technology, Pantnagar.
+   GU: અરજદારને ગોવિંદ બલ્લભ પંત યુનિવર્સિટી ઓફ એગ્રીકલ્ચર એન્ડ ટેકનોલોજી, પંતનગરમાં B.Sc. એગ્રીકલ્ચર કાર્યક્રમમાં નોંધાયેલ હોવું જોઈએ અને તેમની 2મો, 3રું અથવા 4થો વર્ષનું અભ્યાસ ચાલુ હોવું જોઈએ.
+   BK: The applicant should be enrolled in the B.Sc. Agriculture program at Govind Ballabh Pant University of Agriculture and Technology, Pantnagar and their 2nd, 3rd or 4th year of study should be ongoing.
+E2 EN: The award is granted for a duration of one year only.
+   GU: આ પુરસ્કાર માત્ર એક વર્ષની અવધિ માટે આપવામાં આવે છે.
+   BK: This award is given for a period of only one year.
+B0 EN: Award Amount: ₹10,000/- per year
+   GU: ઇનામ રકમ: ₹10,000/- પ્રતિ વર્ષ
+   BK: Prize amount: ₹10,000/- per year
+B1 EN: Number of Awards: One award for each class
+   GU: ઇનામોની સંખ્યા: દરેક વર્ગ માટે એક ઇનામ
+   BK: Number of prizes: One prize for each class
+B2 EN: 2nd Year: 1 student
+   GU: બીજું વર્ષ: 1 વિદ્યાર્થી
+   BK: Second year: 1 student
+B3 EN: 3rd Year: 1 student
+   GU: ત્રીજું વર્ષ: 1 વિદ્યાર્થી
+   BK: Third year: 1 student
+=== #12 [openai/gpt-oss-120b] Kanya Dhan Scheme for SC Students
+T EN: Kanya Dhan Scheme for SC Students
+   GU: કન્યા ધન યોજના એ એસસી વિદ્યાર્થીઓ માટે.
+   BK: Kanya Dhan Yojana is for SC students.
+E0 EN: For Application
+   GU: અરજી માટે
+   BK: For application
+E1 EN: The applicant should be a girl.
+   GU: અરજદારને છોકરી હોવી જોઈએ.
+   BK: The applicant must be a girl.
+E2 EN: The applicant should be a student.
+   GU: અરજદારને વિદ્યાર્થી હોવો જોઈએ.
+   BK: The applicant must be a student.
+E3 EN: The applicant should have passed the 10th Standard of examination.
+   GU: અરજદારને 10મા ધોરણની પરીક્ષા પાસ કરેલી હોવી જોઈએ.
+   BK: The applicant must have passed the 10th standard examination.
+B0 EN: An amount of ₹ 25,000/- is provided as a fixed deposit in the name of the girl child and the officer nominated by the government.
+   GU: સરકાર દ્વારા નિમણૂક કરાયેલા અધિકારી અને બાળકીના નામે ₹ 25,000/- ની રકમ નિશ્ચિત જમા તરીકે પ્રદાન કરવામાં આવે છે.
+   BK: An amount of ₹ 25,000/- is provided as a fixed deposit in the name of the officer appointed by the government and the girl.
+B1 EN: NOTE: The amount is disbursed to the beneficiaries after they pass the 12th standard board (or equivalent) examination.
+   GU: નોંધ: તેઓ 12મા ધોરણ બોર્ડ (અથવા સમકક્ષ) પરીક્ષા પાસ કર્યા પછી લાભાર્થીઓને રકમ વિતરણ કરવામાં આવે છે.
+   BK: Note: The amount is distributed to the beneficiaries after they pass the 12th standard board (or equivalent) examination.
+=== #13 [openai/gpt-oss-120b] Rotavator/Thresher Machine Equipment Assistance Scheme
+T EN: Rotavator/Thresher Machine Equipment Assistance Scheme
+   GU: રોટાવેટર/થ્રેશર મશીન ઉપકરણ સહાય યોજના
+   BK: Rotavator/Thresher Machine Equipment Assistance Scheme
+E0 EN: The applicant should be a farmer.
+   GU: અરજદાર ખેડૂત હોવો જોઈએ.
+   BK: The applicant should be a farmer.
+E1 EN: The applicant should belong to the Scheduled Tribes (ST) category.
+   GU: અરજદારને અનુસૂચિત જનજાતિ (ST) વર્ગમાં આવવું જોઈએ.
+   BK: The applicant should belong to the Scheduled Tribe (ST) category.
+E2 EN: The applicant should belong to a Below Poverty Line (BPL) family.
+   GU: અરજદારને બેલો પોવર્ટી લાઇન (BPL) પરિવારમાં આવવું જોઈએ.
+   BK: The applicant should belong to a Below Poverty Line (BPL) family.
+E3 EN: The applicant should be a resident of tribal or forest areas of Gujarat.
+   GU: અરજદાર ગુજરાતના જનજાતિ અથવા જંગલ વિસ્તારોનો નિવાસી હોવો જોઈએ.
+   BK: The applicant should be a resident of tribal or forest areas of Gujarat.
+B0 EN: Financial assistance to farmers to purchase a rotavator (6 feet) or a thresher machine.
+   GU: ખેતરોને રોટાવેટર (6 ફૂટ) અથવા થ્રેશર મશીન ખરીદવા માટે નાણાકીય સહાય.
+   BK: Financial assistance for purchasing a Rotavator (6 feet) or Thresher Machine for the fields.
+=== #14 [openai/gpt-oss-120b] Financial Assistance for Marriage of Poor Scheduled Caste Brides
+T EN: Financial Assistance for Marriage of Poor Scheduled Caste Brides
+   GU: ગરીબ અનુસૂચિત જાતિ કન્યોની લગ્ન માટે નાણાકીય સહાયતા
+   BK: Financial assistance for the marriage of girls belonging to Scheduled Castes
+E0 EN: The Parent/Guardian of the bride should be a citizen of India.
+   GU: વધુના માતા/સંભાળક ભારતીય નાગરિક હોવા જોઈએ.
+   BK: The mother/guardian of the additional [person] must be an Indian citizen.
+E1 EN: The Parent/Guardian of the bride should be from a Scheduled Caste.
+   GU: વધુના માતા/સંભાળક અનુસૂચિત જાતિમાંથી હોવા જોઈએ.
+   BK: The mother/guardian of the additional [person] must belong to a Scheduled Caste.
+E2 EN: The Parent/Guardian of the bride should be a native of Puducherry.
+   GU: વધુના માતા/સંભાળક પુડુચેરીના મૂળ નિવાસી હોવા જોઈએ.
+   BK: The mother/guardian of the additional [person] must be a native resident of Puducherry.
+E3 EN: The assistance is provided for the first marriage alone.
+   GU: મદદ માત્ર પ્રથમ લગ્ન માટે જ આપવામાં આવે છે.
+   BK: Assistance is given only for the first marriage.
+B0 EN: Financial Assistance of ₹15,000/- in each case for the marriage of their two daughters.
+   GU: તેમની બે દીકરીઓની લગ્ન માટે દરેક કેસમાં ₹15,000/- નાણાકીય સહાય.
+   BK: Financial assistance of ₹15,000/- in each case for the marriage of their two daughters.
+=== #15 [openai/gpt-oss-120b] Free Education Scheme
+T EN: Free Education Scheme
+   GU: મુક્ત શિક્ષણ યોજના
+   BK: Free Education Scheme
+E0 EN: The beneficiary should be a student.
+   GU: લાભાર્થી વિદ્યાર્થી હોવો જોઈએ.
+   BK: Should be a beneficiary student.
+E1 EN: The beneficiary should be a resident of Tamil Nadu.
+   GU: લાભાર્થી તામિલ નાડુનો રહેવાસી હોવો જોઈએ.
+   BK: Beneficiary should be a resident of Tamil Nadu.
+E2 EN: The beneficiary should belong to the Backward Classes (BC), Most Backward Classes (MBC), and Denotified Communities (DNC).
+   GU: લાભાર્થી પછાત વર્ગ (BC), સૌથી પછાત વર્ગ (MBC), અને વિમુક્ત સમુદાયો (DNC) માંથી હોવો જોઈએ.
+   BK: Beneficiary should be from Backward Class (BC), Most Backward Class (MBC), and Denotified Tribes (DNC).
+E3 EN: The beneficiary should be studying 3-year undergraduate degree (B.A., B.Sc., B.Com.).
+   GU: લાભાર્થી 3 વર્ષની અંડરગ્રેજ્યુએટ ડિગ્રી (B.A., B.Sc., B.Com.) અભ્યાસ કરી રહ્યો હોવો જોઈએ.
+   BK: Beneficiary should be studying in a 3-year undergraduate degree (B.A., B.Sc., B.Com.).
+B0 EN: Financial Assistance: Special fees and other non-refundable compulsory fees are paid as prescribed by Government and examination fee in full.
+   GU: વિત્તીય સહાય: સરકાર દ્વારા નિર્ધારિત વિશેષ ફી અને અન્ય નોન-રિફંડેબલ ફરજીયાત ફી તેમજ પરીક્ષા ફી સંપૂર્ણ રીતે ચૂકવવામાં આવે છે.
+   BK: Financial assistance: Special fee and other non-refundable mandatory fees as well as examination fee are fully paid by the government.
+=== #16 [openai/gpt-oss-120b] MSME Sustainable (ZED) Certification Scheme
+T EN: MSME Sustainable (ZED) Certification Scheme
+   GU: MSME સસ્ટેઈનેબલ (ZED) પ્રમાણપત્ર યોજના
+   BK: MSME Sustainable (ZED) Certification Scheme
+E0 EN: Should be a  Micro, Small and Medium Enterprises (MSMEs) unit.
+   GU: માઇક્રો, સ્મોલ અને મિડિયમ એન્ટરપ્રાઇઝિસ (MSMEs) યુનિટ હોવી જોઈએ.
+   BK: Should be a Micro, Small and Medium Enterprises (MSMEs) unit.
+E1 EN: Should be registered in Udyam portal.
+   GU: Udyam portal માં નોંધાયેલ હોવું જોઈએ.
+   BK: Should be registered in Udyam portal.
+B0 EN: Cost of Certification:
+   GU: પ્રમાણપત્રની કિંમત:
+   BK: Certification price:
+B1 EN: • Certification Level 1: BRONZE: ₹10,000/-
+   GU: • પ્રમાણપત્ર સ્તર 1: બ્રોન્ઝ: ₹10,000/-
+   BK: • Certification Level 1: Bronze: ₹10,000/-
+B2 EN: • Certification Level 2: SILVER: ₹40,000/-
+   GU: • પ્રમાણપત્ર સ્તર 2: સિલ્વર: ₹40,000/-
+   BK: • Certification Level 2: Silver: ₹40,000/-
+B3 EN: • Certification Level 3: GOLD: ₹90,000/-
+   GU: • પ્રમાણપત્ર સ્તર 3: ગોલ્ડ: ₹90,000/-
+   BK: • Certification Level 3: Gold: ₹90,000/-
+=== #17 [openai/gpt-oss-120b] "Grant to Subsidy for Raw Materials Procurement" Component of the "Development of Coir" Scheme
+T EN: "Grant to Subsidy for Raw Materials Procurement" Component of the "Development of Coir" Scheme
+   GU: "કાચા માલની ખરીદી માટે સબસિડી ગ્રાન્ટ" ઘટક "કોટન (કોઇર) વિકાસ યોજના" નો ભાગ
+   BK: "Subsidy Grant for Purchase of Raw Material" component is part of "Cotton (Coir) Development Scheme"
+E0 EN: The applicant should possess a Coir Industry Unit in Puducherry.
+   GU: અરજદાર પાસે પુડુચેરીમાં કોઈર ઉદ્યોગ યુનિટ હોવી જોઈએ.
+   BK: The applicant must have a coir industry unit in Puducherry.
+B0 EN: 15% subsidy on annual raw materials procurement.
+   GU: વાર્ષિક કાચા માલની ખરીદી પર 15% સબસિડી.
+   BK: 15% subsidy on annual purchase of raw material.
+B1 EN: Maximum subsidy capped at ₹5,00,000 per annum per unit.
+   GU: પ્રત્યેક યુનિટ માટે પ્રતિ વર્ષ મહત્તમ સબસિડી ₹5,00,000 સુધી મર્યાદિત.
+   BK: Maximum subsidy per unit per year is limited to ₹5,00,000.
+=== #18 [openai/gpt-oss-120b] Financial Assistance For Cultural Activities In Performing Arts For Building Grants Including Studio Theatres
+T EN: Financial Assistance For Cultural Activities In Performing Arts For Building Grants Including Studio Theatres
+   GU: સાંસ્કૃતિક પ્રવૃત્તિઓ માટે નાણાકીય સહાય, પ્રદર્શન કળાઓમાં, સ્ટુડિયો થિયેટરો સહિતની બિલ્ડિંગ ગ્રાન્ટ્સ માટે.
+   BK: Financial assistance for cultural activities, building grants including performance arts, studio theatres.
+E0 EN: Eligible Project: Grants will be given to projects for creating cultural spaces, which will include:
+   GU: પાત્ર પ્રોજેક્ટ: સાંસ્કૃતિક સ્થળો બનાવવા માટે પ્રોજેક્ટ્સને ગ્રાન્ટ્સ આપવામાં આવશે, જેમાં સમાવેશ થશે:
+   BK: Eligible Project: Grants will be given to projects to create cultural spaces, which will include:
+E1 EN: 1.	Conventional Cultural Spaces for Performing Arts:
+   GU: 1.	પરંપરાગત સાંસ્કૃતિક સ્થળો પ્રદર્શન કળાઓ માટે:
+   BK: 1.	Traditional cultural spaces for performance arts:
+E2 EN: Performance venues like Auditoria, Open-air Theatres, and Concert Halls.
+   GU: પ્રદર્શન સ્થળો જેમ કે ઓડિટોરિયા, ખુલ્લા હવામાં થિયેટર્સ, અને કન્સર્ટ હોલ્સ.
+   BK: Performance venues such as auditoriums, open-air theatres, and concert halls.
+E3 EN: Rehearsal halls for Theatre/ Music/ Dance.
+   GU: થિયેટર/સંગીત/નૃત્ય માટેની રિહર્સલ હોલ્સ.
+   BK: Rehearsal halls for theatre/music/dance.
+B0 EN: 1. Maximum assistance under the scheme will be as under:
+   GU: 1. યોજના હેઠળની મહત્તમ સહાય નીચે મુજબ રહેશે:
+   BK: 1. The maximum assistance under the scheme will be as follows:
+B1 EN: CITIES	TYPE OF PROJECT	LIMIT OF ASSISTANCE
+   GU: શહેરો	પ્રોજેક્ટનો પ્રકાર	સહાયની મર્યાદા
+   BK: Cities	Type of Project	Limit of Assistance
+B2 EN: Bangalore, Chennai, Delhi, Hyderabad, Kolkata, Mumbai	Projects involving new construction or the purchase of built-up space	       ₹50 lakhs
+   GU: બેંગલોર, ચેન્નાઈ, દિલ્હી, હૈદરાબાદ, કોલકાતા, મુંબઈ	નવું નિર્માણ અથવા બિલ્ટ-અપ સ્પેસની ખરીદી સંબંધિત પ્રોજેક્ટ્સ	       ₹50 લાખ
+   BK: Bengaluru, Chennai, Delhi, Hyderabad, Kolkata, Mumbai	Projects related to new construction or purchase of built-up space	       ₹50 Lakh
+B3 EN: Bangalore, Chennai, Delhi, Hyderabad, Kolkata, Mumbai	All other projects	        ₹25 lakhs
+   GU: બેંગલોર, ચેન્નાઈ, દિલ્હી, હૈદરાબાદ, કોલકાતા, મુંબઈ	બાકીના બધા પ્રોજેક્ટ્સ	        ₹25 લાખ
+   BK: Bengaluru, Chennai, Delhi, Hyderabad, Kolkata, Mumbai	All other projects	        ₹25 Lakh
+=== #19 [openai/gpt-oss-120b] Decentralized People's Nursery
+T EN: Decentralized People's Nursery
+   GU: વિકેન્દ્રિત જન નર્સરી
+   BK: Decentralized public nursery
+E0 EN: The applicant must be interested in raising seedlings.
+   GU: અરજદારને છોડની પેદાશમાં રસ હોવો જોઈએ.
+   BK: The applicant should have an interest in the production of plants.
+E1 EN: The scheme is open to all individuals.
+   GU: આ યોજના તમામ વ્યક્તિઓ માટે ખુલ્લી છે.
+   BK: This scheme is open to all individuals.
+E2 EN: The applicant must typically aim to raise a target of 20,000 seedlings.
+   GU: અરજદારને સામાન્ય રીતે 20,000 છોડની લક્ષ્ય પેદાશ કરવાનો ઉદ્દેશ રાખવો જોઈએ.
+   BK: The applicant should generally aim for a target production of 20,000 plants.
+E3 EN: An applicant who can keep a piece of land reserved for the purpose of nursery for a minimum of twelve months.
+   GU: એવો અરજદાર જે નર્સરીના હેતુ માટે ઓછામાં ઓછા બાર મહિના માટે જમીનનો એક ભાગ આરક્ષિત રાખી શકે.
+   BK: An applicant who can reserve a portion of land for at least twelve months for the purpose of the nursery.
+B0 EN: Financial Assistance for Raising Seedlings: ₹2.20 per seedling is provided in three installments.
+   GU: પૌધા ઉગાડવા માટે નાણાકીય સહાય: દરેક પૌધા માટે ₹2.20 ત્રણ કિસ્તીમાં આપવામાં આવે છે.
+   BK: Financial assistance for growing plants: ₹2.20 per plant is given in three installments.
+B1 EN: Ownership of Seedlings: The beneficiary retains full ownership of the seedlings raised and can sell or use them without requiring permission from anyone.
+   GU: પૌધાઓનું માલિકી હક્ક: લાભાર્થી ઉગાડેલ પૌધાઓનું સંપૂર્ણ માલિકી હક્ક રાખે છે અને કોઈની મંજૂરી વગર તેને વેચી શકે છે અથવા ઉપયોગ કરી શકે છે.
+   BK: Ownership rights of plants: The beneficiary retains full ownership rights of the plants grown and can sell or use them without anyone's permission.
+B2 EN: Income Generation: The scheme is recognized as a "very good income generating activity".
+   GU: આવક ઉત્પન્ન કરવું: આ યોજના ને "ખૂબ જ સારી આવક ઉત્પન્ન કરતી પ્રવૃત્તિ" તરીકે માન્યતા આપવામાં આવી છે.
+   BK: Generating income: This scheme has been recognized as a "very good income-generating activity".
+B3 EN: Accessibility of Plants: Decentralized people's nurseries ensure the availability of plants within a reasonable distance of villages for extensive tree plantations in both rural and urban areas.
+   GU: પૌધાઓની ઉપલબ્ધતા: વિકેન્દ્રિત લોકોની નર્સરીઓ ગામડાઓની યોગ્ય અંતરે પૌધાઓની ઉપલબ્ધતા સુનિશ્ચિત કરે છે, જેથી ગ્રામ્ય અને શહેરી બંને વિસ્તારોમાં વ્યાપક વૃક્ષારોપણ થઈ શકે છે.
+   BK: Availability of plants: Decentralized people's nurseries ensure the availability of plants at appropriate distances from villages, enabling extensive afforestation in both rural and urban areas.
+=== #20 [openai/gpt-oss-120b] RMEWF-Financial Assistance For Education Of Children & Widows Of Ex-Servicemen
+T EN: RMEWF-Financial Assistance For Education Of Children & Widows Of Ex-Servicemen
+   GU: RMEWF-પૂર્વ સૈનિકોના બાળકો અને વિધવાઓની શિક્ષણ માટે નાણાકીય સહાયતા
+   BK: RMEWF-Financial assistance for education of children and widows of ex-servicemen
+E0 EN: Applicant must be an ESM/ widow/Orphan dependent.
+   GU: અરજદાર એ ESM/વિધવા/અનાથ નિર્ભર હોવો જોઈએ.
+   BK: The applicant should be dependent on ESM/widow/orphan.
+E1 EN: Should be of rank Havildar/equivalent and below.
+   GU: રૅંક હવિલદાર/સમાન અને તેના નીચે હોવી જોઈએ.
+   BK: Rank should be Havildar/equal and below.
+E2 EN: The scheme is applicable for classes 1 to 12 of school and undergraduate classes of a degree college. This grant is also admissible to widows who wish to pursue 2-year post graduate degree. The ward/widow shall complete the course successfully.
+   GU: આ યોજના સ્કૂલની કક્ષા 1 થી 12 અને ડિગ્રી કોલેજની અંડરગ્રેજ્યુએટ કક્ષાઓ માટે લાગુ પડે છે. આ ગ્રાન્ટ 2 વર્ષીય પોસ્ટગ્રેજ્યુએટ ડિગ્રી મેળવવા ઇચ્છતી વિધવાઓ માટે પણ ઉપલબ્ધ છે. વાર્ડ/વિધવા કોર્સ સફળતાપૂર્વક પૂર્ણ કરશે.
+   BK: This scheme is applicable for school level 1 to 12 and degree college undergraduate levels. This grant is also available for widows who wish to obtain a 2-year postgraduate degree. Ward/widow will successfully complete the course.
+E3 EN: The applicant should not be drawing education allowance or similar benefit from the State or is employer.
+   GU: અરજદાર રાજ્ય અથવા નોકરીદાતા પાસેથી શિક્ષણ ભથ્થું અથવા સમાન લાભ મેળવી રહ્યો ન હોવો જોઈએ.
+   BK: The applicant should not be receiving education scholarship or similar benefit from the state or employer.
+B0 EN: Financial Assistance for Children:
+   GU: બાળકો માટે નાણાકીય સહાય:
+   BK: Financial assistance for children:
+B1 EN: ₹1,000/- per month per child.
+   GU: ₹1,000/- પ્રતિ મહિનો પ્રતિ બાળક.
+   BK: ₹1,000/- per month per child.
+B2 EN: Available for a maximum of 2 eligible children.
+   GU: સર્વોચ્ચ 2 યોગ્ય બાળકો માટે ઉપલબ્ધ.
+   BK: Available for maximum 2 eligible children.
+B3 EN: Applicable from Class 1 to Class 12 and undergraduate degree courses.
+   GU: વર્ગ 1 થી વર્ગ 12 અને અંડરગ્રેજ્યુએટ ડિગ્રી કોર્સો માટે લાગુ પડે છે.
+   BK: Applicable for class 1 to class 12 and undergraduate degree courses.
+=== #21 [openai/gpt-oss-120b] Jyoti Gramodyog Vikas Yojana
+T EN: Jyoti Gramodyog Vikas Yojana
+   GU: જ્યોતિ ગ્રામોદ્યોગ વિકાસ યોજના
+   BK: Jyoti Gram Udyog Vikas Yojana
+E0 EN: The applicant must be aged between 25 to 50 years.
+   GU: અરજદારની ઉંમર 25 થી 50 વર્ષ વચ્ચે હોવી જોઈએ.
+   BK: The applicant's age should be between 25 and 50 years.
+E1 EN: The applicant must have passed at least Class 10 from a recognized educational board.
+   GU: અરજદારને માન્ય શૈક્ષણિક બોર્ડમાંથી ઓછામાં ઓછા કક્ષા 10 પાસ કરેલી હોવી જોઈએ.
+   BK: The applicant should have passed at least Class 10 from a valid educational board.
+E2 EN: The applicant must possess at least one year of experience in the proposed business activity or relevant training from a recognized institution.
+   GU: અરજદારને પ્રસ્તાવિત વ્યવસાય પ્રવૃત્તિમાં ઓછામાં ઓછો એક વર્ષનો અનુભવ અથવા માન્ય સંસ્થાથી સંબંધિત તાલીમ પ્રાપ્ત થયેલી હોવી જોઈએ.
+   BK: The applicant should have at least one year of experience in the proposed business activity or have received relevant training from a valid institution.
+E3 EN: The applicant must be either an individual artisan/entrepreneur or part of a Grade-II active Self Help Group engaged in small-scale production. The applicant's proposed project must be located in a rural area with a population not exceeding 20,000.
+   GU: અરજદાર વ્યક્તિગત કારીગર/ઉદ્યોગપતિ હોવો જોઈએ અથવા ગ્રેડ-Ⅱ સક્રિય સ્વયંસહાયતા જૂથનો ભાગ હોવો જોઈએ, જે નાની-માપની ઉત્પાદન કરે છે. અરજદારનું પ્રસ્તાવિત પ્રોજેક્ટ ગ્રામ્ય વિસ્તારમાં હોવું જોઈએ, જ્યાંની જનસંખ્યા 20,000 કરતાં વધુ ન હોય.
+   BK: The applicant should be an individual artisan/entrepreneur or a member of a Grade-Ⅱ active self-help group, which produces small-scale. The applicant's proposed project should be in a rural area where the population is not more than 20,000.
+B0 EN: Margin Money Subsidy
+   GU: માર્જિન મની સબસિડી
+   BK: Margin Money Subsidy
+B1 EN: For General Category
+   GU: જનરલ કેટેગરી માટે
+   BK: For General Category
+B2 EN: 25% for projects up to ₹10,00,000/-.
+   GU: ₹10,00,000/- સુધીના પ્રોજેક્ટ્સ માટે 25%.
+   BK: 25% for projects up to ₹10,00,000/-.
+B3 EN: 25% on first ₹10,00,000/- + 10% on remaining cost (up to ₹25,00,000/-).
+   GU: પ્રથમ ₹10,00,000/- પર 25% + બાકી ખર્ચ (₹25,00,000/- સુધી) પર 10%.
+   BK: 25% on the first ₹10,00,000/- + 10% on the remaining cost (up to ₹25,00,000/-).
+=== #22 [openai/gpt-oss-120b] Pedalandariki Illu
+T EN: Pedalandariki Illu
+   GU: સર્વ માટે ઘર
+   BK: Home for all
+E0 EN: 1.	The beneficiary shall belong to the identified Below Poverty Line (BPL) category household.
+   GU: 1.	લાભાર્થીને ઓળખાયેલ Below Poverty Line (BPL) કેટેગરી ઘરાણુંમાં હોવું જોઈએ.
+   BK: 1.	The beneficiary must be in an identified Below Poverty Line (BPL) category household.
+E1 EN: 2.	The beneficiary shall not have their own House/House Site anywhere in the State of Andhra Pradesh.
+   GU: 2.	લાભાર્થી પાસે આંધ્ર પ્રદેશ રાજ્યમાં ક્યાંય પણ પોતાની ઘર/ઘર સાઇટ ન હોવી જોઈએ.
+   BK: 2.	The beneficiary should not have their own house/house site anywhere in the state of Andhra Pradesh.
+E2 EN: 3.	The Beneficiary shall not have been covered in any previous Housing Scheme of the State/Central Government.
+   GU: 3.	લાભાર્થીએ રાજ્ય/કેન્દ્ર સરકારની કોઈપણ પૂર્વ હાઉસિંગ યોજના હેઠળ આવરી લેવાયેલ ન હોવું જોઈએ.
+   BK: 3.	The beneficiary should not be covered under any previous housing scheme of the state/central government.
+E3 EN: 4.	The Beneficiary shall not have more than 2.5 acres of Wet Land or 5.00 acres of Dry Land.
+   GU: 4.	લાભાર્થી પાસે 2.5 acres થી વધુ Wet Land અથવા 5.00 acres થી વધુ Dry Land ન હોવું જોઈએ.
+   BK: 4.	The beneficiary should not have more than 2.5 acres of Wet Land or more than 5.00 acres of Dry Land.
+B0 EN: One House Site Patta shall be issued for an extent of 1.5 Cents to an eligible household in the name of the woman beneficiary of the house. The patta shall be handed over to the beneficiary on the day of Ugadi, 2020.
+   GU: એક ઘર સાઇટ પત્તો 1.5 સેન્ટની વિસ્તૃતતા માટે યોગ્ય ઘરેલુ પરિવારને ઘરનાં સ્ત્રી લાભાર્થીના નામે જારી કરવામાં આવશે. પત્તો લાભાર્થીને ઉગાડી, 2020 ના દિવસે હસ્તાંતર કરવામાં આવશે.
+   BK: One house site patta for an area of 1.5 cents will be issued in the name of the female beneficiary of the eligible household. The patta will be handed over to the beneficiary on the day of Ugadi, 2020.
+B1 EN: The Housing Department shall issue sanctions for the construction of Individual Housing Units to the eligible beneficiary under the available schemes in a phased manner.
+   GU: હાઉસિંગ વિભાગ ઉપલબ્ધ યોજનાઓ હેઠળ યોગ્ય લાભાર્થીને વ્યક્તિગત હાઉસિંગ યુનિટ્સની નિર્માણ માટે મંજૂરીઓ તબક્કાવાર જારી કરશે.
+   BK: The Housing Department will issue approvals in phases for the construction of individual housing units to eligible beneficiaries under available schemes.
+B2 EN: Housing Units shall be constructed following the G+3 pattern at the rate of about 100 units in an extent of Ac.1.00cts.
+   GU: હાઉસિંગ યુનિટ્સ G+3 પેટર્નનું પાલન કરીને, લગભગ 100 યુનિટ્સની દર સાથે, Ac.1.00 સેન્ટની વિસ્તૃતતા માં નિર્મિત કરવામાં આવશે.
+   BK: Housing units will be constructed in an area of Ac.1.00 cents, at a rate of approximately 100 units, following the G+3 pattern.
+B3 EN: House Site Patta shall be issued as an Undivided Land Share for an extent of about 1.0 Cent to an eligible beneficiary in the name of the woman of the house. The patta shall be handed over to the beneficiary on the day of Ugadi, 2020.
+   GU: ઘર સાઇટ પત્તો અવિભાજિત જમીન હિસ્સા તરીકે, લગભગ 1.0 સેન્ટની વિસ્તૃતતા માટે, ઘરનાં સ્ત્રીના નામે યોગ્ય લાભાર્થીને જારી કરવામાં આવશે. પત્તો લાભાર્થીને ઉગાડી, 2020 ના દિવસે હસ્તાંતર કરવામાં આવશે.
+   BK: The house site patta, as an undivided land share, for an area of approximately 1.0 cent, will be issued to the eligible beneficiary in the name of the woman of the household. The patta will be handed over to the beneficiary on the day of Ugadi, 2020.
+=== #23 [openai/gpt-oss-120b] National Mission on Edible Oil- Oil Palm: Custom Hiring Centre cum Harvester Groups
+T EN: National Mission on Edible Oil- Oil Palm: Custom Hiring Centre cum Harvester Groups
+   GU: રાષ્ટ્રીય ખાદ્ય તેલ મિશન- તેલ પામ: કસ્ટમ હાયરિંગ સેન્ટર ક્યુમ હાર્વેસ્ટર ગ્રુપ્સ
+   BK: National Food Oil Mission- Oil Palm: Custom Hiring Center cum Harvester Groups
+E0 EN: The applicant should be a farmer.
+   GU: અરજદાર ખેડૂત હોવો જોઈએ.
+   BK: The applicant should be a farmer.
+E1 EN: The applicant should be a resident of Gujarat.
+   GU: અરજદાર ગુજરાતનો રહેવાસી હોવો જોઈએ.
+   BK: The applicant should be a resident of Gujarat.
+E2 EN: Note: Custom Hiring Center FFBs Harvester Group will be created in each State by Processor/State/Self-Help Groups (SHGs)/Farmer Producer Organizations (FPOs)/Registered Society.
+   GU: નોંધ: પ્રત્યેક રાજ્યમાં પ્રોસેસર/રાજ્ય/સ્વ-મદદ જૂથો (SHGs)/ખેડૂત ઉત્પાદક સંગઠનો (FPOs)/રજિસ્ટર્ડ સોસાયટી દ્વારા કસ્ટમ હાયરિંગ સેન્ટર FFBs હાર્વેસ્ટર ગ્રુપ બનાવવામાં આવશે.
+   BK: Note: In each state, Custom Hiring Center FFBs Harvester Groups will be formed by processor/state/self-help groups (SHGs)/farmer producer organizations (FPOs)/registered society.
+B0 EN: Subsidy for Custom Hiring Centre cum Harvester Groups: ₹25,00,000/- per unit for equipment, tools, training, contingencies, and maintenance.
+   GU: કસ્ટમ હાયરિંગ સેન્ટર ક્યુમ હાર્વેસ્ટર ગ્રુપ્સ માટે સબસિડી: ઉપકરણ, સાધનો, તાલીમ, કોન્ટિજેન્સી અને જાળવણી માટે પ્રતિ યુનિટ ₹25,00,000/-
+   BK: Subsidy for Custom Hiring Center cum Harvester Groups: ₹25,00,000/- per unit for equipment, tools, training, contingency and maintenance
+=== #24 [openai/gpt-oss-120b] Mukhyamantri Kanya Suraksha Yojana
+T EN: Mukhyamantri Kanya Suraksha Yojana
+   GU: મુખ્યમંત્રિ કન્યા સુરક્ષા યોજના
+   BK: Chief Minister Girl Child Protection Scheme
+E0 EN: The Girl must be a resident of Bihar.
+   GU: છોકરી બિહારની રહેવાસી હોવી જોઈએ.
+   BK: The girl child should be a resident of Bihar.
+E1 EN: The Girl child must born on or after November 22, 2007.
+   GU: છોકરી બાળકનું જન્મ 22 નવેમ્બર, 2007 અથવા ત્યારબાદનું હોવું જોઈએ.
+   BK: The birth of the girl child should be on 22 November, 2007 or after that.
+E2 EN: The family must belong to the Below Poverty Line (BPL) category.
+   GU: પરિવારને બેલો પોવર્ટી લાઇન (BPL) કેટેગરીમાં આવવું જોઈએ.
+   BK: The family should fall under the Below Poverty Line (BPL) category.
+E3 EN: Note: A maximum of 2 girl children per family can avail of the benefit.
+   GU: નોંધ: પ્રતિ પરિવાર મહત્તમ 2 છોકરી બાળકો લાભ મેળવી શકે છે.
+   BK: Note: A maximum of 2 girl children per family can receive the benefit.
+B0 EN: ₹2,000/- is invested as a fixed deposit for each eligible girl child.
+   GU: ₹2,000/- દરેક પાત્ર છોકરી બાળક માટે નિશ્ચિત જમા તરીકે રોકવામાં આવે છે.
+   BK: ₹2,000/- is kept as a fixed deposit for each eligible girl child.
+B1 EN: Note: In the event of the girl child’s death, the amount is returned to the Women & Child Development Corporation, Bihar.
+   GU: નોંધ: છોકરી બાળકની મૃત્યુની સ્થિતિમાં, રકમ બિહારની Women & Child Development Corporationને પરત કરવામાં આવે છે.
+   BK: Note: In the event of the death of the girl child, the amount is returned to the Bihar Women & Child Development Corporation.
+=== #25 [openai/gpt-oss-120b] Bunkar Parivar Sahayata Yojana
+T EN: Bunkar Parivar Sahayata Yojana
+   GU: બુન્કર પરિવાર સહાયતા યોજના
+   BK: Bunker Family Assistance Scheme
+E0 EN: The scheme applies to the families of working weaver members of primary weaver cooperative societies affiliated with the Chhattisgarh State Handloom Union, Raipur.
+   GU: આ યોજના છત્તીસગઢ સ્ટેટ હેન્ડલૂમ યુનિયન, રાયપુર સાથે જોડાયેલ પ્રાથમિક વણકાર સહકારી સમાજોના કાર્યરત વણકાર સભ્યોના પરિવારો માટે લાગુ પડે છે.
+   BK: This scheme applies to the families of working weaver members of primary weaver cooperative societies associated with Chhattisgarh State Handloom Union, Raipur.
+E1 EN: *Weaver family refers to husband, wife, and their children.
+   GU: *વણકાર પરિવારનો અર્થ પતિ, પત્ની અને તેમના બાળકો છે.
+   BK: *The meaning of weaver family is husband, wife and their children.
+B0 EN: Financial assistance of ₹20,000/- is provided to the heir of the working weaver in case of death.
+   GU: મૃત્યુની સ્થિતિમાં કામ કરતા બૂનકારના વારસદારને ₹20,000/- નાણાકીય સહાય આપવામાં આવે છે.
+   BK: In the event of death, financial assistance of ₹20,000/- is given to the heir of the working weaver.
+B1 EN: The assistance is meant to address the immediate financial crisis faced by family members of weavers upon their untimely death.
+   GU: આ સહાયનું ઉદ્દેશ બૂનકારોના પરિવારના સભ્યોને તેમની અચાનક મૃત્યુ સમયે સામનો કરવો પડતો તાત્કાલિક નાણાકીય સંકટ દૂર કરવાનું છે.
+   BK: The purpose of this assistance is to remove the immediate financial crisis faced by the members of the weaver's family at the time of their sudden death.
+=== #26 [openai/gpt-oss-120b] Assistance for Planting Vegetable Crops for Raw and Ripe Mandap
+T EN: Assistance for Planting Vegetable Crops for Raw and Ripe Mandap
+   GU: રૉ અને પક્વ મંડપ માટે શાકભાજી પાકની વાવણી માટે સહાયતા
+   BK: Assistance for cultivation of vegetable crops for raw and semi-mature mandap
+E0 EN: The applicant must be a farmer.
+   GU: અરજદારને ખેડૂત હોવું આવશ્યક છે.
+   BK: It is necessary for the applicant to be a farmer.
+E1 EN: The applicant must be residing in Gujarat.
+   GU: અરજદારને ગુજરાતમાં નિવાસી હોવું આવશ્યક છે.
+   BK: It is necessary for the applicant to be a resident of Gujarat.
+B0 EN: Raw Mandap (Tomato/Chilli and other vegetables):
+   GU: કાચો મંડપ (ટમેટા/મરચા અને અન્ય શાકભાજી):
+   BK: Raw mandap (tomato/chili and other vegetables):
+B1 EN: General Farmers: 50% subsidy, up to ₹26,000/ha.
+   GU: સામાન્ય ખેડૂત: 50% સબસિડી, મહત્તમ ₹26,000/ha.
+   BK: General farmer: 50% subsidy, maximum ₹26,000/ha.
+B2 EN: SC/ST Farmers: 75% subsidy, up to ₹39,000/ha.
+   GU: SC/ST ખેડૂત: 75% સબસિડી, મહત્તમ ₹39,000/ha.
+   BK: SC/ST farmer: 75% subsidy, maximum ₹39,000/ha.
+B3 EN: Semi-ripe Mandap (Vine vegetables):
+   GU: અર્ધ-પક્વ મંડપ (લતા શાકભાજી):
+   BK: Semi-mature mandap (vine vegetables):
+=== #27 [openai/gpt-oss-120b] Coconut Development Scheme
+T EN: Coconut Development Scheme
+   GU: નાળિયેર વિકાસ યોજના
+   BK: Coconut Development Scheme
+E0 EN: All farmers are eligible to apply for the scheme.
+   GU: સર્વ ખેડૂતોએ યોજના માટે અરજી કરવા પાત્ર છે.
+   BK: All farmers are eligible to apply for the scheme.
+B0 EN: Assistance for Coconut Cultivation:
+   GU: નાળિયેર ખેતી માટે સહાયતા:
+   BK: Assistance for coconut cultivation:
+B1 EN: Financial support of ₹37,500/- per hectare, covering 75% of the total cost (₹50,000/- per hectare).
+   GU: પ્રતિ હેક્ટર ₹37,500/- નાણાકીય સહાય, કુલ ખર્ચના 75% આવરી લે છે (પ્રતિ હેક્ટર ₹50,000/-).
+   BK: Financial assistance of ₹37,500/- per hectare, covering 75% of the total cost (₹50,000/- per hectare).
+B2 EN: Promotion of Integrated Pest Management (IPM) and Integrated Nutrient Management (INM):
+   GU: એકીકૃત કીટનાશક વ્યવસ્થાપન (IPM) અને એકીકૃત પોષક તત્ત્વ વ્યવસ્થાપન (INM)નું પ્રોત્સાહન:
+   BK: Promotion of Integrated Pest Management (IPM) and Integrated Nutrient Management (INM):
+B3 EN: Financial support of ₹5,000/- per hectare, covering 50% of the total cost (₹10,000/- per hectare).
+   GU: પ્રતિ હેક્ટર ₹5,000/- નાણાકીય સહાય, કુલ ખર્ચના 50% આવરી લે છે (પ્રતિ હેક્ટર ₹10,000/-).
+   BK: Financial assistance of ₹5,000/- per hectare, covering 50% of the total cost (₹10,000/- per hectare).
+=== #28 [openai/gpt-oss-120b] Tool Purchase Grant for the Construction Workers
+T EN: Tool Purchase Grant for the Construction Workers
+   GU: ટૂલ ખરીદી ગ્રાન્ટ કન્સ્ટ્રક્શન વર્કર્સ માટે
+   BK: Tool purchase grant for construction workers
+E0 EN: For Registration as a Building/ Construction Worker:
+   GU: બિલ્ડિંગ/ કન્સ્ટ્રક્શન કામદાર તરીકે નોંધણી માટે:
+   BK: For registration as a building/construction worker:
+E1 EN: The applicant should be a resident of West Bengal.
+   GU: અરજદાર પશ્ચિમ બંગાળનો રહેવાસી હોવો જોઈએ.
+   BK: The applicant should be a resident of West Bengal.
+E2 EN: The applicant should be a Building/ Construction Worker.
+   GU: અરજદાર બિલ્ડિંગ/ કન્સ્ટ્રક્શન કામદાર હોવો જોઈએ.
+   BK: The applicant should be a building/construction worker.
+E3 EN: The applicant should be between 18 and 60 years.
+   GU: અરજદારની ઉંમર 18 થી 60 વર્ષ વચ્ચે હોવી જોઈએ.
+   BK: The applicant's age should be between 18 and 60 years.
+B0 EN: Quantum of Assistance: One time reimbursement of ₹2,000/-.
+   GU: મદદની રકમ: એક વખતનું રીઇમ્બર્સમેન્ટ ₹2,000/-
+   BK: Aid amount: One-time reimbursement ₹2,000/-
+=== #29 [openai/gpt-oss-120b] Skill Development Fee Reimbursement Scheme
+T EN: Skill Development Fee Reimbursement Scheme
+   GU: સ્કિલ ડેવલપમેન્ટ ફી રિઇમ્બર્સમેન્ટ યોજના
+   BK: Skill Development Fee Reimbursement Scheme
+E* FIELD FAILED: openai/gpt-oss-120b: only 55% of the text is in Gujarati script (need 60%) | qwen/qwen3.8-27b: only 51% of the text is in Gujarati script (need 60%)
+B0 EN: Reimbursement of 50% of the fees up to ₹ 50,000/- to the students who have successfully completed an SPC-approved technical skill training program in any of the "approved domains", attended in a Goan educational institute:
+   GU: ગોવાના શૈક્ષણિક સંસ્થામાં હાજરી આપીને SPC દ્વારા મંજૂર કરાયેલા કોઈપણ "મંજૂર ક્ષેત્રો"માં તકનીકી કુશળતા તાલીમ કાર્યક્રમ સફળતાપૂર્વક પૂર્ણ કરનાર વિદ્યાર્થીઓને ₹ 50,000/- સુધીના ફીના 50% ની પુનઃપ્રતિપાદન કરવામાં આવશે.
+   BK: Students who successfully complete a technical skill training program in any "Approved Fields" approved by SPC by attending an educational institution in Goa will be reimbursed 50% of the fee up to ₹ 50,000/-.
+B1 EN: Up to 1000 students per year can avail the benefits of this scheme. However, this cap can be reviewed and revised based on the need in future.
+   GU: આ યોજનાના લાભો વર્ષે 1000 વિદ્યાર્થીઓ સુધી મેળવી શકાય છે. જોકે, ભવિષ્યમાં જરૂરિયાત મુજબ આ મર્યાદાની સમીક્ષા અને સુધારો કરી શકાય છે.
+   BK: The benefits of this scheme can be availed by up to 1000 students per year. However, this limit can be reviewed and modified in the future as per requirements.
+B2 EN: A student can avail the benefits of this scheme for any two courses in a year.
+   GU: એક વિદ્યાર્થી વર્ષમાં કોઈપણ બે કોર્સ માટે આ યોજનાના લાભો મેળવી શકે છે.
+   BK: A student can avail the benefits of this scheme for any two courses in a year.
+B3 EN: NOTE: Under no circumstance shall the benefits under this scheme be considered an entitlement. The SPC shall reserve the sole right to accept or reject applications.
+   GU: નોંધ: કોઈપણ સંજોગોમાં આ યોજના હેઠળના લાભોને અધિકાર તરીકે ગણવામાં આવશે નહીં. SPC પાસે અરજીઓ સ્વીકારવા કે અસ્વીકાર કરવાનો એકમાત્ર અધિકાર રાખવામાં આવશે.
+   BK: Note: Under no circumstances will the benefits under this scheme be considered a right. SPC will retain the sole right to accept or reject applications.
+=== #30 [qwen/qwen3.8-27b] Chief Minister Divyangjan Empowerment Scheme (Sambal)
+T EN: Chief Minister Divyangjan Empowerment Scheme (Sambal)
+   GU: મુખ્યમંત્રી દિવ્યાંગજન સશક્તીકરણ યોજના (સંબલ)
+   BK: Chief Minister Divyangjan Shaktikaran Yojana (Sambal)
+E0 EN: The age limit will be 18-60 years for self-employment loans and more than 5 years for artificial limbs and equipment.
+   GU: સ્વ-રોજગારી લોન માટે ઉંમર મર્યાદા 18 થી 60 વર્ષ હશે અને કૃત્રિમ અંગો અને સાધનો માટે 5 વર્ષથી વધુ હશે.
+   BK: The age limit for self-employment loan will be 18 to 60 years and for artificial limbs and appliances it will be more than 5 years.
+E1 EN: In very special cases, a grant will be payable in all cases covered by multiple disabilities and judgments and there will be no restriction on the limit of income, age etc.
+   GU: ખૂબ જ વિશિષ્ટ કિસ્સાઓમાં, બહુવિધ દિવ્યાંગતા અને નિર્ણયો દ્વારા આવરી લેવાયેલા તમામ કિસ્સાઓમાં ભાગવતી ચૂકવવામાં આવશે અને આવક, ઉંમર વગેરેની મર્યાદા પર કોઈ સીમાવિધિ હશે નહીં.
+   BK: In very special cases, in all cases covered by multiple disabilities and decisions, the share will be paid and there will be no restriction on the limits of income, age, etc.
+E2 EN: The age limit of the student for the special school will be 6-18 years.
+   GU: વિશેષ શાળા માટે વિદ્યાર્થીની ઉંમર મર્યાદા 6 થી 18 વર્ષ હશે.
+   BK: The age limit of the student for special school will be 6 to 18 years.
+E3 EN: For shelter home (Ashiyana / Saket), the minimum age limit of the beneficiary (male/female) will be 18 years.
+   GU: શેલ્ટર હોમ (આશિયાના / સકેત) માટે લાભાર્થી (પુરુષ/મહિલા) ની ન્યૂનતમ ઉંમર મર્યાદા 18 વર્ષ હશે.
+   BK: The minimum age limit of the beneficiary (male/female) for shelter home (Ashiyana/Saket) will be 18 years.
+B0 EN: A loan of up to Rs.2.00 lakh will be given for self-employment.
+   GU: સ્વ-રોજગાર માટે વધુમાં વધુ રૂ. 2.00 લાખનું લોન આપવામાં આવશે.
+   BK: A loan of up to Rs. 2.00 lakh will be given for self-employment.
+B1 EN: The scholarship will be given for teaching in special schools, the rate of which will be less than the rate given to non-disabled people.
+   GU: ખાસ શાળાઓમાં શિક્ષણ માટે સ્કોલરશિપ આપવામાં આવશે, જેનો દર દિવ્યાંગ ન હોય તેવા લોકોને આપવામાં આવતા દર કરતાં ઓછો હશે.
+   BK: Scholarship will be given for education in special schools, the rate of which will be less than the rate given to non-divyangjan people.
+B2 EN: In very special cases, the rate of grant and state grant in schemes of National Trust will be payable according to the needs of the scheme and the specific beneficiary.
+   GU: ખૂબ જ ખાસ કિસ્સાઓમાં, નેશનલ ટ્રસ્ટની યોજનાઓમાં ઘટાડાનો દર અને રાજ્ય ઘટાડાનો દર યોજનાની જરૂરિયાતો અને ચોક્કસ લાભાર્થી મુજબ ચૂકવવામાં આવશે.
+   BK: In very special cases, the rate of reduction in the schemes of the National Trust and the state reduction rate will be paid according to the needs of the scheme and the specific beneficiary.
+=== #31 [qwen/qwen3.8-27b] "Interest Subvention on Working Capital" under the "Assam Tea Industries Special Incentives Scheme"
+T EN: "Interest Subvention on Working Capital" under the "Assam Tea Industries Special Incentives Scheme"
+   GU: "અસામ ચા ઉદ્યોગ વિશેષ પ્રોત્સાહન યોજના" હેઠળ "કામચલાઉ પિઠી પર વ્યાજ સહાય"
+   BK: "Interest Subsidy on Working Capital" under the "Assam Tea Industry Special Incentive Scheme"
+E0 EN: General Eligibility
+   GU: સામાન્ય પાત્રતા
+   BK: General Eligibility
+E1 EN: The applicant must be a tea plantation across all sizes
+   GU: અરજદારને તમામ કદની ચા બગીચો હોવો જોઈએ
+   BK: The applicant must have tea gardens of all sizes
+E2 EN: The applicant must be a tea manufacturing unit manufacturing Crush, Tear, Curl Tea, Orthodox Tea, or Speciality tea including Green tea, Oolong Tea, White tea, Yellow tea and Purple tea
+   GU: અરજદારને ક્રશ, ટિયર, કર્લ ચા, ઓર્થોડોક્સ ચા, અથવા સ્પેશિયાલિટી ચા, જેમાં ગ્રીન ચા, ઉલૂંગ ચા, વ્હાઇટ ચા, યેલો ચા અને પર્પલ ચા શામેલ છે, ઉત્પાદન કરતી ચા ઉત્પાદન યુનિટ હોવી જોઈએ
+   BK: The applicant must have a tea production unit producing Crush, Tear, Curl tea, Orthodox tea, or Specialty tea, which includes Green tea, Oolong tea, White tea, Yellow tea and Purple tea
+E3 EN: The applicant must be located entirely in Assam
+   GU: અરજદારને સંપૂર્ણપણે આસામમાં સ્થિત હોવું જોઈએ
+   BK: The applicant must be located entirely in Assam
+B0 EN: Benefit Amount: Interest subvention of 3% per annum on Working Capital Loan.
+   GU: લાભની રકમ: કામકાજની રકમના લોન પર વાર્ષિક 3% વ્યાજ સહાય.
+   BK: Benefit amount: 3% annual interest subsidy on the loan on the working amount.
+B1 EN: Maximum Claimable Amount: ₹20,00,000/- per annum per unit (garden).
+   GU: સર્વોચ્ચ દાવો કરી શકાય તેવી રકમ: દરેક એકમ (બગીચો) માટે વાર્ષિક ₹20,00,000/-.
+   BK: Maximum claimable amount: ₹20,00,000/- annually per unit (garden).
+B2 EN: Validity Period: Extended for five years till the end of the Financial Year 2027-28.
+   GU: કાર્યકારી સમયગાળો: 2027-28 ના નાણાકીય વર્ષના અંત સુધી પાંચ વર્ષ માટે વિસ્તૃત.
+   BK: Operational period: Extended for five years until the end of the financial year 2027-28.
+B3 EN: Applicable Financial Years: 2023-24, 2024-25, 2025-26, 2026-27, and 2027-28.
+   GU: લાગુ પડતા નાણાકીય વર્ષો: 2023-24, 2024-25, 2025-26, 2026-27 અને 2027-28.
+   BK: Applicable financial years: 2023-24, 2024-25, 2025-26, 2026-27 and 2027-28.
+=== #32 [qwen/qwen3.8-27b] Research Fellowship Scheme for Scheduled Tribe Candidates
+T EN: Research Fellowship Scheme for Scheduled Tribe Candidates
+   GU: અનુસૂચિત જનજાતિના ઉમેદવારો માટે સંશોધન ફેલોશિપ યોજના
+   BK: Research Fellowship Scheme for Scheduled Tribe Candidates
+E0 EN: The applicant should be a native of Rajasthan.
+   GU: અરજીદાર રાજસ્થાનના મૂળ વાસી હોવો જોઈએ.
+   BK: The applicant should be a native of Rajasthan.
+E1 EN: The applicant should belong to the Scheduled Tribe community.
+   GU: અરજીદાર અનુસૂચિત જનજાતિ સમુદાયનો હોવો જોઈએ.
+   BK: The applicant should belong to the Scheduled Tribe community.
+E2 EN: The applicant should be a resident of Scheduled Area of Rajasthan or a resident of Shahbad and Kishanganj tehsils of Baran district (Saheria Project Area).
+   GU: અરજીદાર રાજસ્થાનના અનુસૂચિત વિસ્તારનો રહેવાસી અથવા બરણ જિલના શાહબાદ અને કિશાંગંજ તાલુકાઓનો રહેવાસી (સાહેરિયા પ્રોજેક્ટ વિસ્તાર) હોવો જોઈએ.
+   BK: The applicant should be a resident of a Scheduled Area of Rajasthan or a resident of Shahabad and Kishanganj tehsils of Baran district (Saheriya Project Area).
+E3 EN: The applicant should have completed Post-graduation with at least 50% marks from a recognized university.
+   GU: અરજીદારે કોઈ માન્ય યુનિવર્સિટીમાંથી ઓછામાં ઓછા 50% ગુણો સાથે પોસ્ટ-ગ્રેજ્યુએશન પૂર્ણ કર્યું હોવું જોઈએ.
+   BK: The applicant should have completed post-graduation from any recognized university with a minimum of 50% marks.
+B0 EN: Financial Assistance:
+   GU: આર્થિક સહાય:
+   BK: Financial Assistance:
+B1 EN: The selected scholar shall be paid @ ₹15,000/- per month.
+   GU: પસંદગી પામેલા વિદ્યાર્થીને દર મહિને ₹15,000/- ની રકમ ચૂકવવામાં આવશે.
+   BK: An amount of ₹15,000/- will be paid to the selected student every month.
+B2 EN: A contingency grant of ₹40,000/- shall be given to the candidate for meeting the recurring expenditure viz. books/ Journals/Traveling/Stationery etc.
+   GU: પુસ્તકો/જર્નલ/સફર/સ્ટેશનરી વગેરેની પુનરાવર્તિત ખર્ચની સંતોષ માટે ઉમેદવારને ₹40,000/- ની અનિવાર્ય ખર્ચની સહાય આપવામાં આવશે.
+   BK: An essential expenditure assistance of ₹40,000/- will be given to the candidate to meet the recurring expenses of books/journals/travel/stationery etc.
+B3 EN: The tenure of the scholarship shall be for a period of maximum five years from the date of sanction from the Tribal Research Institute or completion of Ph.D. whichever is earlier.
+   GU: પ્રાથમિક સંશોધન ઇન્સ્ટિટ્યૂટ દ્વારા મંજૂરીની તારીખ અથવા Ph.D. ની પૂર્તિ, જેમાંથી કોઈ પણ પહેલાં થાય, તેની તારીખથી શૈક્ષણિક સહાયની અવધી મહત્તમ પાંચ વર્ષની હશે.
+   BK: The duration of the academic assistance will be a maximum of five years from the date of approval by the Primary Research Institute or the completion of Ph.D., whichever is earlier.
+=== #33 [qwen/qwen3.8-27b] Special Financial Assistance Scheme for Meritorious Students of the State for Preparation of Competitive Examinations
+T EN: Special Financial Assistance Scheme for Meritorious Students of the State for Preparation of Competitive Examinations
+   GU: રાજ્યના ઉત્તમ વિદ્યાર્થીઓ માટે સ્પર્ધાત્મક પરીક્ષાઓની તૈયારી માટે વિશેષ આર્થિક સહાય યોજના
+   BK: Special financial assistance scheme for preparation for competitive examinations for the best students of the state.
+E0 EN: The 100 candidates who qualify in the preliminary examination of Group ‘A’ and ‘B’ conducted by the State Public Service Commission.
+   GU: રાજ્ય સેવા પરીક્ષા આયોગ દ્વારા યોજવામાં આવેલી જૂથ 'A' અને 'B' ની પ્રારંભિક પરીક્ષામાં પાસ થયેલા 100 ઉમેદવારો.
+   BK: 100 candidates who passed the preliminary examination for Group 'A' and 'B' conducted by the State Service Examination Commission.
+E1 EN: The candidates must have passed the preliminary examination for Group 'A' or 'B', or the written examination for the Armed Forces (such as NDA, CDS, OTA, Indian Naval Academy, Indian Air Force Academy, etc.) conducted by the Union Public Service Commission.
+   GU: ઉમેદવારે કેન્દ્રીય સેવા પરીક્ષા આયોગ દ્વારા યોજવામાં આવેલી જૂથ 'A' અથવા 'B' માટેની પ્રારંભિક પરીક્ષા, અથવા સશસ્ત્ર દળો (જેમ કે NDA, CDS, OTA, ભારતીય નૌસેના અકાદમી, ભારતીય હવાઈ દળ અકાદમી, વગેરે) માટેની લેખિત પરીક્ષામાં પાસ થવું જરૂરી છે.
+   BK: It is necessary for the candidate to have passed the preliminary examination for Group 'A' or 'B' conducted by the Central Service Examination Commission, or the written examination for armed forces (such as NDA, CDS, OTA, Indian Naval Academy, Indian Air Force Academy, etc.).
+E2 EN: The candidate must be a native or permanent resident of Uttarakhand.
+   GU: ઉમેદવારે ઉત્તરાખંડનો મૂળવાસી અથવા કાયમી રહેવાસી હોવો જરૂરી છે.
+   BK: It is necessary for the candidate to be a native or permanent resident of Uttarakhand.
+E3 EN: The candidate must have passed Graduate/Postgraduate examinations, or the minimum educational qualification prescribed for the above services, from recognized educational institutions (regular/open) located in the State of Uttarakhand.
+   GU: ઉમેદવારે ઉત્તરાખંડ રાજ્યમાં સ્થિત માન્ય શૈક્ષણિક સંસ્થાઓ (નિયમિત/ખુલ્લી) માંથી સંબંધિત સેવાઓ માટે નિર્ધારિત ન્યૂનતમ શૈક્ષણિક લાયકાત મુજબ સ્નાતક/પોસ્ટગ્રેજ્યુએટ પરીક્ષામાં પાસ થવું જરૂરી છે.
+   BK: It is necessary for the candidate to have passed the undergraduate/postgraduate examination according to the prescribed minimum educational qualification for the relevant services from recognized educational institutions (regular/open) located in the state of Uttarakhand.
+B0 EN: A one-time grant of ₹50,000/- per candidate is provided to eligible candidate.
+   GU: યોગ્ય ઉમેદવારોને દરેક ઉમેદવાર માટે ₹50,000/- ની એકવારની સહાય આપવામાં આવે છે.
+   BK: A one-time assistance of ₹50,000/- is given to each eligible candidate.
+=== #34 [qwen/qwen3.8-27b] "Assistance for Intellectual Property Protection Support" under "Motivation of Entrepreneurs to Start Industries and Fiscal Assistance to Industries - Various Incentives"
+T EN: "Assistance for Intellectual Property Protection Support" under "Motivation of Entrepreneurs to Start Industries and Fiscal Assistance to Industries - Various Incentives"
+   GU: "ઉદ્યોગોને પ્રોત્સાહન અને ઔદ્યોગિક નાણાકીય સહાય - વિવિધ પ્રોત્સાહનો" હેઠળ "જ્ઞાતિસંબંધિત સંરક્ષણ સહાય માટે સહાય"
+   BK: "Subsidy for Caste-based Protection Assistance" under "Incentives to Industries and Industrial Financial Assistance - Various Incentives"
+E0 EN: All the Micro, Small, Medium and Large Industries are eligible.
+   GU: બધા જ માઇક્રો, સ્મોલ, મીડિયમ અને લાર્જ ઉદ્યોગો લાયક છે.
+   BK: All micro, small, medium and large industries are eligible.
+E1 EN: The Unit should have made the investment on or after 1st April 2017.
+   GU: એકમ દ્વારા 1 એપ્રિલ 2017 ના રોજ અથવા તે પછી રોકાણ કરેલું હોવું જોઈએ.
+   BK: Investment made by the unit on or after 1 April 2017 should be made.
+E2 EN: The unit should provide at least 60% of employment to the people of the Union territory of Puducherry of the total employment strength of the industrial units. This 60% of the local employment will have to be maintained by the industrial unit during the period specified in the Affidavit.
+   GU: ઉદ્યોગિક એકમોની કુલ રોજગારી શક્તિમાંથી ઓછામાં ઓછું 60% રોજગારી પુડુચેરી સંઘીય પ્રદેશના લોકોને આપવી પડશે. આ 60% સ્થાનિક રોજગારી ઉદ્યોગિક એકમ દ્વારા મંત્રીપત્રમાં નિર્ધારિત સમયગાળા દરમિયાન જાળવવી પડશે.
+   BK: At least 60% of employment from the total workforce of industrial units must be given to people of Puducherry Union Territory. This 60% local employment must be maintained by the industrial unit during the period specified in the notification.
+E3 EN: The fees paid to patent attorney, patent service centre and patent registration will be eligible as cost/expenditure (excluding travel, hotel charges) for any patent registration.
+   GU: પેટન્ટ અધિકારી, પેટન્ટ સર્વિસ સેન્ટર અને પેટન્ટ નોંધણી માટે ચૂકવવામાં આવેલી ફી કોઈપણ પેટન્ટ નોંધણી માટે ખર્ચ/વિનિયોગ તરીકે લાયક ગણાશે (સફર અને હોટેલના ખર્ચ સિવાય).
+   BK: Fees paid to the Patent Officer, Patent Service Center and for patent registration shall be considered as eligible expenditure/investment for any patent registration (excluding travel and hotel expenses).
+B0 EN: Assistance @ 50% subject to a maximum of ₹2,00,000/- for the expenditure for obtaining domestic patent (₹5,00,000/- for international patent).
+   GU: દેશી પેટન્ટ મેળવવા માટેના ખર્ચ માટે 50% સહાય, જે ₹2,00,000/- સુધી મર્યાદિત છે (આંતરરાષ્ટ્રીય પેટન્ટ માટે ₹5,00,000/-).
+   BK: 50% assistance for the cost of obtaining domestic patents, limited to ₹2,00,000/- (₹5,00,000/- for international patents).
+B1 EN: Time of Disbursement
+   GU: પ્રદાનનો સમય
+   BK: Time of disbursement
+B2 EN: After the publication/notification of the patent.
+   GU: પેટન્ટના પ્રકાશન/સૂચના પછી.
+   BK: After publication/indication of the patent.
+B3 EN: Number of Installments
+   GU: કિસ્તીઓની સંખ્યા
+   BK: Number of installments
+=== #35 [qwen/qwen3.8-27b] Pradhan Mantri Matsya Sampada Yojana (PMMSY-Inland): Construction of New Grow-out Pond - Gujarat
+T EN: Pradhan Mantri Matsya Sampada Yojana (PMMSY-Inland): Construction of New Grow-out Pond - Gujarat
+   GU: પ્રધાન મંત્રી મત્સ્ય સંપદા યોજના (PMMSY-ઇનલેન્ડ): નવી ગ્રો-આઉટ પોન્ડનું નિર્માણ - ગુજરાત
+   BK: Prime Minister's Matsya Sampada Yojana (PMMSY-Inland): Construction of new grow-out ponds - Gujarat
+E0 EN: The applicant must be an individual, society, self-help group, association, reservoir lease holder, or private entity involved in inland fisheries activities.
+   GU: અરજીદાર એક વ્યક્તિ, સમાજ, સ્વ-સહાય જૂથ, સંઘ, સંગરોહ લીઝ ધારક અથવા આંતરિક માછીમારી પ્રવૃત્તિઓમાં સંકળાયેલ ખાનગી સંસ્થા હોવી જોઈએ.
+   BK: The applicant should be an individual, community, self-help group, association, lease holder or private organization involved in inland fishing activities.
+E1 EN: The applicant must be above 18 years of age.
+   GU: અરજીદારની ઉંમર 18 વર્ષથી વધુ હોવી જોઈએ.
+   BK: The age of the applicant should be more than 18 years.
+E2 EN: The applicant must have their own bank account.
+   GU: અરજીદાર પાસે તેમની પોતાની બેંક ખાતું હોવું જોઈએ.
+   BK: The applicant should have their own bank account.
+E3 EN: The applicant must have their own private land or a minimum 10-year lease agreement for land to avail construction-related assistance on land. In case of co-owners, the consent form of co-owners must be submitted.
+   GU: જમીન પર નિર્માણ સંબંધિત સહાય મેળવવા માટે અરજીદાર પાસે તેમની પોતાની ખાનગી જમીન અથવા જમીન માટે ઓછામાં ઓછી 10 વર્ષની લીઝ કરાર હોવો જોઈએ. સહ-માલિકોના કિસ્સામાં, સહ-માલિકોની સંમતિ ફોર્મ સબમિટ કરવું પડશે.
+   BK: To receive assistance related to construction on land, the applicant should have their own private land or a lease agreement of at least 10 years for the land. In the case of co-owners, a consent form of the co-owners must be submitted.
+B0 EN: Financial assistance is provided for the Construction of the New Grow-out Pond (PMMSY). The unit cost of the project is ₹7,00,000/- per hectare.
+   GU: નવી ગ્રો-આઉટ પોન્ડ (PMMSY) ના નિર્માણ માટે આર્થિક સહાય પ્રદાન કરવામાં આવે છે. આ પ્રોજેક્ટની એકમ ખર્ચ ₹7,00,000/- પ્રતિ હેક્ટર છે.
+   BK: Financial assistance is provided for the construction of new grow-out ponds (PMMSY). The unit cost of this project is ₹7,00,000/- per hectare.
+B1 EN: General Category: 40% of the unit cost (₹2,80,000/- per hectare).
+   GU: સામાન્ય શ્રેણી: એકમ ખર્ચનો 40% (₹2,80,000/- પ્રતિ હેક્ટર).
+   BK: General category: 40% of unit cost (₹2,80,000/- per hectare).
+B2 EN: Women/Scheduled Caste (SC)/Scheduled Tribe (ST) Category: 60% of the unit cost (₹4,20,000/- per hectare).
+   GU: મહિલા/અનુસૂચિત જાતિ (SC)/અનુસૂચિત જનજાતિ (ST) શ્રેણી: એકમ ખર્ચનો 60% (₹4,20,000/- પ્રતિ હેક્ટર).
+   BK: Women/Scheduled Caste (SC)/Scheduled Tribe (ST) category: 60% of unit cost (₹4,20,000/- per hectare).
+B3 EN: Conditions Associated with Benefits: 60% of the contribution is from the Government of India and 40% from the State Government.
+   GU: લાભો સાથે સંકળાયેલ શરતો: 60% ફાળો ભારત સરકાર તરફથી અને 40% રાજ્ય સરકાર તરફથી છે.
+   BK: Conditions associated with benefits: 60% share from the Government of India and 40% share from the State Government.
+=== #36 [openai/gpt-oss-120b] Establishment of Regional Semen Production Laboratory and Semen Bank for sheep and goat
+T EN: Establishment of Regional Semen Production Laboratory and Semen Bank for sheep and goat
+   GU: પ્રાદેશિક શૂં અને બકરી માટેનું શુક્રાણુ ઉત્પાદન પ્રયોગશાળા અને શુક્રાણુ બેંકની સ્થાપના
+   BK: Establishment of a regional semen production laboratory and semen bank for local bulls and goats
+E0 EN: Only the State Livestock Agencies are eligible.
+   GU: માત્ર રાજ્ય પશુપાલન એજન્સીઓ જ પાત્ર છે.
+   BK: Only state animal husbandry agencies are eligible.
+B0 EN: The funding pattern will be 60:40 for all the states except NER & Himalayan States where it will be 90:10 and 100% for UTs.
+   GU: તમામ રાજ્યો માટે નાણાકીય પેટર્ન 60:40 હશે, જોકે ઉત્તર-પૂર્વ રાજ્યો અને હિમાલયી રાજ્યો માટે તે 90:10 અને કેન્દ્રશાસિત પ્રદેશો માટે 100% હશે.
+   BK: The financial pattern for all states will be 60:40, whereas for North-Eastern states and Himalayan states it will be 90:10 and for Centrally Administered Territories it will be 100%.
+B1 EN: One-time grants-in-aid up to Rs. 4,00,00,000 as Central Share will be provided to the concerned state eligible for the establishment of Regional Semen Station for construction of semen laboratory, maintaining of breeding bucks and rams, sourcing of locally available high genetic merit animals and processing of semen.
+   GU: સ્થાનિક રીતે ઉપલબ્ધ ઉચ્ચ જનીનિક ગુણવત્તાવાળા પશુઓની પસંદગી, સુરક્ષિત બુક અને રેમ્સનું સંચાલન, તેમજ સીમન પ્રોસેસિંગ માટે પ્રાદેશિક સીમન સ્ટેશનની સ્થાપના માટે સંબંધિત રાજ્યને કેન્દ્રીય હિસ્સા તરીકે 4,00,00,000 રૂપિયા સુધીની એકવારની ગ્રાંટ-ઇન-એઇડ આપવામાં આવશે.
+   BK: A one-time grant-in-aid of up to 4,00,00,000 rupees will be given to the concerned state as the central share for the selection of locally available animals with high genetic quality, safe book and ram management, and for the establishment of a regional semen station for semen processing.
+B2 EN: Rs. 30,00,000 will also be provided as a one-time expenditure towards procurement of consumables, medicines, chemicals etc. required for first-time processing of semen.
+   GU: સીમનની પ્રથમ વારની પ્રોસેસિંગ માટે જરૂરી ખર્ચાદાર વસ્તુઓ, દવાઓ, રસાયણો વગેરેની ખરીદી માટે 30,00,000 રૂપિયા પણ એકવારનો ખર્ચ તરીકે આપવામાં આવશે.
+   BK: 30,00,000 rupees will also be given as a one-time expenditure for the purchase of costly items, medicines, chemicals, etc. required for the first-time processing of semen.
+B3 EN: The regional semen bank shall have to generate its own resources for running of the semen station. No recurring expenditure will be provided for running expenses of the semen station.
+   GU: પ્રાદેશિક સીમન બેંકે સીમન સ્ટેશનનું સંચાલન કરવા માટે પોતાના સંસાધનો ઉત્પન્ન કરવા પડશે. સીમન સ્ટેશનના સંચાલન માટેના પુનરાવર્તિત ખર્ચ માટે કોઈ નાણાં આપવામાં આવશે નહીં.
+   BK: The regional semen bank will have to generate its own resources to manage the semen station. No funds will be provided for the recurring costs of managing the semen station.
+=== #37 [openai/gpt-oss-120b] Health Minister’s Discretionary Grant
+T EN: Health Minister’s Discretionary Grant
+   GU: હેલ્થ મંત્રીની વૈકલ્પિક ગ્રાન્ટ
+   BK: Health Minister's Alternative Grant
+E0 EN: The applicant must not be an employee of either Central or State Govt.
+   GU: અરજદાર કેન્દ્ર અથવા રાજ્ય સરકારનો કર્મચારી ન હોવો જોઈએ.
+   BK: The applicant should not be an employee of the Central or State Government.
+E1 EN: The applicant must have been Hospitalized / Undergoing Treatment in a Government Hospital (including super specialty Government hospitals / institutes).
+   GU: અરજદારને સરકારના હોસ્પિટલમાં દાખલ / સારવાર હેઠળ હોવું જોઈએ (સુપર સ્પેશિયાલિટી સરકારના હોસ્પિટલ / સંસ્થાઓ સહિત).
+   BK: The applicant should be admitted / under treatment in a government hospital (including super specialty government hospitals / institutions).
+E2 EN: The Total Annual Family Income of the applicant must not exceed ₹1,00,000/- per annum.
+   GU: અરજદારનું કુલ વાર્ષિક પરિવાર આવક પ્રતિ વર્ષ ₹1,00,000/- કરતાં વધુ ન હોવી જોઈએ.
+   BK: The applicant's total annual family income should not be more than ₹1,00,000/- per year.
+B0 EN: Financial assistance towards treatment in Government hospitals including super specialty Government hospitals / institutes.
+   GU: સરકારી હોસ્પિટલોમાં, સુપર સ્પેશિયાલિટી સરકારી હોસ્પિટલો/ઇન્સ્ટિટ્યુટ્સ સહિત, સારવાર માટે આર્થિક સહાય.
+   BK: Financial assistance for treatment in government hospitals, including super specialty government hospitals/institutes.
+B1 EN: Financial Assistance of ₹50,000/- if the estimated cost of treatment is up to ₹1,00,000/- .
+   GU: જો સારવારનો અંદાજિત ખર્ચ ₹1,00,000/- સુધી હોય, તો ₹50,000/- ની આર્થિક સહાય.
+   BK: If the estimated cost of treatment is up to ₹1,00,000/-, then financial assistance of ₹50,000/-.
+B2 EN: Financial Assistance of ₹75,000/- if the estimated cost of treatment is above ₹1,00,000/- & up to ₹1,50,000/-.
+   GU: જો સારવારનો અંદાજિત ખર્ચ ₹1,00,000/- થી વધુ અને ₹1,50,000/- સુધી હોય, તો ₹75,000/- ની આર્થિક સહાય.
+   BK: If the estimated cost of treatment is more than ₹1,00,000/- and up to ₹1,50,000/-, then financial assistance of ₹75,000/-.
+B3 EN: Financial Assistance of ₹1,00,000/- if the estimated cost of treatment is above ₹1,50,000/-.
+   GU: જો સારવારનો અંદાજિત ખર્ચ ₹1,50,000/- થી વધુ હોય, તો ₹1,00,000/- ની આર્થિક સહાય.
+   BK: If the estimated cost of treatment is more than ₹1,50,000/-, then financial assistance of ₹1,00,000/-.
+=== #38 [qwen/qwen3.8-27b] Dalit Bandhu
+T EN: Dalit Bandhu
+   GU: દલિત બંધુ
+   BK: Dalit Bandhu
+E0 EN: Here are the eligibility criteria for the scheme:
+   GU: આ યોજના માટેની લાયકાતની શરતો નીચે મુજબ છે:
+   BK: The eligibility conditions for this scheme are as follows:
+E1 EN: The scheme is applicable only to families belonging to the SC community.
+   GU: આ યોજના માત્ર SC સમુદાયની પરિવારો માટે જ લાગુ પડે છે.
+   BK: This scheme is applicable only to SC community families.
+E2 EN: The applicant must be a resident of Telangana.
+   GU: અરજીદાર તેલંગાનાનો રહેવાસી હોવો જોઈએ.
+   BK: The applicant should be a resident of Telangana.
+E3 EN: The family should have an annual income of less than Rs. 2.5 lakh.
+   GU: પરિવારની વાર્ષિક આવક Rs. 2.5 લાખથી ઓછી હોવી જોઈએ.
+   BK: The family's annual income should be less than Rs. 2.5 lakh.
+B0 EN: The Dalit Bandhu Scheme in Telangana has several benefits for the Scheduled Caste (SC) families who are eligible for the scheme. Here are some of the benefits:
+   GU: તેલંગાણામાં ડાલિત બંધુ યોજના અનુસૂચિત જાતિ (SC) પરિવારો માટે અનેક લાભો ધરાવે છે, જેઓ આ યોજના માટે લાયક છે. અહીં કેટલાક મુખ્ય લાભો નીચે મુજબ છે:
+   BK: The Dalit Bandhu scheme in Telangana has many benefits for Scheduled Caste (SC) families who are eligible for this scheme. Here are some key benefits as follows:
+B1 EN: Financial assistance: The scheme provides financial assistance of Rs. 10 lakhs to eligible SC families to start their own businesses or entrepreneurial ventures. This grant can be used to purchase equipment, raw materials, and other resources needed to start a business, which can help these families become self-reliant and improve their financial status. There is a one-time capital assistance of R
+   GU: આર્થિક સહાય: આ યોજના હેઠળ લાયક SC પરિવારોને તેમના પોતાના વ્યવસાયો અથવા ઉદ્યોગસાહસિક પ્રવૃત્તિઓ શરૂ કરવા માટે Rs. 10 લાખની આર્થિક સહાય પ્રદાન કરવામાં આવે છે. આ ગ્રાન્ટનો ઉપયોગ વ્યવસાય શરૂ કરવા માટે જરૂરી સાધનો, કાચા માલ અને અન્ય સંસાધનો ખરીદવા માટે થઈ શકે છે, જેથી આ પરિવારો સ્વયંસંભળી બની શકે અને તેમની આર્થિક સ્થિતિ સુધારી શકે. દરેક SC પરિવારને તેમની પસંદગી મુજબ યોગ્ય આવકદાયક યોજનાઓ સ્થાપિત કરવા માટે (બેંક લોન લિંકેજ વિના) 100% ગ્રાન્ટ/સબસિડી તરીકે Rs.10 લાખની એકવારની મૂડી સહાય પ્રદાન કરવામાં આવે છે.
+   BK: Financial Assistance: Under this scheme, eligible SC families are provided with Rs. 10 lakh financial assistance to start their own businesses or entrepreneurial activities. This grant can be used to purchase the necessary equipment, raw materials, and other resources to start a business, enabling these families to become self-reliant and improve their financial situation. Each SC family is provided with a one-time capital assistance of Rs. 10 lakh as a 100% grant/subsidy (without bank loan linkage) to set up suitable income-generating schemes of their choice.
+B2 EN: Employment opportunities: The scheme is expected to create employment opportunities for the beneficiaries as they start their own businesses. This can help to reduce unemployment and poverty among the SC community in Telangana.
+   GU: રોજગારીની તકો: લાભાર્થીઓ પોતાના વ્યવસાયો શરૂ કરે તેમ તેમ આ યોજનાથી રોજગારીની તકો સર્જવાની અપેક્ષા રાખવામાં આવે છે. આથી તેલંગાણામાં SC સમુદાયમાં બેરોજગારી અને ગરીબી ઘટાડવામાં મદદ મળી શકે છે.
+   BK: Employment Opportunities: It is expected that this scheme will create employment opportunities as beneficiaries start their businesses. This can help in reducing unemployment and poverty in the SC community in Telangana.
+B3 EN: Promotes entrepreneurship: The scheme is aimed at promoting entrepreneurship among the SC community in Telangana, which can help to create a culture of innovation and self-reliance. By providing financial support and guidance, the scheme encourages SC families to take up entrepreneurship as a viable career option.
+   GU: ઉદ્યોગસાહસિકતાને પ્રોત્સાહન: આ યોજનાનો ઉદ્દેશ્ય તેલંગાણામાં SC સમુદાયમાં ઉદ્યોગસાહસિકતાને પ્રોત્સાહન આપવાનો છે, જેથી નવીનતા અને સ્વયંસંભળીની સંસ્કૃતિ સર્જવામાં મદદ મળી શકે. આર્થિક સહાય અને માર્ગદર્શન પ્રદાન કરીને, આ યોજના SC પરિવારોને ઉદ્યોગસાહસિકતાને એક વ્યવહારુ કારકિર્દીના વિકલ્પ તરીકે અપનાવવા માટે પ્રોત્સાહિત કરે છે.
+   BK: Promoting Entrepreneurship: The objective of this scheme is to promote entrepreneurship in the SC community in Telangana, which can help in creating a culture of innovation and self-reliance. By providing financial assistance and guidance, this scheme encourages SC families to adopt entrepreneurship as a practical career option.
+=== #39 [qwen/qwen3.8-27b] District Central Cooperative Banks and through its Branches: For Housing, House Construction, Repair Extension Loan
+T EN: District Central Cooperative Banks and through its Branches: For Housing, House Construction, Repair Extension Loan
+   GU: જિલ્લા કેન્દ્રીય સહકારી બેંકો અને તેમની શાખાઓ દ્વારા: ઘર, ઘરનું નિર્માણ, રિપેર અને વિસ્તરણ માટે લોન
+   BK: By District Central Cooperative Banks and their branches: Loan for house, house construction, repair and expansion
+E0 EN: The beneficiary should be a resident of Tamil Nadu.
+   GU: લાભાર્થી તામિલ નાડુનો રહેવાસી હોવો જોઈએ.
+   BK: Beneficiary should be a resident of Tamil Nadu.
+E1 EN: Loans should be applicable only for Housing/ House Construction/ Repair Extension.
+   GU: લોન માત્ર હાઉસિંગ/ ઘર નિર્માણ/ મરામત વિસ્તરણ માટે જ લાગુ પડે.
+   BK: Loan is applicable only for housing/ house construction/ repair expansion.
+B0 EN: Access to Loan: Up to ₹10,00,000/-.
+   GU: લોનનો લાભ: ₹10,00,000/- સુધી.
+   BK: Loan benefit: Up to ₹10,00,000/-.
+B1 EN: Interest Rate: 12% (subject to change).
+   GU: બાજી દર: 12% (ફેરફારની શક્યતા સાથે).
+   BK: Interest rate: 12% (with possibility of change).
+=== #40 [qwen/qwen3.8-27b] Bharati Scheme for Education - Post-Graduation
+T EN: Bharati Scheme for Education - Post-Graduation
+   GU: ભારતીય શૈક્ષણિક સહાય યોજના - પોસ્ટ-ગ્રેજ્યુએશન
+   BK: Indian Educational Assistance Scheme - Post-Graduation
+E0 EN: The student and his/her parents should belong to the Brahmin community.
+   GU: વિદ્યાર્થી અને તેના/તેની માતા-પિતા બ્રાહ્મણ સમુદાયના હોવા જોઈએ.
+   BK: The student and his/her parents should be of the Brahmin community.
+E1 EN: The parents should be studying in Andhra Pradesh.
+   GU: માતા-પિતા આંધ્ર પ્રદેશમાં અભ્યાસ કરતા હોવા જોઈએ.
+   BK: The parents should be studying in Andhra Pradesh.
+E2 EN: The annual family income of parents/guardians should not exceed ₹3,00,000/-.
+   GU: માતા-પિતા/પાલકોની વાર્ષિક પરિવાર આવક ₹3,00,000/- થી વધુ ન હોવી જોઈએ.
+   BK: The annual family income of the parents/guardians should not be more than ₹3,00,000/-.
+E3 EN: The student should be studying in any recognized and reputed college for the academic year.
+   GU: શૈક્ષણિક વર્ષ માટે વિદ્યાર્થી કોઈપણ માન્ય અને પ્રતિષ્ઠિત કોલેજમાં અભ્યાસ કરતો હોવો જોઈએ.
+   BK: The student should be studying in any valid and reputable college for the academic year.
+B0 EN: Financial Assistance for the Post-Graduation: ₹10,000/-.
+   GU: પોસ્ટ-ગ્રેજ્યુએશન માટે આર્થિક સહાય: ₹10,000/-.
+   BK: Financial assistance for Post-Graduation: ₹10,000/-.
+=== #41 [qwen/qwen3.8-27b] "Integrated Farming for Productivity Improvement Scheme" by the Coconut Development Board
+T EN: "Integrated Farming for Productivity Improvement Scheme" by the Coconut Development Board
+   GU: કોconut વિકાસ બોર્ડ દ્વારા "ઉત્પાદકતા સુધારણા માટે સંકલિત ખેતી યોજના"
+   BK: By Coconut Development Board "Integrated Agriculture Scheme for Productivity Improvement"
+E0 EN: All categories of coconut farmers with farmer's identity cards/ authenticated land records/documents are eligible.
+   GU: ખેડૂત ઓળખ પત્ર / પ્રમાણિત જમીન રેકોર્ડ / દસ્તાવેજો ધરાવતા તમામ પ્રકારના નારિયેળ ખેડૂતોને લાયક ગણવામાં આવશે.
+   BK: All coconut farmers having farmer identity letter / certified land record / documents will be considered eligible.
+B0 EN: Laying of Demonstration Plot (LoDP): Financial assistance @ ₹ 35,000/‐ Ha in two annual instalments.
+   GU: ડેમોનસ્ટ્રેશન પ્લોટ (LoDP) ની સ્થાપના: દર વર્ષે બે કિસ્તિઓમાં ₹ 35,000/‐ હેક્ટર દીઠ આર્થિક સહાય.
+   BK: Establishment of Demonstration Plot (LoDP): Financial assistance of ₹ 35,000/- per hectare in two installments every year.
+B1 EN: Construction of Organic Manure Unit: Financial assistance @ ₹ 40,000/‐ to ₹ 60,000/‐ per Unit on Pro‐rata basis. Unit size of 1200 cubic feet to 150 cubic feet (60 x 8 x 2.5 ft to 15 x 5 x 2 ft).
+   GU: ઓર્ગેનિક ખાતર યુનિટ ની રચના: પ્રો-રેટા આધારે દરેક યુનિટ માટે ₹ 40,000/‐ થી ₹ 60,000/‐ સુધીની આર્થિક સહાય. યુનિટનું કદ 1200 ક્યુબિક ફૂટ થી 150 ક્યુબિક ફૂટ (60 x 8 x 2.5 ફૂટ થી 15 x 5 x 2 ફૂટ) સુધીનું હોય છે.
+   BK: Establishment of Organic Fertilizer Unit: Financial assistance of ₹ 40,000/- to ₹ 60,000/- per unit on pro-rata basis. The size of the unit is from 1200 cubic feet to 150 cubic feet (60 x 8 x 2.5 feet to 15 x 5 x 2 feet).
+B2 EN: The eligible subsidy amount shall be released to the beneficiary's account on DBT (Direct Benefit Transfer) mode after obtaining expenditure sanction as per norms.
+   GU: નિયમો મુજબ ખર્ચની મંજૂરી મેળવ્યા પછી, DBT (ડાયરેક્ટ બેનિફિટ ટ્રાન્સફર) મોડમાં લાભાર્થીના ખાતામાં લાયક સબસિડી રકમ મુક્ત કરવામાં આવશે.
+   BK: After obtaining approval of expenditure as per rules, the eligible subsidy amount will be released in the beneficiary's account in DBT (Direct Benefit Transfer) mode.
+B3 EN: The final list of the beneficiaries would be displayed on the notice board of Uzhavar Uthaviyagams.
+   GU: લાભાર્થીઓની અંતિમ યાદી Uzhavar Uthaviyagams ના નોટિસ બોર્ડ પર પ્રદર્શિત કરવામાં આવશે.
+   BK: The final list of beneficiaries will be displayed on the notice board of Uzhavar Uthaviyagams.
+=== #42 [qwen/qwen3.8-27b] Deen Dayal SPARSH Yojana (Scholarship For Promotion Of Aptitude & Research In Stamps As A Hobby)
+T EN: Deen Dayal SPARSH Yojana (Scholarship For Promotion Of Aptitude & Research In Stamps As A Hobby)
+   GU: દીન દયાલ સ્પાર્શ યોજના (સ્ટેમ્પ્સને શૈખી તરીકે પ્રોત્સાહન આપવા માટે અભિગમ અને સંશોધન માટે સ્કોલરશિપ)
+   BK: Deendayal Sparsh Yojana (Scholarship for approach and research to encourage stamps as a hobby)
+E0 EN: The applicant should be a regular student of Class 6th-9th.
+   GU: અરજીદાર 6મી થી 9મી ધોરણના નિયમિત વિદ્યાર્થી હોવો જોઈએ.
+   BK: The applicant should be a regular student of 6th to 9th standard.
+E1 EN: The applicant should be studying in a recognized school in India.
+   GU: અરજીદાર ભારતમાં માન્યતા પ્રાપ્ત શાળામાં અભ્યાસ કરતો હોવો જોઈએ.
+   BK: The applicant should be studying in a recognized school in India.
+E2 EN: The school should have a Philately Club and the candidate should be a member of that Club. In case the School Philately Club hasn't been established, a student having his own Philately Deposit Account may also be considered.
+   GU: શાળામાં ફાઇલેટરી ક્લબ હોવો જોઈએ અને ઉમેદવાર તે ક્લબનો સભ્ય હોવો જોઈએ. જો શાળાની ફાઇલેટરી ક્લબ સ્થાપિત ન હોય, તો પોતાની ફાઇલેટરી ડિપોઝિટ એકાઉન્ટ ધરાવતો વિદ્યાર્થી પણ ધ્યાનમાં લેવામાં આવે છે.
+   BK: There should be a philately club in the school and the candidate should be a member of that club. If the school's philately club is not established, a student having their own philately deposit account is also considered.
+E3 EN: The applicant should have scored at least 60% marks or equivalent grade/ grade point in the recent final examination.
+   GU: અરજીદારે તાજેતરના અંતિમ પરીક્ષણમાં ઓછામાં ઓછા 60% ગુણ અથવા સમકક્ષ ગ્રેડ/ગ્રેડ પોઈન્ટ મેળવ્યા હોવા જોઈએ.
+   BK: The applicant should have obtained at least 60% marks or equivalent grade/grade point in the recent final examination.
+B0 EN: Amount of Scholarship
+   GU: સ્કોલરશિપની રકમ
+   BK: Scholarship amount
+B1 EN: The amount of the Scholarship is to be ₹ 6,000/- per annum @ ₹ 500/- per month.
+   GU: સ્કોલરશિપની રકમ પ્રતિ વર્ષ ₹ 6,000/- અને પ્રતિ મહિનો ₹ 500/- રહેશે.
+   BK: The scholarship amount will be ₹ 6,000/- per year and ₹ 500/- per month.
+B2 EN: IPPB/POSB will ensure that the scholarship is paid to awardees on a quarterly basis (Rs. 1500/- each quarter) after getting the list from each Circle.
+   GU: IPPB/POSB દરેક સર્કલમાંથી યાદી મેળવ્યા બાદ સ્કોલરશિપને ક્વાર્ટરલી આધારિત (દર ક્વાર્ટરમાં Rs. 1500/-) રૂપે પુરસ્કૃતાર્થીઓને ચૂકવવામાં આવશે તેની ખાતરી કરશે.
+   BK: IPPB/POSB will ensure that the scholarship is paid to the awardees on a quarterly basis (Rs. 1500/- per quarter) after receiving the list from each circle.
+B3 EN: Selections to the scholarship would be for one year.
+   GU: સ્કોલરશિપ માટેની પસંદગીઓ એક વર્ષ માટે રહેશે.
+   BK: The selections for the scholarship will be for one year.
+=== #43 [qwen/qwen3.8-27b] Advance for Purchase or Construction of House (GBOCWWB)
+T EN: Advance for Purchase or Construction of House (GBOCWWB)
+   GU: ઘરની ખરીદી અથવા નિર્માણ માટેની અગ્રીમ રકમ (GBOCWWB)
+   BK: Advance amount for purchase or construction of house (GBOCWWB)
+E0 EN: The applicant should be a Worker registered with the Goa Building and Other Construction Workers Welfare Board.
+   GU: અરજીદાર ગોવા બિલ્ડિંગ એન્ડ ઓથર કન્સ્ટ્રક્શન વર્કર્સ વેલફેર બોર્ડ પાસે નોંધાયેલો કામદાર હોવો જોઈએ.
+   BK: The applicant should be a worker registered with the Goa Building and Other Construction Workers Welfare Board.
+E1 EN: The worker should be between 18 to 60 years of age.
+   GU: કામદારની ઉંમર ૧૮ થી ૬૦ વર્ષ વચ્ચેની હોવી જોઈએ.
+   BK: The age of the worker should be between 18 and 60 years.
+E2 EN: The worker should have completed ninety days of service as a registered worker in the year.
+   GU: કામદારે વર્ષ દરમિયાન નોંધાયેલ કામદાર તરીકે નવતેર દિવસોની સેવા પૂર્ણ કરી હોવી જોઈએ.
+   BK: The worker should have completed the service of new days as a registered worker during the year.
+E3 EN: The applicant should have had membership in the Fund continuously for five years.
+   GU: અરજીદારે પાંચ વર્ષ સુધી સતત ફંડમાં સભ્યપદ ધરાવતું હોવું જોઈએ.
+   BK: The applicant should have held membership in the fund continuously for five years.
+B0 EN: ₹50,000/- is sanctioned as advance and shall be recovered in equal instalments as may be fixed by the Board.
+   GU: ₹50,000/- આગામી તરીકે મંજૂર કરવામાં આવ્યું છે અને બોર્ડ દ્વારા નક્કી કરવામાં આવે તે પ્રમાણે સમાન કિસ્તિઓમાં તેની પાછી લેવામાં આવશે.
+   BK: ₹50,000/- has been approved as advance and will be recovered in equal installments as determined by the Board.
+=== #44 [qwen/qwen3.8-27b] Training of Farmers on Pulses Production Technologies
+T EN: Training of Farmers on Pulses Production Technologies
+   GU: કઠોળ ઉત્પાદન ટેકનોલોજીઓ પર ખેડૂતોની તાલીમ
+   BK: Training of farmers on pulse production technologies
+E0 EN: The beneficiary should be a Farmer.
+   GU: લાભાર્થી ખેડૂત હોવો જોઈએ.
+   BK: The beneficiary should be a farmer.
+E1 EN: The beneficiary should be a resident of Tamil Nadu.
+   GU: લાભાર્થી તમિલનાડુનો નિવાસી હોવો જોઈએ.
+   BK: The beneficiary should be a resident of Tamil Nadu.
+E2 EN: The beneficiary should raise seed farms with Pulses crop.
+   GU: લાભાર્થીએ કઠોળની પાકની બીજની ખેતી કરવી જોઈએ.
+   BK: The beneficiary should cultivate pulse crop seeds.
+B0 EN: Financial Assistance: ₹15,000/- per batch for 50 farmers.
+   GU: આર્થિક સહાય: ૫૦ ખેડૂતો માટે દરેક બેચ માટે ₹15,000/-.
+   BK: Financial assistance: ₹15,000/- for each batch of 50 farmers.
+B1 EN: Training Program: Training on advanced pulse production techniques.
+   GU: શિક્ષણ કાર્યક્રમ: અદ્યતન ડાળિયાના ઉત્પાદનની તકનીકો પર તાલીમ.
+   BK: Educational program: Training on modern techniques of pulse production.
+=== #45 [qwen/qwen3.8-27b] Back Ended Interest Subsidy (BEIS)
+T EN: Back Ended Interest Subsidy (BEIS)
+   GU: પાછળથી અપાયેલ વ્યાજ સબસિડી (BEIS)
+   BK: Back-ended Interest Subsidy (BEIS)
+E0 EN: Micro and Small Enterprises who have availed of term loan under Technology upgradation/modernization schemes, National Equity Funds Scheme (Renamed as Micro / Small Enterprises Funding Scheme), Scheme for ISO Certification / R & D under NSIC -SIDCO Consortium and Credit Guarantee Fund Trust Scheme.
+   GU: જે સૂક્ષ્મ અને નાના ઉદ્યોગોએ ટેકનોલોજી અપગ્રેડેશન/આધુનિકીકરણ યોજનાઓ, રાષ્ટ્રીય ઈક્વિટી ફંડ્સ યોજના (જે હવે સૂક્ષ્મ / નાના ઉદ્યોગો ફંડિંગ યોજના તરીકે નામ બદલ્યું છે), NSIC-SIDCO કન્સોર્ટિયમ હેઠળ ISO પ્રમાણપત્ર / R & D યોજના અને ક્રેડિટ ગેરંટી ફંડ ટ્રસ્ટ યોજના હેઠળ ટર્મ લોન મેળવી છે.
+   BK: Which micro and small industries have obtained term loans under Technology Upgradation/Modernization Schemes, National Equity Funds Scheme (which has now been renamed as Micro / Small Industries Funding Scheme), ISO Certification / R & D Scheme under NSIC-SIDCO Consortium and Credit Guarantee Fund Trust Scheme.
+E1 EN: New Enterprises that have set up their facilities, or existing Micro, Small, and Medium Enterprises, which upgrade their existing plant and machinery with state-of-the-art technology, with or without expansion, by induction of well-established and improved technologies in specified sub-sectors / products as listed in the guidelines on Credit Linked Capital Subsidy Scheme (CLCSS) Scheme of Governme
+   GU: નવા ઉદ્યોગો જેમણે પોતાની સુવિધાઓ સ્થાપિત કરી છે, અથવા અસ્તિત્વ ધરાવતા સૂક્ષ્મ, નાના અને મધ્યમ કદના ઉદ્યોગો, જેઓ ભારત સરકારની ક્રેડિટ લિંકેડ કેપિટલ સબસિડી યોજના (CLCSS) યોજનાના માર્ગદર્શિકામાં ઉલ્લેખિત ચોક્કસ ઉપ-સેક્ટર / પ્રોડક્ટ્સમાં સ્થાપિત અને સુધારેલી ટેકનોલોજીઓની અપનાવણી દ્વારા, વિસ્તરણ સાથે કે વિના, પોતાની અસ્તિત્વ ધરાવતી પ્લાન્ટ અને મશીનરીને અત્યાધુનિક ટેકનોલોજીથી અપગ્રેડ કરે છે.
+   BK: New industries which have established their facilities, or existing micro, small and medium-sized industries, which are upgrading their existing plant and machinery with state-of-the-art technology, with or without expansion, through the adoption of established and improved technologies in specific sub-sectors / products mentioned in the guidelines of the Government of India's Credit Linked Capital Subsidy Scheme (CLCSS).
+B0 EN: Subsidy of 5% on term loans subject to a maximum of ₹ 20,00,000 is given for a period of 5 years to all new micro and small manufacturing enterprises for term loans up to ₹ 2,00,00,000 obtained for Credit Guarantee Fund Trust Scheme (CGTMSE).
+   GU: ક્રેડિટ ગેરંટી ફંડ ટ્રસ્ટ સ્કીમ (CGTMSE) હેઠળ મેળવવામાં આવેલા ₹ 2,00,00,000 સુધીના ટર્મ લોન માટે, નવા માઇક્રો અને સ્મોલ મેન્યુફેક્ચરિંગ ઉદ્યોગોને 5 વર્ષની મુદત માટે ₹ 20,00,000 ના મહત્તમ મર્યાદા સુધી ટર્મ લોન પર 5% સબસિડી આપવામાં આવે છે.
+   BK: For term loans obtained up to ₹ 2,00,00,000 under the Credit Guarantee Fund Trust Scheme (CGTMSE), a 5% subsidy is given on the term loan up to a maximum limit of ₹ 20,00,000 for a period of 5 years to new micro and small manufacturing industries.
+B1 EN: Subsidy of 5% on term loans subject to a maximum of ₹ 25,00,000 is given for a period of 5 years to all new micro and small manufacturing enterprises for term loans up to ₹ 5,00,00,000 obtained for technology up-gradation / modernization.
+   GU: ટેકનોલોજી અપગ્રેડેશન / મોડર્નાઇઝેશન માટે મેળવવામાં આવેલા ₹ 5,00,00,000 સુધીના ટર્મ લોન માટે, નવા માઇક્રો અને સ્મોલ મેન્યુફેક્ચરિંગ ઉદ્યોગોને 5 વર્ષની મુદત માટે ₹ 25,00,000 ના મહત્તમ મર્યાદા સુધી ટર્મ લોન પર 5% સબસિડી આપવામાં આવે છે.
+   BK: For term loans obtained up to ₹ 5,00,00,000 for Technology Upgradation / Modernization, a 5% subsidy is given on the term loan up to a maximum limit of ₹ 25,00,000 for a period of 5 years to new micro and small manufacturing industries.
+B2 EN: The maximum amount of BEIS payable per loan shall be ₹ 10,00,000 only on loans taken up to ₹ 1,00,00,000.
+   GU: ₹ 1,00,00,000 સુધી લેવામાં આવેલા લોન પર જ BEIS નું મહત્તમ રકમ ₹ 10,00,000 સુધી મર્યાદિત રહેશે.
+   BK: The maximum amount of BEIS will be limited to ₹ 10,00,000 on loans taken up to ₹ 1,00,00,000.
+B3 EN: Mode of Payment
+   GU: ચુકવણીની રીત
+   BK: Mode of payment
+=== #46 [qwen/qwen3.8-27b] Travel Grant Scheme for College Teachers/Vice Chancellors/Commission Members
+T EN: Travel Grant Scheme for College Teachers/Vice Chancellors/Commission Members
+   GU: કોલેજ શિક્ષકો / વાઇસ ચાન્સેલરો / કમિશન સભ્યો માટે પ્રવાસ યોજના
+   BK: Travel plan for college teachers / Vice Chancellors / Commission members
+E0 EN: The applicant must be a permanent teacher of a college or a Commission Member, or a Vice-Chancellor of a State University, Deemed-to-be University, or Central University recognized under Sections 2(f) and 12(B) of the UGC Act.
+   GU: અરજીદાર કોઈ કોલેજનો અથવા કમિશન સભ્ય, અથવા UGC એક્ટની કલમ 2(f) અને 12(B) હેઠળ માન્યતા પ્રાપ્ત રાજ્ય યુનિવર્સિટી, ડીમ્ડ-ટુ-બી યુનિવર્સિટી અથવા કેન્દ્રીય યુનિવર્સિટીના વાઇસ-ચાન્સલર હોવો જોઈએ.
+   BK: The applicant should be a member of any college or commission, or the Vice-Chancellor of a State University, Deemed-to-be University or Central University recognized under Section 2(f) and 12(B) of the UGC Act.
+E1 EN: The applicant must be presenting a research paper at an international conference abroad.
+   GU: અરજીદારને વિદેશોમાં યોજાતા આંતરરાષ્ટ્રીય સંમેલનમાં સંશોધન કૃતિ રજૂ કરવી હોવી જોઈએ.
+   BK: The applicant should have to present a research work at an international conference held abroad.
+B0 EN: The financial assistance for permanent teachers of colleges enlisted in 2(f) and 12 B of the UGC Act will be limited to 50% of the total admissible expenditure such as travel, registration fee, per diem allowance and visa fee, once in three years.
+   GU: યુજીસી અધિનિયમના 2(f) અને 12 B હેઠળ નોંધાયેલ કોલેજોના કાયમી શિક્ષકો માટે, ત્રણ વર્ષમાં એક વાર, મુસાફરી, નોંધણી ફી, પ્રતિદિન ભાટા અને વિઝા ફી જેવા કુલ લાગુ પડતા ખર્ચના 50% સુધી મર્યાદિત રાહત આપવામાં આવશે.
+   BK: For permanent teachers of colleges registered under 2(f) and 12 B of the UGC Act, relief will be given limited to 50% of the total applicable expenses such as travel, registration fee, daily allowance and visa fee, once in three years.
+B1 EN: For Commission members and Vice-Chancellors of Universities enlisted in 2(f) and 12 B of the UGC Act, the assistance will be 100% on admissible expenditure once in three years.
+   GU: યુજીસી અધિનિયમના 2(f) અને 12 B હેઠળ નોંધાયેલ યુનિવર્સિટીઓના કમિશન સભ્યો અને વાઇસ-ચાન્સેલરો માટે, ત્રણ વર્ષમાં એક વાર, લાગુ પડતા ખર્ચ પર 100% રાહત આપવામાં આવશે.
+   BK: For commission members and Vice-Chancellors of universities registered under 2(f) and 12 B of the UGC Act, 100% relief will be given on the applicable expenses, once in three years.
+=== #47 [qwen/qwen3.8-27b] Scheme to Provide Grant in Aid to Cultural Organization (Maintenance/ Regular Grants)
+T EN: Scheme to Provide Grant in Aid to Cultural Organization (Maintenance/ Regular Grants)
+   GU: સાંસ્કૃતિક સંસ્થાઓને સહાયક ભંડોળ (રક્ષણાભરણ / નિયમિત ભંડોળ) પ્રદાન કરવા માટેની યોજના
+   BK: Plan to provide auxiliary funds (maintenance / regular funds) to cultural institutions
+E0 EN: Any Goan institution registered under the Society’s Registration Act, 1860 or under the Indian Trust Act.
+   GU: સોસાયટીઝ રજિસ્ટ્રેશન એક્ટ, 1860 અથવા ઇન્ડિયન ટ્રસ્ટ એક્ટ હેઠળ નોંધાયેલો કોઈપણ ગોવા સંસ્થા.
+   BK: Any Goa institution registered under the Societies Registration Act, 1860 or the Indian Trust Act.
+E1 EN: Reservation / Preference / Priority
+   GU: આરક્ષણ / પ્રાથમિકતા / પ્રાધાન્ય
+   BK: Reservation / Priority / Precedence
+E2 EN: Preference will be given to the institutions involved in Cultural Education i.e. imparting training in music, dance, drama, fine art etc.
+   GU: સાંસ્કૃતિક શિક્ષણમાં સંડોવેલી સંસ્થાઓને, એટલે કે સંગીત, નૃત્ય, નાટક, સુંદર કલા વગેરેમાં તાલીમ આપવામાં, પ્રાથમિકતા આપવામાં આવશે.
+   BK: Priority will be given to institutions involved in cultural education, that is, in providing training in music, dance, drama, fine arts, etc.
+B0 EN: Grant-In-Aid in the form of reimbursement to the extent of 80% of the expenditure incurred by the institution for the last financial year, subject to the maximum ceiling given below -
+   GU: પાછલા આર્થિક વર્ષમાં સંસ્થા દ્વારા કરવામાં આવેલા ખર્ચના 80% સુધીની રકમની ભરપાઈ સ્વરૂપે, નીચે આપેલ મહત્તમ મર્યાદા પ્રમાણે ગ્રાન્ટ-ઇન-એઇડ (Grant-In-Aid) આપવામાં આવશે -
+   BK: A Grant-In-Aid will be given as reimbursement of an amount up to 80% of the expenditure made by the institution in the previous financial year, as per the maximum limit given below -
+B1 EN: ₹ 10,000/- for Group ‘H’,
+   GU: ગ્રુપ ‘H’ માટે ₹ 10,000/-
+   BK: For Group ‘H’ ₹ 10,000/-
+B2 EN: ₹ 20,000/- for Group ‘G’
+   GU: ગ્રુપ ‘G’ માટે ₹ 20,000/-
+   BK: For Group ‘G’ ₹ 20,000/-
+B3 EN: ₹ 35,000/- for Group ‘F’
+   GU: ગ્રુપ ‘F’ માટે ₹ 35,000/-
+   BK: For Group ‘F’ ₹ 35,000/-
+=== #48 [openai/gpt-oss-120b] Tea Development Programme in the Hilly Districts of Uttarakhand - Uttarakhand Tea Development Board
+T EN: Tea Development Programme in the Hilly Districts of Uttarakhand - Uttarakhand Tea Development Board
+   GU: ઉત્તરાખંડના પર્વતીય જિલ્લાઓમાં ચા વિકાસ કાર્યક્રમ - ઉત્તરાખંડ ચા વિકાસ બોર્ડ
+   BK: Tea Development Program in the hilly districts of Uttarakhand - Uttarakhand Tea Development Board
+E0 EN: The applicant must be a resident of Uttarakhand.
+   GU: અરજીદાર ઉત્તરાખંડનો નિવાસી હોવો જોઈએ.
+   BK: The applicant should be a resident of Uttarakhand.
+E1 EN: The applicant must have his own measured land available.
+   GU: અરજીદાર પાસે તેની પોતાની માપેલી જમીન ઉપલબ્ધ હોવી જોઈએ.
+   BK: The applicant should have their own measured land available.
+E2 EN: Within the identified area, at least 60 hectares of land should be available for tea plantation within a radius of 20 km.
+   GU: પોતાની ઓળખાયેલી વિસ્તારમાં, 20 કિમીના વર્તુળમાં ચાની બાગીકારી માટે ઓછામાં ઓછા 60 હેક્ટર જમીન ઉપલબ્ધ હોવી જોઈએ.
+   BK: In their identified area, at least 60 hectares of land should be available for tea cultivation within a 20 km radius.
+E3 EN: There should be adequate availability of water around the identified land for setting up tea plant nursery at the initial stage.
+   GU: પ્રારંભિક તબક્કે ચાની બાગીકારી માટે ઓળખાયેલી જમીનની આસપાસ પાણીની પૂરતી ઉપલબ્ધિ હોવી જોઈએ.
+   BK: In the initial stage, sufficient water availability should be around the identified land for tea cultivation.
+B0 EN: Due to large-scale migration of local people in the mountainous areas of Uttarakhand, most of the farmers’ land remains unused or barren, which can be put to good use through tea development programmes.
+   GU: ઉત્તરાખંડના પર્વતીય વિસ્તારોમાં સ્થાનિક લોકોના મોટા પાયે સ્થળાંતરને કારણે, ખેડૂતોનો મોટો ભાગ જમૂન ખેડવામાં નહાવા કે બેરોકડે રહે છે, જે ચાના નિકાયાના પ્રચાર-વાર્તા દ્વારા ઉનાળામાં ઉપયાદ થઈ શક્તા છે.
+   BK: Due to the large-scale displacement of local people in the hilly areas of Uttarakhand, a large part of the farmers are idle or unemployed, who can be benefited in the summer through the promotion of tea export.
+B1 EN: The Tea Development Scheme, run by the Board, is an employment-oriented initiative under which the Board provides year-round employment to tea garden cultivators and workers for seven years after the plantation is established. Once the plantations produce sufficient quantities of green leaves, farmers can earn a livelihood by selling them.
+   GU: સ્વારૂની દ્વારા ચલાવાતા ચાના નિકાયાના પ્રયાસમાં, સ્વારૂ ખેડૂતોને ચાના બગીચાના વાવેતર પછી સાત વર્ષ સુધી વાર્ષિક રોજગારી પૂરી પાડે છે. જ્યારે વાવેતર પૂરતા પ્રમાણમાં લીલા પાન ઉત્પન્ન કરવા લાગે, ત્યારે ખેડૂતો તેમને વેચીને પોતાનું ગુજરાન ચલાવી શકે છે.
+   BK: In the tea export efforts run by Swaraj, Swaraj provides annual employment to farmers for seven years after the planting of the tea garden. When the planting starts producing green leaves in sufficient quantity, farmers can sell them to make a living.
+B2 EN: At present, in the hilly areas, fruits, vegetables, and crops are being damaged by domestic and wild animals, whereas tea plants are not harmed by such animals.
+   GU: હાલમાં, પર્વતીય વિસ્તારોમાં ઘરેલું અને જંગલી પ્રાણીઓને કારણે ફળો, શાકભાજી અને પાક નુકસાન પામી રહ્યા છે, જ્યારે ચાના છોડને આવા પ્રાણીઓથી કોઈ નુકસાન થતું નથી.
+   BK: Currently, fruits, vegetables and crops are being damaged by domestic and wild animals in the hilly areas, while tea plants do not suffer any damage from such animals.
+B3 EN: Due to the lack of adequate irrigation facilities in the hilly areas, traditional farming is adversely affected, whereas tea gardens require irrigation only at the initial stage, and adverse weather does not have any significant impact on the tea gardens.
+   GU: પર્વતીય વિસ્તારોમાં પૂરતી સિંચાઈ સુવિધાઓની અભાવને કારણે પરંપરાગત ખેતીને નુકસાન થાય છે, જ્યારે ચાના બગીચા માટે માત્ર પ્રારંભિક તબક્કે સિંચાઈની જરૂરિયાત હોય છે અને અશુભ હવામાનથી ચાના બગીચા પર કોઈ મોટો પ્રભાવ પડતો નથી.
+   BK: Due to the lack of sufficient irrigation facilities in the hilly areas, traditional agriculture is damaged, while tea gardens only require irrigation in the initial stage and bad weather does not have a major impact on tea gardens.
+=== #49 [openai/gpt-oss-120b] Credit Linked Subsidy Scheme for Middle Income Group
+T EN: Credit Linked Subsidy Scheme for Middle Income Group
+   GU: મધ્યમ આવક જૂથ માટે ક્રેડિટ લિંક્ડ સબસિડી યોજના
+   BK: Credit Linked Subsidy Scheme for Middle Income Group
+E0 EN: The beneficiary family should not own a pucca house (an all-weather dwelling unit) either in his/her name or in the name of any member of his/her family in any part of India. In in case of a married couple, either of the spouses or both together in joint ownership will be eligible for a single house, subject to the income eligibility of the household under the Scheme.
+   GU: લાભાર્થી પરિવારે ભારતના કોઈપણ ભાગમાં પોતાના નામ અથવા પોતાના પરિવારના કોઈપણ સભ્યના નામ પર પુકકા ઘર (સમગ્ર વર્ષ દરમિયાન રહેવા માટે યોગ્ય આવાસ એકમ) ની માલિકી ન હોવી જોઈએ. લગ્ન કરેલા દંપતિના કિસ્સામાં, યોજના હેઠળ ઘરના આંકડાકીય લાયકતાને અનુરૂપ, પતિ અથવા પત્નીમાંથી કોઈ એક અથવા બંને સાથે સંયુક્ત માલિકીમાં એક જ ઘર માટે લાયક હોઈ શકે છે.
+   BK: The beneficiary family should not own a pucca house (a residential unit suitable for living throughout the year) in any part of India in their own name or in the name of any member of their family. In the case of a married couple, one or both of the husband or wife may be eligible for a single house in joint ownership, in accordance with the statistical eligibility of the house under the scheme.
+E1 EN: A beneficiary family should not have availed of central assistance under any housing scheme from the Government of India.
+   GU: લાભાર્થી પરિવારે ભારત સરકાર દ્વારા ચલાવવામાં આવતા કોઈપણ આવાસ યોજના હેઠળ કેન્દ્રીય સહાય મેળવી ન હોવી જોઈએ.
+   BK: The beneficiary family should not have received central assistance under any housing scheme run by the Government of India.
+E2 EN: Middle Income Group-I (MIG-I) - annual household income exceeding ₹6 lakhs and up to ₹12 lakhs seeking housing loans from Banks, Housing Finance Companies (HFCs), and other such institutions for acquiring/ constructing houses.
+   GU: મધ્યમ આવક વર્ગ-I (MIG-I) - જેમનું વાર્ષિક પરિવાર આવક ₹6 લાખથી વધુ અને ₹12 લાખ સુધી છે અને જેઓ ઘર ખરીદવા/બનાવવા માટે બેંકો, હાઉસિંગ ફાઇનાન્સ કંપનીઓ (HFCs) અને અન્ય એવી સંસ્થાઓમાંથી આવાસ લોન મેળવવા માંગે છે.
+   BK: Middle Income Group-I (MIG-I) - Those whose annual family income is more than ₹6 lakh and up to ₹12 lakh and who wish to obtain a housing loan from banks, Housing Finance Companies (HFCs) and other such institutions to buy/build a house.
+E3 EN: Middle Income Group-II (MIG-II) - annual household income exceeding ₹12 lakhs and up to ₹18 lakhs seeking housing loans from Banks, Housing Finance Companies (HFCs), and other such institutions for acquiring/ constructing houses.
+   GU: મધ્યમ આવક વર્ગ-II (MIG-II) - જેમનું વાર્ષિક પરિવાર આવક ₹12 લાખથી વધુ અને ₹18 લાખ સુધી છે અને જેઓ ઘર ખરીદવા/બનાવવા માટે બેંકો, હાઉસિંગ ફાઇનાન્સ કંપનીઓ (HFCs) અને અન્ય એવી સંસ્થાઓમાંથી આવાસ લોન મેળવવા માંગે છે.
+   BK: Middle Income Group-II (MIG-II) - Those whose annual family income is more than ₹12 lakh and up to ₹18 lakh and who wish to obtain a housing loan from banks, Housing Finance Companies (HFCs) and other such institutions to buy/build a house.
+B0 EN: Scheme will support the acquisition/construction of houses (including repurchase) of 160 sq. mts. (For MIG I) and 200 sq. mts. (For MIG II) carpet area as per income eligibility with basic civic infrastructure like water, toilet, sanitation, sewerage, road, electricity, etc.
+   GU: યોજનાએ આવકની યોગ્યતા અનુસાર 160 ચો.મી. (For MIG I) અને 200 ચો.મી. (For MIG II) કાર્પેટ વિસ્તારવાળા ઘર (ખરીદી/નિર્માણ સહિત પુનઃખરીદી)નું સમર્થન કરશે, જેમાં પાણી, શૌચાલય, સ્વચ્છતા, નિકાસ, રસ્તો, વીજળી વગેરે જેવી મૂળભૂત નગરસેવાઓ શામેલ છે.
+   BK: The scheme will support a house with a carpet area of 160 sq.m. (For MIG I) and 200 sq.m. (For MIG II) according to income eligibility (including purchase/construction and repurchase), which includes basic urban services such as water, toilet, cleanliness, drainage, road, electricity, etc.
+B1 EN: Beneficiaries of MIG will be eligible for an interest subsidy with the following features:
+   GU: MIG ના લાભાર્થીઓને નીચે દર્શાવેલ વિશેષતાઓ સાથે વ્યાજ સબસિડી માટે પાત્રતા મળશે:
+   BK: MIG beneficiaries will be eligible for interest subsidy with the following features:
+B2 EN: Particulars	MIG I	MIG II
+   GU: વિગતો	MIG I	MIG II
+   BK: Details	MIG I	MIG II
+B3 EN: Household Income (₹ per annum)	₹6,00,001/- - ₹12,00,000/-	₹12,00,001/- - ₹18,00,000/-
+   GU: ઘરેલુ આવક (₹ પ્રતિ વર્ષ)	₹6,00,001/- - ₹12,00,000/-	₹12,00,001/- - ₹18,00,000/-
+   BK: Household Income (₹ per year)	₹6,00,001/- - ₹12,00,000/-	₹12,00,001/- - ₹18,00,000/-
+=== #50 [qwen/qwen3.8-27b] Plastic Tunnel (Lo-Tunnel)
+T EN: Plastic Tunnel (Lo-Tunnel)
+   GU: પ્લાસ્ટિક ટનલ (લો-ટનલ)
+   BK: Plastic tunnel (low tunnel)
+E0 EN: The applicant should be a native of Rajasthan.
+   GU: અરજીદાર રાજસ્થાનનો મૂળવાસી હોવો જોઈએ.
+   BK: The applicant should be a native of Rajasthan.
+E1 EN: The applicant should be a farmer.
+   GU: અરજીદાર ખેડૂત હોવો જોઈએ.
+   BK: The applicant should be a farmer.
+E2 EN: The applicant must have agricultural land ownership and irrigation sources.
+   GU: અરજીદાર પાસે ખેતી જમીનની માલિકી અને સિંચાઈના સ્રોતો હોવા જોઈએ.
+   BK: The applicant should have ownership of agricultural land and irrigation sources.
+B0 EN: 50 percent subsidy is available for a maximum of 1000 square meters.
+   GU: મહત્તમ 1000 ચોરસ મીટર માટે 50 ટકા સબસિડી ઉપલબ્ધ છે.
+   BK: 50 percent subsidy is available for a maximum of 1000 square meters.
+B1 EN: Small/marginal category farmers are given a 75 percent subsidy for a maximum of 4000 square meters.
+   GU: નાના/કિનારીવાળા વર્ગના ખેડૂતોને મહત્તમ 4000 ચોરસ મીટર માટે 75 ટકા સબસિડી આપવામાં આવે છે.
+   BK: Small/marginal category farmers are given 75 percent subsidy for a maximum of 4000 square meters.
