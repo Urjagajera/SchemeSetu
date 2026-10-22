@@ -313,7 +313,7 @@
   "pfFVeteran": "Veteran status",
   "pfErrNameMin": "Name must be at least 2 characters",
   "pfErrNameMax": "Name must be 100 characters or fewer",
-  "pfErrAge": "Age must be a whole number between 1 and 120",
+  "pfErrAge": "Age must be a whole number between 0 and 120",
   "pfErrDob": "Enter a real date of birth that is not in the future",
   "pfErrIncome": "Income must be a whole number of rupees, 0 or more",
   "pfErrState": "State must be 100 characters or fewer",
@@ -484,5 +484,7 @@
   "printShort": "Print",
   "printScheme": "Print or save as PDF",
   "officialSiteLabel": "Official site:",
-  "printedNote": "Printed from SchemeSetu on {date}. Check the official portal for the latest details."
+  "printedNote": "Printed from SchemeSetu on {date}. Check the official portal for the latest details.",
+  "ageFromDobNote": "Calculated from your date of birth",
+  "ageAddDobNote": "Add your date of birth to keep this up to date"
 }

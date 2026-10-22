@@ -151,7 +151,6 @@ describe('PUT /api/profile: partial saves and validation', () => {
 
   describe('rejects values that make no sense, with a message per field and no database write', () => {
     const cases: Array<[string, Record<string, unknown>, string]> = [
-      ['age 0', { age: '0' }, 'age'],
       ['age 121', { age: '121' }, 'age'],
       ['age not a number', { age: 'abc' }, 'age'],
       ['age with decimals', { age: '30.5' }, 'age'],

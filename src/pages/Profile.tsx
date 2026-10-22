@@ -22,6 +22,7 @@ import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { profileCompleteness } from '../utils/profileCompleteness';
+import { ageFromDob } from '../utils/ageFromDob';
 
 // Only the name is required. Every other answer is optional: a blank means "unknown", and the eligibility
 // engine never rules a scheme out because of an unknown. What IS filled in must still be sensible.
@@ -35,7 +36,7 @@ const isRealPastDate = (v: string) => {
 
 const profileSchema = z.object({
   name: z.string().trim().min(2, 'pfErrNameMin').max(100, 'pfErrNameMax'),
-  age: z.string().refine(v => v.trim() === '' || (/^\d{1,3}$/.test(v.trim()) && Number(v) >= 1 && Number(v) <= 120), {
+  age: z.string().refine(v => v.trim() === '' || (/^\d{1,3}$/.test(v.trim()) && Number(v) >= 0 && Number(v) <= 120), {
     message: 'pfErrAge'
   }),
   dob: z.string().refine(v => v === '' || isRealPastDate(v), {
@@ -153,6 +154,8 @@ export const Profile: React.FC = () => {
     register,
     handleSubmit,
     setError,
+    setValue,
+    watch,
     formState: { errors, isSubmitting }
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -189,6 +192,14 @@ export const Profile: React.FC = () => {
     },
     resetOptions: { keepDirtyValues: true }
   });
+
+  // Age is never typed: it follows the date of birth. A profile saved before that keeps its age (shown, not editable)
+  // until a date of birth is added.
+  const dobAge = ageFromDob(watch('dob'));
+  const savedAge = watch('age');
+  useEffect(() => {
+    if (dobAge !== null) setValue('age', String(dobAge), { shouldDirty: true });
+  }, [dobAge, setValue]);
 
   // A locale key becomes its text in the current language; anything else (a message from the server) is shown as it is.
   const text = (keyOrText: string): string => t(keyOrText as Parameters<typeof t>[0]);
@@ -365,10 +376,16 @@ export const Profile: React.FC = () => {
                 <div className="space-y-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfAge')}</label>
                   <input
-                    type="number"
+                    type="text"
+                    readOnly
+                    tabIndex={-1}
+                    aria-describedby="age-note"
                     {...register('age')}
-                    className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
+                    className="w-full rounded-lg border-outline-variant dark:border-zinc-700 bg-surface-container dark:bg-zinc-800 dark:text-zinc-300 text-xs md:text-sm py-2 px-3 cursor-not-allowed focus:ring-0"
                   />
+                  <p id="age-note" className="text-[10px] text-on-surface-variant dark:text-zinc-500">
+                    {dobAge === null && savedAge ? t('ageAddDobNote') : t('ageFromDobNote')}
+                  </p>
                   {errors.age && <p className="text-[10px] text-red-500 font-bold">{text(String(errors.age.message))}</p>}
                 </div>
 

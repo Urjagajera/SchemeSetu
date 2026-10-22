@@ -65,13 +65,13 @@ describe('Profile form: only the name is required', () => {
   });
 
   it('sends a blank for a field the user emptied, so a value saved earlier is cleared', async () => {
-    mocks.profile = { age: '30' };
+    mocks.profile = { dob: '1990-05-01' };
     const { user, container } = setup();
-    expect(field(container, 'age').value).toBe('30');
-    await user.clear(field(container, 'age'));
+    expect(field(container, 'dob').value).toBe('1990-05-01');
+    await user.clear(field(container, 'dob'));
     await user.click(screen.getByRole('button', { name: SAVE }));
     await waitFor(() => expect(mocks.updateProfile).toHaveBeenCalledTimes(1));
-    expect(mocks.updateProfile.mock.calls[0][0]).toMatchObject({ age: '' });
+    expect(mocks.updateProfile.mock.calls[0][0]).toMatchObject({ dob: '' });
   });
 
   it('does not save a name that is too short, and says why', async () => {
@@ -88,8 +88,6 @@ describe('Profile form: only the name is required', () => {
 
 describe('Profile form: what is filled in must be sensible', () => {
   it.each([
-    ['age', '150', 'Age must be a whole number between 1 and 120'],
-    ['age', '0', 'Age must be a whole number between 1 and 120'],
     ['dob', '2999-01-01', 'Enter a real date of birth that is not in the future'],
   ])('rejects %s = "%s"', async (name, value, message) => {
     const { user, container } = setup();
@@ -180,13 +178,10 @@ describe('Profile form in Hindi and Gujarati', () => {
     mocks.language = 'hi';
     const { user, container } = setup();
     fireEvent.change(field(container, 'dob'), { target: { value: '2999-01-01' } });
-    fireEvent.change(field(container, 'age'), { target: { value: '150' } });
     await user.click(screen.getByRole('button', { name: 'बदलाव सहेजें' }));
     const alert = await screen.findByRole('alert');
     expect(alert.textContent).toContain('जन्म तिथि');
     expect(alert.textContent).toContain('भविष्य की न हो, ऐसी वास्तविक जन्म तिथि दर्ज करें');
-    expect(alert.textContent).toContain('आयु');
-    expect(alert.textContent).toContain('आयु 1 से 120 के बीच की पूर्ण संख्या होनी चाहिए');
     expect(alert.textContent).not.toMatch(/Date of birth|Age must/);
   });
 

@@ -313,7 +313,7 @@
   "pfFVeteran": "પૂર્વ સૈનિકની સ્થિતિ",
   "pfErrNameMin": "નામ ઓછામાં ઓછા 2 અક્ષરનું હોવું જોઈએ",
   "pfErrNameMax": "નામ 100 અક્ષર કે તેથી ઓછું હોવું જોઈએ",
-  "pfErrAge": "ઉંમર 1 થી 120 વચ્ચેની પૂર્ણ સંખ્યા હોવી જોઈએ",
+  "pfErrAge": "ઉંમર 0 થી 120 વચ્ચેની પૂર્ણ સંખ્યા હોવી જોઈએ",
   "pfErrDob": "ભવિષ્યની ન હોય એવી સાચી જન્મ તારીખ દાખલ કરો",
   "pfErrIncome": "આવક રૂપિયામાં પૂર્ણ સંખ્યા હોવી જોઈએ, 0 કે તેથી વધુ",
   "pfErrState": "રાજ્ય 100 અક્ષર કે તેથી ઓછું હોવું જોઈએ",
@@ -484,5 +484,7 @@
   "printShort": "Print",
   "printScheme": "Print or save as PDF",
   "officialSiteLabel": "Official site:",
-  "printedNote": "Printed from SchemeSetu on {date}. Check the official portal for the latest details."
+  "printedNote": "Printed from SchemeSetu on {date}. Check the official portal for the latest details.",
+  "ageFromDobNote": "Calculated from your date of birth",
+  "ageAddDobNote": "Add your date of birth to keep this up to date"
 }

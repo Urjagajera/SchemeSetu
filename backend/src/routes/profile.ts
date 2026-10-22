@@ -5,6 +5,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { profileUpdateSchema, profileFieldErrors } from '../utils/profileSchema.js';
 import { canonicalState } from '../utils/states.js';
+import { ageFromDob, currentAge } from '../utils/ageFromDob.js';
 
 const router = Router();
 
@@ -18,7 +19,8 @@ router.use(requireAuth);
  */
 function serializeProfile(row: Profile) {
   return {
-    age: row.age ?? undefined,
+    // From the birthdate when there is one, so it is always this year's age; otherwise the age as saved.
+    age: currentAge(row) ?? undefined,
     dob: row.dob ?? undefined,
     gender: row.gender ?? undefined,
     occupation: row.occupation ?? undefined,
@@ -76,7 +78,8 @@ router.put(
     const tags = body.profileTags ?? body.interests;
 
     const data = {
-      age: body.age,
+      // A birthdate decides the age (people don't type it any more); without one, an age sent is kept as before.
+      age: typeof body.dob === 'string' ? String(ageFromDob(body.dob)) : body.age,
       dob: body.dob,
       gender: body.gender,
       occupation: body.occupation,

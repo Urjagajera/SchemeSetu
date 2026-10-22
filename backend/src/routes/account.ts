@@ -3,6 +3,7 @@ import prisma from '../db/prisma.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { clearSessionCookie } from '../utils/sessionCookie.js';
+import { currentAge } from '../utils/ageFromDob.js';
 
 const router = Router();
 
@@ -42,7 +43,7 @@ router.get(
       },
       profile: profile
         ? {
-            age: profile.age,
+            age: currentAge(profile),
             dob: profile.dob,
             gender: profile.gender,
             occupation: profile.occupation,

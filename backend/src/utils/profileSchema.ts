@@ -72,7 +72,7 @@ export const profileUpdateSchema = z.object({
     z
       .string()
       .regex(/^\d{1,3}$/, 'Age must be a whole number')
-      .refine((s) => Number(s) >= 1 && Number(s) <= 120, 'Age must be between 1 and 120'),
+      .refine((s) => Number(s) >= 0 && Number(s) <= 120, 'Age must be between 0 and 120'), // 0: a baby's age worked out from a birthdate
   ),
   dob: optionalValue(z.string().refine(isRealPastDate, 'Date of birth must be a real date (YYYY-MM-DD) that is not in the future')),
   gender: oneOf('Gender', PROFILE_OPTIONS.gender),

@@ -313,7 +313,7 @@
   "pfFVeteran": "पूर्व सैनिक की स्थिति",
   "pfErrNameMin": "नाम कम से कम 2 अक्षरों का होना चाहिए",
   "pfErrNameMax": "नाम 100 अक्षरों या उससे कम का होना चाहिए",
-  "pfErrAge": "आयु 1 से 120 के बीच की पूर्ण संख्या होनी चाहिए",
+  "pfErrAge": "आयु 0 से 120 के बीच की पूर्ण संख्या होनी चाहिए",
   "pfErrDob": "भविष्य की न हो, ऐसी वास्तविक जन्म तिथि दर्ज करें",
   "pfErrIncome": "आय रुपयों में पूर्ण संख्या होनी चाहिए, 0 या उससे अधिक",
   "pfErrState": "राज्य 100 अक्षरों या उससे कम का होना चाहिए",
@@ -484,5 +484,7 @@
   "printShort": "Print",
   "printScheme": "Print or save as PDF",
   "officialSiteLabel": "Official site:",
-  "printedNote": "Printed from SchemeSetu on {date}. Check the official portal for the latest details."
+  "printedNote": "Printed from SchemeSetu on {date}. Check the official portal for the latest details.",
+  "ageFromDobNote": "Calculated from your date of birth",
+  "ageAddDobNote": "Add your date of birth to keep this up to date"
 }
