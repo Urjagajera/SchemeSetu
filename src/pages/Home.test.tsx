@@ -13,11 +13,9 @@ vi.mock('../contexts/LanguageContext', async () => {
   const dict = TRANSLATIONS as unknown as Record<string, Record<string, string>>;
   return { useTranslation: () => ({ t: (key: string) => dict.en[key] || key, language: 'en' }) };
 });
-vi.mock('../hooks/useBookmarks', () => ({ useBookmarks: () => ({ bookmarks: [], toggleBookmark: () => {} }) }));
 vi.mock('../hooks/useStates', () => ({ useStates: () => mocks.states }));
 vi.mock('../services/schemeService', () => ({ schemeService: { getSchemes: mocks.getSchemes, getFeaturedSchemes: mocks.getFeaturedSchemes } }));
 vi.mock('../components/Hero', () => ({ Hero: () => null }));
-vi.mock('../components/SchemeCard', () => ({ SchemeCard: () => null }));
 
 import { Home } from './Home';
 import { TRANSLATIONS } from '../constants/translations';

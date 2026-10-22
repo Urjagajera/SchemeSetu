@@ -1,22 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../contexts/LanguageContext';
-import { useBookmarks } from '../hooks/useBookmarks';
 import { schemeService } from '../services/schemeService';
 import { useStates } from '../hooks/useStates';
 import { Hero } from '../components/Hero';
 import { StatCard } from '../components/StatCard';
 import { CategoryCard } from '../components/CategoryCard';
 import { toTopicId } from '../constants/searchFilters';
-import { SchemeCard } from '../components/SchemeCard';
-import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import { Compass, FileCheck2, Send, CheckCircle2, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const Home: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { bookmarks, toggleBookmark } = useBookmarks();
   // The figures in the stats bar come from the data itself, not from numbers typed in here.
   const [schemeTotal, setSchemeTotal] = useState<number | null>(null);
   const states = useStates();
