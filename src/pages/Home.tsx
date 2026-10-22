@@ -8,6 +8,7 @@ import { useStates } from '../hooks/useStates';
 import { Hero } from '../components/Hero';
 import { StatCard } from '../components/StatCard';
 import { CategoryCard } from '../components/CategoryCard';
+import { toTopicId } from '../constants/searchFilters';
 import { SchemeCard } from '../components/SchemeCard';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import { Compass, FileCheck2, Send, CheckCircle2, ArrowRight } from 'lucide-react';
@@ -243,7 +244,7 @@ export const Home: React.FC = () => {
             </p>
           </div>
           <button
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/search')}
             className="text-secondary dark:text-sky-400 font-bold flex items-center gap-1 hover:underline text-sm focus:outline-none"
           >
             {t('viewAllSchemes')}
@@ -274,7 +275,7 @@ export const Home: React.FC = () => {
                   iconName={cat.icon}
                   label={cat.label}
                   categoryValue={cat.value}
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate('/search?topic=' + toTopicId(cat.value))}
                 />
               </div>
             ))}
@@ -315,7 +316,7 @@ export const Home: React.FC = () => {
         </div>
 
         <button
-          onClick={() => navigate('/login')}
+          onClick={() => navigate('/eligibility')}
           className="mt-16 bg-primary hover:bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 dark:hover:opacity-90 px-8 py-3.5 rounded-lg font-heading text-sm md:text-base font-bold shadow-md active:scale-95 transition-all focus:outline-none"
         >
           {t('findForMeBtn')}

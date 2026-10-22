@@ -7,15 +7,16 @@ export const Hero: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  // Search is public, so the box and the chips open it directly (with what was typed, or with that topic picked).
   const handleSearch = (query: string) => {
-    navigate('/login');
+    navigate(query ? '/search?q=' + encodeURIComponent(query) : '/search');
   };
 
   const popularTags = [
-    { label: t('scholarships'), path: '/login' },
-    { label: t('pensions'), path: '/login' },
-    { label: t('farmerLoans'), path: '/login' },
-    { label: t('healthInsurance'), path: '/login' }
+    { label: t('scholarships'), path: '/search?topic=education' },
+    { label: t('pensions'), path: '/search?topic=pension' },
+    { label: t('farmerLoans'), path: '/search?topic=agriculture' },
+    { label: t('healthInsurance'), path: '/search?topic=health' }
   ];
 
   return (

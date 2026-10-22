@@ -1,15 +1,9 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from '../contexts/LanguageContext';
 
 export const Footer: React.FC = () => {
   const { t } = useTranslation();
-  const location = useLocation();
-  const isLandingPage = location.pathname === '/';
-
-  const getLinkPath = (originalPath: string) => {
-    return isLandingPage ? '/login' : originalPath;
-  };
 
   return (
     <footer className="w-full border-t border-outline-variant bg-white dark:bg-zinc-950 dark:border-zinc-800 py-16 px-4 sm:px-6 lg:px-8 mt-auto transition-colors">
@@ -18,7 +12,7 @@ export const Footer: React.FC = () => {
           
           {/* Column 1: Branding & Description */}
           <div className="flex flex-col gap-4">
-            <Link to={getLinkPath('/')} className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2">
               <img src="/logo.png" alt="SchemeSetu" className="h-8 w-auto" />
               <span className="font-heading text-base font-extrabold tracking-tight text-primary dark:text-white">
                 {t('appName')}
@@ -35,13 +29,13 @@ export const Footer: React.FC = () => {
               {t('shExplore')}
             </h4>
             <div className="flex flex-col gap-2">
-              <Link to={getLinkPath('/search')} className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
+              <Link to="/search" className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
                 {t('shAllSchemes')}
               </Link>
-              <Link to={getLinkPath('/ai')} className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
+              <Link to="/ai" className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
                 {t('shAiLink')}
               </Link>
-              <Link to={getLinkPath('/eligibility')} className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
+              <Link to="/eligibility" className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
                 {t('shEligLink')}
               </Link>
             </div>
@@ -53,7 +47,7 @@ export const Footer: React.FC = () => {
               {t('shSupport')}
             </h4>
             <div className="flex flex-col gap-2">
-              <Link to={getLinkPath('/help')} className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
+              <Link to="/help" className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
                 {t('helpDesk')}
               </Link>
               <Link to="/privacy" className="text-xs text-on-surface-variant hover:text-secondary dark:text-zinc-400 dark:hover:text-sky-400 transition-colors">
