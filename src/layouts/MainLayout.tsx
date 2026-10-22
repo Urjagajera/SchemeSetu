@@ -40,7 +40,7 @@ export const MainLayout: React.FC = () => {
       <AIChatBubble />
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-outline-variant dark:border-zinc-800 flex items-center justify-around z-50 px-2 transition-colors">
+      <nav className="print:hidden md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-outline-variant dark:border-zinc-800 flex items-center justify-around z-50 px-2 transition-colors">
         {mobileNavItems.map((item) => {
           const Icon = item.icon;
           const active = item.path === '/' 

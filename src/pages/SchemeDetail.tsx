@@ -11,6 +11,7 @@ import { BookmarkButton } from '../components/BookmarkButton';
 import { CompareButton } from '../components/CompareButton';
 import { ShareButton } from '../components/ShareButton';
 import { LoadError } from '../components/LoadError';
+import { usePrintSetup } from '../hooks/usePrintSetup';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import {
   ArrowLeft,
@@ -21,7 +22,8 @@ import {
   ClipboardList,
   FileText,
   AlertCircle,
-  ExternalLink
+  ExternalLink,
+  Printer
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -74,6 +76,7 @@ export const SchemeDetail: React.FC = () => {
   // Which sections show the English original instead of the translation. Not remembered: it resets with the page or the language.
   const [englishSections, setEnglishSections] = useState<Partial<Record<SectionKey, boolean>>>({});
   useEffect(() => { setEnglishSections({}); }, [id, language]);
+  const printedAt = usePrintSetup();
 
   useEffect(() => {
     const loadSchemeDetails = async () => {
@@ -178,6 +181,7 @@ export const SchemeDetail: React.FC = () => {
   };
   const toggleFor = (key: SectionKey) =>
     canToggle[key] ? (
+      <span className="print:hidden">
       <SectionLanguageToggle
         testId={`toggle-${key}`}
         label={t('sectionLanguageToggle')}
@@ -185,6 +189,7 @@ export const SchemeDetail: React.FC = () => {
         showEnglish={!!englishSections[key]}
         onChange={(showEnglish) => setEnglishSections((prev) => ({ ...prev, [key]: showEnglish }))}
       />
+      </span>
     ) : undefined;
   const shownBenefits = englishSections.benefits && canToggle.benefits ? englishBenefits : benefitItems;
   const shownEligibility = englishSections.eligibility && canToggle.eligibility ? englishEligibility : eligibilityItems;
@@ -226,7 +231,7 @@ export const SchemeDetail: React.FC = () => {
       className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-6"
     >
       {/* Breadcrumbs */}
-      <nav className="flex items-center gap-1 text-xs text-on-surface-variant dark:text-zinc-500 font-semibold select-none">
+      <nav className="print:hidden flex items-center gap-1 text-xs text-on-surface-variant dark:text-zinc-500 font-semibold select-none">
         <Link to="/" className="hover:text-secondary dark:hover:text-sky-400 transition-colors">{t('home')}</Link>
         <ChevronRight className="w-3.5 h-3.5" />
         <Link to="/search" className="hover:text-secondary dark:hover:text-sky-400 transition-colors">{t('schemes')}</Link>
@@ -254,7 +259,7 @@ export const SchemeDetail: React.FC = () => {
       )}
 
       {/* Main Column Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start print:block">
         
         {/* Left 2 Columns: Details */}
         <div className="lg:col-span-2 space-y-6">
@@ -262,9 +267,9 @@ export const SchemeDetail: React.FC = () => {
           {/* Header Card */}
           <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm transition-colors">
             {translatedScheme.image ? (
-              <div className="w-full h-48 md:h-64 bg-cover bg-center" style={{ backgroundImage: `url('${translatedScheme.image}')` }} />
+              <div className="print:hidden w-full h-48 md:h-64 bg-cover bg-center" style={{ backgroundImage: `url('${translatedScheme.image}')` }} />
             ) : (
-              <div className="w-full h-40 bg-gradient-to-br from-primary to-secondary/80 flex items-center justify-center">
+              <div className="print:hidden w-full h-40 bg-gradient-to-br from-primary to-secondary/80 flex items-center justify-center">
                 <Building2 className="w-16 h-16 text-white/35" />
               </div>
             )}
@@ -348,10 +353,14 @@ export const SchemeDetail: React.FC = () => {
             </DetailSection>
           )}
 
+          <div data-testid="print-footer" className="hidden print:block border-t border-outline-variant pt-4 text-sm space-y-1">
+            <p><span className="font-bold">{t('officialSiteLabel')}</span> {translatedScheme.sourceUrl}</p>
+            <p>{t('printedNote').replace('{date}', printedAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }))}</p>
+          </div>
         </div>
 
-        {/* Right Sidebar Column */}
-        <div className="space-y-6">
+        {/* Right Sidebar Column: actions and related schemes, left off paper */}
+        <div className="space-y-6 print:hidden">
           
           {/* Actions card */}
           <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm space-y-4 text-center transition-colors">
@@ -378,6 +387,17 @@ export const SchemeDetail: React.FC = () => {
                   className="p-3 bg-surface-container dark:bg-zinc-800 border-none w-12 h-12 flex items-center justify-center"
                 />
                 <span className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('shareShort')}</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  title={t('printScheme')}
+                  className="p-3 rounded-full shadow-sm text-on-surface-variant bg-surface-container dark:bg-zinc-800 hover:bg-surface-container-low transition-colors focus:outline-none w-12 h-12 flex items-center justify-center"
+                >
+                  <Printer className="w-5 h-5" />
+                </button>
+                <span className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('printShort')}</span>
               </div>
             </div>
 

@@ -13,7 +13,7 @@ export const AIChatBubble: React.FC = () => {
   if (location.pathname === '/ai' || location.pathname === '/login' || location.pathname === '/register') return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="print:hidden fixed bottom-6 right-6 z-50">
       <motion.button
         onClick={() => navigate('/ai')}
         whileHover={{ scale: 1.05 }}

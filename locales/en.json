@@ -480,5 +480,9 @@
   "shareScheme": "Share this scheme",
   "shareWhatsApp": "WhatsApp",
   "copyLink": "Copy link",
-  "linkCopied": "Link copied"
+  "linkCopied": "Link copied",
+  "printShort": "Print",
+  "printScheme": "Print or save as PDF",
+  "officialSiteLabel": "Official site:",
+  "printedNote": "Printed from SchemeSetu on {date}. Check the official portal for the latest details."
 }
