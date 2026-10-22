@@ -475,5 +475,10 @@
   "filterUseProfile": "મારી પ્રોફાઇલનો ઉપયોગ કરો",
   "loadErrorTitle": "સ્કીમસેતુ સાથે સંપર્ક થઈ શક્યો નથી",
   "loadErrorDesc": "તમારું ઇન્ટરનેટ કનેક્શન તપાસો, પછી ફરી પ્રયાસ કરો.",
-  "retry": "ફરી પ્રયાસ કરો"
+  "retry": "ફરી પ્રયાસ કરો",
+  "shareShort": "Share",
+  "shareScheme": "Share this scheme",
+  "shareWhatsApp": "WhatsApp",
+  "copyLink": "Copy link",
+  "linkCopied": "Link copied"
 }

@@ -475,5 +475,10 @@
   "filterUseProfile": "Use my profile",
   "loadErrorTitle": "Couldn't reach SchemeSetu",
   "loadErrorDesc": "Check your internet connection, then try again.",
-  "retry": "Try again"
+  "retry": "Try again",
+  "shareShort": "Share",
+  "shareScheme": "Share this scheme",
+  "shareWhatsApp": "WhatsApp",
+  "copyLink": "Copy link",
+  "linkCopied": "Link copied"
 }

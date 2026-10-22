@@ -9,6 +9,7 @@ import { useVocabulary } from '../hooks/useVocabulary';
 import { useCardText } from '../services/titleTranslations';
 import { BookmarkButton } from '../components/BookmarkButton';
 import { CompareButton } from '../components/CompareButton';
+import { ShareButton } from '../components/ShareButton';
 import { LoadError } from '../components/LoadError';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import {
@@ -369,6 +370,14 @@ export const SchemeDetail: React.FC = () => {
                   className="p-3 bg-surface-container dark:bg-zinc-800 border-none w-12 h-12 flex items-center justify-center"
                 />
                 <span className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('saveShort')}</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <ShareButton
+                  schemeId={translatedScheme.id}
+                  schemeName={translatedScheme.name}
+                  className="p-3 bg-surface-container dark:bg-zinc-800 border-none w-12 h-12 flex items-center justify-center"
+                />
+                <span className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('shareShort')}</span>
               </div>
             </div>
 
