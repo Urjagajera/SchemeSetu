@@ -46,3 +46,12 @@ describe('Footer tells the truth', () => {
     expect(screen.getByText('© 2026 SchemeSetu. All rights reserved.')).toBeTruthy();
   });
 });
+
+describe('Footer links on the home page', () => {
+  it('go to the real pages, not all to the login page', () => {
+    const { container } = render(<MemoryRouter initialEntries={['/']}><Footer /></MemoryRouter>);
+    const hrefs = [...container.querySelectorAll('a')].map((a) => a.getAttribute('href'));
+    expect(hrefs).toEqual(expect.arrayContaining(['/search', '/eligibility', '/ai', '/help']));
+    expect(hrefs).not.toContain('/login');
+  });
+});

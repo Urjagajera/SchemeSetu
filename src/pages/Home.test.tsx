@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { render, screen, act, fireEvent } from '@testing-library/react';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 
 const mocks = vi.hoisted(() => ({
   getSchemes: vi.fn(),
@@ -20,6 +20,9 @@ vi.mock('../components/Hero', () => ({ Hero: () => null }));
 vi.mock('../components/SchemeCard', () => ({ SchemeCard: () => null }));
 
 import { Home } from './Home';
+import { TRANSLATIONS } from '../constants/translations';
+
+const en = (TRANSLATIONS as unknown as Record<string, Record<string, string>>).en;
 
 beforeEach(() => {
   mocks.getSchemes.mockReset();
@@ -67,5 +70,43 @@ describe('Home stats bar', () => {
   it('has no newsletter form', async () => {
     await renderHome();
     expect(document.querySelector('input[type="email"]')).toBeNull();
+  });
+});
+
+describe('Home buttons open the public pages, not the login page', () => {
+  const Where = () => {
+    const { pathname, search } = useLocation();
+    return <output data-testid="where">{pathname + search}</output>;
+  };
+  const where = () => screen.getByTestId('where').textContent;
+  const renderWithWhere = async () => {
+    render(<MemoryRouter><Home /><Where /></MemoryRouter>);
+    await act(async () => {});
+  };
+
+  it('"View all schemes" opens Search', async () => {
+    await renderWithWhere();
+    fireEvent.click(screen.getByRole('button', { name: /View all/i }));
+    expect(where()).toBe('/search');
+  });
+
+  it('"Find schemes for me" opens the eligibility checker', async () => {
+    await renderWithWhere();
+    fireEvent.click(screen.getByRole('button', { name: en.findForMeBtn }));
+    expect(where()).toBe('/eligibility');
+  });
+
+  it.each([
+    ['scholarships', 'education'],
+    ['healthInsurance', 'health'],
+    ['farmerLoans', 'agriculture'],
+    ['housing', 'housing'],
+    ['employment', 'jobs'],
+    ['womenAndChild', 'women'],
+    ['seniorCitizens', 'pension'],
+  ])('the %s card opens Search on the %s topic', async (key, topic) => {
+    await renderWithWhere();
+    fireEvent.click(screen.getAllByText(en[key])[0]);
+    expect(where()).toBe('/search?topic=' + topic);
   });
 });

@@ -28,3 +28,21 @@ describe.each(['en', 'hi', 'gu'] as const)('Navbar in %s', (lang) => {
     expect(screen.queryAllByText(dict[lang].shLanguage).length).toBeGreaterThan(0);
   });
 });
+
+describe('the Login button remembers the page you are on', () => {
+  const loginHrefs = () => [...document.querySelectorAll('a')].map((a) => a.getAttribute('href')).filter((h) => h?.startsWith('/login'));
+
+  it('on a search, both Login links (desktop and phone menu) come back to that search', () => {
+    render(<MemoryRouter initialEntries={['/search?q=farmer']}><Navbar /></MemoryRouter>);
+    const inPhoneBar = [...document.querySelectorAll('button')].filter((b) => (b.parentElement?.className ?? '').includes('md:hidden'));
+    fireEvent.click(inPhoneBar[inPhoneBar.length - 1]);
+    const hrefs = loginHrefs();
+    expect(hrefs.length).toBe(2);
+    for (const h of hrefs) expect(h).toBe('/login?redirect=%2Fsearch%3Fq%3Dfarmer');
+  });
+
+  it('on the home page, Login is plain', () => {
+    render(<MemoryRouter initialEntries={['/']}><Navbar /></MemoryRouter>);
+    expect(loginHrefs()).toEqual(['/login']);
+  });
+});
