@@ -1,5 +1,5 @@
 {
-  "appName": "સ્કીમસેટુ",
+  "appName": "સ્કીમસેતુ",
   "slogan": "સંપર્ક દ્વારા નાગરિકોને સશક્ત બનાવવું",
   "heroBadge": "કેન્દ્ર અને રાજ્યની યોજનાઓ એક જ જગ્યાએ",
   "heroTitle": "સાચી યોજના, તમારા હક્ક માટે.",
@@ -215,10 +215,10 @@
   "history": "ઇતિહાસ",
   "newChat": "નવી ચેટ",
   "clearHistory": "ઇતિહાસ ક્લિયર કરો",
-  "askAssistant": "સેટુએઆઈ સહાયકને પૂછો",
+  "askAssistant": "સેતુએઆઈ સહાયકને પૂછો",
   "assistantIntro": "સામાન્ય યોજનાઓ વિશે ઝડપી જવાબો. આ લાઇવ સહાયક નથી.",
   "suggestedQuestions": "સૂચિત પ્રશ્નો",
-  "assistantTyping": "સેટુએઆઈ ટાઇપ કરી રહ્યું છે...",
+  "assistantTyping": "સેતુએઆઈ ટાઇપ કરી રહ્યું છે...",
   "typeQueryHere": "અહીં તમારો પ્રશ્ન ટાઇપ કરો...",
   "more": "વધુ",
   "resources": "સંસાધનો",
@@ -473,7 +473,7 @@
   "qpNothingToSave": "સાચવવા માટે ઓછામાં ઓછા એક પ્રશ્નનો જવાબ આપો.",
   "filterFromProfile": "તમારી પ્રોફાઇલમાંથી ભરેલું",
   "filterUseProfile": "મારી પ્રોફાઇલનો ઉપયોગ કરો",
-  "loadErrorTitle": "Couldn't reach SchemeSetu",
-  "loadErrorDesc": "Check your internet connection, then try again.",
-  "retry": "Try again"
+  "loadErrorTitle": "સ્કીમસેતુ સાથે સંપર્ક થઈ શક્યો નથી",
+  "loadErrorDesc": "તમારું ઇન્ટરનેટ કનેક્શન તપાસો, પછી ફરી પ્રયાસ કરો.",
+  "retry": "ફરી પ્રયાસ કરો"
 }
