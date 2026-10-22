@@ -1,5 +1,7 @@
 import React from 'react';
 import { ArrowLeftRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { useCompare } from '../contexts/CompareContext';
 import { useTranslation } from '../contexts/LanguageContext';
 import { Scheme } from '../types';
@@ -12,11 +14,18 @@ interface CompareButtonProps {
 
 export const CompareButton: React.FC<CompareButtonProps> = ({ scheme, className }) => {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const { isInCompare, addToCompare, removeFromCompare } = useCompare();
   const checked = isInCompare(scheme.id);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    // The Compare page needs a login, so a guest signs in first and comes back here, as with bookmarks.
+    if (!isAuthenticated) {
+      navigate('/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search));
+      return;
+    }
     if (checked) {
       removeFromCompare(scheme.id);
     } else {
