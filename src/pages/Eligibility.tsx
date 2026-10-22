@@ -14,6 +14,7 @@ import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import Sidebar from '../components/Sidebar';
 import { QuickProfileForm } from '../components/QuickProfileForm';
 import { profileCompleteness } from '../utils/profileCompleteness';
+import { ageFromDob } from '../utils/ageFromDob';
 import { cn } from '../utils/cn';
 import { 
   User, 
@@ -145,6 +146,12 @@ export const Eligibility: React.FC = () => {
 
   const handleInputChange = (field: keyof UserProfile, value: string) => {
     setGuestProfile(prev => ({ ...prev, [field]: value }));
+  };
+
+  // A guest gives a date of birth; the age the matcher uses is worked out from it (nothing is saved).
+  const handleDobChange = (dob: string) => {
+    const age = ageFromDob(dob);
+    setGuestProfile(prev => ({ ...prev, dob, age: age === null ? '' : String(age) }));
   };
 
   if (isAuthenticated && !completeness.isComplete) {
@@ -424,18 +431,23 @@ export const Eligibility: React.FC = () => {
               className="space-y-4"
             >
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                  {t('wzAge')}
+                <label htmlFor="wz-dob" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                  {t('pfDob')}
                 </label>
                 <input
-                  type="number"
-                  min="1"
-                  max="110"
-                  value={guestProfile.age}
-                  onChange={(e) => handleInputChange('age', e.target.value)}
+                  id="wz-dob"
+                  type="date"
+                  max={new Date().toISOString().slice(0, 10)}
+                  value={guestProfile.dob ?? ''}
+                  onChange={(e) => handleDobChange(e.target.value)}
+                  aria-describedby="wz-age"
                   className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-850 dark:text-white text-sm focus:ring-secondary focus:border-secondary py-2.5 px-3"
                   required
                 />
+                {/* The age it gives, shown but never typed */}
+                <p id="wz-age" className="text-[11px] text-on-surface-variant dark:text-zinc-500">
+                  {guestProfile.age ? `${t('pfAge')}: ${guestProfile.age} · ${t('ageFromDobNote')}` : t('ageFromDobNote')}
+                </p>
               </div>
 
               <div className="space-y-1.5">

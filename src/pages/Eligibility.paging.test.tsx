@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, act, within } from '@testing-library/react';
+import { render, screen, act, within, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { makeScheme } from '../test/factories';
@@ -52,7 +52,8 @@ beforeEach(() => {
 async function reachResults() {
   const user = userEvent.setup();
   render(<MemoryRouter><Eligibility /></MemoryRouter>);
-  await user.type(document.querySelector('input[type="number"]') as HTMLInputElement, '30');
+  // Born on 1 January thirty years ago is 30 on any day of this year.
+  fireEvent.change(document.querySelector('input[type="date"]') as HTMLInputElement, { target: { value: `${new Date().getFullYear() - 30}-01-01` } });
   await user.click(screen.getByRole('button', { name: dictWord('next') }));
   await user.type(document.querySelector('input[type="number"]') as HTMLInputElement, '100000');
   await user.click(screen.getByRole('button', { name: dictWord('next') }));

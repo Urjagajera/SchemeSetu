@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import fs from 'node:fs';
@@ -48,23 +48,23 @@ describe('QuickProfileForm: answer the missing profile questions in place', () =
   it('saves to the profile only the answers given, leaving everything else as it is', async () => {
     const user = userEvent.setup();
     render(ui());
-    await user.type(screen.getByLabelText('Age'), '34');
+    fireEvent.change(screen.getByLabelText('Date of Birth'), { target: { value: '1990-05-01' } });
     await user.selectOptions(screen.getByLabelText('State'), 'Kerala');
     await user.selectOptions(screen.getByLabelText('Occupation'), 'farmer');
     await user.type(screen.getByLabelText('Annual family income'), '120000');
     await user.click(screen.getByRole('button', { name: SAVE }));
     expect(mocks.updateProfile).toHaveBeenCalledTimes(1);
-    expect(mocks.updateProfile.mock.calls[0][0]).toEqual({ age: '34', state: 'Kerala', occupation: 'farmer', income: '120000' });
+    expect(mocks.updateProfile.mock.calls[0][0]).toEqual({ dob: '1990-05-01', state: 'Kerala', occupation: 'farmer', income: '120000' });
   });
 
-  it('checks age and income like the profile form does, and saves nothing until they are right', async () => {
+  it('checks the date of birth and income like the profile form does, and saves nothing until they are right', async () => {
     const user = userEvent.setup();
     render(ui());
-    await user.type(screen.getByLabelText('Age'), '150');
+    fireEvent.change(screen.getByLabelText('Date of Birth'), { target: { value: '2999-01-01' } });
     await user.type(screen.getByLabelText('Annual family income'), '12.5');
     await user.click(screen.getByRole('button', { name: SAVE }));
     expect(mocks.updateProfile).not.toHaveBeenCalled();
-    expect(screen.getByText('Age must be a whole number between 1 and 120')).not.toBeNull();
+    expect(screen.getByText('Enter a real date of birth that is not in the future')).not.toBeNull();
     expect(screen.getByText('Income must be a whole number of rupees, 0 or more')).not.toBeNull();
   });
 
@@ -77,13 +77,13 @@ describe('QuickProfileForm: answer the missing profile questions in place', () =
   });
 
   it('shows a failed save, and the field the server objected to', async () => {
-    mocks.updateProfile.mockRejectedValue(new ProfileSaveError('bad', { age: 'Age must be 1 to 120' }));
+    mocks.updateProfile.mockRejectedValue(new ProfileSaveError('bad', { dob: 'Date of birth must be a real date' }));
     const user = userEvent.setup();
     render(ui());
-    await user.type(screen.getByLabelText('Age'), '40');
+    fireEvent.change(screen.getByLabelText('Date of Birth'), { target: { value: '1985-02-10' } });
     await user.click(screen.getByRole('button', { name: SAVE }));
     expect(screen.getByRole('alert').textContent).toBe("We couldn't save your profile. Please try again.");
-    expect(screen.getByText('Age must be 1 to 120')).not.toBeNull();
+    expect(screen.getByText('Date of birth must be a real date')).not.toBeNull();
   });
 
   it('disappears once the profile has every answer', () => {

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { User } from 'lucide-react';
 import { useAuth, ProfileSaveError } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
+import { ageFromDob } from '../utils/ageFromDob';
 import { useStates } from '../hooks/useStates';
 import { useVocabulary } from '../hooks/useVocabulary';
 import { stateLabel } from '../utils/stateLabel';
@@ -25,7 +26,8 @@ const SELECT_OPTIONS: Partial<Record<EligibilityField, Array<[string, Key]>>> = 
 
 /** Same rules as the full profile form. */
 const CHECKS: Partial<Record<EligibilityField, { test: (v: string) => boolean; message: Key }>> = {
-  age: { test: (v) => /^\d{1,3}$/.test(v) && Number(v) >= 1 && Number(v) <= 120, message: 'pfErrAge' },
+  // The age question is answered with a date of birth (YYYY-MM-DD, not in the future); the age comes from it.
+  age: { test: (v) => /^\d{4}-\d{2}-\d{2}$/.test(v) && Number(v.slice(0, 4)) >= 1900 && ageFromDob(v) !== null, message: 'pfErrDob' },
   income: { test: (v) => /^\d{1,12}$/.test(v), message: 'pfErrIncome' },
 };
 
@@ -80,11 +82,18 @@ export const QuickProfileForm: React.FC<{ className?: string }> = ({ className }
       return;
     }
 
+    // The answer to the age question is a date of birth: it is saved as that, and the server works the age out.
+    const { age: dob, ...rest } = given;
+    const toSave = dob ? { ...rest, dob } : rest;
+
     try {
       setSaving(true);
-      await updateProfile(given);
+      await updateProfile(toSave);
     } catch (err) {
-      const fieldsFromServer = err instanceof ProfileSaveError ? err.fields : {};
+      const fromServer = err instanceof ProfileSaveError ? err.fields : {};
+      // The age question was saved as a date of birth, so the server's word on 'dob' belongs under it.
+      const { dob: dobProblem, ...others } = fromServer;
+      const fieldsFromServer = dobProblem ? { ...others, age: dobProblem } : others;
       setErrors(Object.fromEntries(Object.entries(fieldsFromServer).filter(([f]) => fields.includes(f as EligibilityField))));
       setSaveError(t('pfSaveFailed'));
     } finally {
@@ -126,19 +135,37 @@ export const QuickProfileForm: React.FC<{ className?: string }> = ({ className }
           return (
             <div key={f} className="space-y-1">
               <label htmlFor={id} className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
-                {t(ELIGIBILITY_FIELD_LABELS[f])}
+                {f === 'age' ? t('pfDob') : t(ELIGIBILITY_FIELD_LABELS[f])}
               </label>
-              {f === 'age' || f === 'income' ? (
+              {f === 'age' ? (
+                <>
+                  <input
+                    id={id}
+                    type="date"
+                    max={new Date().toISOString().slice(0, 10)}
+                    value={answers.age ?? ''}
+                    onChange={(e) => set('age', e.target.value)}
+                    aria-invalid={!!errors.age}
+                    aria-describedby={`${id}-age`}
+                    className={inputClass}
+                  />
+                  {/* The age it gives, shown but never typed */}
+                  <p id={`${id}-age`} className="text-[10px] text-on-surface-variant dark:text-zinc-500">
+                    {ageFromDob(answers.age) !== null
+                      ? `${t('pfAge')}: ${ageFromDob(answers.age)} · ${t('ageFromDobNote')}`
+                      : t('ageFromDobNote')}
+                  </p>
+                </>
+              ) : f === 'income' ? (
                 <input
                   id={id}
                   type="number"
                   inputMode="numeric"
-                  min={f === 'age' ? 1 : 0}
-                  max={f === 'age' ? 120 : undefined}
-                  step={f === 'income' ? 10000 : 1}
+                  min={0}
+                  step={10000}
                   value={answers[f] ?? ''}
                   onChange={(e) => set(f, e.target.value)}
-                  placeholder={f === 'age' ? t('enterAge') : t('enterIncome')}
+                  placeholder={t('enterIncome')}
                   aria-invalid={!!errors[f]}
                   className={inputClass}
                 />

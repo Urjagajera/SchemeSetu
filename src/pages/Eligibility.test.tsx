@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -24,9 +24,9 @@ vi.mock('../services/eligibilityService', () => ({ eligibilityService: { getElig
 import { Eligibility } from './Eligibility';
 
 const WORDS = {
-  en: { title: 'Find Matching Schemes', next: 'Next', age: 'Enter Your Age', gender: 'Gender', state: 'Select Your State', occupation: 'Select Your Occupation', income: 'Declared Annual Income (₹)', category: 'Social Category', residence: 'Residence Area', land: 'Own Cultivable Land?', prev: 'Previous', find: 'Find Schemes', none: "No matching welfare schemes found. Let's adjust criteria.", guest: 'Guest Eligibility Matches', male: 'Male', select: 'Select…', yes: 'Yes', rural: 'Rural' },
-  hi: { title: 'अपने लिए योजनाएँ खोजें', next: 'अगला', age: 'अपनी आयु दर्ज करें', gender: 'लिंग', state: 'अपना राज्य चुनें', occupation: 'अपना व्यवसाय चुनें', income: 'घोषित वार्षिक आय (₹)', category: 'सामाजिक श्रेणी', residence: 'निवास क्षेत्र', land: 'क्या खेती योग्य भूमि के मालिक हैं?', prev: 'पिछला', find: 'योजनाएँ खोजें', none: 'कोई मेल खाती कल्याणकारी योजना नहीं मिली। आइए मानदंड बदलकर देखें।', guest: 'अतिथि पात्रता परिणाम', male: 'पुरुष', select: 'चुनें…', yes: 'हाँ', rural: 'ग्रामीण' },
-  gu: { title: 'તમારા માટે યોજનાઓ શોધો', next: 'આગળ', age: 'તમારી ઉંમર દાખલ કરો', gender: 'લિંગ', state: 'તમારું રાજ્ય પસંદ કરો', occupation: 'તમારો વ્યવસાય પસંદ કરો', income: 'જાહેર કરેલી વાર્ષિક આવક (₹)', category: 'સામાજિક વર્ગ', residence: 'રહેઠાણ વિસ્તાર', land: 'શું ખેતીલાયક જમીન ધરાવો છો?', prev: 'પાછળ', find: 'યોજનાઓ શોધો', none: 'કોઈ મેળ ખાતી કલ્યાણ યોજના મળી નથી. ચાલો માપદંડ બદલીએ.', guest: 'મહેમાન પાત્રતા પરિણામો', male: 'પુરુષ', select: 'પસંદ કરો…', yes: 'હા', rural: 'ગ્રામીણ' },
+  en: { title: 'Find Matching Schemes', next: 'Next', age: 'Date of Birth', gender: 'Gender', state: 'Select Your State', occupation: 'Select Your Occupation', income: 'Declared Annual Income (₹)', category: 'Social Category', residence: 'Residence Area', land: 'Own Cultivable Land?', prev: 'Previous', find: 'Find Schemes', none: "No matching welfare schemes found. Let's adjust criteria.", guest: 'Guest Eligibility Matches', male: 'Male', select: 'Select…', yes: 'Yes', rural: 'Rural' },
+  hi: { title: 'अपने लिए योजनाएँ खोजें', next: 'अगला', age: 'जन्म तिथि', gender: 'लिंग', state: 'अपना राज्य चुनें', occupation: 'अपना व्यवसाय चुनें', income: 'घोषित वार्षिक आय (₹)', category: 'सामाजिक श्रेणी', residence: 'निवास क्षेत्र', land: 'क्या खेती योग्य भूमि के मालिक हैं?', prev: 'पिछला', find: 'योजनाएँ खोजें', none: 'कोई मेल खाती कल्याणकारी योजना नहीं मिली। आइए मानदंड बदलकर देखें।', guest: 'अतिथि पात्रता परिणाम', male: 'पुरुष', select: 'चुनें…', yes: 'हाँ', rural: 'ग्रामीण' },
+  gu: { title: 'તમારા માટે યોજનાઓ શોધો', next: 'આગળ', age: 'જન્મ તારીખ', gender: 'લિંગ', state: 'તમારું રાજ્ય પસંદ કરો', occupation: 'તમારો વ્યવસાય પસંદ કરો', income: 'જાહેર કરેલી વાર્ષિક આવક (₹)', category: 'સામાજિક વર્ગ', residence: 'રહેઠાણ વિસ્તાર', land: 'શું ખેતીલાયક જમીન ધરાવો છો?', prev: 'પાછળ', find: 'યોજનાઓ શોધો', none: 'કોઈ મેળ ખાતી કલ્યાણ યોજના મળી નથી. ચાલો માપદંડ બદલીએ.', guest: 'મહેમાન પાત્રતા પરિણામો', male: 'પુરુષ', select: 'પસંદ કરો…', yes: 'હા', rural: 'ગ્રામીણ' },
 } as const;
 
 beforeEach(() => {
@@ -47,7 +47,7 @@ async function walk(lang: 'en' | 'hi' | 'gu') {
   expect(text()).toContain(w.age);
   expect(text()).toContain(w.gender);
   const seen: string[] = [text()];
-  await user.type(document.querySelector('input[type="number"]') as HTMLInputElement, '30');
+  fireEvent.change(document.querySelector('input[type="date"]') as HTMLInputElement, { target: { value: `${new Date().getFullYear() - 30}-01-01` } });
   await user.click(screen.getByRole('button', { name: w.next }));
   // step 2
   seen.push(text());
