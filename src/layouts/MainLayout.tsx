@@ -7,6 +7,7 @@ import { Home, Search, Bot, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
 import { cn } from '../utils/cn';
+import { loginPath } from '../utils/loginPath';
 import { DataSourceBanner } from '../components/DataSourceBanner';
 
 export const MainLayout: React.FC = () => {
@@ -18,7 +19,7 @@ export const MainLayout: React.FC = () => {
     { label: t('shTabHome'), path: '/', icon: Home },
     { label: t('shTabSearch'), path: '/search', icon: Search },
     { label: t('shTabAssistant'), path: '/ai', icon: Bot },
-    { label: t('shTabAccount'), path: isAuthenticated ? '/dashboard' : '/login', icon: User }
+    { label: t('shTabAccount'), path: isAuthenticated ? '/dashboard' : loginPath(location.pathname, location.search), icon: User }
   ];
 
   // Some pages like full-page AI chat don't need a double footer or large margins

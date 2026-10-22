@@ -6,6 +6,7 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 import { ThemeToggle } from './ThemeProvider';
 import { LogOut, User, Menu, X, BookOpen, Compass, HelpCircle, Bot, LayoutDashboard } from 'lucide-react';
 import { useState } from 'react';
+import { loginPath } from '../utils/loginPath';
 
 export const Navbar: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -97,7 +98,7 @@ export const Navbar: React.FC = () => {
             </div>
           ) : (
             <Link
-              to="/login"
+              to={loginPath(location.pathname, location.search)}
               className="ml-2 rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white hover:bg-secondary transition-all shadow-sm active:scale-95"
             >
               {t('login')}
@@ -165,7 +166,7 @@ export const Navbar: React.FC = () => {
               </div>
             ) : (
               <Link
-                to="/login"
+                to={loginPath(location.pathname, location.search)}
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full text-center block rounded-lg bg-primary py-2.5 text-sm font-bold text-white hover:bg-secondary"
               >
