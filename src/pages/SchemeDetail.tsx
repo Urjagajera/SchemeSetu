@@ -9,6 +9,7 @@ import { useVocabulary } from '../hooks/useVocabulary';
 import { useCardText } from '../services/titleTranslations';
 import { BookmarkButton } from '../components/BookmarkButton';
 import { CompareButton } from '../components/CompareButton';
+import { LoadError } from '../components/LoadError';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import {
   ArrowLeft,
@@ -64,6 +65,9 @@ export const SchemeDetail: React.FC = () => {
   const [scheme, setScheme] = useState<Scheme | null>(null);
   const [related, setRelated] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
+  // The scheme could not be loaded (as opposed to not existing); Retry bumps `attempt`.
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   // True once we stopped asking about a translation that never finished: the page then says so instead of "translating…".
   const [pollGaveUp, setPollGaveUp] = useState(false);
   // Which sections show the English original instead of the translation. Not remembered: it resets with the page or the language.
@@ -75,24 +79,27 @@ export const SchemeDetail: React.FC = () => {
       if (!id) return;
       try {
         setLoading(true);
+        setLoadFailed(false);
         setPollGaveUp(false);
         const data = await schemeService.getSchemeById(id);
         setScheme(data);
 
         if (data) {
           // Related = other schemes from the same authority (the scheme's Category row is its authority).
-          const catalog = await schemeService.getSchemes({ ministry: data.authorityName, limit: 4 });
+          // If only these fail, the box is left out; the scheme itself is still worth showing.
+          const catalog = await schemeService.getSchemes({ ministry: data.authorityName, limit: 4 }).catch(() => ({ data: [] as Scheme[] }));
           setRelated(catalog.data.filter(s => s.id !== data.id).slice(0, 3));
         }
-      } catch (err) {
-        console.error(err);
+      } catch {
+        setScheme(null);
+        setLoadFailed(true);
       } finally {
         setLoading(false);
       }
     };
 
     loadSchemeDetails();
-  }, [id, language]);
+  }, [id, language, attempt]);
 
   // Translated ministry/state names and tags, and the titles of the related-scheme cards, for the chosen language.
   const { vocab, loading: vocabLoading } = useVocabulary(language);
@@ -111,7 +118,8 @@ export const SchemeDetail: React.FC = () => {
         if (!cancelled) setPollGaveUp(true);
         return;
       }
-      const fresh = await schemeService.getSchemeById(id);
+      // A failed check is simply tried again on the next tick.
+      const fresh = await schemeService.getSchemeById(id).catch(() => null);
       if (cancelled || !fresh) return;
       setScheme(prev => (prev ? { ...prev, translation: fresh.translation } : prev));
     }, 3000);
@@ -181,6 +189,14 @@ export const SchemeDetail: React.FC = () => {
   const shownEligibility = englishSections.eligibility && canToggle.eligibility ? englishEligibility : eligibilityItems;
   const shownDocuments = englishSections.documents && canToggle.documents ? englishDocuments : documentItems;
   const shownProcess = englishSections.howToApply && canToggle.howToApply ? englishProcess : applicationProcess;
+
+  if (loadFailed) {
+    return (
+      <div className="flex-1 max-w-xl mx-auto w-full px-4 py-20">
+        <LoadError onRetry={() => setAttempt((n) => n + 1)} />
+      </div>
+    );
+  }
 
   if (!translatedScheme) {
     return (

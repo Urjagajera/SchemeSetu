@@ -472,5 +472,8 @@
   "qpMoreLink": "प्रोफ़ाइल में और जानकारी जोड़ें",
   "qpNothingToSave": "सहेजने के लिए कम से कम एक प्रश्न का उत्तर दें।",
   "filterFromProfile": "आपकी प्रोफ़ाइल से भरा गया",
-  "filterUseProfile": "मेरी प्रोफ़ाइल का उपयोग करें"
+  "filterUseProfile": "मेरी प्रोफ़ाइल का उपयोग करें",
+  "loadErrorTitle": "Couldn't reach SchemeSetu",
+  "loadErrorDesc": "Check your internet connection, then try again.",
+  "retry": "Try again"
 }

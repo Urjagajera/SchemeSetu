@@ -295,8 +295,9 @@ export const schemeService = {
       ingestCardText(getActiveLang(), response.data?.translation, data.map((s) => s.id));
       return { data, total };
     } catch (error) {
-      console.warn('[schemeService.getSchemes] Backend not available — using local mock data.', (error as Error).message);
-      return localSchemeList(filters);
+      // No sample schemes here: the page shows an error with Retry instead (LoadError).
+      console.warn('[schemeService.getSchemes] Could not load schemes.', (error as Error).message);
+      throw error;
     }
   },
 
@@ -310,8 +311,8 @@ export const schemeService = {
       if (!Array.isArray(data.topics) || !Array.isArray(data.states)) throw new Error('[schemeService.getFilterOptions] Invalid response shape.');
       return data;
     } catch (error) {
-      console.warn('[schemeService.getFilterOptions] Backend not available — deriving filter options locally.', (error as Error).message);
-      return localFilterOptions();
+      console.warn('[schemeService.getFilterOptions] Could not load the filter options.', (error as Error).message);
+      throw error;
     }
   },
 
@@ -328,8 +329,10 @@ export const schemeService = {
       // The server sends the translation state next to the English scheme; keep it on the scheme.
       return response.data?.translation ? ({ ...raw, translation: response.data.translation } as Scheme) : (raw as Scheme);
     } catch (error) {
-      console.warn(`[schemeService.getSchemeById] Backend not available — finding scheme "${id}" locally.`, (error as Error).message);
-      return getLocalSchemeById(id);
+      // A 404 is the server saying there is no such scheme; anything else is a failure to load it.
+      if (axios.isAxiosError(error) && error.response?.status === 404) return null;
+      console.warn(`[schemeService.getSchemeById] Could not load scheme "${id}".`, (error as Error).message);
+      throw error;
     }
   },
 
@@ -346,8 +349,8 @@ export const schemeService = {
       ingestCardText(getActiveLang(), response.data?.translation, featured.map((s: any) => s.id));
       return featured;
     } catch (error) {
-      console.warn('[schemeService.getFeaturedSchemes] Backend not available — filtering featured schemes locally.', (error as Error).message);
-      return getLocalFeaturedSchemes();
+      console.warn('[schemeService.getFeaturedSchemes] Could not load the featured schemes.', (error as Error).message);
+      throw error;
     }
   },
 

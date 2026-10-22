@@ -12,6 +12,7 @@ import { ABOUT_YOU_FIELDS, aboutYouFromProfile, hasAboutYou, useSearchFilters } 
 import { Pagination } from '../components/Pagination';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import { EmptyState } from '../components/EmptyState';
+import { LoadError } from '../components/LoadError';
 import Sidebar from '../components/Sidebar';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { cn } from '../utils/cn';
@@ -27,6 +28,9 @@ export const Search: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [totalSchemes, setTotalSchemes] = useState(0);
   const [options, setOptions] = useState<FilterOptions | null>(null);
+  // Set when the results could not be loaded; Retry bumps `attempt` to ask again for them and for the filter options.
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   // A signed-in user's "About you" filters start from their saved profile, once per visit, unless the link already
   // says something about them. Clearing them afterwards is respected; "Use my profile" puts them back.
@@ -50,9 +54,9 @@ export const Search: React.FC = () => {
   // Every option list (topics, occupations, states, ministries...) with counts, in one request.
   useEffect(() => {
     let alive = true;
-    schemeService.getFilterOptions().then((o) => { if (alive) setOptions(o); }).catch(console.error);
+    schemeService.getFilterOptions().then((o) => { if (alive) setOptions(o); }).catch(console.error); // the results still work without the option lists
     return () => { alive = false; };
-  }, []);
+  }, [attempt]);
 
   // All filtering happens in the database (or, in mock mode, in schemeService): this page only asks for one page.
   // Typed values (age, income, search) wait a moment so every keystroke is not a request.
@@ -60,6 +64,7 @@ export const Search: React.FC = () => {
   useEffect(() => {
     let alive = true;
     setLoading(true);
+    setLoadFailed(false);
     const timer = setTimeout(async () => {
       try {
         const age = parseInt(filters.age, 10);
@@ -81,8 +86,8 @@ export const Search: React.FC = () => {
         if (!alive) return;
         setSchemes(Array.isArray(results.data) ? results.data : []);
         setTotalSchemes(results.total);
-      } catch (err) {
-        console.error(err);
+      } catch {
+        if (alive) setLoadFailed(true);
       } finally {
         if (alive) setLoading(false);
       }
@@ -90,7 +95,7 @@ export const Search: React.FC = () => {
     return () => { alive = false; clearTimeout(timer); };
     // filterKey stands for every field of `filters`
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterKey, currentPage]);
+  }, [filterKey, currentPage, attempt]);
 
   const totalPages = Math.ceil(totalSchemes / itemsPerPage) || 1;
 
@@ -190,7 +195,7 @@ export const Search: React.FC = () => {
           {/* Sorting panel */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white dark:bg-zinc-900 p-4 border border-outline-variant dark:border-zinc-800 rounded-xl transition-colors">
             <span className="text-xs md:text-sm font-bold text-on-surface-variant dark:text-zinc-400">
-              {loading ? t('searching') : `${totalSchemes} ${t('schemesFound')}`}
+              {loading ? t('searching') : loadFailed ? '' : `${totalSchemes} ${t('schemesFound')}`}
             </span>
           </div>
 
@@ -199,6 +204,8 @@ export const Search: React.FC = () => {
           {/* Catalog view */}
           {loading ? (
             <LoadingSkeleton count={3} />
+          ) : loadFailed ? (
+            <LoadError onRetry={() => setAttempt((n) => n + 1)} />
           ) : schemes.length > 0 ? (
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

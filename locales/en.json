@@ -472,5 +472,8 @@
   "qpMoreLink": "Add more details in your profile",
   "qpNothingToSave": "Answer at least one question to save.",
   "filterFromProfile": "Filled in from your profile",
-  "filterUseProfile": "Use my profile"
+  "filterUseProfile": "Use my profile",
+  "loadErrorTitle": "Couldn't reach SchemeSetu",
+  "loadErrorDesc": "Check your internet connection, then try again.",
+  "retry": "Try again"
 }
