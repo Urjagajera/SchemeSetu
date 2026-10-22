@@ -363,10 +363,10 @@ export const AIAssistant: React.FC = () => {
       </aside>
 
       {/* Main Chat Panel */}
-      <div className="flex-grow flex flex-col justify-between max-w-4xl mx-auto w-full relative">
-        
+      <div className="flex-grow flex flex-col min-h-0 max-w-4xl mx-auto w-full">
+
         {/* Chat Feed */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar pb-24">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
           <AnimatePresence>
             {activeConv && activeConv.messages.map(msg => {
               const isAI = msg.sender === 'ai';
@@ -440,8 +440,8 @@ export const AIAssistant: React.FC = () => {
           <div ref={chatEndRef} />
         </div>
 
-        {/* Input Bar Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background via-background/95 to-transparent dark:from-zinc-950 dark:via-zinc-950/95">
+        {/* Input Bar: its own row under the feed, so it never covers a message */}
+        <div className="shrink-0 px-4 pt-3 pb-4 border-t border-outline-variant dark:border-zinc-800 bg-background dark:bg-zinc-950">
           <div className="max-w-2xl mx-auto space-y-2">
             
             {/* Action Bar Input Box */}
