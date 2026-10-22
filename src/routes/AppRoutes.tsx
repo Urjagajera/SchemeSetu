@@ -58,11 +58,14 @@ export const AppRoutes: React.FC = () => {
               backend's /api/bookmarks route, not by gating this page. */}
           <Route path="/eligibility" element={<Eligibility />} />
 
+          {/* Browsing schemes is public: the scheme API needs no session, and both pages already
+              have a guest layout. Bookmarking (and comparing) a scheme still asks for login. */}
+          <Route path="/search" element={<Search />} />
+          <Route path="/schemes/:id" element={<SchemeDetail />} />
+
           {/* Conditional Protected Views */}
           {isAuthenticated ? (
             <>
-              <Route path="/search" element={<Search />} />
-              <Route path="/schemes/:id" element={<SchemeDetail />} />
               <Route path="/help" element={<Help />} />
               <Route path="/ai" element={<AIAssistant />} />
 
@@ -77,8 +80,6 @@ export const AppRoutes: React.FC = () => {
             </>
           ) : (
             <>
-              <Route path="/search" element={<Navigate to="/login?redirect=/search" replace />} />
-              <Route path="/schemes/:id" element={<Navigate to="/login?redirect=/search" replace />} />
               <Route path="/help" element={<Navigate to="/login?redirect=/help" replace />} />
               <Route path="/ai" element={<Navigate to="/login?redirect=/ai" replace />} />
               <Route path="/dashboard" element={<Navigate to="/login?redirect=/dashboard" replace />} />
