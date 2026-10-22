@@ -9,6 +9,7 @@ import { QuickProfileForm } from '../components/QuickProfileForm';
 import { profileCompleteness } from '../utils/profileCompleteness';
 import { SchemeCard } from '../components/SchemeCard';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
+import { LoadError } from '../components/LoadError';
 import { 
   ClipboardCheck, 
   ArrowRight, 
@@ -28,6 +29,9 @@ export const Dashboard: React.FC = () => {
   const [recommended, setRecommended] = useState<Scheme[]>([]);
   const [trending, setTrending] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
+  // The latest schemes could not be loaded; Retry bumps `attempt`. (The recommendations keep their own offline fallback.)
+  const [trendingFailed, setTrendingFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   // Determine profile completeness (the same fields the Eligibility page asks for, utils/profileCompleteness.ts)
   const completeness = profileCompleteness(profile);
@@ -37,9 +41,14 @@ export const Dashboard: React.FC = () => {
     const loadDashboardData = async () => {
       try {
         setLoading(true);
-        // Load trending
-        const allSchemes = await schemeService.getSchemes({ limit: 3 });
-        setTrending(allSchemes.data.slice(0, 3));
+        setTrendingFailed(false);
+        // Load trending; a failure here is shown in its own card and does not stop the recommendations
+        try {
+          const allSchemes = await schemeService.getSchemes({ limit: 3 });
+          setTrending(allSchemes.data.slice(0, 3));
+        } catch {
+          setTrendingFailed(true);
+        }
 
         // Load recommended
         const eligible = await schemeService.getEligibleSchemes(profile);
@@ -52,7 +61,7 @@ export const Dashboard: React.FC = () => {
     };
 
     loadDashboardData();
-  }, [profile]);
+  }, [profile, attempt]);
 
   const greeting = () => {
     const hr = new Date().getHours();
@@ -148,6 +157,8 @@ export const Dashboard: React.FC = () => {
                   </p>
                 </div>
               )
+            ) : trendingFailed ? (
+              <LoadError onRetry={() => setAttempt((n) => n + 1)} />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {trending.map(s => (

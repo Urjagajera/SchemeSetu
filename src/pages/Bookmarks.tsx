@@ -5,6 +5,7 @@ import { schemeService } from '../services/schemeService';
 import { Scheme } from '../types';
 import { SchemeCard } from '../components/SchemeCard';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
+import { LoadError } from '../components/LoadError';
 import { EmptyState } from '../components/EmptyState';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -15,11 +16,15 @@ export const Bookmarks: React.FC = () => {
   const { bookmarks, toggleBookmark, loading: bookmarksLoading } = useBookmarks();
   const [savedSchemes, setSavedSchemes] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
+  // The saved schemes could not be loaded; this must not look like 'no saved schemes'. Retry bumps `attempt`.
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     const loadSavedSchemes = async () => {
       try {
         setLoading(true);
+        setLoadFailed(false);
         if (bookmarks.length > 0) {
           // Fetch each saved scheme by id. The old approach filtered the first page of
           // the full list, which silently dropped any bookmark outside the first 20.
@@ -28,8 +33,8 @@ export const Bookmarks: React.FC = () => {
         } else {
           setSavedSchemes([]);
         }
-      } catch (err) {
-        console.error(err);
+      } catch {
+        setLoadFailed(true);
       } finally {
         setLoading(false);
       }
@@ -38,7 +43,7 @@ export const Bookmarks: React.FC = () => {
     if (!bookmarksLoading) {
       loadSavedSchemes();
     }
-  }, [bookmarks, bookmarksLoading]);
+  }, [bookmarks, bookmarksLoading, attempt]);
 
   const isPageLoading = bookmarksLoading || loading;
 
@@ -59,6 +64,8 @@ export const Bookmarks: React.FC = () => {
 
       {isPageLoading ? (
         <LoadingSkeleton count={3} />
+      ) : loadFailed ? (
+        <LoadError onRetry={() => setAttempt((n) => n + 1)} />
       ) : savedSchemes.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {savedSchemes.map(s => (

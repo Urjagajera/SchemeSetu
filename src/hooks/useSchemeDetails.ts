@@ -10,6 +10,10 @@ export interface SchemeDetails {
   details: Record<string, Scheme>;
   /** Ids whose first answer has not come back yet. */
   loadingIds: string[];
+  /** Ids whose detail could not be loaded (no connection, or the server failed). */
+  failedIds: string[];
+  /** Asks again for every scheme. */
+  retry: () => void;
 }
 
 /**
@@ -20,20 +24,28 @@ export interface SchemeDetails {
 export function useSchemeDetails(ids: string[], language: string): SchemeDetails {
   const [details, setDetails] = useState<Record<string, Scheme>>({});
   const [settled, setSettled] = useState<Record<string, boolean>>({});
+  const [failed, setFailed] = useState<Record<string, boolean>>({});
+  const [attempt, setAttempt] = useState(0);
   const key = ids.join(',');
 
   useEffect(() => {
     // A different language or a different set of schemes starts afresh; the old answers belong to the old language.
     setDetails({});
     setSettled({});
+    setFailed({});
     if (ids.length === 0) return;
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let polls = 0;
 
-    const fetchAll = async (only: string[]) => {
-      const results = await Promise.all(only.map(async (id) => [id, await schemeService.getSchemeById(id).catch(() => null)] as const));
+    const fetchAll = async (only: string[], first = false) => {
+      const failedNow: string[] = [];
+      const results = await Promise.all(
+        only.map(async (id) => [id, await schemeService.getSchemeById(id).catch(() => { failedNow.push(id); return null; })] as const),
+      );
       if (cancelled) return;
+      // Only the first fetch decides 'could not load'; a failed translation poll keeps what was already shown.
+      if (first) setFailed(Object.fromEntries(failedNow.map((id) => [id, true])));
       setDetails((prev) => {
         const next = { ...prev };
         for (const [id, scheme] of results) if (scheme) next[id] = scheme;
@@ -45,13 +57,18 @@ export function useSchemeDetails(ids: string[], language: string): SchemeDetails
         timer = setTimeout(() => void fetchAll(pending), POLL_MS);
       }
     };
-    void fetchAll(ids);
+    void fetchAll(ids, true);
     return () => {
       cancelled = true;
       if (timer) clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, language]);
+  }, [key, language, attempt]);
 
-  return { details, loadingIds: ids.filter((id) => !settled[id]) };
+  return {
+    details,
+    loadingIds: ids.filter((id) => !settled[id]),
+    failedIds: ids.filter((id) => failed[id]),
+    retry: () => setAttempt((n) => n + 1),
+  };
 }

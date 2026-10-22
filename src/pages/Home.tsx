@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useBookmarks } from '../hooks/useBookmarks';
 import { schemeService } from '../services/schemeService';
-import { Scheme } from '../types';
 import { useStates } from '../hooks/useStates';
 import { Hero } from '../components/Hero';
 import { StatCard } from '../components/StatCard';
@@ -18,8 +17,6 @@ export const Home: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { bookmarks, toggleBookmark } = useBookmarks();
-  const [featuredSchemes, setFeaturedSchemes] = useState<Scheme[]>([]);
-  const [loading, setLoading] = useState(true);
   // The figures in the stats bar come from the data itself, not from numbers typed in here.
   const [schemeTotal, setSchemeTotal] = useState<number | null>(null);
   const states = useStates();
@@ -35,20 +32,6 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     schemeService.getSchemes({ limit: 1 }).then((r) => setSchemeTotal(r.total)).catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    const loadFeatured = async () => {
-      try {
-        const schemes = await schemeService.getFeaturedSchemes();
-        setFeaturedSchemes(schemes);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadFeatured();
   }, []);
 
   useEffect(() => {

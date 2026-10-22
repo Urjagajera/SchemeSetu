@@ -7,6 +7,7 @@ import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
 import { translateScheme, applyServerTranslation, applyVocabulary } from '../utils/translationUtils';
 import { useSchemeDetails } from '../hooks/useSchemeDetails';
+import { LoadError } from '../components/LoadError';
 import { useVocabulary } from '../hooks/useVocabulary';
 import { useStoredTitles } from '../services/titleTranslations';
 
@@ -22,7 +23,7 @@ export const Compare: React.FC = () => {
   const storedTitles = useStoredTitles(comparedSchemes.map(s => s.id), language);
   // The list entries carry no eligibility, documents or full benefits, so each compared scheme's detail is fetched the
   // way the scheme page does it (at most 3). English shows until a field's translation is there.
-  const { details, loadingIds } = useSchemeDetails(comparedSchemes.map(s => s.id), language);
+  const { details, loadingIds, failedIds, retry } = useSchemeDetails(comparedSchemes.map(s => s.id), language);
   const translatedSchemes = comparedSchemes.map(s => {
     const full = details[s.id];
     const base = translateScheme(full ?? s, language);
@@ -76,6 +77,9 @@ export const Compare: React.FC = () => {
           </button>
         )}
       </div>
+
+      {/* Some schemes' details could not be loaded: their rows would be empty, so say why and offer Try again. */}
+      {failedIds.length > 0 && <LoadError onRetry={retry} />}
 
       {comparedSchemes.length === 0 ? (
         <div className="flex-grow flex items-center justify-center py-10">
