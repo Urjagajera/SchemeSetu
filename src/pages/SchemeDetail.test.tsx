@@ -361,3 +361,47 @@ describe('SchemeDetail when the scheme does not exist', () => {
     expect(shown('schemeNotFound')).toBe(true);
   });
 });
+
+describe('SchemeDetail when the scheme cannot be loaded', () => {
+  beforeEach(() => { mocks.language = 'en'; });
+
+  it('says it could not be loaded (not "not found") and offers Try again, which shows the scheme', async () => {
+    mocks.getSchemeById.mockRejectedValueOnce(new Error('Network Error')).mockResolvedValue(schemeWith());
+    await renderPage();
+    expect(screen.getByRole('alert').textContent).toContain('loadErrorTitle');
+    expect(shown('schemeNotFound')).toBe(false);
+
+    await act(async () => { screen.getByRole('button', { name: 'retry' }).click(); });
+    await advance(0);
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.getAllByText('English Title').length).toBeGreaterThan(0);
+  });
+
+  it('still says "not found" for a scheme the server says does not exist', async () => {
+    mocks.getSchemeById.mockResolvedValue(null);
+    await renderPage();
+    expect(shown('schemeNotFound')).toBe(true);
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  it('shows the scheme when only the related schemes fail to load', async () => {
+    mocks.getSchemeById.mockResolvedValue(schemeWith());
+    mocks.getSchemes.mockRejectedValue(new Error('Network Error'));
+    await renderPage();
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.getAllByText('English Title').length).toBeGreaterThan(0);
+    expect(shown('relatedSchemes')).toBe(false);
+  });
+
+  it('keeps showing the scheme when a translation check fails, and checks again', async () => {
+    mocks.language = 'hi';
+    mocks.getSchemeById.mockResolvedValueOnce(schemeWith(makeTranslation({ status: 'pending' }))).mockRejectedValueOnce(new Error('Network Error'));
+    await renderPage();
+    await advance(3000);
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.getAllByText('English Title').length).toBeGreaterThan(0);
+    mocks.getSchemeById.mockResolvedValue(schemeWith(makeTranslation({ status: 'ready', fields: { title: 'हिंदी शीर्षक' } })));
+    await advance(3000);
+    expect(screen.getAllByText('हिंदी शीर्षक').length).toBeGreaterThan(0);
+  });
+});

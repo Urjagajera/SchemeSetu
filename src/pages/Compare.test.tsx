@@ -263,3 +263,28 @@ describe('Compare page details', () => {
     expect(text()).not.toContain(HI.eligibility[0]);
   });
 });
+
+describe('Compare when a scheme\'s details cannot be loaded', () => {
+  beforeEach(() => { mocks.language = 'en'; });
+
+  it('says so above the table with Try again, which loads them', async () => {
+    mocks.getSchemeById.mockImplementation(async (id: string) => {
+      if (id === 'a') throw new Error('Network Error');
+      return { ...B, eligibilityRawText: ['Farmers only'] };
+    });
+    const { getByRole, queryByRole } = await view();
+    expect(getByRole('alert').textContent).toContain("Couldn't reach SchemeSetu");
+    expect(text()).toContain('Post Matric Scholarship'); // the table still shows what the list had
+
+    mocks.getSchemeById.mockImplementation(async (id: string) => ({ ...(id === 'a' ? A : B), eligibilityRawText: ['Students of class 11 and up'] }));
+    await act(async () => { getByRole('button', { name: 'Try again' }).click(); });
+    await act(async () => {});
+    expect(queryByRole('alert')).toBeNull();
+    expect(text()).toContain('Students of class 11 and up');
+  });
+
+  it('shows no error when the details load', async () => {
+    const { queryByRole } = await view();
+    expect(queryByRole('alert')).toBeNull();
+  });
+});

@@ -188,3 +188,31 @@ describe('Search page: About you starts from the saved profile', () => {
     expect(within(desktop()).queryByRole('button', { name: 'Use my profile' })).toBeNull();
   });
 });
+
+describe('Search page when the schemes cannot be loaded', () => {
+  it('says so with Try again instead of showing any schemes or a count, and Try again loads them', async () => {
+    mocks.getSchemes.mockRejectedValueOnce(new Error('Network Error'));
+    await renderAt('/search?q=loan');
+    const alert = screen.getByRole('alert');
+    expect(alert.textContent).toContain("Couldn't reach SchemeSetu");
+    expect(screen.queryByText('Scheme A')).toBeNull();
+    expect(screen.queryByText(/schemes found/)).toBeNull();
+
+    await userEvent.click(within(alert).getByRole('button', { name: 'Try again' }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(300); });
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.getByText('Scheme A')).toBeTruthy();
+    expect(screen.getByText(/41 schemes found/)).toBeTruthy();
+    expect(lastQuery()).toMatchObject({ query: 'loan' });
+  });
+
+  it('Try again also asks for the filter options again', async () => {
+    mocks.getSchemes.mockRejectedValueOnce(new Error('Network Error'));
+    mocks.getFilterOptions.mockReset().mockRejectedValueOnce(new Error('Network Error')).mockResolvedValue(OPTIONS);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await renderAt('/search');
+    await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
+    await act(async () => { await vi.advanceTimersByTimeAsync(300); });
+    expect(mocks.getFilterOptions).toHaveBeenCalledTimes(2);
+  });
+});
