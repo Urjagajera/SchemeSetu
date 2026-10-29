@@ -158,7 +158,7 @@ export const Eligibility: React.FC = () => {
     return (
       <div className="flex h-[calc(100vh-4rem)] overflow-hidden bg-background dark:bg-zinc-950 transition-colors w-full">
         <Sidebar activePage="eligibility" />
-        <main className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="flex-1 overflow-y-auto custom-scrollbar">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -176,7 +176,7 @@ export const Eligibility: React.FC = () => {
             {/* Answered and saved right here; once complete, the results below replace this. */}
             <QuickProfileForm />
           </motion.div>
-        </main>
+        </div>
       </div>
     );
   }
@@ -206,7 +206,7 @@ export const Eligibility: React.FC = () => {
     return (
       <div className="flex h-[calc(100vh-4rem)] overflow-hidden bg-background dark:bg-zinc-950 transition-colors w-full">
         <Sidebar activePage="eligibility" />
-        <main className="flex-1 overflow-y-auto custom-scrollbar">
+        <div className="flex-1 overflow-y-auto custom-scrollbar">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -295,7 +295,7 @@ export const Eligibility: React.FC = () => {
           )}
         </div>
       </motion.div>
-    </main>
+    </div>
   </div>
 );
 }
@@ -451,15 +451,16 @@ export const Eligibility: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                <span id="wz-gender-label" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
                   {t('genderLabel')}
-                </label>
-                <div className="grid grid-cols-3 gap-2">
+                </span>
+                <div role="group" aria-labelledby="wz-gender-label" className="grid grid-cols-3 gap-2">
                   {['male', 'female', 'other'].map(g => (
                     <button
                       key={g}
                       type="button"
                       onClick={() => handleInputChange('gender', g)}
+                      aria-pressed={guestProfile.gender === g}
                       className={cn(
                         "py-2.5 rounded-lg border text-xs font-semibold uppercase tracking-wide focus:outline-none transition-all",
                         guestProfile.gender === g
@@ -483,10 +484,10 @@ export const Eligibility: React.FC = () => {
               className="space-y-4"
             >
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                <label htmlFor="wz-state" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
                   {t('wzState')}
                 </label>
-                <select
+                <select id="wz-state"
                   value={guestProfile.state}
                   onChange={(e) => handleInputChange('state', e.target.value)}
                   className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-850 dark:text-white text-sm focus:ring-secondary focus:border-secondary py-2.5 px-3"
@@ -499,10 +500,10 @@ export const Eligibility: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                <label htmlFor="wz-occupation" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
                   {t('wzOccupation')}
                 </label>
-                <select
+                <select id="wz-occupation"
                   value={guestProfile.occupation}
                   onChange={(e) => handleInputChange('occupation', e.target.value)}
                   className="w-full rounded-lg border-outline-variant dark:border-zinc-750 dark:bg-zinc-850 dark:text-white text-sm focus:ring-secondary focus:border-secondary py-2.5 px-3"
@@ -515,10 +516,10 @@ export const Eligibility: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                <label htmlFor="wz-income" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
                   {t('wzIncome')}
                 </label>
-                <input
+                <input id="wz-income"
                   type="number"
                   min="0"
                   max="10000000"
@@ -540,15 +541,16 @@ export const Eligibility: React.FC = () => {
               className="space-y-4"
             >
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                <span id="wz-category-label" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
                   {t('socialCategory')}
-                </label>
-                <div className="grid grid-cols-4 gap-1.5">
+                </span>
+                <div role="group" aria-labelledby="wz-category-label" className="grid grid-cols-4 gap-1.5">
                   {['general', 'sc', 'st', 'obc'].map(cat => (
                     <button
                       key={cat}
                       type="button"
                       onClick={() => handleInputChange('category', cat)}
+                      aria-pressed={guestProfile.category === cat}
                       className={cn(
                         "py-2 rounded border text-[10px] font-bold uppercase tracking-wider focus:outline-none transition-all",
                         guestProfile.category === cat
@@ -563,15 +565,16 @@ export const Eligibility: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                <span id="wz-residence-label" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
                   {t('wzResidence')}
-                </label>
-                <div className="grid grid-cols-2 gap-3">
+                </span>
+                <div role="group" aria-labelledby="wz-residence-label" className="grid grid-cols-2 gap-3">
                   {['rural', 'urban'].map(res => (
                     <button
                       key={res}
                       type="button"
                       onClick={() => handleInputChange('residence', res)}
+                      aria-pressed={guestProfile.residence === res}
                       className={cn(
                         "py-2 rounded border text-xs font-bold uppercase tracking-wide focus:outline-none transition-all",
                         guestProfile.residence === res
@@ -586,15 +589,16 @@ export const Eligibility: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                <span id="wz-land-label" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
                   {t('pfLand')}
-                </label>
-                <div className="grid grid-cols-2 gap-3">
+                </span>
+                <div role="group" aria-labelledby="wz-land-label" className="grid grid-cols-2 gap-3">
                   {['yes', 'no'].map(l => (
                     <button
                       key={l}
                       type="button"
                       onClick={() => handleInputChange('land', l)}
+                      aria-pressed={guestProfile.land === l}
                       className={cn(
                         "py-2 rounded border text-xs font-bold uppercase tracking-wide focus:outline-none transition-all",
                         guestProfile.land === l

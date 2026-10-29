@@ -44,6 +44,8 @@ export const CompareButton: React.FC<CompareButtonProps> = ({ scheme, className 
         checked ? "text-secondary bg-secondary-container/20 border-secondary" : "text-on-surface-variant bg-white",
         className
       )}
+      type="button"
+      aria-label={checked ? t('shCmpRemove') : t('shCmpAdd')}
       title={checked ? t('shCmpRemove') : t('shCmpAdd')}
     >
       <ArrowLeftRight className="w-5 h-5" />

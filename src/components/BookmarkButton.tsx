@@ -39,6 +39,8 @@ export const BookmarkButton: React.FC<BookmarkButtonProps> = ({
         isBookmarked ? "text-secondary bg-secondary-container/20 border-secondary" : "text-on-surface-variant bg-white",
         className
       )}
+      type="button"
+      aria-label={isBookmarked ? t('shBmRemove') : t('shBmSave')}
       title={isBookmarked ? t('shBmRemove') : t('shBmSave')}
     >
       <Bookmark className={cn("w-5 h-5", isBookmarked && "fill-current")} />

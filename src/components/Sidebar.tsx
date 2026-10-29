@@ -96,7 +96,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activePage, hideToggle = false
       {/* Collapse toggle button at the bottom */}
       {!hideToggle && (
         <button
+          type="button"
           onClick={toggleCollapse}
+          aria-label={collapsed ? t('expandSidebar') : t('collapseSidebar')}
+          aria-expanded={!collapsed}
           className="absolute bottom-4 -right-3.5 bg-white border border-outline-variant dark:bg-zinc-850 dark:border-zinc-700 w-7 h-7 rounded-full flex items-center justify-center shadow-md text-on-surface hover:text-secondary focus:outline-none z-10"
         >
           {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}

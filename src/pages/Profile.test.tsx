@@ -243,3 +243,32 @@ describe('Profile form: age comes from the date of birth', () => {
     expect(screen.getByText('Add your date of birth to keep this up to date')).not.toBeNull();
   });
 });
+
+describe('Profile form: every field is named by its label (what a screen reader reads on it)', () => {
+  const P = 'Personal Information', E = 'Education Details', F = 'Financial Profile', L = 'Location & Address', S = 'Special Categories';
+  it.each([
+    [P, 'Name', 'name'], [P, 'Age', 'age'], [P, 'Date of Birth', 'dob'], [P, 'Gender', 'gender'],
+    [E, 'Education Qualification', 'education'], [F, 'Occupation', 'occupation'],
+    [F, 'Annual Family Income (₹)', 'income'], [F, 'Is a practicing Farmer?', 'farmer'], [F, 'Own Cultivable Land?', 'land'],
+    [L, 'State / Union Territory', 'state'], [L, 'District', 'district'], [L, 'Residence Area Type', 'residence'],
+    [S, 'Social Category', 'category'], [S, 'Belongs to Minority Community?', 'minority'], [S, 'Has Physical Disability?', 'disability'],
+    [S, 'Is a Widow / Widower?', 'widow'], [S, 'Is a Military Veteran?', 'veteran'],
+  ])('on %s, "%s" names the %s field', async (tab, label, name) => {
+    const { user } = setup();
+    await user.click(screen.getByRole('button', { name: tab }));
+    expect(screen.getByLabelText(label).getAttribute('name')).toBe(name);
+  });
+
+  it('labels are in the page language too', () => {
+    mocks.language = 'hi';
+    setup();
+    expect(screen.getByLabelText('जन्म तिथि').getAttribute('name')).toBe('dob');
+  });
+
+  it('the remove button on a chosen interest tag says which tag it removes', async () => {
+    mocks.profile = { profileTags: ['Farmer'] } as Partial<UserProfile>;
+    const { user } = setup();
+    await user.click(screen.getByRole('button', { name: S }));
+    expect(screen.getByRole('button', { name: 'Remove: Farmer' })).not.toBeNull();
+  });
+});

@@ -34,7 +34,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`w-full relative ${className}`}>
+    <form role="search" onSubmit={handleSubmit} className={`w-full relative ${className}`}>
       <div className="flex items-center bg-white dark:bg-zinc-900 rounded-full shadow-lg p-1.5 border border-outline-variant dark:border-zinc-800 focus-within:border-secondary transition-all">
         <Search className="ml-4 text-on-surface-variant dark:text-zinc-500 w-5 h-5 flex-shrink-0" />
         <input
@@ -43,6 +43,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           className="w-full border-none focus:outline-none focus:ring-0 bg-transparent px-4 py-3 font-body text-body text-on-surface dark:text-white outline-none placeholder:text-on-surface-variant/60 dark:placeholder:text-zinc-500 text-sm md:text-base"
+          aria-label={placeholder || t('searchPlaceholder')}
           placeholder={placeholder || t('searchPlaceholder')}
         />
         <button

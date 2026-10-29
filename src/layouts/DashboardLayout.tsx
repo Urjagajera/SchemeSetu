@@ -42,11 +42,12 @@ export const DashboardLayout: React.FC = () => {
     <div className="flex-1 flex h-[calc(100vh-4rem)] overflow-hidden bg-background dark:bg-zinc-950 transition-colors">
       <Sidebar activePage={getActivePageId()} hideToggle={isProfileOrSettingsPage} />
       
-      <main className="flex-1 overflow-y-auto custom-scrollbar flex flex-col justify-between">
+      {/* A plain container: the page's one main element is MainLayout's, which this sits inside. */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col justify-between">
         <div className="w-full">
           <Outlet />
         </div>
-      </main>
+      </div>
     </div>
   );
 };

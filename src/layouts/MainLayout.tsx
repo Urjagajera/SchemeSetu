@@ -27,10 +27,17 @@ export const MainLayout: React.FC = () => {
 
   return (
     <div className={`min-h-screen bg-background dark:bg-zinc-950 flex flex-col transition-colors pb-16 md:pb-0`}>
+      {/* First thing the keyboard reaches: jumps past the banner and menu. Hidden until it has focus. */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-white focus:text-primary focus:font-bold focus:shadow-lg dark:focus:bg-zinc-900 dark:focus:text-white"
+      >
+        {t('skipToContent')}
+      </a>
       <DataSourceBanner />
       <Navbar />
-      
-      <main className="flex-grow flex flex-col relative">
+
+      <main id="main-content" tabIndex={-1} className="flex-grow flex flex-col relative focus:outline-none">
         <Outlet />
       </main>
 

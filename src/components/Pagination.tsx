@@ -73,6 +73,8 @@ export const Pagination: React.FC<PaginationProps> = ({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className="p-2 rounded-lg border border-outline-variant bg-white text-on-surface hover:bg-surface-container-low disabled:opacity-50 disabled:pointer-events-none transition-colors focus:outline-none dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
+        type="button"
+        aria-label={t('shPrevPage')}
         title={t('shPrevPage')}
       >
         <ChevronLeft className="w-4 h-4" />
@@ -111,6 +113,8 @@ export const Pagination: React.FC<PaginationProps> = ({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         className="p-2 rounded-lg border border-outline-variant bg-white text-on-surface hover:bg-surface-container-low disabled:opacity-50 disabled:pointer-events-none transition-colors focus:outline-none dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
+        type="button"
+        aria-label={t('shNextPage')}
         title={t('shNextPage')}
       >
         <ChevronRight className="w-4 h-4" />

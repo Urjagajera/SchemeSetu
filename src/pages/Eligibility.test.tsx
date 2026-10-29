@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, act, fireEvent } from '@testing-library/react';
+import { render, screen, act, fireEvent, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -94,5 +94,29 @@ describe('Eligibility wizard: every step and the results screen in each language
     const sent = mocks.getEligibleSchemesPage.mock.calls[0][0];
     expect(sent.age).toBe('30');
     expect(sent.income).toBe('100000');
+  });
+});
+
+describe('Eligibility wizard: screen readers hear what each question is', () => {
+  it('the date of birth, state, occupation and income fields are named by their labels', async () => {
+    mocks.language = 'en';
+    const user = userEvent.setup();
+    render(<MemoryRouter><Eligibility /></MemoryRouter>);
+    expect(screen.getByLabelText('Date of Birth').getAttribute('type')).toBe('date');
+    fireEvent.change(screen.getByLabelText('Date of Birth'), { target: { value: `${new Date().getFullYear() - 30}-01-01` } });
+    await user.click(screen.getByRole('button', { name: 'Next' }));
+    expect(screen.getByLabelText('Select Your State').tagName).toBe('SELECT');
+    expect(screen.getByLabelText('Select Your Occupation').tagName).toBe('SELECT');
+    expect(screen.getByLabelText('Declared Annual Income (₹)').getAttribute('type')).toBe('number');
+  });
+
+  it('a row of choices is a named group, and each choice says whether it is picked', async () => {
+    mocks.language = 'en';
+    render(<MemoryRouter><Eligibility /></MemoryRouter>);
+    const group = screen.getByRole('group', { name: 'Gender' });
+    const male = within(group).getByRole('button', { name: 'Male' });
+    expect(male.getAttribute('aria-pressed')).toBe('false');
+    fireEvent.click(male);
+    expect(within(screen.getByRole('group', { name: 'Gender' })).getByRole('button', { name: 'Male' }).getAttribute('aria-pressed')).toBe('true');
   });
 });

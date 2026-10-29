@@ -115,7 +115,7 @@ export const Search: React.FC = () => {
     <div className={cn("flex-grow flex w-full", isAuthenticated ? "h-[calc(100vh-4rem)] overflow-hidden" : "min-h-[calc(100vh-4rem)]")}>
       {isAuthenticated && <Sidebar activePage="dashboard" />}
       
-      <main className={cn("flex-1 flex flex-col justify-between bg-background dark:bg-zinc-950 transition-colors w-full", isAuthenticated ? "overflow-y-auto custom-scrollbar" : "")}>
+      <div className={cn("flex-1 flex flex-col justify-between bg-background dark:bg-zinc-950 transition-colors w-full", isAuthenticated ? "overflow-y-auto custom-scrollbar" : "")}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -172,7 +172,7 @@ export const Search: React.FC = () => {
             >
               <div className="flex justify-between items-center pb-2 border-b dark:border-zinc-800">
                 <span className="font-bold text-primary dark:text-white text-sm">{t('refineSearch')}</span>
-                <button onClick={() => setMobileFilterOpen(false)} className="text-zinc-500 font-bold p-1">
+                <button type="button" onClick={() => setMobileFilterOpen(false)} aria-label={t('closeFilters')} className="text-zinc-500 font-bold p-1">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -240,7 +240,7 @@ export const Search: React.FC = () => {
       </div>
 
         </motion.div>
-      </main>
+      </div>
     </div>
   );
 };

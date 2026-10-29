@@ -391,6 +391,7 @@ export const SchemeDetail: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => window.print()}
+                  aria-label={t('printScheme')}
                   title={t('printScheme')}
                   className="p-3 rounded-full shadow-sm text-on-surface-variant bg-surface-container dark:bg-zinc-800 hover:bg-surface-container-low transition-colors focus:outline-none w-12 h-12 flex items-center justify-center"
                 >

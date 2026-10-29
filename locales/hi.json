@@ -486,5 +486,16 @@
   "officialSiteLabel": "आधिकारिक साइट:",
   "printedNote": "{date} को स्कीमसेतु से प्रिंट किया गया। नवीनतम जानकारी के लिए आधिकारिक पोर्टल देखें।",
   "ageFromDobNote": "आपकी जन्म तिथि से गणना की गई",
-  "ageAddDobNote": "इसे सही बनाए रखने के लिए अपनी जन्म तिथि जोड़ें"
+  "ageAddDobNote": "इसे सही बनाए रखने के लिए अपनी जन्म तिथि जोड़ें",
+  "skipToContent": "मुख्य सामग्री पर जाएँ",
+  "openMenu": "मेनू खोलें",
+  "closeMenu": "मेनू बंद करें",
+  "expandSidebar": "साइडबार फैलाएँ",
+  "collapseSidebar": "साइडबार छोटा करें",
+  "deleteConversation": "बातचीत हटाएँ",
+  "sendMessage": "संदेश भेजें",
+  "chooseLanguage": "भाषा",
+  "copyResponse": "जवाब कॉपी करें",
+  "responseCopied": "जवाब कॉपी हो गया",
+  "closeFilters": "फ़िल्टर बंद करें"
 }

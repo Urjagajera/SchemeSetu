@@ -70,6 +70,21 @@ export const AIAssistant: React.FC = () => {
 
   const activeConv = conversations.find(c => c.id === activeConvId);
 
+  // Screen readers hear each new reply once. Only a reply added to the open conversation counts: switching
+  // conversations (or loading the page) changes the list too, and reading all of it out would drown the user.
+  const [announcement, setAnnouncement] = useState('');
+  const seenRef = useRef<{ convId: string; count: number }>({ convId: '', count: 0 });
+  useEffect(() => {
+    const messages = activeConv?.messages ?? [];
+    const seen = seenRef.current;
+    const last = messages[messages.length - 1];
+    if (seen.convId === activeConvId && messages.length > seen.count && last?.sender === 'ai') {
+      setAnnouncement(last.text.replace(/\*\*/g, '')); // without the bold markers, which would be read out
+    }
+    seenRef.current = { convId: activeConvId, count: messages.length };
+    // The count, not the array: messages are pushed onto the same array, so its identity never changes.
+  }, [activeConvId, activeConv?.messages.length]);
+
   const handleSend = async (textToSend: string) => {
     if (!textToSend.trim() || isTyping) return;
 
@@ -297,6 +312,7 @@ export const AIAssistant: React.FC = () => {
     <div className="flex-grow flex h-[calc(100vh-4rem)] overflow-hidden bg-background dark:bg-zinc-950 transition-colors">
       {isAuthenticated && <Sidebar activePage="assistant" />}
       
+      <div aria-live="polite" className="sr-only" data-testid="reply-announcer">{announcement}</div>
       <div className="flex-1 flex overflow-hidden relative">
         {/* Left Sidebar: Conversations History */}
         <aside className="hidden md:flex flex-col w-72 border-r border-outline-variant dark:border-zinc-800 bg-surface-container-low dark:bg-zinc-900 shrink-0 p-4 justify-between transition-colors">
@@ -343,7 +359,9 @@ export const AIAssistant: React.FC = () => {
                     handleDeleteConversation(conv.id);
                   }}
                   className="p-1 mr-1 text-on-surface-variant hover:text-error dark:text-zinc-500 dark:hover:text-red-400 rounded hover:bg-surface-container-high dark:hover:bg-zinc-700 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity focus:outline-none cursor-pointer"
-                  title="Delete conversation"
+                  type="button"
+                  aria-label={`${t('deleteConversation')}: ${conv.title}`}
+                  title={t('deleteConversation')}
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -411,7 +429,9 @@ export const AIAssistant: React.FC = () => {
                         <button
                           onClick={() => handleCopy(msg.id, msg.text)}
                           className="hover:text-secondary dark:hover:text-sky-400 p-0.5 focus:outline-none transition-colors"
-                          title="Copy response"
+                          type="button"
+                          aria-label={copiedId === msg.id ? t('responseCopied') : t('copyResponse')}
+                          title={t('copyResponse')}
                         >
                           {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
                         </button>
@@ -452,12 +472,15 @@ export const AIAssistant: React.FC = () => {
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend(inputText)}
                 disabled={isTyping}
+                aria-label={t('typeQueryHere')}
                 placeholder={t('typeQueryHere')}
                 className="w-full border-none focus:outline-none focus:ring-0 bg-transparent px-4 py-2.5 font-body text-xs md:text-sm text-on-surface dark:text-white outline-none placeholder:text-on-surface-variant/60 dark:placeholder:text-zinc-550"
               />
               <button
+                type="button"
                 onClick={() => handleSend(inputText)}
                 disabled={!inputText.trim() || isTyping}
+                aria-label={t('sendMessage')}
                 className="p-2.5 bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 rounded-lg hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:pointer-events-none transition-all focus:outline-none"
               >
                 <Send className="w-4 h-4" />

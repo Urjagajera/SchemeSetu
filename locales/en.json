@@ -486,5 +486,16 @@
   "officialSiteLabel": "Official site:",
   "printedNote": "Printed from SchemeSetu on {date}. Check the official portal for the latest details.",
   "ageFromDobNote": "Calculated from your date of birth",
-  "ageAddDobNote": "Add your date of birth to keep this up to date"
+  "ageAddDobNote": "Add your date of birth to keep this up to date",
+  "skipToContent": "Skip to main content",
+  "openMenu": "Open menu",
+  "closeMenu": "Close menu",
+  "expandSidebar": "Expand sidebar",
+  "collapseSidebar": "Collapse sidebar",
+  "deleteConversation": "Delete conversation",
+  "sendMessage": "Send message",
+  "chooseLanguage": "Language",
+  "copyResponse": "Copy response",
+  "responseCopied": "Response copied",
+  "closeFilters": "Close filters"
 }

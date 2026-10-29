@@ -71,6 +71,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ schemeId, schemeName, 
           'p-2 rounded-full border border-outline-variant hover:bg-surface-container-low transition-colors shadow-sm focus:outline-none text-on-surface-variant bg-white',
           className,
         )}
+        aria-label={t('shareScheme')}
         title={t('shareScheme')}
       >
         <Share2 className="w-5 h-5" />

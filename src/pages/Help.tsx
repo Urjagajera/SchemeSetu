@@ -73,6 +73,7 @@ export const Help: React.FC = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label={t('searchHelpArticles')}
                 placeholder={t('searchHelpArticles')}
                 className="w-full border-none focus:outline-none focus:ring-0 bg-transparent px-3 py-2 text-xs md:text-sm text-on-surface dark:text-white outline-none placeholder:text-zinc-550"
               />

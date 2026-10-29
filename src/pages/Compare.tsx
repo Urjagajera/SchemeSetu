@@ -116,6 +116,8 @@ export const Compare: React.FC = () => {
                       <button
                         onClick={() => removeFromCompare(s.id)}
                         className="absolute top-0 right-0 p-1 text-red-500 hover:bg-red-50 dark:hover:bg-zinc-850 rounded focus:outline-none cursor-pointer"
+                        type="button"
+                        aria-label={`${t('remove')}: ${s.name}`}
                         title={t('remove')}
                       >
                         <Trash2 className="w-4 h-4" />

@@ -91,6 +91,8 @@ export const Navbar: React.FC = () => {
               <button
                 onClick={handleLogout}
                 className="p-2 text-on-surface-variant hover:text-error dark:text-zinc-400 dark:hover:text-red-400 transition-colors"
+                type="button"
+                aria-label={t('logout')}
                 title={t('logout')}
               >
                 <LogOut className="w-5 h-5" />
@@ -110,7 +112,11 @@ export const Navbar: React.FC = () => {
         <div className="flex md:hidden items-center gap-2">
           <ThemeToggle />
           <button
+            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? t('closeMenu') : t('openMenu')}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
             className="p-2 text-on-surface-variant dark:text-zinc-400 focus:outline-none"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -121,7 +127,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer (Only shown when open) */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-outline-variant bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4 space-y-4 transition-all">
+        <div id="mobile-menu" className="md:hidden border-t border-outline-variant bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4 space-y-4 transition-all">
           <div className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <Link

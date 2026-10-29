@@ -486,5 +486,16 @@
   "officialSiteLabel": "અધિકૃત સાઇટ:",
   "printedNote": "{date} ના રોજ સ્કીમસેતુ પરથી પ્રિન્ટ કરેલ. નવીનતમ માહિતી માટે અધિકૃત પોર્ટલ જુઓ.",
   "ageFromDobNote": "તમારી જન્મ તારીખ પરથી ગણતરી કરેલ",
-  "ageAddDobNote": "આને અદ્યતન રાખવા માટે તમારી જન્મ તારીખ ઉમેરો"
+  "ageAddDobNote": "આને અદ્યતન રાખવા માટે તમારી જન્મ તારીખ ઉમેરો",
+  "skipToContent": "મુખ્ય સામગ્રી પર જાઓ",
+  "openMenu": "મેનુ ખોલો",
+  "closeMenu": "મેનુ બંધ કરો",
+  "expandSidebar": "સાઇડબાર ખોલો",
+  "collapseSidebar": "સાઇડબાર નાનું કરો",
+  "deleteConversation": "વાતચીત કાઢી નાખો",
+  "sendMessage": "સંદેશ મોકલો",
+  "chooseLanguage": "ભાષા",
+  "copyResponse": "જવાબ કૉપિ કરો",
+  "responseCopied": "જવાબ કૉપિ થઈ ગયો",
+  "closeFilters": "ફિલ્ટર બંધ કરો"
 }

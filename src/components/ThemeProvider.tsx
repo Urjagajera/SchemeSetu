@@ -13,6 +13,8 @@ export const ThemeToggle: React.FC = () => {
     <button
       onClick={toggleTheme}
       className="p-2 rounded-lg border border-outline-variant bg-white hover:bg-surface-container-low transition-colors text-on-surface-variant focus:outline-none"
+      type="button"
+      aria-label={theme === 'light' ? t('shThemeDark') : t('shThemeLight')}
       title={theme === 'light' ? t('shThemeDark') : t('shThemeLight')}
     >
       {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-yellow-400" />}

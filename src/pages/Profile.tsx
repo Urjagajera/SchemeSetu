@@ -364,8 +364,8 @@ export const Profile: React.FC = () => {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfName')}</label>
-                  <input
+                  <label htmlFor="pf-name" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfName')}</label>
+                  <input id="pf-name"
                     type="text"
                     {...register('name')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
@@ -374,8 +374,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfAge')}</label>
-                  <input
+                  <label htmlFor="pf-age" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfAge')}</label>
+                  <input id="pf-age"
                     type="text"
                     readOnly
                     tabIndex={-1}
@@ -390,8 +390,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfDob')}</label>
-                  <input
+                  <label htmlFor="pf-dob" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfDob')}</label>
+                  <input id="pf-dob"
                     type="date"
                     {...register('dob')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
@@ -400,8 +400,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('genderLabel')}</label>
-                  <select
+                  <label htmlFor="pf-gender" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('genderLabel')}</label>
+                  <select id="pf-gender"
                     {...register('gender')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -423,8 +423,8 @@ export const Profile: React.FC = () => {
               </h3>
               
               <div className="space-y-1 max-w-sm">
-                <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfEducation')}</label>
-                <select
+                <label htmlFor="pf-education" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfEducation')}</label>
+                <select id="pf-education"
                   {...register('education')}
                   className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                 >
@@ -449,8 +449,8 @@ export const Profile: React.FC = () => {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('occupationLabel')}</label>
-                  <select
+                  <label htmlFor="pf-occupation" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('occupationLabel')}</label>
+                  <select id="pf-occupation"
                     {...register('occupation')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -466,8 +466,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfIncome')}</label>
-                  <input
+                  <label htmlFor="pf-income" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfIncome')}</label>
+                  <input id="pf-income"
                     type="number"
                     step="10000"
                     {...register('income')}
@@ -477,8 +477,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfFarmer')}</label>
-                  <select
+                  <label htmlFor="pf-farmer" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfFarmer')}</label>
+                  <select id="pf-farmer"
                     {...register('farmer')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -489,8 +489,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfLand')}</label>
-                  <select
+                  <label htmlFor="pf-land" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfLand')}</label>
+                  <select id="pf-land"
                     {...register('land')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -512,10 +512,10 @@ export const Profile: React.FC = () => {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfState')}</label>
+                  <label htmlFor="pf-state" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfState')}</label>
                   {/* Rendered once the list has arrived, so the saved state is selected as soon as the dropdown exists. */}
                   {states.length > 0 ? (
-                    <select
+                    <select id="pf-state"
                       {...register('state')}
                       className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                     >
@@ -529,15 +529,15 @@ export const Profile: React.FC = () => {
                       )}
                     </select>
                   ) : (
-                    <select disabled className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 text-xs md:text-sm py-2 px-3 opacity-60">
+                    <select id="pf-state" disabled className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 text-xs md:text-sm py-2 px-3 opacity-60">
                       <option>{t('optLoading')}</option>
                     </select>
                   )}
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfDistrict')}</label>
-                  <input
+                  <label htmlFor="pf-district" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfDistrict')}</label>
+                  <input id="pf-district"
                     type="text"
                     {...register('district')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
@@ -545,8 +545,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfResidence')}</label>
-                  <select
+                  <label htmlFor="pf-residence" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfResidence')}</label>
+                  <select id="pf-residence"
                     {...register('residence')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -568,8 +568,8 @@ export const Profile: React.FC = () => {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('socialCategory')}</label>
-                  <select
+                  <label htmlFor="pf-category" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('socialCategory')}</label>
+                  <select id="pf-category"
                     {...register('category')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -582,8 +582,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfMinority')}</label>
-                  <select
+                  <label htmlFor="pf-minority" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfMinority')}</label>
+                  <select id="pf-minority"
                     {...register('minority')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -594,8 +594,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfDisability')}</label>
-                  <select
+                  <label htmlFor="pf-disability" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfDisability')}</label>
+                  <select id="pf-disability"
                     {...register('disability')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -606,8 +606,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfWidow')}</label>
-                  <select
+                  <label htmlFor="pf-widow" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfWidow')}</label>
+                  <select id="pf-widow"
                     {...register('widow')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -618,8 +618,8 @@ export const Profile: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfVeteran')}</label>
-                  <select
+                  <label htmlFor="pf-veteran" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfVeteran')}</label>
+                  <select id="pf-veteran"
                     {...register('veteran')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
@@ -665,11 +665,11 @@ export const Profile: React.FC = () => {
 
                 {/* Custom Tag Input */}
                 <div className="space-y-1 pt-2">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                  <label htmlFor="pf-tag" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
                     {t('pfCustomTags')}
                   </label>
                   <div className="flex gap-2">
-                    <input
+                    <input id="pf-tag"
                       type="text"
                       value={newTagInput}
                       onChange={(e) => setNewTagInput(e.target.value)}
@@ -698,6 +698,7 @@ export const Profile: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => toggleTag(tag)}
+                            aria-label={`${t('remove')}: ${tag}`}
                             className="text-red-500 hover:text-red-700 focus:outline-none ml-1 font-extrabold text-[12px]"
                           >
                             ×

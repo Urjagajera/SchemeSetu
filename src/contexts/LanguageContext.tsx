@@ -17,6 +17,11 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return (saved === 'hi' || saved === 'en' || saved === 'gu') ? saved : 'en';
   });
 
+  // Screen readers pick their voice from the page's lang, so Hindi and Gujarati text is read in Hindi and Gujarati.
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem('schemesetu_lang', lang);
