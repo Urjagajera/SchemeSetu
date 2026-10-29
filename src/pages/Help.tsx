@@ -94,16 +94,21 @@ export const Help: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm transition-colors cursor-pointer"
-                  onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                  className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm transition-colors"
                 >
-                  <button className="w-full p-4 flex items-center justify-between text-left focus:outline-none font-semibold text-xs md:text-sm text-primary dark:text-white select-none">
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${idx}`}
+                    className="w-full p-4 flex items-center justify-between text-left font-semibold text-xs md:text-sm text-primary dark:text-white select-none cursor-pointer"
+                  >
                     <span>{faq.q}</span>
-                    {isOpen ? <ChevronUp className="w-4 h-4 text-secondary dark:text-sky-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
+                    {isOpen ? <ChevronUp aria-hidden="true" className="w-4 h-4 text-secondary dark:text-sky-400" /> : <ChevronDown aria-hidden="true" className="w-4 h-4 text-zinc-400" />}
                   </button>
 
                   {isOpen && (
-                    <div className="px-4 pb-4 text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed border-t border-outline-variant/35 dark:border-zinc-850 pt-3">
+                    <div id={`faq-answer-${idx}`} className="px-4 pb-4 text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 leading-relaxed border-t border-outline-variant/35 dark:border-zinc-850 pt-3">
                       {faq.a}
                     </div>
                   )}

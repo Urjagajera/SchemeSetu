@@ -436,3 +436,12 @@ describe('SchemeDetail printing', () => {
     expect(screen.getByRole('link', { name: 'home' }).closest('nav')?.className).toContain('print:hidden');
   });
 });
+
+describe('SchemeDetail related schemes', () => {
+  it('each related scheme is a real link, so the keyboard can open it', async () => {
+    mocks.getSchemeById.mockResolvedValue(schemeWith());
+    mocks.getSchemes.mockResolvedValue({ data: [makeScheme({ id: 'rel-1', name: 'Related One', category: 'Education' })], total: 1 });
+    await renderPage();
+    expect(screen.getByRole('link', { name: /Related One/ }).getAttribute('href')).toBe('/schemes/rel-1');
+  });
+});

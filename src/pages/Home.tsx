@@ -254,7 +254,8 @@ export const Home: React.FC = () => {
                   iconName={cat.icon}
                   label={cat.label}
                   categoryValue={cat.value}
-                  onClick={() => navigate('/search?topic=' + toTopicId(cat.value))}
+                  to={'/search?topic=' + toTopicId(cat.value)}
+                  decorative={idx >= categories.length}
                 />
               </div>
             ))}

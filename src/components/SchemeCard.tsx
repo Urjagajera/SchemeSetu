@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Scheme } from '../types';
 import { useTranslation } from '../contexts/LanguageContext';
 import { BookmarkButton } from './BookmarkButton';
@@ -24,16 +24,11 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
   className
 }) => {
   const { t, language } = useTranslation();
-  const navigate = useNavigate();
   // Title and summary from the server's translation (English until they arrive), ministry/category from the vocabulary table.
   const { titles, summaries } = useCardText([rawScheme.id], language);
   const { vocab, loading: vocabLoading } = useVocabulary(language);
   const base = translateScheme(rawScheme, language);
   const scheme = applyVocabulary({ ...base, name: titles[rawScheme.id] ?? base.name, shortDesc: summaries[rawScheme.id] ?? base.shortDesc }, language, vocab, vocabLoading);
-
-  const handleCardClick = () => {
-    navigate(`/schemes/${scheme.id}`);
-  };
 
   // Determine category theme colors
   const getCategoryStyles = (category: string) => {
@@ -59,8 +54,9 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
   };
 
   return (
+    // The title is the card's one link; its ::after stretches over the whole card so a click anywhere opens the scheme,
+    // while the keyboard reaches it (and Save/Compare, which sit above the stretch) like any other link.
     <div
-      onClick={handleCardClick}
       className={cn(
         "scheme-card bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 flex flex-col justify-between cursor-pointer select-none relative transition-all group duration-200 hover:shadow-lg hover:-translate-y-1 hover:border-secondary dark:hover:border-sky-500",
         className
@@ -78,7 +74,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
           </span>
 
           {/* Action buttons (Bookmark & Compare) */}
-          <div className="flex items-center gap-1.5 opacity-90 group-hover:opacity-100" onClick={e => e.stopPropagation()}>
+          <div className="relative z-10 flex items-center gap-1.5 opacity-90 group-hover:opacity-100">
             <CompareButton scheme={rawScheme} />
             <BookmarkButton
               schemeId={scheme.id}
@@ -90,7 +86,13 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
 
         {/* Title */}
         <h3 className="font-heading text-base md:text-lg font-bold text-primary dark:text-white mb-2 leading-snug group-hover:text-secondary dark:group-hover:text-sky-400 transition-colors line-clamp-2">
-          {scheme.name}
+          <Link
+            to={`/schemes/${scheme.id}`}
+            data-own-focus
+            className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-secondary dark:focus-visible:after:outline-sky-400"
+          >
+            {scheme.name}
+          </Link>
         </h3>
 
         {/* Ministry */}
@@ -145,7 +147,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
         )}
 
         {/* View Details Link */}
-        <span className="text-xs font-bold text-secondary dark:text-sky-400 flex items-center gap-1 group-hover:underline">
+        <span aria-hidden="true" className="text-xs font-bold text-secondary dark:text-sky-400 flex items-center gap-1 group-hover:underline">
           {t('view')}
           <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
         </span>

@@ -88,3 +88,27 @@ describe('SchemeCard machine-translation badge', () => {
     expect(screen.queryByTestId('machine-translated-badge')).toBeNull();
   });
 });
+
+describe('SchemeCard keyboard access', () => {
+  it('opens through a real link named after the scheme, so Tab reaches it and Enter follows it', () => {
+    renderCard({ id: 'abc', name: 'PM Kisan' });
+    const link = screen.getByRole('link', { name: 'PM Kisan' });
+    expect(link.getAttribute('href')).toBe('/schemes/abc');
+  });
+
+  it('keeps Save and Compare outside the link, as their own buttons above it', () => {
+    renderCard({ id: 'abc', name: 'PM Kisan' });
+    const link = screen.getByRole('link', { name: 'PM Kisan' });
+    const buttons = screen.getAllByRole('button');
+    expect(buttons.length).toBeGreaterThanOrEqual(2);
+    for (const b of buttons) {
+      expect(link.contains(b)).toBe(false);
+      expect(b.closest('.z-10')).not.toBeNull();
+    }
+  });
+
+  it('has exactly one link, so a screen reader hears the card once', () => {
+    renderCard();
+    expect(screen.getAllByRole('link')).toHaveLength(1);
+  });
+});

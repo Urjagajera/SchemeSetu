@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as Icons from 'lucide-react';
 import { cn } from '../utils/cn';
 
@@ -8,7 +8,10 @@ interface CategoryCardProps {
   label: string;
   categoryValue: string;
   className?: string;
-  onClick?: () => void;
+  /** Where the card goes; by default, Search filtered to this category. */
+  to?: string;
+  /** For a copy of the card that is only there for looks (e.g. a looping strip): skipped by the keyboard and screen readers. */
+  decorative?: boolean;
 }
 
 const iconMap: Record<string, keyof typeof Icons> = {
@@ -26,25 +29,19 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
   label,
   categoryValue,
   className,
-  onClick
+  to,
+  decorative = false
 }) => {
-  const navigate = useNavigate();
-  
   // Resolve icon using map or fallback to direct name
   const lucideKey = iconMap[iconName] || iconName;
   const LucideIcon = (Icons as any)[lucideKey] || Icons.HelpCircle;
 
-  const handleClick = (e: React.MouseEvent) => {
-    if (onClick) {
-      onClick();
-    } else {
-      navigate(`/search?category=${encodeURIComponent(categoryValue)}`);
-    }
-  };
-
   return (
-    <div
-      onClick={handleClick}
+    <Link
+      to={to ?? `/search?category=${encodeURIComponent(categoryValue)}`}
+      draggable={false}
+      tabIndex={decorative ? -1 : undefined}
+      aria-hidden={decorative || undefined}
       className={cn(
         "group flex flex-col items-center p-5 bg-surface-container-low dark:bg-zinc-900 border border-transparent hover:border-secondary dark:hover:border-sky-500 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer select-none active:scale-95 duration-200",
         className
@@ -56,7 +53,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({
       <span className="font-heading text-xs md:text-sm text-center font-bold text-on-surface dark:text-zinc-300 group-hover:text-secondary dark:group-hover:text-sky-400 transition-colors">
         {label}
       </span>
-    </div>
+    </Link>
   );
 };
 

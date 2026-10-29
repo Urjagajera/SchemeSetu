@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { schemeService } from '../services/schemeService';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -63,7 +63,6 @@ export const SchemeDetail: React.FC = () => {
   const { t, language } = useTranslation();
   const { profile, isAuthenticated } = useAuth();
   const { bookmarks, toggleBookmark } = useBookmarks();
-  const navigate = useNavigate();
 
   const [scheme, setScheme] = useState<Scheme | null>(null);
   const [related, setRelated] = useState<Scheme[]>([]);
@@ -421,9 +420,9 @@ export const SchemeDetail: React.FC = () => {
 
               <div className="space-y-3.5">
                 {translatedRelated.map(s => (
-                  <div
+                  <Link
                     key={s.id}
-                    onClick={() => navigate(`/schemes/${s.id}`)}
+                    to={`/schemes/${s.id}`}
                     className="group cursor-pointer block border-b border-outline-variant dark:border-zinc-850 pb-3 last:border-0 last:pb-0"
                   >
                     <span className="bg-secondary-container/15 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">
@@ -435,7 +434,7 @@ export const SchemeDetail: React.FC = () => {
                     <p className="text-[11px] text-on-surface-variant dark:text-zinc-500 line-clamp-2 mt-1 leading-snug">
                       {s.shortDesc}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

@@ -74,6 +74,17 @@ body {
   @apply text-on-surface bg-background;
 }
 
+/* Keyboard focus is always visible. Many controls use focus:outline-none, so this sits outside Tailwind's layers on
+   purpose: unlayered CSS wins over every utility. Only keyboard focus (and typing fields) shows it, not mouse clicks.
+   An element that draws its own indicator opts out with data-own-focus; tabIndex -1 elements are never tabbed to. */
+:focus-visible:not([data-own-focus]):not([tabindex="-1"]) {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+.dark :focus-visible:not([data-own-focus]):not([tabindex="-1"]) {
+  outline-color: #38bdf8; /* sky-400, as the dark theme's accents */
+}
+
 /* Material Symbols */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -150,6 +161,10 @@ body {
   display: flex;
   width: max-content;
   animation: marquee 25s linear infinite;
+}
+/* Hold still while a card in it has keyboard focus, so the focused card doesn't slide away. */
+.animate-marquee:focus-within {
+  animation-play-state: paused;
 }
 
 /* Status badges */
