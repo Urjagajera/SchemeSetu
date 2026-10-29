@@ -12,7 +12,8 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock('../services/schemeService', () => ({ schemeService: { getSchemeById: mocks.getSchemeById, getSchemes: mocks.getSchemes } }));
-vi.mock('../contexts/LanguageContext', () => ({ useTranslation: () => ({ t: (key: string) => key, language: mocks.language }) }));
+// Keys stand in for text, except the printed note, which needs its {date} slot.
+vi.mock('../contexts/LanguageContext', () => ({ useTranslation: () => ({ t: (key: string) => (key === 'printedNote' ? 'Printed on {date}.' : key), language: mocks.language }) }));
 vi.mock('../contexts/AuthContext', () => ({ useAuth: () => ({ profile: {}, isAuthenticated: true }) }));
 vi.mock('../contexts/CompareContext', () => ({ useCompare: () => ({ isInCompare: () => false, addToCompare: () => ({ success: true }), removeFromCompare: () => {} }) }));
 vi.mock('../hooks/useBookmarks', () => ({ useBookmarks: () => ({ bookmarks: [], toggleBookmark: () => {} }) }));
@@ -403,5 +404,35 @@ describe('SchemeDetail when the scheme cannot be loaded', () => {
     mocks.getSchemeById.mockResolvedValue(schemeWith(makeTranslation({ status: 'ready', fields: { title: 'हिंदी शीर्षक' } })));
     await advance(3000);
     expect(screen.getAllByText('हिंदी शीर्षक').length).toBeGreaterThan(0);
+  });
+});
+
+describe('SchemeDetail printing', () => {
+  it('the Print button opens the browser print dialog', async () => {
+    const print = vi.spyOn(window, 'print').mockImplementation(() => {});
+    mocks.getSchemeById.mockResolvedValue(schemeWith(undefined, { sourceUrl: 'https://pmkisan.gov.in' }));
+    await renderPage();
+    screen.getByTitle('printScheme').click();
+    expect(print).toHaveBeenCalledTimes(1);
+    print.mockRestore();
+  });
+
+  it('the printed page ends with the official site address and the day it was printed', async () => {
+    vi.setSystemTime(new Date('2026-10-29T10:00:00'));
+    mocks.getSchemeById.mockResolvedValue(schemeWith(undefined, { sourceUrl: 'https://pmkisan.gov.in' }));
+    await renderPage();
+    const footer = screen.getByTestId('print-footer');
+    expect(footer.className).toContain('hidden');
+    expect(footer.className).toContain('print:block');
+    expect(footer.textContent).toContain('officialSiteLabel https://pmkisan.gov.in');
+    expect(footer.textContent).toContain('Printed on 29 October 2026.');
+  });
+
+  it('leaves the menus, actions and related schemes off paper', async () => {
+    mocks.getSchemeById.mockResolvedValue(schemeWith());
+    await renderPage();
+    expect(screen.getByTitle('printScheme').closest('.print\\:hidden')).not.toBeNull();
+    expect(screen.getByTitle('shareScheme').closest('.print\\:hidden')).not.toBeNull();
+    expect(screen.getByRole('link', { name: 'home' }).closest('nav')?.className).toContain('print:hidden');
   });
 });
