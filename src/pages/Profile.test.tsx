@@ -220,3 +220,26 @@ describe('Profile form: coming from the eligibility check (?next=)', () => {
     expect(await screen.findByText(SUCCESS)).not.toBeNull();
   });
 });
+
+describe('Profile form: age comes from the date of birth', () => {
+  // Born on 1 January thirty years ago is 30 on any day of this year.
+  const thirtyYearsAgo = `${new Date().getFullYear() - 30}-01-01`;
+
+  it('works the age out from the date of birth, shows it read-only, and saves it with the date', async () => {
+    const { user, container } = setup();
+    fireEvent.change(field(container, 'dob'), { target: { value: thirtyYearsAgo } });
+    await waitFor(() => expect(field(container, 'age').value).toBe('30'));
+    expect(field(container, 'age').readOnly).toBe(true);
+    expect(screen.getByText('Calculated from your date of birth')).not.toBeNull();
+    await user.click(screen.getByRole('button', { name: SAVE }));
+    await waitFor(() => expect(mocks.updateProfile).toHaveBeenCalledTimes(1));
+    expect(mocks.updateProfile.mock.calls[0][0]).toMatchObject({ dob: thirtyYearsAgo, age: '30' });
+  });
+
+  it('an older profile with only an age keeps it, and asks for a date of birth to keep it current', () => {
+    mocks.profile = { age: '42' };
+    const { container } = setup();
+    expect(field(container, 'age').value).toBe('42');
+    expect(screen.getByText('Add your date of birth to keep this up to date')).not.toBeNull();
+  });
+});

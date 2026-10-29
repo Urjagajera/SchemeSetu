@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import express from 'express';
 import request from 'supertest';
 
@@ -226,5 +226,56 @@ describe('PUT /api/profile: state', () => {
     expect((await request(buildApp()).get('/api/profile')).body.profile.state).toBe('Gujarat');
     mockPrisma.profile.findUnique.mockResolvedValue(row({ state: 'Somewhere Else' }));
     expect((await request(buildApp()).get('/api/profile')).body.profile.state).toBe('Somewhere Else');
+  });
+});
+
+describe('age from the date of birth', () => {
+  const put = (body: unknown) => request(buildApp()).put('/api/profile').send(body as object);
+  const upsertArgs = () => mockPrisma.profile.upsert.mock.calls[0][0];
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-29T12:00:00+05:30'));
+    mockPrisma.profile.findUnique.mockReset();
+    mockPrisma.profile.upsert.mockReset();
+    mockPrisma.user.update.mockReset();
+    mockPrisma.$transaction.mockReset();
+    mockPrisma.profile.upsert.mockImplementation((args: unknown) => args);
+    mockPrisma.$transaction.mockImplementation(async (ops: unknown[]) => [row(), ...ops.slice(1)]);
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it('GET sends the age as of today when there is a birthdate, whatever age was saved', async () => {
+    mockPrisma.profile.findUnique.mockResolvedValue(row({ age: '30', dob: '1990-05-01' }));
+    const res = await request(buildApp()).get('/api/profile');
+    expect(res.body.profile).toMatchObject({ age: '36', dob: '1990-05-01' });
+  });
+
+  it('GET keeps the saved age for an older profile with no birthdate', async () => {
+    mockPrisma.profile.findUnique.mockResolvedValue(row({ age: '30', dob: null }));
+    expect((await request(buildApp()).get('/api/profile')).body.profile.age).toBe('30');
+  });
+
+  it('PUT with a birthdate stores the age it gives, ignoring any age sent alongside', async () => {
+    await put({ dob: '1990-05-01', age: '99' });
+    expect(upsertArgs().update).toMatchObject({ dob: '1990-05-01', age: '36' });
+    expect(upsertArgs().create).toMatchObject({ dob: '1990-05-01', age: '36' });
+  });
+
+  it('PUT for a baby born this year stores age 0, which is allowed', async () => {
+    const res = await put({ dob: '2026-01-10' });
+    expect(res.status).toBe(200);
+    expect(upsertArgs().update.age).toBe('0');
+  });
+
+  it('PUT without a birthdate keeps the age sent, as before', async () => {
+    await put({ age: '34' });
+    expect(upsertArgs().update.age).toBe('34');
+  });
+
+  it('PUT with the birthdate cleared does not store "null" as the age', async () => {
+    await put({ dob: '' });
+    expect(upsertArgs().update.dob).toBeNull();
+    expect(upsertArgs().update.age).not.toBe('null');
   });
 });

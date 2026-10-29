@@ -57,6 +57,13 @@ describe('QuickProfileForm: answer the missing profile questions in place', () =
     expect(mocks.updateProfile.mock.calls[0][0]).toEqual({ dob: '1990-05-01', state: 'Kerala', occupation: 'farmer', income: '120000' });
   });
 
+  it('shows the age a date of birth gives, without asking for it to be typed', () => {
+    render(ui());
+    expect(screen.queryByText(/^Age: /)).toBeNull();
+    fireEvent.change(screen.getByLabelText('Date of Birth'), { target: { value: `${new Date().getFullYear() - 30}-01-01` } });
+    expect(screen.getByText('Age: 30 · Calculated from your date of birth')).not.toBeNull();
+  });
+
   it('checks the date of birth and income like the profile form does, and saves nothing until they are right', async () => {
     const user = userEvent.setup();
     render(ui());

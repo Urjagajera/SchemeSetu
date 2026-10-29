@@ -139,6 +139,20 @@ describe('GET /api/account/export', () => {
   });
 });
 
+describe('GET /api/account/export: age', () => {
+  it('gives the age worked out from the birthdate as of today, not the age saved earlier', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-29T12:00:00+05:30'));
+    try {
+      db.state.profiles[0] = { ...db.state.profiles[0], age: '30', dob: '1990-05-01' };
+      const res = await request(app()).get('/api/account/export').set('Cookie', cookieFor('u1'));
+      expect(res.body.profile).toMatchObject({ age: '36', dob: '1990-05-01' });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
+
 describe('DELETE /api/account', () => {
   it('removes the caller\'s bookmarks, profile and account, and says how many', async () => {
     const res = await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
