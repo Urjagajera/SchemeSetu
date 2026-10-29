@@ -122,7 +122,7 @@ export const Compare: React.FC = () => {
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
-                      <span className="bg-secondary-container/20 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold">
+                      <span className="bg-secondary-container/20 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-2 py-0.5 rounded text-xs uppercase tracking-wider font-bold">
                         {getCategoryLabel(s.category)}
                       </span>
                       <h4 className="font-heading text-xs md:text-sm font-extrabold leading-snug line-clamp-2">
@@ -135,7 +135,7 @@ export const Compare: React.FC = () => {
                       className="flex flex-col items-center justify-center border-2 border-dashed border-outline-variant dark:border-zinc-800 p-4 rounded-xl text-on-surface-variant hover:text-secondary hover:border-secondary dark:hover:border-sky-500 transition-all group py-8"
                     >
                       <Plus className="w-5 h-5 text-zinc-400 group-hover:scale-110 transition-transform" />
-                      <span className="text-[10px] font-bold mt-1 uppercase tracking-wider">{t('addScheme')}</span>
+                      <span className="text-xs font-bold mt-1 uppercase tracking-wider">{t('addScheme')}</span>
                     </Link>
                   )}
                 </div>
@@ -164,7 +164,7 @@ export const Compare: React.FC = () => {
                   ) : s.benefitList.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 pl-1">
                       {s.benefitList.map((item: string, i: number) => (
-                        <li key={i} className={cn('text-[11px] md:text-xs', i === 0 && 'font-bold')}>{item}</li>
+                        <li key={i} className={cn('text-xs', i === 0 && 'font-bold')}>{item}</li>
                       ))}
                     </ul>
                   ) : (
@@ -184,12 +184,12 @@ export const Compare: React.FC = () => {
                   ) : s && s.eligibilityList.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 pl-1">
                       {s.eligibilityList.slice(0, 3).map((item: string, i: number) => (
-                        <li key={i} className="leading-relaxed text-[11px] md:text-xs">
+                        <li key={i} className="leading-relaxed text-xs">
                           {item}
                         </li>
                       ))}
                       {s.eligibilityList.length > 3 && (
-                        <li className="text-[10px] text-on-surface-variant dark:text-zinc-500 list-none pl-4 italic">
+                        <li className="text-xs text-on-surface-variant dark:text-zinc-500 list-none pl-4 italic">
                           +{s.eligibilityList.length - 3} {t('more')}...
                         </li>
                       )}
@@ -211,12 +211,12 @@ export const Compare: React.FC = () => {
                   ) : s && s.documentList.length > 0 ? (
                     <ul className="list-disc list-inside space-y-1 pl-1">
                       {s.documentList.slice(0, 3).map((item: string, i: number) => (
-                        <li key={i} className="leading-relaxed text-[11px] md:text-xs">
+                        <li key={i} className="leading-relaxed text-xs">
                           {item}
                         </li>
                       ))}
                       {s.documentList.length > 3 && (
-                        <li className="text-[10px] text-on-surface-variant dark:text-zinc-500 list-none pl-4 italic">
+                        <li className="text-xs text-on-surface-variant dark:text-zinc-500 list-none pl-4 italic">
                           +{s.documentList.length - 3} {t('more')}...
                         </li>
                       )}

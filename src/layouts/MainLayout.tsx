@@ -59,7 +59,7 @@ export const MainLayout: React.FC = () => {
               key={item.label}
               to={item.path}
               className={({ isActive }) => cn(
-                "flex flex-col items-center justify-center py-1 px-3 rounded-lg text-[10px] font-bold transition-all focus:outline-none",
+                "flex flex-col items-center justify-center py-1 px-3 rounded-lg text-xs font-bold transition-all focus:outline-none",
                 active 
                   ? "text-secondary dark:text-sky-400 scale-105" 
                   : "text-on-surface-variant dark:text-zinc-550 hover:text-secondary"

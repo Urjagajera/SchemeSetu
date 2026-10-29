@@ -165,7 +165,7 @@ export const Login: React.FC = () => {
 
           <div className="relative flex items-center gap-3">
             <div className="flex-grow border-t border-outline-variant dark:border-zinc-800" />
-            <span className="text-[10px] font-bold text-on-surface-variant/70 dark:text-zinc-500 bg-white dark:bg-zinc-900 px-2 uppercase">
+            <span className="text-xs font-bold text-on-surface-variant/70 dark:text-zinc-500 bg-white dark:bg-zinc-900 px-2 uppercase">
               secure oauth 2.0
             </span>
             <div className="flex-grow border-t border-outline-variant dark:border-zinc-800" />
@@ -194,7 +194,7 @@ export const Login: React.FC = () => {
                   <p className="font-heading text-xs font-bold text-on-surface dark:text-white">
                     {t('secureSignIn')}
                   </p>
-                  <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-450 leading-relaxed mt-0.5">
+                  <p className="text-xs text-on-surface-variant dark:text-zinc-450 leading-relaxed mt-0.5">
                     {t('secureSignInDesc')}
                   </p>
                 </div>

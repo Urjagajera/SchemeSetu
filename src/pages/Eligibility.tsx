@@ -237,11 +237,11 @@ export const Eligibility: React.FC = () => {
           <h2 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white flex items-center justify-between">
             <span>{t('profileSummary')}</span>
             {!completeness.isComplete ? (
-              <Link to="/profile" className="bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300 px-3 py-0.5 rounded-full text-[10px] font-bold hover:underline">
+              <Link to="/profile" className="bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300 px-3 py-0.5 rounded-full text-xs font-bold hover:underline">
                 {t('profileIncomplete')}
               </Link>
             ) : (
-              <span className="bg-[#d1fadf] text-[#027a48] px-3 py-0.5 rounded-full text-[10px] font-bold">
+              <span className="bg-[#d1fadf] text-[#027a48] px-3 py-0.5 rounded-full text-xs font-bold">
                 {t('profileComplete')}
               </span>
             )}
@@ -250,7 +250,7 @@ export const Eligibility: React.FC = () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {summaryItems.map((item, idx) => (
               <div key={idx} className="bg-surface-container-low dark:bg-zinc-950 p-2.5 rounded-lg text-xs">
-                <p className="text-[10px] text-on-surface-variant dark:text-zinc-550 font-semibold">{item.label}</p>
+                <p className="text-xs text-on-surface-variant dark:text-zinc-550 font-semibold">{item.label}</p>
                 <p className="font-bold text-primary dark:text-white mt-0.5 truncate">{item.value}</p>
               </div>
             ))}
@@ -263,7 +263,7 @@ export const Eligibility: React.FC = () => {
             <h3 className="font-heading text-base md:text-lg font-bold text-primary dark:text-white">
               {t('availableMatches')} ({schemes.length}{paging.total > schemes.length ? ` / ${paging.total}` : ''})
             </h3>
-            <p className="text-[11px] md:text-xs text-on-surface-variant dark:text-zinc-400 mt-0.5">{t('elSortedHint')}</p>
+            <p className="text-xs text-on-surface-variant dark:text-zinc-400 mt-0.5">{t('elSortedHint')}</p>
           </div>
 
           {loading ? (
@@ -314,7 +314,7 @@ export const Eligibility: React.FC = () => {
             <Lock className="w-6 h-6 text-secondary shrink-0 mt-0.5" />
             <div>
               <h3 className="font-heading text-sm font-bold text-primary dark:text-white">{t('wzSaveTitle')}</h3>
-              <p className="text-[11px] md:text-xs text-on-surface-variant dark:text-zinc-450 mt-0.5 leading-relaxed">
+              <p className="text-xs text-on-surface-variant dark:text-zinc-450 mt-0.5 leading-relaxed">
                 {t('wzSaveDesc')}
               </p>
             </div>
@@ -445,7 +445,7 @@ export const Eligibility: React.FC = () => {
                   required
                 />
                 {/* The age it gives, shown but never typed */}
-                <p id="wz-age" className="text-[11px] text-on-surface-variant dark:text-zinc-500">
+                <p id="wz-age" className="text-xs text-on-surface-variant dark:text-zinc-500">
                   {guestProfile.age ? `${t('pfAge')}: ${guestProfile.age} · ${t('ageFromDobNote')}` : t('ageFromDobNote')}
                 </p>
               </div>
@@ -552,7 +552,7 @@ export const Eligibility: React.FC = () => {
                       onClick={() => handleInputChange('category', cat)}
                       aria-pressed={guestProfile.category === cat}
                       className={cn(
-                        "py-2 rounded border text-[10px] font-bold uppercase tracking-wider focus:outline-none transition-all",
+                        "py-2 rounded border text-xs font-bold uppercase tracking-wider focus:outline-none transition-all",
                         guestProfile.category === cat
                           ? "bg-secondary text-white border-secondary dark:bg-sky-500 dark:text-zinc-950 dark:border-sky-500"
                           : "border-outline-variant text-on-surface dark:text-zinc-300 dark:border-zinc-700"

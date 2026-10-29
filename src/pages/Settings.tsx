@@ -89,7 +89,7 @@ export const Settings: React.FC = () => {
               <Globe className="w-4 h-4 text-secondary dark:text-sky-400" />
               {t('languageSupport')}
             </h3>
-            <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
+            <p className="text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
               {t('choosePrimaryLang')}
             </p>
           </div>
@@ -137,7 +137,7 @@ export const Settings: React.FC = () => {
               {theme === 'light' ? <Sun className="w-4 h-4 text-secondary dark:text-sky-400" /> : <Moon className="w-4 h-4 text-secondary" />}
               {t('appearanceMode')}
             </h3>
-            <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
+            <p className="text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
               {t('toggleLightDark')}
             </p>
           </div>
@@ -166,7 +166,7 @@ export const Settings: React.FC = () => {
               <Trash2 className="w-4 h-4 text-red-500" />
               {t('resetAppData')}
             </h3>
-            <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
+            <p className="text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
               {t('clearPreferencesDesc')}
             </p>
           </div>
@@ -185,7 +185,7 @@ export const Settings: React.FC = () => {
               <Download className="w-4 h-4 text-secondary dark:text-sky-400" />
               {t('acExportTitle')}
             </h3>
-            <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">{t('acExportDesc')}</p>
+            <p className="text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">{t('acExportDesc')}</p>
           </div>
           <button
             type="button"
@@ -204,7 +204,7 @@ export const Settings: React.FC = () => {
                 <UserX className="w-4 h-4 text-red-500" />
                 {t('acDeleteTitle')}
               </h3>
-              <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">{t('acDeleteDesc')}</p>
+              <p className="text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">{t('acDeleteDesc')}</p>
             </div>
             {!confirming && (
               <button
@@ -259,7 +259,7 @@ export const Settings: React.FC = () => {
               <LogOut className="w-4 h-4 text-zinc-550" />
               {t('signOutAccount')}
             </h3>
-            <p className="text-[10px] md:text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
+            <p className="text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">
               {t('signOutDesc')}
             </p>
           </div>

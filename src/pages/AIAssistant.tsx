@@ -323,7 +323,7 @@ export const AIAssistant: React.FC = () => {
             </div>
             <div>
               <h2 className="font-heading text-sm font-extrabold text-primary dark:text-white">SetuAI</h2>
-              <p className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold uppercase tracking-wider">{t('schemeAssistant')}</p>
+              <p className="text-xs text-on-surface-variant dark:text-zinc-500 font-bold uppercase tracking-wider">{t('schemeAssistant')}</p>
             </div>
           </div>
 
@@ -336,7 +336,7 @@ export const AIAssistant: React.FC = () => {
           </button>
 
           <div className="space-y-1.5 overflow-y-auto max-h-[50vh] custom-scrollbar pr-1">
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550 mb-2">{t('history')}</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550 mb-2">{t('history')}</h3>
             {conversations.map(conv => (
               <div
                 key={conv.id}
@@ -421,7 +421,7 @@ export const AIAssistant: React.FC = () => {
                     
                     {/* Message Meta Info (Time + Copy) */}
                     <div className={cn(
-                      "flex items-center gap-2 text-[10px] text-on-surface-variant dark:text-zinc-500 font-semibold px-1",
+                      "flex items-center gap-2 text-xs text-on-surface-variant dark:text-zinc-500 font-semibold px-1",
                       isAI ? "justify-start" : "justify-end"
                     )}>
                       <span>{msg.timestamp}</span>
@@ -487,7 +487,7 @@ export const AIAssistant: React.FC = () => {
               </button>
             </div>
 
-            <p className="text-[10px] text-center text-on-surface-variant dark:text-zinc-550 leading-relaxed font-semibold">
+            <p className="text-xs text-center text-on-surface-variant dark:text-zinc-550 leading-relaxed font-semibold">
               {t('aiDisclaimer')}
             </p>
           </div>
@@ -497,7 +497,7 @@ export const AIAssistant: React.FC = () => {
 
       {/* Right Column: Suggested Questions Sidebar */}
       <aside className="hidden lg:flex flex-col w-72 border-l border-outline-variant dark:border-zinc-800 bg-surface-container-low dark:bg-zinc-900 shrink-0 p-4 transition-colors space-y-4">
-        <h3 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550 flex items-center gap-1">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550 flex items-center gap-1">
           <HelpCircle className="w-3.5 h-3.5 text-secondary dark:text-sky-400" />
           {t('suggestedQuestions')}
         </h3>
@@ -517,7 +517,7 @@ export const AIAssistant: React.FC = () => {
 
         {/* Explore Links */}
         <div className="pt-4 border-t border-outline-variant dark:border-zinc-800 space-y-2.5">
-          <h3 className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550">{t('resources')}</h3>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-550">{t('resources')}</h3>
           
           <Link to="/search" className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-zinc-850 border border-outline-variant dark:border-zinc-800 rounded-lg text-xs text-secondary dark:text-sky-400 font-bold hover:bg-secondary/5 shadow-sm">
             <Compass className="w-4 h-4" />

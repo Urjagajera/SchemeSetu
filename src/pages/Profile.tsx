@@ -370,7 +370,7 @@ export const Profile: React.FC = () => {
                     {...register('name')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   />
-                  {errors.name && <p className="text-[10px] text-red-500 font-bold">{text(String(errors.name.message))}</p>}
+                  {errors.name && <p className="text-xs text-red-500 font-bold">{text(String(errors.name.message))}</p>}
                 </div>
 
                 <div className="space-y-1">
@@ -383,10 +383,10 @@ export const Profile: React.FC = () => {
                     {...register('age')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 bg-surface-container dark:bg-zinc-800 dark:text-zinc-300 text-xs md:text-sm py-2 px-3 cursor-not-allowed focus:ring-0"
                   />
-                  <p id="age-note" className="text-[10px] text-on-surface-variant dark:text-zinc-500">
+                  <p id="age-note" className="text-xs text-on-surface-variant dark:text-zinc-500">
                     {dobAge === null && savedAge ? t('ageAddDobNote') : t('ageFromDobNote')}
                   </p>
-                  {errors.age && <p className="text-[10px] text-red-500 font-bold">{text(String(errors.age.message))}</p>}
+                  {errors.age && <p className="text-xs text-red-500 font-bold">{text(String(errors.age.message))}</p>}
                 </div>
 
                 <div className="space-y-1">
@@ -396,7 +396,7 @@ export const Profile: React.FC = () => {
                     {...register('dob')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   />
-                  {errors.dob && <p className="text-[10px] text-red-500 font-bold">{text(String(errors.dob.message))}</p>}
+                  {errors.dob && <p className="text-xs text-red-500 font-bold">{text(String(errors.dob.message))}</p>}
                 </div>
 
                 <div className="space-y-1">
@@ -473,7 +473,7 @@ export const Profile: React.FC = () => {
                     {...register('income')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   />
-                  {errors.income && <p className="text-[10px] text-red-500 font-bold">{text(String(errors.income.message))}</p>}
+                  {errors.income && <p className="text-xs text-red-500 font-bold">{text(String(errors.income.message))}</p>}
                 </div>
 
                 <div className="space-y-1">
@@ -692,14 +692,14 @@ export const Profile: React.FC = () => {
                       {selectedTags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/10 border border-secondary/20 text-secondary dark:bg-zinc-850 dark:border-zinc-800 dark:text-sky-400 text-[10px] font-bold"
+                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/10 border border-secondary/20 text-secondary dark:bg-zinc-850 dark:border-zinc-800 dark:text-sky-400 text-xs font-bold"
                         >
                           {tag}
                           <button
                             type="button"
                             onClick={() => toggleTag(tag)}
                             aria-label={`${t('remove')}: ${tag}`}
-                            className="text-red-500 hover:text-red-700 focus:outline-none ml-1 font-extrabold text-[12px]"
+                            className="text-red-500 hover:text-red-700 focus:outline-none ml-1 font-extrabold text-xs"
                           >
                             ×
                           </button>

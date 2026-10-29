@@ -186,7 +186,7 @@ export const Dashboard: React.FC = () => {
               <h3 className="font-heading text-sm md:text-base font-bold text-white">
                 {t('aiShortcut')}
               </h3>
-              <p className="text-[11px] md:text-xs text-sky-100/75 mt-1">
+              <p className="text-xs text-sky-100/75 mt-1">
                 {t('aiShortcutDesc')}
               </p>
             </div>

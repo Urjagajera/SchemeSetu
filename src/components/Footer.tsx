@@ -67,7 +67,7 @@ export const Footer: React.FC = () => {
           <div className="text-xs text-on-surface-variant dark:text-zinc-500 text-center md:text-left">
             {t('footerCopy')}
           </div>
-          <div className="text-[10px] text-on-surface-variant/70 dark:text-zinc-550 text-center">
+          <div className="text-xs text-on-surface-variant/70 dark:text-zinc-550 text-center">
             {t('footerDisclaimer')}
           </div>
         </div>

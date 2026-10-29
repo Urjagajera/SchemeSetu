@@ -67,7 +67,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
         <div className="flex items-start justify-between gap-4 mb-3">
           {/* Category Badge */}
           <span className={cn(
-            "px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider",
+            "px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider",
             getCategoryStyles(scheme.category)
           )}>
             {scheme.category}
@@ -108,14 +108,14 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
 
         {/* Only when a machine translation is actually on the card (not while it is still English) */}
         {language !== 'en' && (titles[rawScheme.id] || summaries[rawScheme.id]) && (
-          <p data-testid="machine-translated-badge" title={t('machineTranslatedNote')} className="text-[10px] font-semibold text-on-surface-variant dark:text-zinc-500 mb-3">
+          <p data-testid="machine-translated-badge" title={t('machineTranslatedNote')} className="text-xs font-semibold text-on-surface-variant dark:text-zinc-500 mb-3">
             {t('machineTranslatedBadge')}
           </p>
         )}
 
         {/* Criteria the profile couldn't answer: never a reason to hide the scheme, just a nudge */}
         {scheme.unverifiedCriteria && scheme.unverifiedCriteria.length > 0 && (
-          <p className="text-[11px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 rounded px-2 py-1 mb-3">
+          <p className="text-xs font-semibold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 rounded px-2 py-1 mb-3">
             {t('unverifiedNote')} {scheme.unverifiedCriteria.join(', ')}
           </p>
         )}
@@ -126,7 +126,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
         {/* Eligibility Badge */}
         {scheme.matchScore !== undefined ? (
           <span className={cn(
-            "flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full",
+            "flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full",
             scheme.matchScore >= 3
               ? "bg-[#d1fadf] text-[#027a48]"
               : "bg-blue-50 text-blue-700 dark:bg-blue-950/20 dark:text-blue-300"
@@ -140,7 +140,7 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
           </span>
         ) : (
           <div className="flex items-center gap-1.5">
-            <span className="text-[10px] uppercase font-extrabold px-1.5 py-0.5 rounded bg-green-50 text-green-700 border border-green-200/50 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900/30">
+            <span className="text-xs uppercase font-extrabold px-1.5 py-0.5 rounded bg-green-50 text-green-700 border border-green-200/50 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900/30">
               {scheme.status || t('active')}
             </span>
           </div>

@@ -275,10 +275,10 @@ export const SchemeDetail: React.FC = () => {
             
             <div className="p-6 space-y-4">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="bg-secondary-container/20 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                <span className="bg-secondary-container/20 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider">
                   {translatedScheme.category}
                 </span>
-                <span className="bg-surface-container dark:bg-zinc-800 text-on-surface-variant dark:text-zinc-400 px-3 py-0.5 rounded-full text-[10px] font-bold">
+                <span className="bg-surface-container dark:bg-zinc-800 text-on-surface-variant dark:text-zinc-400 px-3 py-0.5 rounded-full text-xs font-bold">
                   {levelLabel}
                 </span>
               </div>
@@ -300,7 +300,7 @@ export const SchemeDetail: React.FC = () => {
               {translatedScheme.tags && translatedScheme.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 pt-2 border-t dark:border-zinc-800">
                   {translatedScheme.tags.map((tag, i) => (
-                    <span key={i} className="inline-block bg-surface-container-low border dark:bg-zinc-850 dark:border-zinc-800 dark:text-zinc-300 text-[10px] font-semibold px-2.5 py-0.5 rounded-full text-on-surface-variant">
+                    <span key={i} className="inline-block bg-surface-container-low border dark:bg-zinc-850 dark:border-zinc-800 dark:text-zinc-300 text-xs font-semibold px-2.5 py-0.5 rounded-full text-on-surface-variant">
                       #{tag}
                     </span>
                   ))}
@@ -331,7 +331,7 @@ export const SchemeDetail: React.FC = () => {
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                   <span className="text-xs font-bold text-on-surface-variant dark:text-zinc-400">{t('applicationModeLabel')}:</span>
                   {applicationModes.map((mode) => (
-                    <span key={mode} className="bg-secondary-container/20 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-3 py-0.5 rounded-full text-[11px] font-bold">
+                    <span key={mode} className="bg-secondary-container/20 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-3 py-0.5 rounded-full text-xs font-bold">
                       {mode}
                     </span>
                   ))}
@@ -368,7 +368,7 @@ export const SchemeDetail: React.FC = () => {
             <div className="flex items-center justify-center gap-3 py-2">
               <div className="flex flex-col items-center">
                 <CompareButton scheme={translatedScheme} className="p-3 bg-surface-container dark:bg-zinc-800 border-none w-12 h-12 flex items-center justify-center" />
-                <span className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('compareShort')}</span>
+                <span className="text-xs text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('compareShort')}</span>
               </div>
               <div className="flex flex-col items-center">
                 <BookmarkButton 
@@ -377,7 +377,7 @@ export const SchemeDetail: React.FC = () => {
                   onToggle={() => toggleBookmark(translatedScheme.id)} 
                   className="p-3 bg-surface-container dark:bg-zinc-800 border-none w-12 h-12 flex items-center justify-center"
                 />
-                <span className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('saveShort')}</span>
+                <span className="text-xs text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('saveShort')}</span>
               </div>
               <div className="flex flex-col items-center">
                 <ShareButton
@@ -385,7 +385,7 @@ export const SchemeDetail: React.FC = () => {
                   schemeName={translatedScheme.name}
                   className="p-3 bg-surface-container dark:bg-zinc-800 border-none w-12 h-12 flex items-center justify-center"
                 />
-                <span className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('shareShort')}</span>
+                <span className="text-xs text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('shareShort')}</span>
               </div>
               <div className="flex flex-col items-center">
                 <button
@@ -397,7 +397,7 @@ export const SchemeDetail: React.FC = () => {
                 >
                   <Printer className="w-5 h-5" />
                 </button>
-                <span className="text-[10px] text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('printShort')}</span>
+                <span className="text-xs text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('printShort')}</span>
               </div>
             </div>
 
@@ -426,13 +426,13 @@ export const SchemeDetail: React.FC = () => {
                     to={`/schemes/${s.id}`}
                     className="group cursor-pointer block border-b border-outline-variant dark:border-zinc-850 pb-3 last:border-0 last:pb-0"
                   >
-                    <span className="bg-secondary-container/15 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">
+                    <span className="bg-secondary-container/15 text-secondary dark:bg-zinc-850 dark:text-sky-400 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">
                       {s.category}
                     </span>
                     <h4 className="font-heading text-xs md:text-sm font-bold text-primary dark:text-white mt-1 group-hover:text-secondary dark:group-hover:text-sky-400 transition-colors line-clamp-1">
                       {s.name}
                     </h4>
-                    <p className="text-[11px] text-on-surface-variant dark:text-zinc-500 line-clamp-2 mt-1 leading-snug">
+                    <p className="text-xs text-on-surface-variant dark:text-zinc-500 line-clamp-2 mt-1 leading-snug">
                       {s.shortDesc}
                     </p>
                   </Link>

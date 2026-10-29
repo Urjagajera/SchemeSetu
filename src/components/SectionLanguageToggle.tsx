@@ -21,7 +21,7 @@ export const SectionLanguageToggle: React.FC<Props> = ({ translatedName, showEng
         data-testid={`${testId}-${isEnglish ? 'en' : 'translated'}`}
         onClick={() => onChange(isEnglish)}
         className={cn(
-          'px-2.5 py-0.5 text-[11px] font-bold transition-colors',
+          'px-2.5 py-0.5 text-xs font-bold transition-colors',
           active ? 'bg-secondary text-white dark:bg-sky-500' : 'bg-transparent text-on-surface-variant hover:text-secondary dark:text-zinc-400',
         )}
       >

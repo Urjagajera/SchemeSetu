@@ -119,7 +119,7 @@ export const QuickProfileForm: React.FC<{ className?: string }> = ({ className }
           <h3 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white">{t('qpTitle')}</h3>
           <p className="text-xs text-on-surface-variant dark:text-zinc-400 mt-0.5 leading-relaxed">{t('qpDesc')}</p>
         </div>
-        <span className="text-[11px] font-bold text-secondary bg-secondary-container/20 px-2.5 py-0.5 rounded-full whitespace-nowrap">
+        <span className="text-xs font-bold text-secondary bg-secondary-container/20 px-2.5 py-0.5 rounded-full whitespace-nowrap">
           {completeness.percentage}% {t('shComplete')}
         </span>
       </div>
@@ -150,7 +150,7 @@ export const QuickProfileForm: React.FC<{ className?: string }> = ({ className }
                     className={inputClass}
                   />
                   {/* The age it gives, shown but never typed */}
-                  <p id={`${id}-age`} className="text-[10px] text-on-surface-variant dark:text-zinc-500">
+                  <p id={`${id}-age`} className="text-xs text-on-surface-variant dark:text-zinc-500">
                     {ageFromDob(answers.age) !== null
                       ? `${t('pfAge')}: ${ageFromDob(answers.age)} · ${t('ageFromDobNote')}`
                       : t('ageFromDobNote')}
@@ -177,7 +177,7 @@ export const QuickProfileForm: React.FC<{ className?: string }> = ({ className }
                     : (options ?? []).map(([value, label]) => <option key={value} value={value}>{t(label)}</option>)}
                 </select>
               )}
-              {errors[f] && <p className="text-[10px] text-red-500 font-bold">{errors[f]}</p>}
+              {errors[f] && <p className="text-xs text-red-500 font-bold">{errors[f]}</p>}
             </div>
           );
         })}
