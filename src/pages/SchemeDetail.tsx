@@ -10,6 +10,7 @@ import { useCardText } from '../services/titleTranslations';
 import { BookmarkButton } from '../components/BookmarkButton';
 import { CompareButton } from '../components/CompareButton';
 import { ShareButton } from '../components/ShareButton';
+import { DocumentChecklist } from '../components/DocumentChecklist';
 import { LoadError } from '../components/LoadError';
 import { usePrintSetup } from '../hooks/usePrintSetup';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
@@ -348,7 +349,7 @@ export const SchemeDetail: React.FC = () => {
           {/* Documents required */}
           {documentItems.length > 0 && (
             <DetailSection icon={<FileText className="w-4 h-4" />} title={t('documentsRequired')} toggle={toggleFor('documents')}>
-              <BulletList items={shownDocuments} />
+              <DocumentChecklist schemeId={translatedScheme.id} lines={englishDocuments} shown={shownDocuments} />
             </DetailSection>
           )}
 

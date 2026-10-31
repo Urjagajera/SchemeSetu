@@ -81,6 +81,8 @@ export interface UserProfile {
   veteran?: string;
   interests?: string[];
   profileTags?: string[];
+  /** "My documents": kinds of common document the person has (keys from utils/documentKinds.ts). */
+  documentsHeld?: string[];
 }
 
 export interface ChatMessage {

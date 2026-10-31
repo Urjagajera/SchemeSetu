@@ -16,13 +16,15 @@ import {
   Bookmark, 
   ShieldCheck,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  FileCheck
 } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { profileCompleteness } from '../utils/profileCompleteness';
 import { ageFromDob } from '../utils/ageFromDob';
+import { MyDocuments } from '../components/MyDocuments';
 
 // Only the name is required. Every other answer is optional: a blank means "unknown", and the eligibility
 // engine never rules a scheme out because of an unknown. What IS filled in must still be sensible.
@@ -104,7 +106,10 @@ export const Profile: React.FC = () => {
   const [successMsg, setSuccessMsg] = useState('');
   // What stopped a save, shown at the top of the page whichever tab you are on.
   const [saveProblem, setSaveProblem] = useState<{ message: string; items: FormProblem[] } | null>(null);
-  const [activeSection, setActiveSection] = useState<'personal' | 'academic' | 'finance' | 'location' | 'special'>('personal');
+  // ?section=documents (from a scheme page's "Add My documents" link) opens that tab.
+  const [activeSection, setActiveSection] = useState<'personal' | 'academic' | 'finance' | 'location' | 'special' | 'documents'>(
+    searchParams.get('section') === 'documents' ? 'documents' : 'personal',
+  );
   
   const [selectedTags, setSelectedTags] = useState<string[]>(profile.interests || profile.profileTags || []);
   const [newTagInput, setNewTagInput] = useState('');
@@ -257,7 +262,8 @@ export const Profile: React.FC = () => {
     { id: 'academic', label: t('pfTabEducation'), icon: GraduationCap },
     { id: 'finance', label: t('pfTabFinance'), icon: Coins },
     { id: 'location', label: t('pfTabLocation'), icon: MapPin },
-    { id: 'special', label: t('pfTabSpecial'), icon: Bookmark }
+    { id: 'special', label: t('pfTabSpecial'), icon: Bookmark },
+    { id: 'documents', label: t('myDocuments'), icon: FileCheck }
   ] as const;
 
   return (
@@ -710,6 +716,15 @@ export const Profile: React.FC = () => {
                 </div>
               </div>
 
+            </div>
+          )}
+
+          {activeSection === 'documents' && (
+            <div className="space-y-4">
+              <h3 className="font-heading text-sm md:text-base font-extrabold text-primary dark:text-white pb-2 border-b dark:border-zinc-800">
+                {t('myDocuments')}
+              </h3>
+              <MyDocuments />
             </div>
           )}
 

@@ -272,3 +272,16 @@ describe('Profile form: every field is named by its label (what a screen reader 
     expect(screen.getByRole('button', { name: 'Remove: Farmer' })).not.toBeNull();
   });
 });
+
+describe('Profile: My documents tab', () => {
+  it('has its own tab, and a link from a scheme page (?section=documents) opens it', () => {
+    setup('/profile?section=documents');
+    expect(screen.getByRole('button', { name: 'My documents' })).not.toBeNull();
+    expect(screen.getAllByRole('checkbox', { name: 'Aadhaar card' })).toHaveLength(1);
+  });
+
+  it('opens on Personal Information otherwise', () => {
+    setup();
+    expect(screen.queryByRole('checkbox', { name: 'Aadhaar card' })).toBeNull();
+  });
+});
