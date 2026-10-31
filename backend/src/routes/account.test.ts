@@ -8,11 +8,11 @@ type Row = Record<string, any>;
 
 // A small in-memory database with two users, so "only their own data" is tested on real rows, not on mocks of calls.
 const db = vi.hoisted(() => {
-  const state = { users: [] as Row[], profiles: [] as Row[], bookmarks: [] as Row[], schemes: [] as Row[], failOn: '' as string };
+  const state = { users: [] as Row[], profiles: [] as Row[], bookmarks: [] as Row[], checklists: [] as Row[], schemes: [] as Row[], failOn: '' as string };
   const matches = (row: Row, where: Row) => Object.entries(where).every(([k, v]) => row[k] === v);
   // Like Prisma's own promises, a delete does nothing until it is awaited, so a transaction decides when it runs.
   const lazy = <T,>(run: () => Promise<T>): PromiseLike<T> => ({ then: (ok, bad) => run().then(ok, bad) });
-  const del = (name: 'users' | 'profiles' | 'bookmarks') => ({ where }: { where: Row }) =>
+  const del = (name: 'users' | 'profiles' | 'bookmarks' | 'checklists') => ({ where }: { where: Row }) =>
     lazy(async () => {
       if (state.failOn === name) throw new Error('boom');
       const before = state[name].length;
@@ -29,15 +29,20 @@ const db = vi.hoisted(() => {
           state.bookmarks.filter((r) => matches(r, where)).map((b) => ({ ...b, scheme: state.schemes.find((s) => s.id === b.schemeId) })),
         deleteMany: del('bookmarks'),
       },
+      documentChecklist: {
+        findMany: async ({ where }: { where: Row }) =>
+          state.checklists.filter((r) => matches(r, where)).map((c) => ({ ...c, scheme: state.schemes.find((s) => s.id === c.schemeId) })),
+        deleteMany: del('checklists'),
+      },
       // Runs the queued deletes in order and puts everything back if one fails, like a real transaction.
       $transaction: async (ops: Array<PromiseLike<unknown>>) => {
-        const snapshot = JSON.stringify([state.users, state.profiles, state.bookmarks]);
+        const snapshot = JSON.stringify([state.users, state.profiles, state.bookmarks, state.checklists]);
         try {
           const out: unknown[] = [];
           for (const op of ops) out.push(await op);
           return out;
         } catch (e) {
-          [state.users, state.profiles, state.bookmarks] = JSON.parse(snapshot);
+          [state.users, state.profiles, state.bookmarks, state.checklists] = JSON.parse(snapshot);
           throw e;
         }
       },
@@ -79,6 +84,10 @@ beforeEach(() => {
     { id: 'b2', userId: 'u2', schemeId: 's2', createdAt: new Date('2026-02-02') },
     { id: 'b3', userId: 'u2', schemeId: 's1', createdAt: new Date('2026-02-03') },
   ];
+  db.state.checklists = [
+    { id: 'c1', userId: 'u1', schemeId: 's1', checked: ['Aadhaar Card'], unchecked: ['Ration Card'], updatedAt: new Date('2026-03-01') },
+    { id: 'c2', userId: 'u2', schemeId: 's2', checked: ['Income Certificate'], unchecked: [], updatedAt: new Date('2026-03-02') },
+  ];
 });
 
 describe('account routes need a signed-in session', () => {
@@ -104,13 +113,16 @@ describe('GET /api/account/export', () => {
     expect(res.body.account).toMatchObject({ id: 'u1', email: 'one@example.test', name: 'One', googleId: 'g1' });
     expect(res.body.profile).toMatchObject({ age: '30', gender: 'female', disability: 'yes', state: 'Gujarat', interestTags: ['Farmer'] });
     expect(res.body.bookmarks).toEqual([{ schemeId: 's1', schemeName: 'Scheme One', schemeUrl: 'http://x/1', savedAt: expect.any(String) }]);
+    expect(res.body.documentChecklists).toEqual([
+      { schemeId: 's1', schemeName: 'Scheme One', ticked: ['Aadhaar Card'], untickedOnPurpose: ['Ration Card'], updatedAt: expect.any(String) },
+    ]);
     expect(res.headers['content-disposition']).toContain('attachment');
   });
 
   it('never contains another user\'s data', async () => {
     const res = await request(app()).get('/api/account/export').set('Cookie', cookieFor('u1'));
     const body = JSON.stringify(res.body);
-    for (const other of ['two@example.test', 'g2', '"Two"', 'Kerala', 'Student', '"55"', 'Scheme Two']) expect(body, other).not.toContain(other);
+    for (const other of ['two@example.test', 'g2', '"Two"', 'Kerala', 'Student', '"55"', 'Scheme Two', 'Income Certificate']) expect(body, other).not.toContain(other);
   });
 
   it('gives the other user only their own', async () => {
@@ -157,16 +169,17 @@ describe('DELETE /api/account', () => {
   it('removes the caller\'s bookmarks, profile and account, and says how many', async () => {
     const res = await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ success: true, deleted: { bookmarks: 1, profile: 1, account: 1 } });
+    expect(res.body).toEqual({ success: true, deleted: { bookmarks: 1, documentChecklists: 1, profile: 1, account: 1 } });
+    expect(db.state.checklists.map((c) => c.userId)).toEqual(['u2']);
     expect(db.state.users.map((u) => u.id)).toEqual(['u2']);
     expect(db.state.profiles.map((p) => p.userId)).toEqual(['u2']);
     expect(db.state.bookmarks.map((b) => b.id)).toEqual(['b2', 'b3']);
   });
 
   it('leaves the other user\'s rows exactly as they were', async () => {
-    const before = JSON.stringify([db.state.users[1], db.state.profiles[1], db.state.bookmarks.filter((b) => b.userId === 'u2')]);
+    const before = JSON.stringify([db.state.users[1], db.state.profiles[1], db.state.bookmarks.filter((b) => b.userId === 'u2'), db.state.checklists.filter((c) => c.userId === 'u2')]);
     await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
-    const after = JSON.stringify([db.state.users[0], db.state.profiles[0], db.state.bookmarks.filter((b) => b.userId === 'u2')]);
+    const after = JSON.stringify([db.state.users[0], db.state.profiles[0], db.state.bookmarks.filter((b) => b.userId === 'u2'), db.state.checklists.filter((c) => c.userId === 'u2')]);
     expect(after).toBe(before);
   });
 
@@ -189,8 +202,9 @@ describe('DELETE /api/account', () => {
   it('works for an account that never saved a profile or a bookmark', async () => {
     db.state.profiles = db.state.profiles.filter((p) => p.userId !== 'u1');
     db.state.bookmarks = db.state.bookmarks.filter((b) => b.userId !== 'u1');
+    db.state.checklists = db.state.checklists.filter((c) => c.userId !== 'u1');
     const res = await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
-    expect(res.body.deleted).toEqual({ bookmarks: 0, profile: 0, account: 1 });
+    expect(res.body.deleted).toEqual({ bookmarks: 0, documentChecklists: 0, profile: 0, account: 1 });
   });
 
   it('is all-or-nothing: if one delete fails, nothing is removed and the cookie stays', async () => {
@@ -200,6 +214,7 @@ describe('DELETE /api/account', () => {
     expect(db.state.users).toHaveLength(2);
     expect(db.state.profiles).toHaveLength(2);
     expect(db.state.bookmarks).toHaveLength(3);
+    expect(db.state.checklists).toHaveLength(2);
     expect(res.headers['set-cookie']).toBeUndefined();
   });
 
@@ -207,7 +222,7 @@ describe('DELETE /api/account', () => {
     await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
     const again = await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
     expect(again.status).toBe(200);
-    expect(again.body.deleted).toEqual({ bookmarks: 0, profile: 0, account: 0 });
+    expect(again.body.deleted).toEqual({ bookmarks: 0, documentChecklists: 0, profile: 0, account: 0 });
     expect(db.state.users.map((u) => u.id)).toEqual(['u2']);
   });
 });

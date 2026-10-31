@@ -83,13 +83,13 @@ describe('the legal text says only what the code does', () => {
     expect(account).toMatch(/router\.use\(requireAuth\)/);
     expect(account).toMatch(/router\.delete\(\s*'\/'/);
     expect(account).toMatch(/router\.get\(\s*'\/export'/);
-    expect(account).toMatch(/bookmark\.deleteMany[\s\S]*profile\.deleteMany[\s\S]*user\.deleteMany/); // all three, in one transaction
+    expect(account).toMatch(/bookmark\.deleteMany[\s\S]*documentChecklist\.deleteMany[\s\S]*profile\.deleteMany[\s\S]*user\.deleteMany/); // all four, in one transaction
     expect(read('backend', 'src', 'app.ts')).toContain("app.use('/api/account', accountRouter)");
     const settings = read('src', 'pages', 'Settings.tsx');
     expect(settings).toContain('deleteMyAccount');
     expect(settings).toContain('downloadMyData');
     expect(en.pvDelete).toMatch(/download a copy of your data and delete your account from Settings/);
-    expect(en.pvDelete).toContain('removes your account, profile and bookmarks from our database');
+    expect(en.pvDelete).toContain('removes your account, profile, bookmarks and document checklists from our database');
     expect(en.pvDelete).not.toMatch(/no button|not yet available/i);
     // the only other delete route is "remove one bookmark"
     const others = ['auth', 'profile', 'bookmarks'].map((f) => read('backend', 'src', 'routes', f + '.ts')).join('\n');
@@ -98,11 +98,13 @@ describe('the legal text says only what the code does', () => {
 
   it('the data it lists as collected is what the database holds, and nothing more', () => {
     const schema = read('backend', 'prisma', 'schema.prisma');
-    for (const field of ['googleId', 'email', 'name', 'profilePictureUrl', 'age', 'dob', 'gender', 'occupation', 'education', 'income', 'category', 'state', 'district', 'residence', 'minority', 'disability', 'farmer', 'widow', 'veteran', 'land', 'profileTags']) {
+    for (const field of ['googleId', 'email', 'name', 'profilePictureUrl', 'age', 'dob', 'gender', 'occupation', 'education', 'income', 'category', 'state', 'district', 'residence', 'minority', 'disability', 'farmer', 'widow', 'veteran', 'land', 'profileTags', 'documentsHeld', 'model DocumentChecklist']) {
       expect(schema, field).toContain(field);
     }
     const userAndProfile = schema.slice(schema.indexOf('model User'), schema.indexOf('model Scheme {')) + schema.slice(schema.indexOf('model Profile'), schema.indexOf('model Bookmark'));
     expect(userAndProfile).not.toMatch(/phone|mobile|aadhaar|address|pan\b/i);
+    expect(en.pvStored).toContain('document checklists');
+    expect(en.pvStored).toContain('never their numbers or copies');
   });
 
   it('the pages exist as routes and are linked from the footer and the sign-in page', () => {

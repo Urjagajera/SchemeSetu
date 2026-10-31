@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DOCUMENT_KINDS } from './documentKinds.js';
 import { canonicalState } from './states.js';
 
 /**
@@ -64,6 +65,16 @@ const tags = z
   )
   .optional();
 
+// "My documents": a set of known kinds. Left out = untouched; null or [] clears it; duplicates are dropped.
+const documentsHeld = z
+  .preprocess(
+    (v) => (v === null ? [] : v),
+    z
+      .array(z.enum(DOCUMENT_KINDS, { error: `Documents must be from: ${DOCUMENT_KINDS.join(', ')}` }))
+      .transform((arr) => [...new Set(arr)]),
+  )
+  .optional();
+
 export const profileUpdateSchema = z.object({
   // Required to be real when sent (it is the account's display name). Left out = untouched. Never cleared.
   name: z.string().trim().min(2, 'Name must be at least 2 characters').max(MAX_TEXT, `Name must be ${MAX_TEXT} characters or fewer`).optional(),
@@ -100,6 +111,7 @@ export const profileUpdateSchema = z.object({
 
   interests: tags,
   profileTags: tags,
+  documentsHeld,
 });
 
 export type ProfileUpdate = z.infer<typeof profileUpdateSchema>;

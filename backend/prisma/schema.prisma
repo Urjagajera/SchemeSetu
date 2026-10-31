@@ -11,15 +11,16 @@ generator client {
 }
 
 model User {
-  id                String     @id @default(uuid())
-  googleId          String     @unique
-  email             String     @unique
+  id                String              @id @default(uuid())
+  googleId          String              @unique
+  email             String              @unique
   name              String?
   profilePictureUrl String?
   bookmarks         Bookmark[]
   profile           Profile?
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
+  checklists        DocumentChecklist[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
 
 model Scheme {
@@ -41,6 +42,7 @@ model Scheme {
   categories           Category[]
   tags                 Tag[]
   bookmarks            Bookmark[]
+  checklists           DocumentChecklist[]
   translations         SchemeTranslation[]
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
@@ -129,28 +131,31 @@ model Tag {
 // usage (Profile.tsx writes the same array to both), so this stores ONE
 // array and the API mirrors it into both response keys.
 model Profile {
-  id          String   @id @default(uuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
-  age         String?
-  dob         String?
-  gender      String?
-  occupation  String?
-  education   String?
-  income      String?
-  category    String?
-  state       String?
-  district    String?
-  residence   String? // "rural" | "urban"; collected by the profile form and the guest wizard
-  minority    String?
-  disability  String?
-  farmer      String?
-  widow       String?
-  veteran     String?
-  land        String?
-  profileTags String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  age           String?
+  dob           String?
+  gender        String?
+  occupation    String?
+  education     String?
+  income        String?
+  category      String?
+  state         String?
+  district      String?
+  residence     String? // "rural" | "urban"; collected by the profile form and the guest wizard
+  minority      String?
+  disability    String?
+  farmer        String?
+  widow         String?
+  veteran       String?
+  land          String?
+  profileTags   String[]
+  // "My documents": which kinds of common document the person says they have (keys from src/utils/documentKinds.ts,
+  // e.g. "bank"). Only that they have one, never a number or a copy of it.
+  documentsHeld String[] @default([])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Bookmark {
@@ -162,4 +167,21 @@ model Bookmark {
   createdAt DateTime @default(now())
 
   @@unique([userId, schemeId]) // a user can only bookmark a given scheme once
+}
+
+// A person's ticks against one scheme's document list. Lines are stored by their text, not their position, so a
+// re-ingested list in another order keeps its ticks; a line that no longer exists simply stops matching.
+// `checked` are lines ticked by hand. `unchecked` are lines the person unticked although My documents matched them,
+// so an automatic tick never comes back once they have said no.
+model DocumentChecklist {
+  id        String   @id @default(uuid())
+  userId    String
+  schemeId  String
+  user      User     @relation(fields: [userId], references: [id])
+  scheme    Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  checked   String[] @default([])
+  unchecked String[] @default([])
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, schemeId])
 }

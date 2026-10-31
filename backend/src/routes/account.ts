@@ -12,7 +12,8 @@ router.use(requireAuth);
 
 /**
  * GET /api/account/export
- * The caller's own data as JSON: the account fields we hold, the profile (null if never saved) and the bookmarks.
+ * The caller's own data as JSON: the account fields we hold, the profile (null if never saved), the bookmarks and
+ * the document checklists.
  */
 router.get(
   '/export',
@@ -28,6 +29,11 @@ router.get(
       where: { userId },
       include: { scheme: { select: { name: true, sourceUrl: true } } },
       orderBy: { createdAt: 'asc' },
+    });
+    const checklists = await prisma.documentChecklist.findMany({
+      where: { userId },
+      include: { scheme: { select: { name: true } } },
+      orderBy: { updatedAt: 'asc' },
     });
 
     res.setHeader('Content-Disposition', 'attachment; filename="schemesetu-my-data.json"');
@@ -60,29 +66,33 @@ router.get(
             veteran: profile.veteran,
             land: profile.land,
             interestTags: profile.profileTags,
+            documentsHeld: profile.documentsHeld,
           }
         : null,
       bookmarks: bookmarks.map((b) => ({ schemeId: b.schemeId, schemeName: b.scheme.name, schemeUrl: b.scheme.sourceUrl, savedAt: b.createdAt })),
+      documentChecklists: checklists.map((c) => ({ schemeId: c.schemeId, schemeName: c.scheme.name, ticked: c.checked, untickedOnPurpose: c.unchecked, updatedAt: c.updatedAt })),
     });
   }),
 );
 
 /**
  * DELETE /api/account
- * Removes the caller's bookmarks, profile and user row in one transaction, then clears the session cookie.
+ * Removes the caller's bookmarks, document checklists, profile and user row in one transaction, then clears the
+ * session cookie.
  * The browser asks for a typed confirmation first; the server itself only needs the signed-in session.
  */
 router.delete(
   '/',
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user!.userId;
-    const [bookmarks, profile, user] = await prisma.$transaction([
+    const [bookmarks, checklists, profile, user] = await prisma.$transaction([
       prisma.bookmark.deleteMany({ where: { userId } }),
+      prisma.documentChecklist.deleteMany({ where: { userId } }),
       prisma.profile.deleteMany({ where: { userId } }),
       prisma.user.deleteMany({ where: { id: userId } }),
     ]);
     clearSessionCookie(res);
-    res.json({ success: true, deleted: { bookmarks: bookmarks.count, profile: profile.count, account: user.count } });
+    res.json({ success: true, deleted: { bookmarks: bookmarks.count, documentChecklists: checklists.count, profile: profile.count, account: user.count } });
   }),
 );
 

@@ -39,6 +39,7 @@ function serializeProfile(row: Profile) {
     land: row.land ?? undefined,
     interests: row.profileTags,
     profileTags: row.profileTags,
+    documentsHeld: row.documentsHeld,
   };
 }
 
@@ -96,6 +97,7 @@ router.put(
       veteran: body.veteran,
       land: body.land,
       ...(tags !== undefined ? { profileTags: tags } : {}),
+      ...(body.documentsHeld !== undefined ? { documentsHeld: body.documentsHeld } : {}),
     };
 
     const [row] = await prisma.$transaction([

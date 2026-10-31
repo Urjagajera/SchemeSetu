@@ -279,3 +279,48 @@ describe('age from the date of birth', () => {
     expect(upsertArgs().update.age).not.toBe('null');
   });
 });
+
+describe('My documents (documentsHeld)', () => {
+  const put = (body: unknown) => request(buildApp()).put('/api/profile').send(body as object);
+  const upsertArgs = () => mockPrisma.profile.upsert.mock.calls[0][0];
+
+  beforeEach(() => {
+    mockPrisma.profile.findUnique.mockReset();
+    mockPrisma.profile.upsert.mockReset();
+    mockPrisma.$transaction.mockReset();
+    mockPrisma.profile.upsert.mockImplementation((args: unknown) => args);
+    mockPrisma.$transaction.mockImplementation(async (ops: unknown[]) => [row(), ...ops.slice(1)]);
+  });
+
+  it('saves the kinds ticked, each once', async () => {
+    const res = await put({ documentsHeld: ['aadhaar', 'ration', 'aadhaar'] });
+    expect(res.status).toBe(200);
+    expect(upsertArgs().update.documentsHeld).toEqual(['aadhaar', 'ration']);
+    expect(upsertArgs().create.documentsHeld).toEqual(['aadhaar', 'ration']);
+  });
+
+  it('leaves them untouched when a save does not mention them', async () => {
+    await put({ state: 'Gujarat' });
+    expect(upsertArgs().update).not.toHaveProperty('documentsHeld');
+  });
+
+  it('an empty list or null clears them', async () => {
+    await put({ documentsHeld: [] });
+    expect(upsertArgs().update.documentsHeld).toEqual([]);
+    mockPrisma.profile.upsert.mockClear();
+    await put({ documentsHeld: null });
+    expect(upsertArgs().update.documentsHeld).toEqual([]);
+  });
+
+  it('rejects a kind that is not on the list, and saves nothing', async () => {
+    const res = await put({ documentsHeld: ['aadhaar', 'passport'] });
+    expect(res.status).toBe(400);
+    expect(res.body.error.fields.documentsHeld).toMatch(/Documents must be from/);
+    expect(mockPrisma.profile.upsert).not.toHaveBeenCalled();
+  });
+
+  it('GET returns them', async () => {
+    mockPrisma.profile.findUnique.mockResolvedValue(row({ documentsHeld: ['bank', 'photo'] }));
+    expect((await request(buildApp()).get('/api/profile')).body.profile.documentsHeld).toEqual(['bank', 'photo']);
+  });
+});
