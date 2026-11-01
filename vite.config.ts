@@ -13,6 +13,10 @@ export default defineConfig({
 
   server: {
     port: 5173,
+    // Google sign-in only accepts the origins registered for the client ID (http://localhost:5173 here). If another
+    // app already has 5173, stop with an error instead of quietly moving to 5174, where sign-in fails with
+    // "Error 400: origin_mismatch".
+    strictPort: true,
     open: true,
     /**
      * Proxy /api/* to the Express backend (port 3001) in development.
