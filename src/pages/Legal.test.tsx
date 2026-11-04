@@ -68,14 +68,29 @@ describe('the legal text says only what the code does', () => {
     expect(en.pvCookie).toMatch(/up to 7 days/);
   });
 
-  it('what is said to reach Groq matches the code: only scheme text, no user data', () => {
-    const dir = path.join(root, 'backend', 'src', 'translation');
-    const files = fs.readdirSync(dir).filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'));
-    for (const f of files) {
-      const src = fs.readFileSync(path.join(dir, f), 'utf8');
-      expect(src, f).not.toMatch(/prisma\.(user|profile|bookmark)|requireAuth|googleId|profilePictureUrl/);
+  it('what is said to reach Groq matches the code: scheme text, chat messages and eligibility answers, never who you are', () => {
+    // Translation sends scheme text only.
+    const translation = path.join(root, 'backend', 'src', 'translation');
+    for (const f of fs.readdirSync(translation).filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'))) {
+      expect(fs.readFileSync(path.join(translation, f), 'utf8'), f).not.toMatch(/prisma\.(user|profile|bookmark)|requireAuth|googleId|profilePictureUrl/);
     }
-    expect(en.pvThird).toMatch(/no user data to Groq/);
+    // SetuAI reads the profile in one place, and only through the eligibility-only list; never the User row.
+    const chat = path.join(root, 'backend', 'src', 'chat');
+    const chatFiles = fs.readdirSync(chat).filter((f) => f.endsWith('.ts') && !f.endsWith('.test.ts'));
+    for (const f of chatFiles) {
+      const src = fs.readFileSync(path.join(chat, f), 'utf8');
+      expect(src, f).not.toMatch(/prisma\.(user|bookmark|documentChecklist)|googleId|profilePictureUrl|\.email\b/);
+      if (f !== 'loadChatProfile.ts') expect(src, f).not.toMatch(/prisma\.profile/);
+    }
+    const loader = read('backend', 'src', 'chat', 'loadChatProfile.ts');
+    expect(loader).toMatch(/return profileForChat\(await prisma\.profile\.findUnique/);
+    const fields = read('backend', 'src', 'chat', 'profileForChat.ts');
+    const list = fields.slice(fields.indexOf('CHAT_PROFILE_FIELDS = ['), fields.indexOf('] as const'));
+    expect(list).not.toMatch(/name|email|district|dob|google|picture|phone|address/i);
+
+    expect(en.pvThird).toContain("the messages you type to SetuAI");
+    expect(en.pvThird).toContain('never send Groq your name, email, district or date of birth');
+    expect(en.pvGuest).toContain('from there to Groq to write an answer');
   });
 
   it('the "deleting your data" paragraph is true: the routes and the Settings buttons exist, and only for the signed-in user', () => {

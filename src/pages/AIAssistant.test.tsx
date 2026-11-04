@@ -68,3 +68,26 @@ describe('SetuAI: new replies are announced to screen readers', () => {
     expect(screen.getByRole('button', { name: 'deleteConversation: First chat' })).not.toBeNull();
   });
 });
+
+describe('SetuAI: what each message carries', () => {
+  it('sends the page language and the conversation so far, without the welcome note', async () => {
+    await renderPage([conv('c1', 'Earlier', [msg('init-msg', 'ai', 'Hello!'), msg('m1', 'user', 'Tell me about PM-KISAN'), msg('m2', 'ai', 'It helps farmers.')])]);
+    mocks.sendMessage.mockResolvedValue(msg('m4', 'ai', 'Aadhaar and land papers.'));
+    fireEvent.change(screen.getByRole('textbox', { name: 'typeQueryHere' }), { target: { value: 'What documents?' } });
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'sendMessage' })); });
+    const [text, , opts] = mocks.sendMessage.mock.calls[0];
+    expect(text).toBe('What documents?');
+    expect(opts.language).toBe('en');
+    expect(opts.history.map((m: { id: string }) => m.id)).toEqual(['m1', 'm2']);
+  });
+
+  it('when the server cannot be reached, says so in the conversation instead of making an answer up', async () => {
+    await renderPage([conv('c1', 'Earlier', [msg('m1', 'ai', 'Hello')])]);
+    mocks.sendMessage.mockRejectedValue(new Error('Network Error'));
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    fireEvent.change(screen.getByRole('textbox', { name: 'typeQueryHere' }), { target: { value: 'Hi' } });
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'sendMessage' })); });
+    expect(screen.getAllByText('chatOffline')).toHaveLength(2); // in the conversation, and read out once
+    expect(announcer().textContent).toBe('chatOffline');
+  });
+});

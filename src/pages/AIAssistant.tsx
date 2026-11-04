@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
-import { chatService } from '../services/chatService';
+import { chatService, WELCOME_TEXT } from '../services/chatService';
 import { ChatConversation, ChatMessage } from '../types';
 import Sidebar from '../components/Sidebar';
 import { 
@@ -22,7 +22,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const AIAssistant: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const { isAuthenticated } = useAuth();
   const [searchParams] = useSearchParams();
   const prefill = searchParams.get('q') || '';
@@ -106,6 +106,9 @@ export const AIAssistant: React.FC = () => {
       setActiveConvId(newId);
     }
 
+    // What SetuAI has to go on for follow-ups: this conversation's earlier messages, without the welcome note.
+    const history = currentConv.messages.filter((m) => m.id !== 'init-msg');
+
     // Add user message
     const userMsg: ChatMessage = {
       id: Math.random().toString(36).substring(7),
@@ -122,7 +125,7 @@ export const AIAssistant: React.FC = () => {
 
     try {
       // Get AI answer
-      const reply = await chatService.sendMessage(textToSend, currentConvId);
+      const reply = await chatService.sendMessage(textToSend, currentConvId, { history, language });
       currentConv.messages.push(reply);
       currentConv.lastUpdated = new Date().toISOString();
       
@@ -135,6 +138,14 @@ export const AIAssistant: React.FC = () => {
       await chatService.saveConversations(updatedConvs);
     } catch (err) {
       console.error(err);
+      // Say so in the conversation, rather than leaving the question unanswered or making an answer up.
+      currentConv.messages.push({
+        id: Math.random().toString(36).substring(7),
+        sender: 'ai',
+        text: t('chatOffline'),
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      });
+      setConversations([...updatedConvs]);
     } finally {
       setIsTyping(false);
     }
@@ -149,7 +160,7 @@ export const AIAssistant: React.FC = () => {
         {
           id: Math.random().toString(36).substring(7),
           sender: 'ai',
-          text: `Hello! This is **SetuAI**: quick answers about common schemes. It is not a live assistant, so please confirm details on the official portal.`,
+          text: WELCOME_TEXT,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ],
@@ -170,7 +181,7 @@ export const AIAssistant: React.FC = () => {
           {
             id: 'init-msg',
             sender: 'ai',
-            text: `Hello! This is **SetuAI**: quick answers about common schemes. It is not a live assistant, so please confirm details on the official portal.`,
+            text: WELCOME_TEXT,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           }
         ],
@@ -198,7 +209,7 @@ export const AIAssistant: React.FC = () => {
             {
               id: 'init-msg',
               sender: 'ai',
-              text: `Hello! This is **SetuAI**: quick answers about common schemes. It is not a live assistant, so please confirm details on the official portal.`,
+              text: WELCOME_TEXT,
               timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             }
           ],

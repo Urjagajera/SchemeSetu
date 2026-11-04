@@ -83,7 +83,7 @@
   "alternativeSchemes": "Alternative Schemes",
   "clearChat": "Clear Chat",
   "newConversation": "New Conversation",
-  "aiDisclaimer": "These are ready-made answers, not a live assistant. Please verify details on the official portals.",
+  "aiDisclaimer": "SetuAI writes its answers with AI from SchemeSetu's scheme data. It can make mistakes: check details on the official portal before you apply.",
   "typing": "SetuAI is typing...",
   "languageLabel": "English / हिन्दी / ગુજરાતી",
   "filterTitle": "Filters",
@@ -388,7 +388,7 @@
   "pvWhyH": "Why we use it",
   "pvWhy": "We use it only to keep you signed in, to match schemes to your answers, and to show your bookmarks. We do not sell it and we do not use it for advertising.",
   "pvGuestH": "The guest eligibility checker and SetuAI",
-  "pvGuest": "The answers you give the eligibility checker are sent to our server to find matching schemes. The messages you type to SetuAI are sent to our server to choose a ready-made answer. Neither is saved on our server.",
+  "pvGuest": "The answers you give the eligibility checker are sent to our server to find matching schemes. The messages you type to SetuAI are sent to our server, and from there to Groq to write an answer. Neither is saved on our server.",
   "pvCookieH": "Cookies and your browser",
   "pvCookie": "After you sign in we set one cookie that keeps you signed in for up to 7 days. It is used only for that. We use no advertising or tracking cookies and no analytics. Your browser also keeps some data on your device: your language and theme, whether the side menu is collapsed, a copy of your name, email and photo link so pages can show them, your bookmarks, and your SetuAI chat history. You can clear all of it from Settings, or by clearing your browser data.",
   "pvStoredH": "Where it is stored",
@@ -396,7 +396,7 @@
   "pvLogsH": "Server logs",
   "pvLogs": "The server keeps ordinary logs of each request: the time, the address requested (which can include search words), the result and how long it took. It does not log your profile answers or the contents of your messages. Our hosting providers may also record your IP address as part of running the service, and we use your IP address in memory to limit repeated requests.",
   "pvThirdH": "Other companies involved",
-  "pvThird": "Google: you sign in with Google, and whenever you open the site your browser loads Google's sign-in script and fonts from Google's servers, so Google can see that your device visited. Groq: to translate scheme text into Hindi and Gujarati we send the public text of government schemes to Groq's translation service. We send no user data to Groq: no names, emails, profile answers or messages.",
+  "pvThird": "Google: you sign in with Google, and whenever you open the site your browser loads Google's sign-in script and fonts from Google's servers, so Google can see that your device visited. Groq: we send Groq the public text of government schemes, to translate it into Hindi and Gujarati and to write SetuAI's answers, together with the messages you type to SetuAI. If you are signed in, SetuAI also sends the profile answers that decide which schemes fit you (such as age, gender, state, income and social category). We never send Groq your name, email, district or date of birth.",
   "pvDeleteH": "Deleting your data",
   "pvDelete": "You can download a copy of your data and delete your account from Settings. Deleting removes your account, profile, bookmarks and document checklists from our database. Ordinary server logs do not contain your profile answers. Data kept in your browser is cleared at the same time.",
   "pvChangeH": "Changes to this page",
@@ -517,5 +517,6 @@
   "docsLoginToSave": "Log in to keep your ticks.",
   "docsSaveFailed": "Couldn't save your tick. Try again.",
   "docsSetUp": "Add My documents on your profile to have these ticked for you.",
-  "docsMissingPrint": "Still needed"
+  "docsMissingPrint": "Still needed",
+  "chatOffline": "Couldn't reach SchemeSetu, so SetuAI can't answer right now. Check your internet connection, then try again."
 }
