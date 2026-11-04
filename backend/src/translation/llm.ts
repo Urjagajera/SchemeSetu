@@ -42,9 +42,10 @@ export function createLimiter(max: number): <T>(task: () => Promise<T>) => Promi
   };
 }
 
-export function createGroqLlm(apiKey: string, opts: { maxConcurrent?: number } = {}): Llm {
+export function createGroqLlm(apiKey: string, opts: { maxConcurrent?: number; timeoutMs?: number; maxRetries?: number } = {}): Llm {
   // The SDK retries 429 and 5xx responses with backoff on its own; a long timeout covers slow reasoning calls.
-  const groq = new Groq({ apiKey, maxRetries: 3, timeout: 180_000 });
+  // A chat, where someone is waiting, passes a short timeout and fewer retries instead.
+  const groq = new Groq({ apiKey, maxRetries: opts.maxRetries ?? 3, timeout: opts.timeoutMs ?? 180_000 });
   const limit = createLimiter(opts.maxConcurrent ?? 3);
 
   return (req) =>

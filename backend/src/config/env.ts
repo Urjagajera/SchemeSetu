@@ -35,6 +35,8 @@ export const config = {
   GROQ_API_KEY: process.env.GROQ_API_KEY,
   TRANSLATION_PRIMARY_MODEL: process.env.TRANSLATION_PRIMARY_MODEL || 'openai/gpt-oss-120b',
   TRANSLATION_FALLBACK_MODEL: process.env.TRANSLATION_FALLBACK_MODEL || 'qwen/qwen3.8-27b',
+  // SetuAI's answers (src/chat/): a small, fast model, so chats don't use up the bigger models' daily allowance.
+  CHAT_MODEL: process.env.CHAT_MODEL || 'openai/gpt-oss-20b',
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
   // How many reverse proxies sit in front of Express (utils/trustProxy.ts). 0 locally; 2 on Render behind Vercel.
