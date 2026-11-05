@@ -7,7 +7,11 @@ import { INDIAN_STATES_AND_UTS, canonicalState } from '../utils/states.js';
 import { serializeScheme } from '../utils/serializeScheme.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
 import { setContains } from '../filters/demographics.js';
-import { buildSchemeWhere, parseSchemeFilters } from '../filters/schemeFilters.js';
+import { SchemeFilters, buildSchemeWhere, parseSchemeFilters } from '../filters/schemeFilters.js';
+import config from '../config/env.js';
+import { createGroqLlm } from '../translation/llm.js';
+import { rankSchemes, searchWords, textWhere } from '../search/searchWords.js';
+import { createQueryTranslator, needsTranslation } from '../search/translateQuery.js';
 import { getFilterOptions } from '../filters/options.js';
 import { enabledLanguage } from '../translation/languages.js';
 import { translationService } from '../translation/index.js';
@@ -39,8 +43,41 @@ function parsePagination(req: Request): { page: number; limit: number; skip: num
   return { page, limit, skip: (page - 1) * limit };
 }
 
+// Hindi and Gujarati searches become English search words through Groq (search/translateQuery.ts). A person is
+// waiting for the results, so a short timeout and no retry: when Groq is slow the words are searched as written.
+const queryLlm = config.GROQ_API_KEY ? createGroqLlm(config.GROQ_API_KEY, { maxConcurrent: 4, timeoutMs: 10_000, maxRetries: 0 }) : null;
+const translateQuery = createQueryTranslator(queryLlm, config.CHAT_MODEL);
+
+/**
+ * A text search, word by word and best matches first (search/searchWords.ts), with every other filter applied as
+ * usual. A state named in the search narrows it like the State filter, unless a state is already picked.
+ * Null when the search has no words left once filler is dropped ("schemes for"): then the whole text is matched
+ * as written, as before.
+ */
+async function searchByWords(filters: SchemeFilters, skip: number, limit: number) {
+  const text = filters.query ?? '';
+  const english = needsTranslation(text) ? await translateQuery(text) : null;
+  const { words, state } = searchWords(english ? english.join(' ') : text);
+  if (words.length === 0) return null;
+
+  const where: Prisma.SchemeWhereInput = {
+    AND: [buildSchemeWhere({ ...filters, query: undefined, state: filters.state ?? state ?? undefined }), textWhere(words)],
+  };
+  // Only what the ranking needs, for every match; the full rows are loaded for the one page shown.
+  const candidates = await prisma.scheme.findMany({
+    where,
+    select: { id: true, name: true, description: true, authorityName: true, tags: { select: { name: true } } },
+  });
+  const ranked = rankSchemes(candidates, words, words.join(' '));
+  const pageIds = ranked.slice(skip, skip + limit).map((r) => r.id);
+  const rows = pageIds.length === 0 ? [] : await prisma.scheme.findMany({ where: { id: { in: pageIds } }, include: { tags: true, categories: true } });
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  return { rows: pageIds.map((id) => byId.get(id)).filter((r): r is NonNullable<typeof r> => !!r), total: ranked.length };
+}
+
 /**
  * GET /api/schemes
+ * q: searched word by word, best matches first; Hindi and Gujarati are turned into English words (see searchByWords).
  * Every filter is read and checked by filters/schemeFilters.ts (see the list there); invalid values are dropped.
  * The response carries `appliedFilters`, the filters as they were actually applied, next to the page and the
  * real `total` across all pages. page, limit: pagination.
@@ -50,8 +87,16 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const { limit, skip } = parsePagination(req);
     const appliedFilters = parseSchemeFilters(req.query);
-    const where = buildSchemeWhere(appliedFilters);
 
+    if (appliedFilters.query) {
+      const found = await searchByWords(appliedFilters, skip, limit);
+      if (found) {
+        res.json({ data: found.rows.map((s) => serializeScheme(s)), total: found.total, appliedFilters, ...(await cardTranslation(found.rows, req.query.lang)) });
+        return;
+      }
+    }
+
+    const where = buildSchemeWhere(appliedFilters);
     const [rows, total] = await Promise.all([
       prisma.scheme.findMany({
         where,
