@@ -93,6 +93,20 @@ describe('the legal text says only what the code does', () => {
     expect(en.pvGuest).toContain('from there to Groq to write an answer');
   });
 
+  it('what is said about searches and voice matches the code', () => {
+    // Search sends Groq the search text only, and only when it is Hindi or Gujarati.
+    const translateQuery = read('backend', 'src', 'search', 'translateQuery.ts');
+    expect(translateQuery).not.toMatch(/prisma|req\.|cookie|profile/i);
+    expect(read('backend', 'src', 'routes', 'schemes.ts')).toMatch(/needsTranslation\(text\) \? await translateQuery\(text\) : null/);
+    expect(en.pvThird).toContain('any search written or spoken in Hindi or Gujarati');
+
+    // Voice uses the browser's speech-to-text: the page never records audio itself, so no recording can reach us.
+    const voiceFiles = [read('src', 'hooks', 'useVoiceInput.ts'), read('src', 'components', 'VoiceButton.tsx')];
+    for (const src of voiceFiles) expect(src).not.toMatch(/getUserMedia|MediaRecorder|fetch\(|axios|api\./);
+    expect(en.pvVoice).toContain("your browser's own speech-to-text");
+    expect(en.pvVoice).toContain('SchemeSetu never receives or saves the recording');
+  });
+
   it('the "deleting your data" paragraph is true: the routes and the Settings buttons exist, and only for the signed-in user', () => {
     const account = read('backend', 'src', 'routes', 'account.ts');
     expect(account).toMatch(/router\.use\(requireAuth\)/);

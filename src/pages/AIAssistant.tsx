@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { chatService, WELCOME_TEXT } from '../services/chatService';
 import { ChatConversation, ChatMessage } from '../types';
 import Sidebar from '../components/Sidebar';
+import { VoiceButton } from '../components/VoiceButton';
 import { 
   Bot, 
   Send, 
@@ -473,8 +474,8 @@ export const AIAssistant: React.FC = () => {
 
         {/* Input Bar: its own row under the feed, so it never covers a message */}
         <div className="shrink-0 px-4 pt-3 pb-4 border-t border-outline-variant dark:border-zinc-800 bg-background dark:bg-zinc-950">
-          <div className="max-w-2xl mx-auto space-y-2">
-            
+          <div className="max-w-2xl mx-auto space-y-2 relative">
+
             {/* Action Bar Input Box */}
             <div className="flex items-center bg-white dark:bg-zinc-900 rounded-xl shadow-lg border border-outline-variant dark:border-zinc-800 p-1.5 focus-within:border-secondary dark:focus-within:border-sky-500 transition-all">
               <input
@@ -487,6 +488,8 @@ export const AIAssistant: React.FC = () => {
                 placeholder={t('typeQueryHere')}
                 className="w-full border-none focus:outline-none focus:ring-0 bg-transparent px-4 py-2.5 font-body text-xs md:text-sm text-on-surface dark:text-white outline-none placeholder:text-on-surface-variant/60 dark:placeholder:text-zinc-550"
               />
+              {/* Spoken words fill the box; the person checks them and presses Send. */}
+              <VoiceButton labelKey="voiceAsk" messagePlacement="above" disabled={isTyping} className="mr-1.5" onText={setInputText} onDone={setInputText} />
               <button
                 type="button"
                 onClick={() => handleSend(inputText)}

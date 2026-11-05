@@ -91,3 +91,33 @@ describe('SetuAI: what each message carries', () => {
     expect(announcer().textContent).toBe('chatOffline');
   });
 });
+
+describe('SetuAI: speaking a question', () => {
+  it('fills the box with what was said, and waits for Send instead of sending it', async () => {
+    let rec: { onresult: (e: unknown) => void; onend: () => void; start: () => void } | null = null;
+    const w = window as unknown as { webkitSpeechRecognition?: unknown };
+    w.webkitSpeechRecognition = class {
+      onresult = () => {};
+      onend = () => {};
+      onerror = () => {};
+      constructor() {
+        rec = this as never;
+      }
+      start() {}
+      stop() {}
+      abort() {}
+    };
+    try {
+      await renderPage([conv('c1', 'Earlier', [msg('m1', 'ai', 'Hello')])]);
+      fireEvent.click(screen.getByRole('button', { name: 'voiceAsk' }));
+      act(() => rec!.onresult({ results: Object.assign([{ isFinal: true, 0: { transcript: 'Which pension can my mother get?' } }], { length: 1 }) }));
+      // Shown while still speaking...
+      expect((screen.getByRole('textbox', { name: 'typeQueryHere' }) as HTMLInputElement).value).toBe('Which pension can my mother get?');
+      act(() => rec!.onend());
+      expect((screen.getByRole('textbox', { name: 'typeQueryHere' }) as HTMLInputElement).value).toBe('Which pension can my mother get?');
+      expect(mocks.sendMessage).not.toHaveBeenCalled();
+    } finally {
+      delete w.webkitSpeechRecognition;
+    }
+  });
+});

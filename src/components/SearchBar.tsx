@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { useTranslation } from '../contexts/LanguageContext';
+import { VoiceButton } from './VoiceButton';
 
 interface SearchBarProps {
   initialValue?: string;
@@ -45,6 +46,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           className="w-full border-none focus:outline-none focus:ring-0 bg-transparent px-4 py-3 font-body text-body text-on-surface dark:text-white outline-none placeholder:text-on-surface-variant/60 dark:placeholder:text-zinc-500 text-sm md:text-base"
           aria-label={placeholder || t('searchPlaceholder')}
           placeholder={placeholder || t('searchPlaceholder')}
+        />
+        <VoiceButton
+          labelKey="voiceSearch"
+          className="mr-1.5"
+          onText={setQuery}
+          onDone={(spoken) => {
+            setQuery(spoken);
+            onSearch(spoken.trim());
+          }}
         />
         <button
           type="submit"
