@@ -23,6 +23,7 @@
     "scan:translations": "tsx src/translation/scanStored.ts",
     "translate:vocabulary": "tsx src/translation/buildVocabulary.ts",
     "translate:cards": "tsx src/translation/translateCards.ts",
+    "scrape:new-schemes": "tsx src/scraper/run.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
@@ -49,6 +50,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.12.7",
     "@types/supertest": "^7.2.1",
+    "playwright": "1.56.1",
     "prisma": "^5.22.0",
     "supertest": "^7.3.0",
     "tsx": "^4.7.2",
