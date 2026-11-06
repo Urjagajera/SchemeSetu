@@ -1,0 +1,97 @@
+# Every Sunday at 2 AM India time: find schemes on myScheme (https://www.myscheme.gov.in) that SchemeSetu does not
+# have yet, add them to the CSV (committed to master) and to the database. Existing schemes are never changed.
+# What it does and its safety checks: backend/src/scraper/run.ts. The run's report is shown on the run's page.
+#
+# Needs one repository secret: DATABASE_URL (the Neon connection string). Settings > Secrets and variables > Actions.
+# Can also be started by hand (Actions > "New schemes from myScheme" > Run workflow), with a dry run that writes nothing.
+name: New schemes from myScheme
+
+on:
+  schedule:
+    - cron: '30 20 * * 6' # Saturday 20:30 UTC = Sunday 02:00 IST
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run: read everything, write nothing'
+        type: boolean
+        default: true
+      limit:
+        description: 'At most this many new schemes'
+        type: number
+        default: 200
+
+permissions:
+  contents: write # to commit the CSV
+
+concurrency:
+  group: new-schemes
+  cancel-in-progress: false
+
+jobs:
+  new-schemes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+      LIMIT: ${{ github.event_name == 'workflow_dispatch' && inputs.limit || 200 }}
+    steps:
+      - name: Stop if the database secret is missing
+        if: env.DATABASE_URL == '' && env.DRY_RUN != 'true'
+        working-directory: .
+        run: |
+          echo "::error::The DATABASE_URL repository secret is not set, so new schemes could not be added to the database. Nothing was done."
+          exit 1
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - run: npm ci
+      - run: npx prisma generate
+      - name: Install the browser
+        run: npx playwright install --with-deps chromium
+
+      # Before adding anything: CSV schemes a failed earlier run did not get into the database.
+      - name: Catch up the database
+        if: env.DRY_RUN != 'true'
+        run: npm run scrape:new-schemes -- --sync-db
+
+      - name: Find and read new schemes
+        run: npm run scrape:new-schemes -- --limit=$LIMIT --report=../new-schemes-report.md ${{ env.DRY_RUN == 'true' && '--dry-run' || '' }}
+
+      - name: Commit the CSV
+        if: env.DRY_RUN != 'true'
+        working-directory: .
+        run: |
+          if git diff --quiet -- backend/data/final_data_without_process_mode_.csv; then
+            echo "No new schemes to commit."
+            exit 0
+          fi
+          added=$(sed -n 's/^- Added: \([0-9]*\).*/\1/p' new-schemes-report.md)
+          git config user.name "schemesetu-bot"
+          git config user.email "schemesetu-bot@users.noreply.github.com"
+          git add backend/data/final_data_without_process_mode_.csv
+          git commit -m "Add ${added} new schemes from myScheme ($(date -u +%Y-%m-%d))" -m "See the workflow run's report: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          git pull --rebase origin master
+          git push origin HEAD:master
+
+      - name: Add them to the database
+        if: env.DRY_RUN != 'true'
+        run: npm run scrape:new-schemes -- --sync-db
+
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: new-schemes-report
+          path: new-schemes-report.md
+          if-no-files-found: ignore
+          retention-days: 90
