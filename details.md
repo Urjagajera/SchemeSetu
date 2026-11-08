@@ -4,7 +4,7 @@
 |---|---|
 | **Product** | SchemeSetu (स्कीमसेतु) — a finder for Indian government welfare schemes |
 | **Document type** | Software Requirements Specification, structured after IEEE 830 / ISO/IEC/IEEE 29148, kept up to date |
-| **Last updated** | 2026-11-06 (after the "Weekly myScheme check" module) |
+| **Last updated** | 2026-11-08 (Neon filled; weekly job status) |
 | **Project** | Project-I (CEUP 301), Department of Computer Science & Engineering, CSPIT, CHARUSAT — Group CS26015 |
 | **Student** | Urja Gajera (24CS021) |
 | **Mentor / Guide** | Dr. Jigar Sarda |
@@ -1194,9 +1194,14 @@ flowchart LR
 ### 13.3 Status (2026-11-06)
 - **Not deployed yet**, on purpose: hosting accounts and real addresses are still to be created; the Render address in `vercel.json` must
   be changed and the Vercel origin added to the Google OAuth client.
-- **Weekly job:** pushed and active on GitHub; first scheduled run Sunday 2026-11-08 02:00 IST. Until `DATABASE_URL` is set, each run
-  stops at its first step and changes nothing. Whether Neon already holds the 4,722 schemes is **not confirmed**; if it does not, the
-  catch-up step refuses (more than 300 missing) and nothing is added.
+- **Neon:** created and filled on 2026-11-08 (Free plan, Singapore, direct connection). The 12 migrations were applied, then the 7
+  scheme tables were copied from the local database in one transaction: 88 categories, 4,770 tags, 4,722 schemes, 2,987 criteria,
+  9,554 Hindi translations and both link tables. Row counts and content fingerprints match the local database; no user data was copied.
+  The weekly job's catch-up step against Neon reports "the database already has every CSV scheme".
+- **Weekly job:** pushed and active on GitHub. Its first scheduled run (2026-11-08, started by GitHub at 23:48 UTC on the 7th, later
+  than the 20:30 UTC schedule) stopped at its first step because `DATABASE_URL` was not set, and changed nothing. The secret must be a
+  **repository** secret (Settings → Secrets and variables → Actions → Repository secrets); an environment secret is not visible to the
+  job, which names no environment.
 
 ### 13.4 Environment variables (names only)
 - **Backend:** `PORT`, `NODE_ENV`, `DATABASE_URL`, `SESSION_SECRET`, `CLIENT_URL`, `GOOGLE_CLIENT_ID`, `TRUST_PROXY_HOPS`, `GROQ_API_KEY`,
@@ -1304,12 +1309,12 @@ SchemeSetu/
 **Engineering**
 13. No end-to-end browser tests, formal WCAG audit or load tests (an accessibility pass was done: keyboard, screen reader, text size).
 14. Dev-only dependency findings need Vite / Vitest major upgrades.
-15. Not deployed yet (section 13.3); Neon's contents unconfirmed.
+15. Not deployed yet (section 13.3); Neon holds the scheme data (2026-11-08) but no app server uses it yet.
 
 **Future work (roadmap)**
 - "What would change my eligibility" hints on the eligibility card.
 - An installable app (PWA).
-- Deploy on the free tiers, add a keep-alive ping, confirm Neon's data, add the `DATABASE_URL` secret.
+- Deploy on the free tiers (Render pointed at the Neon database) and add a keep-alive ping.
 - Native-speaker review of Hindi, then Gujarati, then switch Gujarati scheme text on; Gujarati scheme content (on hold).
 - Extend the parsers (EWS, minority, DNT/PVTG) with dry runs and review.
 - A real contact address and a "report a wrong scheme" form.
@@ -1401,3 +1406,5 @@ See section 1.4.
 | 2026-11-05 | Decided: new schemes get **page tags + related tags** (learned; 95 of 98 same-or-better filters); **every apply tab's steps** are saved; the weekly report **lists schemes gone** from myScheme without changing them. | 9.6 |
 | 2026-11-06 | Weekly job built and pushed (active on GitHub). Found while building: the CSV has 91 columns (30 empty at the end); Git stores it with LF row endings, so the job reads the row ending from the file; listing retries when myScheme is slow. | 9.4, 9.6, 13.3 |
 | 2026-11-06 | This living SRS (`details.md`) created; to be updated with every new decision. | all |
+| 2026-11-08 | First scheduled weekly run stopped safely (no `DATABASE_URL` secret). The secret had been saved as an environment secret; it must be a repository secret. | 13.3 |
+| 2026-11-08 | **Neon filled by copying from the local database** (decided over re-running the import, which would lose the Hindi translations): 12 migrations, then the 7 scheme tables in one transaction; counts and content verified identical; no user data copied. | 13.2, 13.3 |
