@@ -21,6 +21,8 @@ export const PROFILE_OPTIONS = {
   category: ['general', 'sc', 'st', 'obc'],
   residence: ['rural', 'urban'],
   yesNo: ['yes', 'no'],
+  /** Government job / income tax: the person, someone in their family, or no one. */
+  selfFamilyNo: ['self', 'family', 'no'],
 } as const;
 
 const MAX_TEXT = 100;
@@ -108,6 +110,10 @@ export const profileUpdateSchema = z.object({
   widow: oneOf('Widow status', PROFILE_OPTIONS.yesNo),
   veteran: oneOf('Veteran status', PROFILE_OPTIONS.yesNo),
   land: oneOf('Land ownership', PROFILE_OPTIONS.yesNo),
+  govtJob: oneOf('Government job', PROFILE_OPTIONS.selfFamilyNo),
+  incomeTax: oneOf('Income tax', PROFILE_OPTIONS.selfFamilyNo),
+  bpl: oneOf('BPL', PROFILE_OPTIONS.yesNo),
+  pension: oneOf('Pension', PROFILE_OPTIONS.yesNo),
 
   interests: tags,
   profileTags: tags,

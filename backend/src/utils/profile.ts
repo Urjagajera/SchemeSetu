@@ -10,6 +10,14 @@ export interface IncomingProfile {
   occupation?: string;
   income?: string;
   land?: string;
+  /** "self" | "family" | "no" */
+  govtJob?: string;
+  /** "self" | "family" | "no" */
+  incomeTax?: string;
+  /** "yes" | "no" */
+  bpl?: string;
+  /** "yes" | "no" */
+  pension?: string;
   farmer?: string;
   education?: string;
   interests?: string[];

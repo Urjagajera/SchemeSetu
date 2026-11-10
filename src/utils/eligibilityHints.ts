@@ -9,13 +9,15 @@ import type { TRANSLATIONS } from '../constants/translations';
 type Key = keyof typeof TRANSLATIONS['en'];
 type T = (key: Key) => string;
 
-export type HintField = 'age' | 'income' | 'gender' | 'category' | 'state' | 'land' | 'residence';
+export type StatusField = 'govtJob' | 'incomeTax' | 'bpl' | 'pension';
+export type HintField = 'age' | 'income' | 'gender' | 'category' | 'state' | 'land' | 'residence' | StatusField;
 
 export type EligibilityHint =
   | { kind: 'add'; field: HintField }
   | { kind: 'ageMin' | 'ageMax' | 'incomeMin' | 'incomeMax'; limit: number; yours: number }
-  | { kind: 'only'; field: Exclude<HintField, 'age' | 'income'>; values: string[] }
-  | { kind: 'occupation'; values: string[] };
+  | { kind: 'only'; field: Exclude<HintField, 'age' | 'income' | StatusField>; values: string[] }
+  | { kind: 'occupation'; values: string[] }
+  | { kind: 'status'; field: StatusField; rule: string };
 
 const rupees = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 
@@ -44,6 +46,12 @@ export function hintText(hint: EligibilityHint, t: T): string | null {
       return fill(t('ehIncomeMin'), { limit: rupees(hint.limit), yours: rupees(hint.yours) });
     case 'incomeMax':
       return fill(t('ehIncomeMax'), { limit: rupees(hint.limit), yours: rupees(hint.yours) });
+    case 'status': {
+      // e.g. ehS_govtJob_not_family; a rule this version doesn't know says nothing
+      const key = `ehS_${hint.field}_${hint.rule.replace(/-/g, '_')}` as Key;
+      const line = t(key);
+      return line === key ? null : line;
+    }
     case 'occupation':
       return fill(t('ehOccupation'), { values: list(t, hint.values.map((v) => valueWord(t, 'ehO_', v))) });
     case 'only':

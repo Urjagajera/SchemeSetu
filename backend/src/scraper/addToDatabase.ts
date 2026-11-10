@@ -67,6 +67,10 @@ export async function addNewSchemes(prisma: PrismaClient, schemes: readonly Pars
               landOwnership: p.landOwnership,
               residence: p.residence,
               occupation: p.occupation,
+              govtJob: p.govtJob,
+              incomeTax: p.incomeTax,
+              bpl: p.bpl,
+              pension: p.pension,
             },
           });
           withCriteria++;

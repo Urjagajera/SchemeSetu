@@ -79,11 +79,17 @@ export interface CriteriaRow {
   landOwnership: string | null;
   /** "rural" | "urban"; optional so older callers and fixtures without the column keep working. */
   residence?: string | null;
+  /** Status rules (ingestion/parseStatusGates.ts); optional for the same reason. */
+  govtJob?: string | null;
+  incomeTax?: string | null;
+  bpl?: string | null;
+  pension?: string | null;
 }
 
 /** Profile fields a hint can point at (the frontend names them in the reader's language). */
-export type HintField = 'age' | 'income' | 'gender' | 'category' | 'state' | 'land' | 'residence';
-export type FixedHintField = Exclude<HintField, 'age' | 'income'>;
+export type StatusField = 'govtJob' | 'incomeTax' | 'bpl' | 'pension';
+export type HintField = 'age' | 'income' | 'gender' | 'category' | 'state' | 'land' | 'residence' | StatusField;
+export type FixedHintField = Exclude<HintField, 'age' | 'income' | StatusField>;
 
 /**
  * "What would change my eligibility": one structured line per rule that blocks the person or could not be checked.
@@ -97,7 +103,9 @@ export type EligibilityHint =
   | { kind: 'add'; field: HintField }
   | { kind: 'ageMin' | 'ageMax' | 'incomeMin' | 'incomeMax'; limit: number; yours: number }
   | { kind: 'only'; field: FixedHintField; values: string[] }
-  | { kind: 'occupation'; values: string[] };
+  | { kind: 'occupation'; values: string[] }
+  /** A status rule the person's answer doesn't meet, e.g. govtJob "not-family", bpl "yes". */
+  | { kind: 'status'; field: StatusField; rule: string };
 
 export interface CriterionResult {
   /** What the profile would need to supply, e.g. "Gender", "Age". */
@@ -229,7 +237,64 @@ export function evaluateCriteria(criteria: CriteriaRow, profile: IncomingProfile
     );
   }
 
+  // ── status rules (government job, income tax, BPL, pension) ──
+  const statusChecks: Array<[StatusField, string | null | undefined, string | undefined, string]> = [
+    ['govtJob', criteria.govtJob, profile.govtJob, 'Government job'],
+    ['incomeTax', criteria.incomeTax, profile.incomeTax, 'Income tax'],
+    ['bpl', criteria.bpl, profile.bpl, 'BPL'],
+    ['pension', criteria.pension, profile.pension, 'Pension'],
+  ];
+  for (const [field, rule, answer, label] of statusChecks) {
+    if (!rule) continue;
+    if (!hasValue(answer)) {
+      out.push(unknown(label, field));
+      continue;
+    }
+    const ok = statusRuleMet(rule.trim().toLowerCase(), answer.trim().toLowerCase());
+    if (ok === null) continue; // a rule or answer this version doesn't know: say nothing rather than guess
+    out.push(
+      ok
+        ? { label, status: 'passed', message: `${label}: ${STATUS_RULE_TEXT[`${field}:${rule}`] ?? rule} (met)` }
+        : { label, status: 'failed', message: `${label}: ${STATUS_RULE_TEXT[`${field}:${rule}`] ?? rule}`, hint: { kind: 'status', field, rule } },
+    );
+  }
+
   return out;
+}
+
+/** English wording of each status rule, for the passed / failed lists. The card words hints in the reader's language. */
+const STATUS_RULE_TEXT: Record<string, string> = {
+  'govtJob:not-self': 'not for people with a government job',
+  'govtJob:not-family': 'not for families where anyone has a government job',
+  'govtJob:required': 'only for government employees',
+  'incomeTax:not-self': 'not for income-tax payers',
+  'incomeTax:not-family': 'not for families where anyone pays income tax',
+  'bpl:yes': 'only for families Below the Poverty Line (BPL)',
+  'bpl:no': 'not for BPL families',
+  'pension:no': 'not for people who already get a pension',
+};
+
+/**
+ * Does the person's answer meet a status rule? Answers: govtJob / incomeTax "self" | "family" | "no"; bpl / pension
+ * "yes" | "no". "not-family" covers the person too. null = an unknown rule or answer.
+ */
+export function statusRuleMet(rule: string, answer: string): boolean | null {
+  const known = ['self', 'family', 'no', 'yes'];
+  if (!known.includes(answer)) return null;
+  switch (rule) {
+    case 'not-self':
+      return answer !== 'self' && answer !== 'yes';
+    case 'not-family':
+      return answer === 'no';
+    case 'required':
+      return answer === 'self';
+    case 'yes':
+      return answer === 'yes';
+    case 'no':
+      return answer === 'no';
+    default:
+      return null;
+  }
 }
 
 /** Distinct labels of the criteria the profile couldn't answer. */

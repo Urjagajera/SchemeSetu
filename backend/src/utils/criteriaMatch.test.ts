@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { profileMatchesCriteria, describeCriteriaValue, evaluateCriteria, unverifiedLabels, eligibilityHints, CriteriaRow } from './criteriaMatch.js';
+import { profileMatchesCriteria, describeCriteriaValue, evaluateCriteria, unverifiedLabels, eligibilityHints, statusRuleMet, CriteriaRow } from './criteriaMatch.js';
 
 const row = (over: Partial<CriteriaRow>): CriteriaRow => ({
   ageMin: null, ageMax: null, incomeMinAnnual: null, incomeMaxAnnual: null,
@@ -219,5 +219,37 @@ describe('eligibilityHints: what would change the result', () => {
 
   it('has nothing to say when every rule passes', () => {
     expect(eligibilityHints(evaluateCriteria(row({ ageMin: 18, gender: 'female' }), { age: '30', gender: 'female' }))).toEqual([]);
+  });
+});
+
+describe('status rules: government job, income tax, BPL, pension', () => {
+  it.each([
+    ['not-self', 'self', false], ['not-self', 'family', true], ['not-self', 'no', true],
+    ['not-family', 'self', false], ['not-family', 'family', false], ['not-family', 'no', true],
+    ['required', 'self', true], ['required', 'family', false], ['required', 'no', false],
+    ['yes', 'yes', true], ['yes', 'no', false], ['no', 'no', true], ['no', 'yes', false],
+    ['not-self', 'maybe', null], ['later', 'no', null],
+  ])('rule %s, answer %s -> %s', (rule, answer, met) => expect(statusRuleMet(rule, answer)).toBe(met));
+
+  it('checks each rule against the answer, fails with a hint, and treats a blank answer as unknown', () => {
+    const results = evaluateCriteria(
+      row({ govtJob: 'not-family', incomeTax: 'not-self', bpl: 'yes', pension: 'no' }),
+      { govtJob: 'family', incomeTax: 'no', bpl: '' },
+    );
+    expect(results.map((r) => [r.label, r.status])).toEqual([
+      ['Government job', 'failed'],
+      ['Income tax', 'passed'],
+      ['BPL', 'unknown'],
+      ['Pension', 'unknown'],
+    ]);
+    expect(eligibilityHints(results)).toEqual([
+      { kind: 'status', field: 'govtJob', rule: 'not-family' },
+      { kind: 'add', field: 'bpl' },
+      { kind: 'add', field: 'pension' },
+    ]);
+  });
+
+  it('a row without the status columns (older data) checks nothing new', () => {
+    expect(evaluateCriteria(row({}), { govtJob: 'self', bpl: 'no' })).toEqual([]);
   });
 });

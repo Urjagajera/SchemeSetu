@@ -17,6 +17,8 @@
     "ingest:demographics-dry-run": "tsx src/ingestion/dryRunDemographics.ts",
     "ingest:state-dry-run": "tsx src/ingestion/dryRunState.ts",
     "ingest:land-residence-dry-run": "tsx src/ingestion/dryRunLandResidence.ts",
+    "ingest:status-gates-dry-run": "tsx src/ingestion/dryRunStatusGates.ts",
+    "ingest:status-gates": "tsx src/ingestion/applyStatusGates.ts",
     "ingest:occupation-dry-run": "tsx src/ingestion/dryRunOccupation.ts",
     "ingest:tags-dry-run": "tsx src/ingestion/dryRunTags.ts",
     "ingest:tags-apply": "tsx src/ingestion/applyTagMerge.ts",

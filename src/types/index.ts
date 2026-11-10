@@ -79,6 +79,14 @@ export interface UserProfile {
   farmer?: string;
   widow?: string;
   veteran?: string;
+  /** "self" | "family" | "no": a government job held by the person or someone in their family. */
+  govtJob?: string;
+  /** "self" | "family" | "no": income tax paid by the person or someone in their family. */
+  incomeTax?: string;
+  /** "yes" | "no": Below the Poverty Line (BPL card). */
+  bpl?: string;
+  /** "yes" | "no": already gets a pension. */
+  pension?: string;
   interests?: string[];
   profileTags?: string[];
   /** "My documents": kinds of common document the person has (keys from utils/documentKinds.ts). */

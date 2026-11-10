@@ -53,7 +53,11 @@ export const Eligibility: React.FC = () => {
     income: '',
     residence: '',
     land: '',
-    education: ''
+    education: '',
+    govtJob: '',
+    incomeTax: '',
+    bpl: '',
+    pension: ''
   });
 
   const [wizardSubmitted, setWizardSubmitted] = useState(false);
@@ -611,6 +615,39 @@ export const Eligibility: React.FC = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Status questions (optional): some schemes are not for government employees, income-tax payers or
+                  pensioners, or are only for BPL families. Unanswered never rules a scheme out. */}
+              {([
+                ['govtJob', 'pfGovtJob', ['self', 'family', 'no']],
+                ['incomeTax', 'pfIncomeTax', ['self', 'family', 'no']],
+                ['bpl', 'pfBpl', ['yes', 'no']],
+                ['pension', 'pfPension', ['yes', 'no']],
+              ] as const).map(([field, label, options]) => (
+                <div key={field} className="space-y-1.5">
+                  <span id={`wz-${field}-label`} className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">
+                    {t(label)}
+                  </span>
+                  <div role="group" aria-labelledby={`wz-${field}-label`} className={cn('grid gap-3', options.length === 3 ? 'grid-cols-3' : 'grid-cols-2')}>
+                    {options.map((o) => (
+                      <button
+                        key={o}
+                        type="button"
+                        onClick={() => handleInputChange(field, o)}
+                        aria-pressed={guestProfile[field] === o}
+                        className={cn(
+                          "py-2 rounded border text-xs font-bold uppercase tracking-wide focus:outline-none transition-all",
+                          guestProfile[field] === o
+                            ? "bg-secondary text-white border-secondary dark:bg-sky-500 dark:text-zinc-950 dark:border-sky-500"
+                            : "border-outline-variant text-on-surface dark:text-zinc-300 dark:border-zinc-700"
+                        )}
+                      >
+                        {t(o === 'self' ? 'stOptSelf' : o === 'family' ? 'stOptFamily' : o === 'yes' ? 'optYes' : o === 'no' && options.length === 3 ? 'stOptNo' : 'optNo')}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </motion.div>
           )}
 

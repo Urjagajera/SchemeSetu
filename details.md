@@ -485,7 +485,7 @@ Priority: **H** high (core), **M** medium, **L** low. All listed requirements ar
 
 | ID | Requirement | Priority |
 |---|---|---|
-| FR-PROF-1 | The profile shall hold optional answers: date of birth (age is worked out from it), gender, occupation, education, family income, social category, state, district, residence (rural/urban), minority, disability, farmer, widow, veteran, owns cultivable land — plus interest tags and "My documents". Only the name is required. | H |
+| FR-PROF-1 | The profile shall hold optional answers: date of birth (age is worked out from it), gender, occupation, education, family income, social category, state, district, residence (rural/urban), minority, disability, farmer, widow, veteran, owns cultivable land, government job (me / someone in my family / no one), income tax (me / family / no one), BPL (yes / no), already gets a pension (yes / no) — plus interest tags and "My documents". Only the name is required. | H |
 | FR-PROF-2 | A blank answer shall mean "unknown", and saving a blank shall clear a previously saved value. | H |
 | FR-PROF-3 | `PUT /api/profile` shall validate every field (zod) and return HTTP 400 with a message per field; the form shall show an error summary, mark the tab that has the error and jump to it. | H |
 | FR-PROF-4 | States shall be saved in their canonical spelling from the fixed list of 36 states and UTs. | M |
@@ -499,7 +499,7 @@ Priority: **H** high (core), **M** medium, **L** low. All listed requirements ar
 
 | ID | Requirement | Priority |
 |---|---|---|
-| FR-ELIG-1 | A guest shall be able to check eligibility through a 3-step wizard (date of birth and gender; state, occupation and income; social category, residence and land) without signing in. | H |
+| FR-ELIG-1 | A guest shall be able to check eligibility through a 3-step wizard (date of birth and gender; state, occupation and income; social category, residence, land and the four optional status questions: government job, income tax, BPL, pension) without signing in. | H |
 | FR-ELIG-2 | A signed-in user with a complete profile shall see results immediately from the saved profile. | H |
 | FR-ELIG-3 | A signed-in user with an incomplete profile shall first see "Complete your profile first" with the quick profile form; no results are computed until the 7 answers are given. | H |
 | FR-ELIG-4 | Results shall be ordered by match percentage, **100% matches first**, then by fewer unanswered criteria, then by relevance (section 6.5). | H |
@@ -614,7 +614,7 @@ Code: `backend/src/utils/criteriaMatch.ts`, `utils/matchPercent.ts`, `routes/eli
 The same `evaluateCriteria` is used by SetuAI to leave out schemes a signed-in person clearly fails.
 
 ### 6.1 Criteria and their coverage
-Parsed from each scheme's eligibility text into one `EligibilityCriteria` row (2,987 of 4,722 schemes have one).
+Parsed from each scheme's eligibility text into one `EligibilityCriteria` row (3,029 of 4,722 schemes have one since the status rules were added on 2026-11-10; 2,987 before).
 
 | Criterion | Type | Compared with profile field | Schemes with it |
 |---|---|---|---|
@@ -626,6 +626,10 @@ Parsed from each scheme's eligibility text into one `EligibilityCriteria` row (2
 | Land ownership | Hard (`yes` / `no`) | `land` ("Own cultivable land?") | 41 (34 yes, 7 no) |
 | Residence | Hard (`rural` / `urban`) | `residence` | 31 (26 rural, 5 urban) |
 | Occupation | **Soft**, set (`student`, `farmer`, `entrepreneur`, `employee`, `unemployed`) | `occupation` | 683 |
+| Government job | Hard: `not-self` / `not-family` (covers the applicant too) / `required` | `govtJob` (`self` / `family` / `no`) | 90 (55 / 34 / 1) |
+| Income tax | Hard: `not-self` / `not-family` | `incomeTax` (`self` / `family` / `no`) | 68 (41 / 27) |
+| BPL | Hard: `yes` (must be BPL) / `no` (must not be) | `bpl` (`yes` / `no`) | 152 (151 / 1) |
+| Pension | Hard: `no` (must not already get one) | `pension` (`yes` / `no`) | 69 |
 
 Sets are stored as comma-separated values and matched only in exact forms (`x`, `x,…`, `…,x`, `…,x,…`), so `st` never matches inside another value.
 
@@ -1414,4 +1418,7 @@ See section 1.4.
 | 2026-11-08 | **Neon filled by copying from the local database** (decided over re-running the import, which would lose the Hindi translations): 12 migrations, then the 7 scheme tables in one transaction; counts and content verified identical; no user data copied. | 13.2, 13.3 |
 | 2026-11-10 | **Decided and built: "What would change my eligibility"** (option: actionable only). One line per blocking rule with the limit and the person's value, one per unanswered rule, then occupation notes; fixed facts stated, never suggested as changeable; in English, Hindi and Gujarati. Also decided (to build next, in order): an installable app with offline basics; profile questions and parsed rules for government job (me / family / no), BPL, income-tax payer and pension, after an accuracy trial; "New for you"; a printable "what to carry" sheet; family profiles; read aloud. | 5.3, 10, 16 |
 | 2026-11-10 | **Built: installable app** (option: install + offline basics) with vite-plugin-pwa 1.2.0 (free). Checked in a production build with a headless browser: the service worker installs, a scheme page opened online reopens offline with the same content, and the offline banner shows. | 4.1, 11.4, 16 |
+| 2026-11-10 | **Accuracy trial: government job, income tax, BPL, pension rules** (`ingestion/parseStatusGates.ts`, read only, `npm run ingest:status-gates-dry-run`). Every stored rule reviewed by hand, after five rounds of fixes: government job 90 schemes (55 not you, 34 no one in the family, 1 must be a government employee), 89 right (Padma Awards exempts doctors and scientists); income tax 68 (41 / 27), 68 right; BPL 152 (151 must be BPL, 1 must not), 152 right; pension 69 (must not receive one), 69 right. Not stored on purpose: lists of who may apply, either/or options, preferences, exceptions, amounts, notes and rules about a deceased person. Not built into the database or the profile yet. | 6.1 |
+| 2026-11-10 | **Built: government job, income tax, BPL and pension rules.** New columns on `EligibilityCriteria` and `Profile` (migration `20261110120000_add_status_rules`), filled by `npm run ingest:status-gates` (dry run by default, `--apply` in one transaction; touches only these four columns); also produced for new schemes by the weekly job. Four optional questions on the profile (Money tab) and in the wizard's third step; checked like the other hard rules (blank = unknown), with hints in three languages. Not sent to SetuAI (Groq). Applied to the local database; Neon pending. | 5.2, 5.3, 6.1 |
+| 2026-11-10 | **Incident: the local database was wiped by mistake** (a Prisma `migrate diff` given a shadow-database address that was the real local database). Scheme data restored from Neon (all 7 tables identical in counts and content); the local test accounts (5 users, 4 profiles, 20 bookmarks as of 2026-11-08) were not on Neon and are lost. Rule since: back up with `pg_dump` before any schema change, never run Prisma's reset-type commands against a real database; local uses `prisma db push`, Neon `prisma migrate deploy`. | 13 |
 | 2026-11-10 | First hand-started dry run stopped at "Install the browser": GitHub's `ubuntu-latest` is now Ubuntu 26, which Playwright 1.56.1 does not support. The weekly job is pinned to `ubuntu-24.04`, and its actions moved to checkout/setup-node/upload-artifact v5 (Node 24) to clear the Node 20 warning. | 3, 13.3 |

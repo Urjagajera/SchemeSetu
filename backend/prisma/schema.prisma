@@ -95,6 +95,11 @@ model EligibilityCriteria {
   state           String? // state/UT residency restriction, null = no state restriction (central scheme)
   landOwnership   String? // "yes" | "no" — land ownership requirement, if any
   residence       String? // "rural" | "urban" — where the applicant must live, if the scheme says so; null = no requirement
+  // Status rules (ingestion/parseStatusGates.ts, accuracy-reviewed 2026-11-10); null = no rule in the text.
+  govtJob         String? // "not-self" | "not-family" (no one in the family) | "required" (must be a government employee)
+  incomeTax       String? // "not-self" | "not-family": the applicant (or no one in the family) must not pay income tax
+  bpl             String? // "yes" = must be Below the Poverty Line, "no" = must not be
+  pension         String? // "no" = must not already receive a pension
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -150,6 +155,11 @@ model Profile {
   widow         String?
   veteran       String?
   land          String?
+  // Answers to the status questions; null = not answered (never excludes a scheme).
+  govtJob       String? // "self" | "family" | "no": does the person, or someone in their family, have a government job
+  incomeTax     String? // "self" | "family" | "no": does the person, or someone in their family, pay income tax
+  bpl           String? // "yes" | "no": Below the Poverty Line (BPL card)
+  pension       String? // "yes" | "no": already receives a pension
   profileTags   String[]
   // "My documents": which kinds of common document the person says they have (keys from src/utils/documentKinds.ts,
   // e.g. "bank"). Only that they have one, never a number or a copy of it.

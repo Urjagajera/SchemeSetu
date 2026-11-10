@@ -35,6 +35,9 @@ describe('hintText', () => {
     [{ kind: 'only', field: 'state', values: ['Kerala', 'Tamil Nadu'] }, 'This scheme is only for residents of Kerala or Tamil Nadu.'],
     [{ kind: 'only', field: 'land', values: ['no'] }, 'This scheme is only for people who own no cultivable land.'],
     [{ kind: 'occupation', values: ['farmer'] }, 'This scheme is meant for farmers. If you are also one of these, it may still apply to you.'],
+    [{ kind: 'status', field: 'govtJob', rule: 'not-family' }, 'This scheme is not for families where anyone has a government job.'],
+    [{ kind: 'status', field: 'bpl', rule: 'yes' }, 'This scheme is only for families Below the Poverty Line (BPL).'],
+    [{ kind: 'add', field: 'pension' }, 'Add your answer about pensions to your profile to check this rule.'],
   ];
   it.each(cases)('words %j', (hint, text) => expect(hintText(hint, t)).toBe(text));
 
@@ -51,6 +54,7 @@ describe('hintText', () => {
   it('shows an unknown value as it is and ignores a hint kind it does not know', () => {
     expect(hintText({ kind: 'only', field: 'gender', values: ['nonbinary'] }, t)).toBe('This scheme is only for nonbinary applicants.');
     expect(hintText({ kind: 'later' } as unknown as EligibilityHint, t)).toBeNull();
+    expect(hintText({ kind: 'status', field: 'bpl', rule: 'maybe' }, t)).toBeNull();
   });
 });
 

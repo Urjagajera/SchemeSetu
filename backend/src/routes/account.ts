@@ -65,6 +65,10 @@ router.get(
             widow: profile.widow,
             veteran: profile.veteran,
             land: profile.land,
+            govtJob: profile.govtJob,
+            incomeTax: profile.incomeTax,
+            bpl: profile.bpl,
+            pension: profile.pension,
             interestTags: profile.profileTags,
             documentsHeld: profile.documentsHeld,
           }

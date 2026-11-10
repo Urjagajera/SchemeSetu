@@ -59,7 +59,11 @@ const profileSchema = z.object({
   farmer: z.string(),
   widow: z.string(),
   veteran: z.string(),
-  land: z.string()
+  land: z.string(),
+  govtJob: z.string(),
+  incomeTax: z.string(),
+  bpl: z.string(),
+  pension: z.string()
 });
 
 // Which tab each field lives on, and (as a locale key) what to call it in the error summary.
@@ -73,6 +77,10 @@ const FIELD_INFO: Record<string, { label: string; section: 'personal' | 'academi
   income: { label: 'pfFIncome', section: 'finance' },
   farmer: { label: 'pfFFarmer', section: 'finance' },
   land: { label: 'pfFLand', section: 'finance' },
+  govtJob: { label: 'pfGovtJob', section: 'finance' },
+  incomeTax: { label: 'pfIncomeTax', section: 'finance' },
+  bpl: { label: 'pfBpl', section: 'finance' },
+  pension: { label: 'pfPension', section: 'finance' },
   state: { label: 'stateLabel', section: 'location' },
   district: { label: 'pfDistrict', section: 'location' },
   residence: { label: 'residence', section: 'location' },
@@ -193,7 +201,11 @@ export const Profile: React.FC = () => {
       farmer: profile.farmer || '',
       widow: profile.widow || '',
       veteran: profile.veteran || '',
-      land: profile.land || ''
+      land: profile.land || '',
+      govtJob: profile.govtJob || '',
+      incomeTax: profile.incomeTax || '',
+      bpl: profile.bpl || '',
+      pension: profile.pension || ''
     },
     resetOptions: { keepDirtyValues: true }
   });
@@ -498,6 +510,54 @@ export const Profile: React.FC = () => {
                   <label htmlFor="pf-land" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfLand')}</label>
                   <select id="pf-land"
                     {...register('land')}
+                    className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
+                  >
+                    <option value="">{t('optSelect')}</option>
+                    <option value="yes">{t('optYes')}</option>
+                    <option value="no">{t('optNo')}</option>
+                  </select>
+                </div>
+
+                {/* Status questions: some schemes are not for government employees, income-tax payers or pensioners, or only for BPL families */}
+                <div className="space-y-1">
+                  <label htmlFor="pf-govtjob" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfGovtJob')}</label>
+                  <select id="pf-govtjob"
+                    {...register('govtJob')}
+                    className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
+                  >
+                    <option value="">{t('optSelect')}</option>
+                    <option value="self">{t('stOptSelf')}</option>
+                    <option value="family">{t('stOptFamily')}</option>
+                    <option value="no">{t('stOptNo')}</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label htmlFor="pf-incometax" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfIncomeTax')}</label>
+                  <select id="pf-incometax"
+                    {...register('incomeTax')}
+                    className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
+                  >
+                    <option value="">{t('optSelect')}</option>
+                    <option value="self">{t('stOptSelf')}</option>
+                    <option value="family">{t('stOptFamily')}</option>
+                    <option value="no">{t('stOptNo')}</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label htmlFor="pf-bpl" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfBpl')}</label>
+                  <select id="pf-bpl"
+                    {...register('bpl')}
+                    className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
+                  >
+                    <option value="">{t('optSelect')}</option>
+                    <option value="yes">{t('optYes')}</option>
+                    <option value="no">{t('optNo')}</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label htmlFor="pf-pension" className="block text-xs font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-500">{t('pfPension')}</label>
+                  <select id="pf-pension"
+                    {...register('pension')}
                     className="w-full rounded-lg border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-white text-xs md:text-sm py-2 px-3 focus:ring-secondary focus:border-secondary"
                   >
                     <option value="">{t('optSelect')}</option>

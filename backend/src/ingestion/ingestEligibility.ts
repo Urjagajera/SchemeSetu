@@ -212,6 +212,10 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
           landOwnership: parsed.landOwnership,
           residence: parsed.residence,
           occupation: parsed.occupation,
+          govtJob: parsed.govtJob,
+          incomeTax: parsed.incomeTax,
+          bpl: parsed.bpl,
+          pension: parsed.pension,
         },
         update: {
           ageMin: parsed.ageMin,
@@ -225,6 +229,10 @@ export async function runIngestion(targetPhase?: 'A' | 'B'): Promise<IngestionRu
           landOwnership: parsed.landOwnership,
           residence: parsed.residence,
           occupation: parsed.occupation,
+          govtJob: parsed.govtJob,
+          incomeTax: parsed.incomeTax,
+          bpl: parsed.bpl,
+          pension: parsed.pension,
         },
       });
       if (parsed.gender !== null) summary.genderRestricted++;

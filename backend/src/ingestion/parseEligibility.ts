@@ -27,6 +27,7 @@ import {
 import { extractState, StateExtractionResult } from './parseState.js';
 import { extractLand, LandExtractionResult } from './parseLand.js';
 import { extractResidence, ResidenceExtractionResult } from './parseResidence.js';
+import { extractStatusGates, StatusGates } from './parseStatusGates.js';
 import { extractOccupation, OccupationExtractionResult } from './parseOccupation.js';
 
 export interface AgeExtractionResult {
@@ -84,6 +85,14 @@ export interface ParsedEligibility {
   residence: string | null;
   /** Comma-separated set of farmer / student / entrepreneur / employee / unemployed. SOFT in the engine: ranks, never excludes. */
   occupation: string | null;
+  /** Status rules (parseStatusGates.ts): "not-self" | "not-family" | "required"; null = none. */
+  govtJob: string | null;
+  /** "not-self" | "not-family"; null = none. */
+  incomeTax: string | null;
+  /** "yes" | "no"; null = none. */
+  bpl: string | null;
+  /** "no"; null = none. */
+  pension: string | null;
   hasAnyCriteria: boolean;
   ageResult: AgeExtractionResult;
   incomeResult: IncomeExtractionResult;
@@ -93,6 +102,7 @@ export interface ParsedEligibility {
   landResult: LandExtractionResult;
   residenceResult: ResidenceExtractionResult;
   occupationResult: OccupationExtractionResult;
+  statusResult: StatusGates;
   logs: string[];
   dualCeilingExcluded: boolean;
 }
@@ -563,6 +573,7 @@ export function parseEligibilityForScheme(
   const landResult = extractLand(eligibilityRawText);
   const residenceResult = extractResidence(eligibilityRawText);
   const occupationResult = extractOccupation(eligibilityRawText);
+  const statusResult = extractStatusGates(eligibilityRawText);
 
   const hasAnyCriteria =
     ageResult.min !== null ||
@@ -574,7 +585,11 @@ export function parseEligibilityForScheme(
     stateResult.value !== null ||
     landResult.value !== null ||
     residenceResult.value !== null ||
-    occupationResult.value !== null;
+    occupationResult.value !== null ||
+    statusResult.govtJob.value !== null ||
+    statusResult.incomeTax.value !== null ||
+    statusResult.bpl.value !== null ||
+    statusResult.pension.value !== null;
 
   const logs = [...ageResult.logs, ...incomeResult.logs];
 
@@ -589,6 +604,10 @@ export function parseEligibilityForScheme(
     landOwnership: landResult.value,
     residence: residenceResult.value,
     occupation: occupationResult.value,
+    govtJob: statusResult.govtJob.value,
+    incomeTax: statusResult.incomeTax.value,
+    bpl: statusResult.bpl.value,
+    pension: statusResult.pension.value,
     hasAnyCriteria,
     ageResult,
     incomeResult,
@@ -598,6 +617,7 @@ export function parseEligibilityForScheme(
     landResult,
     residenceResult,
     occupationResult,
+    statusResult,
     logs,
     dualCeilingExcluded: incomeResult.dualCeilingExcluded,
   };
