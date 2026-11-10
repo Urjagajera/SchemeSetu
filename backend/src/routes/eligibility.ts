@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import prisma from '../db/prisma.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { IncomingProfile, buildInterestTags } from '../utils/profile.js';
-import { evaluateCriteria, unverifiedLabels } from '../utils/criteriaMatch.js';
+import { evaluateCriteria, unverifiedLabels, eligibilityHints, EligibilityHint } from '../utils/criteriaMatch.js';
 import { matchPercent } from '../utils/matchPercent.js';
 
 const router = Router();
@@ -55,6 +55,8 @@ router.post(
     // Criteria on file that the profile couldn't answer (empty field). They never count against
     // the user: the scheme stays eligible and the UI tells them what to add to their profile.
     let unverifiedCriteria: string[] = [];
+    // "What would change my eligibility" (structured; the card words it in the reader's language).
+    let hints: EligibilityHint[] = [];
 
     if (criteria) {
       const results = evaluateCriteria(criteria, profile);
@@ -71,6 +73,7 @@ router.post(
       }
       structuredChecked = hardPassed + failedCriteria.length;
       unverifiedCriteria = unverifiedLabels(results);
+      hints = eligibilityHints(results);
     }
 
     const interests = buildInterestTags(profile);
@@ -129,9 +132,9 @@ router.post(
       unverifiedCriteria,
       notes,
       reasons,
-      suggestions: [
-        'Add more tags to your profile settings matching your specific occupation, education, or requirements.',
-      ],
+      hints,
+      // Hints replace the generic tip for schemes with criteria on file; the tag-only fallback keeps it.
+      suggestions: criteria ? [] : ['Add more tags to your profile settings matching your specific occupation, education, or requirements.'],
     });
   }),
 );

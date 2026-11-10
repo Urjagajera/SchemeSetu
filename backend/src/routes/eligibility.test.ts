@@ -179,3 +179,23 @@ describe('POST /api/eligibility/report: occupation is soft', () => {
     expect(r.unverifiedCriteria).toEqual([]);
   });
 });
+
+describe('POST /api/eligibility/report: hints', () => {
+  beforeEach(() => mockPrisma.scheme.findUnique.mockReset());
+
+  it('returns structured hints and drops the generic tip for a scheme with criteria', async () => {
+    const body = await report({ incomeMaxAnnual: 200000, gender: 'female' }, { income: '250000' });
+    expect(body.hints).toEqual([
+      { kind: 'incomeMax', limit: 200000, yours: 250000 },
+      { kind: 'add', field: 'gender' },
+    ]);
+    expect(body.suggestions).toEqual([]);
+  });
+
+  it('a scheme with no criteria has no hints and keeps the tag tip', async () => {
+    mockPrisma.scheme.findUnique.mockResolvedValue({ id: 'scheme-1', name: 'T', tags: [{ name: 'Women' }], eligibilityCriteria: null });
+    const res = await request(buildApp()).post('/api/eligibility/report').send({ profile: {}, schemeId: 'scheme-1' });
+    expect(res.body.hints).toEqual([]);
+    expect(res.body.suggestions).toHaveLength(1);
+  });
+});

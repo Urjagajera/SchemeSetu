@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { EligibilityReport } from '../services/eligibilityService';
-import { CheckCircle2, AlertTriangle, HelpCircle, ExternalLink } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, HelpCircle, ExternalLink, Lightbulb } from 'lucide-react';
 import { useTranslation } from '../contexts/LanguageContext';
 import { cn } from '../utils/cn';
+import { hintText } from '../utils/eligibilityHints';
 
 interface EligibilityCardProps {
   report: EligibilityReport;
@@ -17,6 +18,10 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
   // Nothing could be checked (every criterion on file is unanswered): a percentage would be meaningless.
   const unverified = report.unverifiedCriteria ?? [];
   const cannotJudge = unverified.length > 0 && report.passedCriteria.length === 0 && report.failedCriteria.length === 0;
+  // Reports from the backend carry "What would change my eligibility" hints. They cover the rules the profile couldn't
+  // answer and the occupation notes too, so those two older boxes are shown only for reports without hints.
+  const hintLines = (report.hints ?? []).map((h) => hintText(h, t)).filter((line): line is string => !!line);
+  const hasHints = report.hints !== undefined;
 
   const getPercentageColor = (pct: number) => {
     if (pct === 100) return 'text-green-600 border-green-200 bg-green-50 dark:bg-green-950/20 dark:text-green-400';
@@ -102,7 +107,7 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
       </div>
 
       {/* Criteria on file that the profile couldn't answer yet */}
-      {report.unverifiedCriteria && report.unverifiedCriteria.length > 0 && (
+      {!hasHints && report.unverifiedCriteria && report.unverifiedCriteria.length > 0 && (
         <div className="rounded-lg border border-amber-200 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/30 p-4 space-y-1.5">
           <h4 className="font-heading text-sm font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
             <HelpCircle className="w-4 h-4" />
@@ -117,7 +122,7 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
       )}
 
       {/* Soft mismatches (occupation): worth a look, never a missing requirement */}
-      {report.notes && report.notes.length > 0 && (
+      {!hasHints && report.notes && report.notes.length > 0 && (
         <div className="rounded-lg border border-sky-200 dark:border-sky-900/40 bg-sky-50 dark:bg-sky-950/30 p-4 space-y-1.5">
           <h4 className="font-heading text-sm font-bold text-sky-800 dark:text-sky-300 flex items-center gap-1.5">
             <HelpCircle className="w-4 h-4" />
@@ -129,6 +134,25 @@ export const EligibilityCard: React.FC<EligibilityCardProps> = ({ report, applyU
             ))}
           </ul>
         </div>
+      )}
+
+      {/* What would change my eligibility */}
+      {hintLines.length > 0 && (
+        <section aria-labelledby={`hints-${report.schemeId}`} className="rounded-lg border border-amber-200 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/30 p-4 space-y-2">
+          <h4 id={`hints-${report.schemeId}`} className="font-heading text-sm font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
+            <Lightbulb className="w-4 h-4" aria-hidden="true" />
+            {t('ehHeading')}
+          </h4>
+          <ul className="list-disc pl-5 space-y-1 text-xs md:text-sm text-amber-900 dark:text-amber-200">
+            {hintLines.map((line, i) => (
+              <li key={i}>{line}</li>
+            ))}
+          </ul>
+          <p className="text-xs md:text-sm text-amber-900 dark:text-amber-200">
+            {t('ehWrong')}{' '}
+            <Link to="/profile" className="underline font-bold">{t('updateProfileBtn')}</Link>
+          </p>
+        </section>
       )}
 
       {/* Explanations & Suggestions */}

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { profileMatchesCriteria, describeCriteriaValue, evaluateCriteria, unverifiedLabels, CriteriaRow } from './criteriaMatch.js';
+import { profileMatchesCriteria, describeCriteriaValue, evaluateCriteria, unverifiedLabels, eligibilityHints, CriteriaRow } from './criteriaMatch.js';
 
 const row = (over: Partial<CriteriaRow>): CriteriaRow => ({
   ageMin: null, ageMax: null, incomeMinAnnual: null, incomeMaxAnnual: null,
@@ -184,5 +184,40 @@ describe('occupation is SOFT', () => {
     const results = evaluateCriteria(row({ occupation: 'farmer', gender: 'female' }), { occupation: 'student', gender: 'male' });
     expect(results.find((r) => r.label === 'Gender')?.soft).toBeUndefined();
     expect(results.find((r) => r.label === 'Occupation')?.soft).toBe(true);
+  });
+});
+
+describe('eligibilityHints: what would change the result', () => {
+  it('gives the limit and the profile value for age and income', () => {
+    const hints = eligibilityHints(evaluateCriteria(row({ ageMin: 18, ageMax: 40, incomeMaxAnnual: 200000 }), { age: '45', income: '300000' }));
+    expect(hints).toEqual([
+      { kind: 'ageMax', limit: 40, yours: 45 },
+      { kind: 'incomeMax', limit: 200000, yours: 300000 },
+    ]);
+  });
+
+  it('states fixed facts plainly, with canonical state names', () => {
+    const hints = eligibilityHints(evaluateCriteria(row({ gender: 'female', category: 'sc,st', state: 'kerala', residence: 'rural', landOwnership: 'yes' }), { gender: 'male', category: 'general', state: 'Gujarat', residence: 'urban', land: 'no' }));
+    expect(hints).toEqual([
+      { kind: 'only', field: 'gender', values: ['female'] },
+      { kind: 'only', field: 'category', values: ['sc', 'st'] },
+      { kind: 'only', field: 'state', values: ['Kerala'] },
+      { kind: 'only', field: 'land', values: ['yes'] },
+      { kind: 'only', field: 'residence', values: ['rural'] },
+    ]);
+  });
+
+  it('asks once per missing field, after the blocking rules, and puts occupation last', () => {
+    const hints = eligibilityHints(evaluateCriteria(row({ ageMin: 18, ageMax: 40, gender: 'female', category: 'sc', occupation: 'farmer' }), { category: 'general', occupation: 'student' }));
+    expect(hints).toEqual([
+      { kind: 'only', field: 'category', values: ['sc'] },
+      { kind: 'add', field: 'age' },
+      { kind: 'add', field: 'gender' },
+      { kind: 'occupation', values: ['farmer'] },
+    ]);
+  });
+
+  it('has nothing to say when every rule passes', () => {
+    expect(eligibilityHints(evaluateCriteria(row({ ageMin: 18, gender: 'female' }), { age: '30', gender: 'female' }))).toEqual([]);
   });
 });

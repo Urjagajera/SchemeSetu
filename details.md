@@ -406,6 +406,7 @@ sequenceDiagram
 | Web Speech API (browser) | — | Voice input (`useVoiceInput`) |
 | Web Share API (browser) | — | Share sheet on phones; WhatsApp / Copy link menu on computers |
 | Google Fonts | — | Inter (body), Outfit (display) |
+| vite-plugin-pwa (Workbox) | 1.2.0 | Installable app: manifest, icons (`public/icons/`), service worker in production builds only |
 
 ### 4.2 Backend
 
@@ -503,8 +504,9 @@ Priority: **H** high (core), **M** medium, **L** low. All listed requirements ar
 | FR-ELIG-3 | A signed-in user with an incomplete profile shall first see "Complete your profile first" with the quick profile form; no results are computed until the 7 answers are given. | H |
 | FR-ELIG-4 | Results shall be ordered by match percentage, **100% matches first**, then by fewer unanswered criteria, then by relevance (section 6.5). | H |
 | FR-ELIG-5 | Results shall load 20 at a time with a "Show more" button; no scheme shall ever appear twice; the header shall show "shown / total". | H |
-| FR-ELIG-6 | Each result shall show an eligibility card: match %, verified criteria, missing requirements, unverified criteria ("add this to your profile to check"), "worth checking" notes (occupation), reasons, and an Apply link to the official source. | H |
+| FR-ELIG-6 | Each result shall show an eligibility card: match %, verified criteria, missing requirements, a "What would change my eligibility" box (FR-ELIG-8), reasons, and an Apply link to the official source. | H |
 | FR-ELIG-7 | A blank answer shall never make a scheme ineligible (section 6.2). | H |
+| FR-ELIG-8 | **"What would change my eligibility"** shall list, in the reader's language, one line per rule that blocks the person (with the limit and their own value, e.g. "up to ₹2,00,000; your profile says ₹2,50,000"), then one line per rule their profile can't answer ("Add your state to your profile to check this rule"), then occupation notes, with a link to the profile. Only things a person can act on are suggested: fixed facts (gender, category, state, area, land) are stated plainly ("only for the SC or ST category"), never suggested as something to change. The box replaces the older "could not check" and "worth checking" boxes and the generic "add more tags" tip; the client-side fallback (backend down) keeps the older boxes. | H |
 
 ### 5.4 Search and filters
 
@@ -1018,7 +1020,7 @@ All responses are JSON. Errors: `{ "error": { "message": string, "status": numbe
 | GET | `/api/schemes/titles` | — | `lang=hi&ids=a,b,…` (≤ 100) | `{ data: { status, titles, summaries, pending, failed } }` |
 | GET | `/api/schemes/:id` | — | `lang?` | `{ data: Scheme, translation? }` |
 | GET | `/api/categories` | — | — | `{ data: { id, name }[] }` |
-| POST | `/api/eligibility/report` | — | `{ profile, schemeId }` | `{ schemeId, schemeTitle, overallMatch, isEligible, passedCriteria, failedCriteria, unverifiedCriteria, notes, reasons, suggestions }` |
+| POST | `/api/eligibility/report` | — | `{ profile, schemeId }` | `{ schemeId, schemeTitle, overallMatch, isEligible, passedCriteria, failedCriteria, unverifiedCriteria, notes, hints, reasons, suggestions }`; `hints` are structured (`add` / `ageMin` / `ageMax` / `incomeMin` / `incomeMax` / `only` / `occupation`) and worded by the frontend (`src/utils/eligibilityHints.ts`) |
 | POST | `/api/auth/google` | — (rate-limited) | `{ idToken }` | sets cookie; `{ success, user, isNewUser }` |
 | POST | `/api/auth/logout` | — | — | clears cookie; `{ success }` |
 | GET | `/api/auth/me` | cookie | — | `{ user }` or 401 |
@@ -1089,6 +1091,10 @@ All responses are JSON. Errors: `{ "error": { "message": string, "status": numbe
 ### 11.4 Reliability and availability
 - A failed filter-option load is not cached; the next request retries.
 - If the backend cannot be reached, pages say so and offer Try again; SetuAI says so in the conversation.
+- **Installed app / offline (2026-11-10):** SchemeSetu can be added to the home screen (standalone window, own icon). The service worker
+  saves the app's screens and fonts, and keeps the last 60 scheme pages a person opened (`GET /api/schemes/:id`, newest from the network,
+  saved copy when offline, 30 days). Nothing signed-in or personal is saved. With no network a dark banner says "You're offline" and what
+  still works (in English, Hindi and Gujarati); search, eligibility checks and SetuAI need internet.
 - If Groq fails: translation → fallback model → English with a note; SetuAI → list of matching schemes; search → words as written.
 - Account deletion is one transaction (all or nothing); the weekly job's database step is one transaction.
 - The weekly job never leaves the CSV half-written (existing bytes are checked and restored on any change) and recovers a failed database
@@ -1312,8 +1318,6 @@ SchemeSetu/
 15. Not deployed yet (section 13.3); Neon holds the scheme data (2026-11-08) but no app server uses it yet.
 
 **Future work (roadmap)**
-- "What would change my eligibility" hints on the eligibility card.
-- An installable app (PWA).
 - Deploy on the free tiers (Render pointed at the Neon database) and add a keep-alive ping.
 - Native-speaker review of Hindi, then Gujarati, then switch Gujarati scheme text on; Gujarati scheme content (on hold).
 - Extend the parsers (EWS, minority, DNT/PVTG) with dry runs and review.
@@ -1408,4 +1412,6 @@ See section 1.4.
 | 2026-11-06 | This living SRS (`details.md`) created; to be updated with every new decision. | all |
 | 2026-11-08 | First scheduled weekly run stopped safely (no `DATABASE_URL` secret). The secret had been saved as an environment secret; it must be a repository secret. | 13.3 |
 | 2026-11-08 | **Neon filled by copying from the local database** (decided over re-running the import, which would lose the Hindi translations): 12 migrations, then the 7 scheme tables in one transaction; counts and content verified identical; no user data copied. | 13.2, 13.3 |
+| 2026-11-10 | **Decided and built: "What would change my eligibility"** (option: actionable only). One line per blocking rule with the limit and the person's value, one per unanswered rule, then occupation notes; fixed facts stated, never suggested as changeable; in English, Hindi and Gujarati. Also decided (to build next, in order): an installable app with offline basics; profile questions and parsed rules for government job (me / family / no), BPL, income-tax payer and pension, after an accuracy trial; "New for you"; a printable "what to carry" sheet; family profiles; read aloud. | 5.3, 10, 16 |
+| 2026-11-10 | **Built: installable app** (option: install + offline basics) with vite-plugin-pwa 1.2.0 (free). Checked in a production build with a headless browser: the service worker installs, a scheme page opened online reopens offline with the same content, and the offline banner shows. | 4.1, 11.4, 16 |
 | 2026-11-10 | First hand-started dry run stopped at "Install the browser": GitHub's `ubuntu-latest` is now Ubuntu 26, which Playwright 1.56.1 does not support. The weekly job is pinned to `ubuntu-24.04`, and its actions moved to checkout/setup-node/upload-artifact v5 (Node 24) to clear the Node 20 warning. | 3, 13.3 |

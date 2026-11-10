@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Scheme, UserProfile } from '../types';
+import type { EligibilityHint } from '../utils/eligibilityHints';
 
 const API_URL = '/api/eligibility';
 import { isMockMode } from '../config/mockMode';
@@ -32,6 +33,8 @@ export interface EligibilityReport {
   notes?: string[];
   reasons: string[];
   suggestions: string[];
+  /** "What would change my eligibility" (schemes with criteria on file; absent from the client-side fallback). */
+  hints?: EligibilityHint[];
 }
 
 function evaluateLocalReport(profile: UserProfile, scheme: Scheme): EligibilityReport {
