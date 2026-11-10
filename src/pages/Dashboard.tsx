@@ -27,6 +27,8 @@ export const Dashboard: React.FC = () => {
   const { bookmarks, toggleBookmark } = useBookmarks();
   
   const [recommended, setRecommended] = useState<Scheme[]>([]);
+  // "New for you": schemes added in the last 14 days that fit the profile.
+  const [newForYou, setNewForYou] = useState<{ data: Scheme[]; total: number }>({ data: [], total: 0 });
   const [trending, setTrending] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
   // The latest schemes could not be loaded; Retry bumps `attempt`. (The recommendations keep their own offline fallback.)
@@ -51,8 +53,12 @@ export const Dashboard: React.FC = () => {
         }
 
         // Load recommended
-        const eligible = await schemeService.getEligibleSchemes(profile);
+        const [eligible, fresh] = await Promise.all([
+          schemeService.getEligibleSchemes(profile),
+          schemeService.getNewForYou(profile),
+        ]);
         setRecommended(eligible);
+        setNewForYou(fresh);
       } catch (err) {
         console.error(err);
       } finally {
@@ -110,6 +116,30 @@ export const Dashboard: React.FC = () => {
           {!isComplete && (
             // The missing answers are asked right here and saved to the profile.
             <QuickProfileForm />
+          )}
+
+          {/* New for you: schemes the weekly myScheme check added in the last 14 days that fit this profile */}
+          {isComplete && !loading && (
+            <section aria-labelledby="new-for-you" className="space-y-3">
+              <h2 id="new-for-you" className="font-heading text-lg font-extrabold text-primary dark:text-white flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+                {t('newForYouTitle')}
+                {newForYou.total > 0 && (
+                  <span className="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300">{newForYou.total}</span>
+                )}
+              </h2>
+              {newForYou.data.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {newForYou.data.map(s => (
+                    <SchemeCard key={s.id} scheme={s} isBookmarked={bookmarks.includes(s.id)} onToggleBookmark={() => toggleBookmark(s.id)} />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl px-4 py-3">
+                  {t('newForYouNone')}
+                </p>
+              )}
+            </section>
           )}
 
           {/* Recommendations / Trending Schemes Section */}

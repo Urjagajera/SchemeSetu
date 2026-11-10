@@ -4,6 +4,11 @@ import { MOCK_SCHEMES } from '../constants/mockSchemes';
 const SCHEMES: Scheme[] = MOCK_SCHEMES;
 
 const API_URL = '/api/schemes';
+/** How long a scheme counts as new: the "New" tag and "New for you". */
+export const NEW_FOR_YOU_DAYS = 14;
+/** True when SchemeSetu added the scheme in the last NEW_FOR_YOU_DAYS days. */
+export const isNewScheme = (s: { addedAt?: string }, now = Date.now()) =>
+  !!s.addedAt && now - new Date(s.addedAt).getTime() < NEW_FOR_YOU_DAYS * 24 * 60 * 60 * 1000;
 import { isMockMode } from '../config/mockMode';
 import { ingestCardText } from './titleTranslations';
 import { applyLocalFilters, localFilterCounts } from './localFilters';
@@ -351,6 +356,27 @@ export const schemeService = {
     } catch (error) {
       console.warn('[schemeService.getFeaturedSchemes] Could not load the featured schemes.', (error as Error).message);
       throw error;
+    }
+  },
+
+  /**
+   * "New for you": schemes SchemeSetu added in the last `days` days that fit the profile, best match first.
+   * An empty list when the backend can't be reached (sample data has nothing new).
+   */
+  async getNewForYou(profile: UserProfile, days = NEW_FOR_YOU_DAYS, limit = 4): Promise<{ data: Scheme[]; total: number }> {
+    if (isMockMode) return { data: [], total: 0 };
+    try {
+      const response = await axios.post(
+        `${API_URL}/recommended`,
+        { profile, page: 1, limit, addedWithinDays: days },
+        { params: { lang: getActiveLang() } }
+      );
+      const fresh = assertJsonArray<any>(response.data?.data ?? response.data, 'getNewForYou');
+      ingestCardText(getActiveLang(), response.data?.translation, fresh.map((s: any) => s.id));
+      return { data: fresh, total: typeof response.data?.total === 'number' ? response.data.total : fresh.length };
+    } catch (error) {
+      console.warn('[schemeService.getNewForYou] Backend not available.', (error as Error).message);
+      return { data: [], total: 0 };
     }
   },
 

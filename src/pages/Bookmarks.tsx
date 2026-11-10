@@ -9,6 +9,8 @@ import { LoadError } from '../components/LoadError';
 import { EmptyState } from '../components/EmptyState';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ClipboardList } from 'lucide-react';
+import { WhatToCarry } from '../components/WhatToCarry';
 
 export const Bookmarks: React.FC = () => {
   const { t } = useTranslation();
@@ -19,6 +21,8 @@ export const Bookmarks: React.FC = () => {
   // The saved schemes could not be loaded; this must not look like 'no saved schemes'. Retry bumps `attempt`.
   const [loadFailed, setLoadFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
+  // "What to carry": the saved schemes' documents as one printable list.
+  const [showCarry, setShowCarry] = useState(false);
 
   useEffect(() => {
     const loadSavedSchemes = async () => {
@@ -53,16 +57,32 @@ export const Bookmarks: React.FC = () => {
       animate={{ opacity: 1 }}
       className="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto w-full space-y-6 flex-grow flex flex-col"
     >
-      <div>
-        <h1 className="font-display text-2xl md:text-3xl font-extrabold text-primary dark:text-white">
-          {t('bookmarks')}
-        </h1>
-        <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 mt-1">
-          {t('bookmarksSubtitle')}
-        </p>
+      <div className="flex flex-wrap items-end justify-between gap-3 print:hidden">
+        <div>
+          <h1 className="font-display text-2xl md:text-3xl font-extrabold text-primary dark:text-white">
+            {t('bookmarks')}
+          </h1>
+          <p className="font-body text-xs md:text-sm text-on-surface-variant dark:text-zinc-400 mt-1">
+            {t('bookmarksSubtitle')}
+          </p>
+        </div>
+        {!isPageLoading && !loadFailed && savedSchemes.length > 0 && !showCarry && (
+          <button
+            type="button"
+            onClick={() => setShowCarry(true)}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-secondary text-white dark:bg-sky-500 dark:text-zinc-950 text-xs md:text-sm font-bold shadow-sm"
+          >
+            <ClipboardList className="w-4 h-4" aria-hidden="true" /> {t('carryOpen')}
+          </button>
+        )}
       </div>
 
-      {isPageLoading ? (
+      {showCarry && savedSchemes.length > 0 ? (
+        <WhatToCarry
+          schemes={savedSchemes.map((s) => ({ id: s.id, name: s.name, documents: s.documentRequirements ?? [] }))}
+          onClose={() => setShowCarry(false)}
+        />
+      ) : isPageLoading ? (
         <LoadingSkeleton count={3} />
       ) : loadFailed ? (
         <LoadError onRetry={() => setAttempt((n) => n + 1)} />

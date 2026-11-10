@@ -42,6 +42,8 @@ export function serializeScheme(scheme: SchemeWithRelations, matchScore?: number
     ministry: scheme.authorityName,
     sourceUrl: scheme.sourceUrl,
     applyUrl: scheme.sourceUrl,
+    // When SchemeSetu added the scheme (the weekly myScheme check adds new ones): "New" tags and "New for you".
+    addedAt: scheme.createdAt instanceof Date ? scheme.createdAt.toISOString() : undefined,
     level: deriveLevel(scheme.authorityName),
     category,
     categories,

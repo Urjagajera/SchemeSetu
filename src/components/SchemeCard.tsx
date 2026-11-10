@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Scheme } from '../types';
 import { useTranslation } from '../contexts/LanguageContext';
+import { isNewScheme } from '../services/schemeService';
 import { BookmarkButton } from './BookmarkButton';
 import { CompareButton } from './CompareButton';
 import { ArrowRight, Building2, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -72,6 +73,11 @@ export const SchemeCard: React.FC<SchemeCardProps> = ({
           )}>
             {scheme.category}
           </span>
+          {isNewScheme(rawScheme) && (
+            <span className="px-2 py-0.5 rounded-full text-xs font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300">
+              {t('newBadge')}
+            </span>
+          )}
 
           {/* Action buttons (Bookmark & Compare) */}
           <div className="relative z-10 flex items-center gap-1.5 opacity-90 group-hover:opacity-100">

@@ -33,6 +33,8 @@ import { stripDetailsHeading } from '../utils/descriptionText';
 import { LinkedText } from '../components/LinkedText';
 import { SectionLanguageToggle } from '../components/SectionLanguageToggle';
 import { nativeLanguageName } from '../utils/languageNames';
+import { ReadAloudButton } from '../components/ReadAloudButton';
+import { useReadAloud } from '../hooks/useReadAloud';
 
 const DetailSection: React.FC<{ icon: React.ReactNode; title: string; toggle?: React.ReactNode; children: React.ReactNode }> = ({ icon, title, toggle, children }) => (
   <section className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-6 shadow-sm transition-colors">
@@ -64,6 +66,7 @@ export const SchemeDetail: React.FC = () => {
   const { t, language } = useTranslation();
   const { profile, isAuthenticated } = useAuth();
   const { bookmarks, toggleBookmark } = useBookmarks();
+  const reader = useReadAloud();
 
   const [scheme, setScheme] = useState<Scheme | null>(null);
   const [related, setRelated] = useState<Scheme[]>([]);
@@ -196,6 +199,19 @@ export const SchemeDetail: React.FC = () => {
   const shownDocuments = englishSections.documents && canToggle.documents ? englishDocuments : documentItems;
   const shownProcess = englishSections.howToApply && canToggle.howToApply ? englishProcess : applicationProcess;
 
+  // Read aloud: each section in the language it is shown in (English when the translation isn't there or is switched off).
+  const readAloudFor = (key: SectionKey, title: string, shown: string | string[], english: string | string[]) => {
+    const text = [title, ...(Array.isArray(shown) ? shown : [shown])].join('. ');
+    const lang = language === 'en' || sameText(shown, english) ? 'en' : language;
+    return <ReadAloudButton id={key} text={text} lang={lang} reader={reader} />;
+  };
+  const headerFor = (key: SectionKey, read: React.ReactNode) => (
+    <span className="flex flex-wrap items-center justify-end gap-2">
+      {read}
+      {toggleFor(key)}
+    </span>
+  );
+
   if (loadFailed) {
     return (
       <div className="flex-1 max-w-xl mx-auto w-full px-4 py-20">
@@ -313,21 +329,21 @@ export const SchemeDetail: React.FC = () => {
 
           {/* Benefits: every benefit listed in the source data, not just the first */}
           {benefitItems.length > 0 && (
-            <DetailSection icon={<Coins className="w-4 h-4" />} title={t('schemeBenefits')} toggle={toggleFor('benefits')}>
+            <DetailSection icon={<Coins className="w-4 h-4" />} title={t('schemeBenefits')} toggle={headerFor('benefits', readAloudFor('benefits', t('schemeBenefits'), shownBenefits, englishBenefits))}>
               <BulletList items={shownBenefits} />
             </DetailSection>
           )}
 
           {/* Eligibility */}
           {eligibilityItems.length > 0 && (
-            <DetailSection icon={<CheckCircle className="w-4 h-4" />} title={t('schemeEligibility')} toggle={toggleFor('eligibility')}>
+            <DetailSection icon={<CheckCircle className="w-4 h-4" />} title={t('schemeEligibility')} toggle={headerFor('eligibility', readAloudFor('eligibility', t('schemeEligibility'), shownEligibility, englishEligibility))}>
               <BulletList items={shownEligibility} />
             </DetailSection>
           )}
 
           {/* How to apply: mode(s) plus the step-by-step process text */}
           {(applicationModes.length > 0 || applicationProcess) && (
-            <DetailSection icon={<ClipboardList className="w-4 h-4" />} title={t('howToApply')} toggle={toggleFor('howToApply')}>
+            <DetailSection icon={<ClipboardList className="w-4 h-4" />} title={t('howToApply')} toggle={headerFor('howToApply', readAloudFor('howToApply', t('howToApply'), shownProcess ?? '', englishProcess))}>
               {applicationModes.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                   <span className="text-xs font-bold text-on-surface-variant dark:text-zinc-400">{t('applicationModeLabel')}:</span>
@@ -348,7 +364,7 @@ export const SchemeDetail: React.FC = () => {
 
           {/* Documents required */}
           {documentItems.length > 0 && (
-            <DetailSection icon={<FileText className="w-4 h-4" />} title={t('documentsRequired')} toggle={toggleFor('documents')}>
+            <DetailSection icon={<FileText className="w-4 h-4" />} title={t('documentsRequired')} toggle={headerFor('documents', readAloudFor('documents', t('documentsRequired'), shownDocuments, englishDocuments))}>
               <DocumentChecklist schemeId={translatedScheme.id} lines={englishDocuments} shown={shownDocuments} />
             </DetailSection>
           )}

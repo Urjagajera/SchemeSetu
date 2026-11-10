@@ -26,6 +26,8 @@ export interface Scheme {
   authorityName: string;
   tags: string[];
   categories?: string[];
+  /** When SchemeSetu added the scheme (ISO date); the weekly myScheme check adds new ones. */
+  addedAt?: string;
 
   // Compatibility properties
   category: string;

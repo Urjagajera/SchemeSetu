@@ -10,6 +10,8 @@ import { eligibilityService, EligibilityReport } from '../services/eligibilitySe
 import { Scheme, UserProfile } from '../types';
 import { SchemeCard } from '../components/SchemeCard';
 import { EligibilityCard } from '../components/EligibilityCard';
+import { FamilyPanel } from '../components/FamilyPanel';
+import { memberProfile, FamilyMember } from '../services/familyService';
 import { LoadingSkeleton } from '../components/LoadingSkeleton';
 import Sidebar from '../components/Sidebar';
 import { QuickProfileForm } from '../components/QuickProfileForm';
@@ -61,6 +63,8 @@ export const Eligibility: React.FC = () => {
   });
 
   const [wizardSubmitted, setWizardSubmitted] = useState(false);
+  // Signed in: whose answers the results are for (null = the person themselves; see FamilyPanel).
+  const [checkingFor, setCheckingFor] = useState<FamilyMember | null>(null);
 
   // Results come a page at a time. `usedProfile` is the profile the first page was worked out for, so "Show more" asks
   // about the same one.
@@ -138,9 +142,9 @@ export const Eligibility: React.FC = () => {
   // Evaluate automatically if logged in
   useEffect(() => {
     if (isAuthenticated && completeness.isComplete) {
-      evaluateEligibility(loggedInProfile);
+      evaluateEligibility(checkingFor ? memberProfile(checkingFor) : loggedInProfile);
     }
-  }, [isAuthenticated, loggedInProfile, completeness.isComplete]);
+  }, [isAuthenticated, loggedInProfile, completeness.isComplete, checkingFor]);
 
   const handleGuestSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -236,7 +240,11 @@ export const Eligibility: React.FC = () => {
           </Link>
         </div>
 
-        {/* Profile overview cards (read only) */}
+        {/* Checking for: me or a family member (their answers are kept under the account, not in my profile) */}
+        <FamilyPanel selectedId={checkingFor?.id ?? null} onSelect={setCheckingFor} />
+
+        {/* Profile overview cards (read only): only when the results are for the person themselves */}
+        {!checkingFor && (<>
         <div className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 shadow-sm transition-colors space-y-4">
           <h2 className="font-heading text-sm md:text-base font-bold text-primary dark:text-white flex items-center justify-between">
             <span>{t('profileSummary')}</span>
@@ -260,6 +268,8 @@ export const Eligibility: React.FC = () => {
             ))}
           </div>
         </div>
+
+        </>)}
 
         {/* Eligible schemes reports */}
         <div className="space-y-6">

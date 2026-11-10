@@ -19,6 +19,7 @@ model User {
   bookmarks         Bookmark[]
   profile           Profile?
   checklists        DocumentChecklist[]
+  familyMembers     FamilyMember[]
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
 }
@@ -194,4 +195,30 @@ model DocumentChecklist {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, schemeId])
+}
+
+// "Family profiles" (2026-11-10): eligibility answers for someone else (a parent, a child), so the account holder
+// can check schemes for them without changing their own profile. At most 6 per account (routes/family.ts).
+// Only the answers the eligibility check uses are kept; all optional, blank = unknown (never excludes a scheme).
+model FamilyMember {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  label      String // what the account holder calls them: "Mother", "Riya"
+  dob        String?
+  gender     String?
+  occupation String?
+  income     String?
+  category   String?
+  state      String?
+  residence  String?
+  land       String?
+  govtJob    String?
+  incomeTax  String?
+  bpl        String?
+  pension    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
 }

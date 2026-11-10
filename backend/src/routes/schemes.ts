@@ -206,7 +206,13 @@ router.get(
 router.post(
   '/recommended',
   asyncHandler(async (req: Request, res: Response) => {
-    const { profile, page: rawPage, limit: rawLimit } = req.body as { profile?: IncomingProfile; page?: unknown; limit?: unknown };
+    const { profile, page: rawPage, limit: rawLimit, addedWithinDays: rawDays } = req.body as {
+      profile?: IncomingProfile;
+      page?: unknown;
+      limit?: unknown;
+      /** "New for you": only schemes SchemeSetu added in the last N days (1 to 90). */
+      addedWithinDays?: unknown;
+    };
 
     if (!profile) {
       res.status(400).json({ error: { message: 'profile is required', status: 400 } });
@@ -219,6 +225,11 @@ router.post(
       return;
     }
     const limit = Math.min(requestedLimit, MAX_RECOMMENDED_LIMIT);
+    const addedWithinDays = rawDays === undefined ? null : Number(rawDays);
+    if (addedWithinDays !== null && (!Number.isInteger(addedWithinDays) || addedWithinDays < 1 || addedWithinDays > 90)) {
+      res.status(400).json({ error: { message: 'addedWithinDays must be a whole number from 1 to 90', status: 400 } });
+      return;
+    }
 
     const interestTags = buildInterestTags(profile);
     const age = parseInt(profile.age ?? '', 10);
@@ -239,8 +250,10 @@ router.post(
         }
       : {};
 
+    const added: Prisma.SchemeWhereInput =
+      addedWithinDays === null ? {} : { createdAt: { gte: new Date(Date.now() - addedWithinDays * 24 * 60 * 60 * 1000) } };
     const rows = await prisma.scheme.findMany({
-      where,
+      where: addedWithinDays === null ? where : { AND: [where, added] },
       include: { tags: true, categories: true, eligibilityCriteria: true },
     });
 

@@ -8,11 +8,11 @@ type Row = Record<string, any>;
 
 // A small in-memory database with two users, so "only their own data" is tested on real rows, not on mocks of calls.
 const db = vi.hoisted(() => {
-  const state = { users: [] as Row[], profiles: [] as Row[], bookmarks: [] as Row[], checklists: [] as Row[], schemes: [] as Row[], failOn: '' as string };
+  const state = { users: [] as Row[], profiles: [] as Row[], bookmarks: [] as Row[], checklists: [] as Row[], family: [] as Row[], schemes: [] as Row[], failOn: '' as string };
   const matches = (row: Row, where: Row) => Object.entries(where).every(([k, v]) => row[k] === v);
   // Like Prisma's own promises, a delete does nothing until it is awaited, so a transaction decides when it runs.
   const lazy = <T,>(run: () => Promise<T>): PromiseLike<T> => ({ then: (ok, bad) => run().then(ok, bad) });
-  const del = (name: 'users' | 'profiles' | 'bookmarks' | 'checklists') => ({ where }: { where: Row }) =>
+  const del = (name: 'users' | 'profiles' | 'bookmarks' | 'checklists' | 'family') => ({ where }: { where: Row }) =>
     lazy(async () => {
       if (state.failOn === name) throw new Error('boom');
       const before = state[name].length;
@@ -34,15 +34,19 @@ const db = vi.hoisted(() => {
           state.checklists.filter((r) => matches(r, where)).map((c) => ({ ...c, scheme: state.schemes.find((s) => s.id === c.schemeId) })),
         deleteMany: del('checklists'),
       },
+      familyMember: {
+        findMany: async ({ where }: { where: Row }) => state.family.filter((r) => matches(r, where)),
+        deleteMany: del('family'),
+      },
       // Runs the queued deletes in order and puts everything back if one fails, like a real transaction.
       $transaction: async (ops: Array<PromiseLike<unknown>>) => {
-        const snapshot = JSON.stringify([state.users, state.profiles, state.bookmarks, state.checklists]);
+        const snapshot = JSON.stringify([state.users, state.profiles, state.bookmarks, state.checklists, state.family]);
         try {
           const out: unknown[] = [];
           for (const op of ops) out.push(await op);
           return out;
         } catch (e) {
-          [state.users, state.profiles, state.bookmarks, state.checklists] = JSON.parse(snapshot);
+          [state.users, state.profiles, state.bookmarks, state.checklists, state.family] = JSON.parse(snapshot);
           throw e;
         }
       },
@@ -87,6 +91,10 @@ beforeEach(() => {
   db.state.checklists = [
     { id: 'c1', userId: 'u1', schemeId: 's1', checked: ['Aadhaar Card'], unchecked: ['Ration Card'], updatedAt: new Date('2026-03-01') },
     { id: 'c2', userId: 'u2', schemeId: 's2', checked: ['Income Certificate'], unchecked: [], updatedAt: new Date('2026-03-02') },
+  ];
+  db.state.family = [
+    { id: 'f1', userId: 'u1', label: 'Mother', bpl: 'yes', createdAt: new Date('2026-04-01') },
+    { id: 'f2', userId: 'u2', label: 'Son', createdAt: new Date('2026-04-02') },
   ];
 });
 
@@ -169,7 +177,7 @@ describe('DELETE /api/account', () => {
   it('removes the caller\'s bookmarks, profile and account, and says how many', async () => {
     const res = await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ success: true, deleted: { bookmarks: 1, documentChecklists: 1, profile: 1, account: 1 } });
+    expect(res.body).toEqual({ success: true, deleted: { bookmarks: 1, documentChecklists: 1, familyMembers: 1, profile: 1, account: 1 } });
     expect(db.state.checklists.map((c) => c.userId)).toEqual(['u2']);
     expect(db.state.users.map((u) => u.id)).toEqual(['u2']);
     expect(db.state.profiles.map((p) => p.userId)).toEqual(['u2']);
@@ -203,8 +211,9 @@ describe('DELETE /api/account', () => {
     db.state.profiles = db.state.profiles.filter((p) => p.userId !== 'u1');
     db.state.bookmarks = db.state.bookmarks.filter((b) => b.userId !== 'u1');
     db.state.checklists = db.state.checklists.filter((c) => c.userId !== 'u1');
+    db.state.family = db.state.family.filter((f) => f.userId !== 'u1');
     const res = await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
-    expect(res.body.deleted).toEqual({ bookmarks: 0, documentChecklists: 0, profile: 0, account: 1 });
+    expect(res.body.deleted).toEqual({ bookmarks: 0, documentChecklists: 0, familyMembers: 0, profile: 0, account: 1 });
   });
 
   it('is all-or-nothing: if one delete fails, nothing is removed and the cookie stays', async () => {
@@ -222,7 +231,19 @@ describe('DELETE /api/account', () => {
     await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
     const again = await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
     expect(again.status).toBe(200);
-    expect(again.body.deleted).toEqual({ bookmarks: 0, documentChecklists: 0, profile: 0, account: 0 });
+    expect(again.body.deleted).toEqual({ bookmarks: 0, documentChecklists: 0, familyMembers: 0, profile: 0, account: 0 });
     expect(db.state.users.map((u) => u.id)).toEqual(['u2']);
+  });
+});
+
+describe('family members in the export and the deletion', () => {
+  it('exports only the caller\'s own family members, without the owner id', async () => {
+    const res = await request(app()).get('/api/account/export').set('Cookie', cookieFor('u1'));
+    expect(res.body.familyMembers).toEqual([{ id: 'f1', label: 'Mother', bpl: 'yes', createdAt: '2026-04-01T00:00:00.000Z' }]);
+  });
+
+  it('deleting the account removes its family members and leaves the other user\'s', async () => {
+    await request(app()).delete('/api/account').set('Cookie', cookieFor('u1'));
+    expect(db.state.family.map((f) => f.id)).toEqual(['f2']);
   });
 });

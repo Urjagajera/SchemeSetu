@@ -158,3 +158,29 @@ describe('POST /api/schemes/recommended: paging', () => {
     expect((await ask({ page: 1 })).status).toBe(400);
   });
 });
+
+describe('POST /api/schemes/recommended: addedWithinDays ("New for you")', () => {
+  beforeEach(() => {
+    mockPrisma.scheme.findMany.mockReset();
+    mockPrisma.scheme.findMany.mockResolvedValue([]);
+  });
+
+  it('asks the database only for schemes added in the last N days', async () => {
+    const before = Date.now();
+    const res = await ask({ profile: {}, addedWithinDays: 14 });
+    expect(res.status).toBe(200);
+    const where = mockPrisma.scheme.findMany.mock.calls[0][0].where;
+    const since: Date = where.AND[1].createdAt.gte;
+    expect(before - since.getTime()).toBeGreaterThanOrEqual(14 * 24 * 60 * 60 * 1000 - 1000);
+    expect(before - since.getTime()).toBeLessThanOrEqual(14 * 24 * 60 * 60 * 1000 + 1000);
+  });
+
+  it('without it, there is no date filter', async () => {
+    await ask({ profile: {} });
+    expect(mockPrisma.scheme.findMany.mock.calls[0][0].where.AND).toBeUndefined();
+  });
+
+  it.each([0, 91, 2.5, 'x'])('rejects addedWithinDays %s', async (days) => {
+    expect((await ask({ profile: {}, addedWithinDays: days })).status).toBe(400);
+  });
+});

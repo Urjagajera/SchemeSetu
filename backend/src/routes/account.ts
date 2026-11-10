@@ -35,6 +35,7 @@ router.get(
       include: { scheme: { select: { name: true } } },
       orderBy: { updatedAt: 'asc' },
     });
+    const family = await prisma.familyMember.findMany({ where: { userId }, orderBy: { createdAt: 'asc' } });
 
     res.setHeader('Content-Disposition', 'attachment; filename="schemesetu-my-data.json"');
     res.json({
@@ -74,6 +75,7 @@ router.get(
           }
         : null,
       bookmarks: bookmarks.map((b) => ({ schemeId: b.schemeId, schemeName: b.scheme.name, schemeUrl: b.scheme.sourceUrl, savedAt: b.createdAt })),
+      familyMembers: family.map(({ userId: _owner, ...m }) => m),
       documentChecklists: checklists.map((c) => ({ schemeId: c.schemeId, schemeName: c.scheme.name, ticked: c.checked, untickedOnPurpose: c.unchecked, updatedAt: c.updatedAt })),
     });
   }),
@@ -81,7 +83,7 @@ router.get(
 
 /**
  * DELETE /api/account
- * Removes the caller's bookmarks, document checklists, profile and user row in one transaction, then clears the
+ * Removes the caller's bookmarks, document checklists, family members, profile and user row in one transaction, then clears the
  * session cookie.
  * The browser asks for a typed confirmation first; the server itself only needs the signed-in session.
  */
@@ -89,14 +91,15 @@ router.delete(
   '/',
   asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user!.userId;
-    const [bookmarks, checklists, profile, user] = await prisma.$transaction([
+    const [bookmarks, checklists, family, profile, user] = await prisma.$transaction([
       prisma.bookmark.deleteMany({ where: { userId } }),
       prisma.documentChecklist.deleteMany({ where: { userId } }),
+      prisma.familyMember.deleteMany({ where: { userId } }),
       prisma.profile.deleteMany({ where: { userId } }),
       prisma.user.deleteMany({ where: { id: userId } }),
     ]);
     clearSessionCookie(res);
-    res.json({ success: true, deleted: { bookmarks: bookmarks.count, documentChecklists: checklists.count, profile: profile.count, account: user.count } });
+    res.json({ success: true, deleted: { bookmarks: bookmarks.count, documentChecklists: checklists.count, familyMembers: family.count, profile: profile.count, account: user.count } });
   }),
 );
 
