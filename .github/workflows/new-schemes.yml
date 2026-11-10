@@ -29,7 +29,7 @@ concurrency:
 
 jobs:
   new-schemes:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # pinned: Playwright 1.56.1 cannot install its browser on Ubuntu 26 (ubuntu-latest since Oct 2026)
     timeout-minutes: 340
     defaults:
       run:
@@ -46,9 +46,9 @@ jobs:
           echo "::error::The DATABASE_URL repository secret is not set, so new schemes could not be added to the database. Nothing was done."
           exit 1
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: npm
@@ -89,7 +89,7 @@ jobs:
 
       - name: Keep the report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: new-schemes-report
           path: new-schemes-report.md

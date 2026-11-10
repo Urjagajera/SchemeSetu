@@ -175,7 +175,7 @@ There is **no admin role** inside the app and **no demo login**: sign-in is real
 - **Server:** Node.js 22 (`engines: node >= 20`), PostgreSQL 14 or newer.
 - **Local development:** API on `http://localhost:3001`, Vite dev server on `http://localhost:5173` with `strictPort` (it stops with an
   error instead of moving to 5174, because Google sign-in only accepts the 5173 origin); `/api` is proxied to 3001; local PostgreSQL.
-- **Weekly job:** GitHub Actions, Ubuntu, Node 22, Playwright's Chromium.
+- **Weekly job:** GitHub Actions on Ubuntu 24.04 (pinned; Playwright 1.56.1 cannot install its browser on Ubuntu 26), Node 22, Playwright's Chromium.
 - **Planned production:** Vercel (frontend), Render (API, Singapore region), Neon (PostgreSQL) — all free tiers (section 13).
 
 ### 2.5 Design and implementation constraints (summary; full list in section 15)
@@ -1408,3 +1408,4 @@ See section 1.4.
 | 2026-11-06 | This living SRS (`details.md`) created; to be updated with every new decision. | all |
 | 2026-11-08 | First scheduled weekly run stopped safely (no `DATABASE_URL` secret). The secret had been saved as an environment secret; it must be a repository secret. | 13.3 |
 | 2026-11-08 | **Neon filled by copying from the local database** (decided over re-running the import, which would lose the Hindi translations): 12 migrations, then the 7 scheme tables in one transaction; counts and content verified identical; no user data copied. | 13.2, 13.3 |
+| 2026-11-10 | First hand-started dry run stopped at "Install the browser": GitHub's `ubuntu-latest` is now Ubuntu 26, which Playwright 1.56.1 does not support. The weekly job is pinned to `ubuntu-24.04`, and its actions moved to checkout/setup-node/upload-artifact v5 (Node 24) to clear the Node 20 warning. | 3, 13.3 |
