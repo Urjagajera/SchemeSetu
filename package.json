@@ -8,6 +8,8 @@
   },
   "scripts": {
     "dev": "vite",
+    "backend": "npm --prefix backend run dev",
+    "dev:backend": "npm --prefix backend run dev",
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",

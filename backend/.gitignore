@@ -4,6 +4,7 @@ dist/
 
 # Environment
 .env
+.env.neon
 .env.*
 !.env.example
 
