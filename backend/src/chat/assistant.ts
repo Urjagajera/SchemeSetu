@@ -85,6 +85,10 @@ const transcript = (history: ChatTurn[]) => history.map((h) => `${h.sender === '
 const KEYWORDS_SYSTEM = `You turn a citizen's question about Indian government welfare schemes into English search words.
 The question may be in English, Hindi, Gujarati or a mix. Use the conversation so far to resolve words like "it" or "that scheme".
 Write well-known short names out in full as well, the way official titles spell them (PM-KISAN: "Pradhan Mantri Kisan Samman Nidhi"; PMAY: "Pradhan Mantri Awas Yojana").
+Never make up a scheme name: use a scheme's name only if the question names that scheme. Otherwise use plain topic words.
+If the question names an Indian state, include that state's English name as one of the words (गुजरात: "Gujarat").
+Write caste and tribe groups out in full ("SC": "scheduled caste"; "ST": "scheduled tribe").
+Name the specific thing asked about, plus the words official scheme titles use for it (farm machinery: "tractor", "mechanization", "equipment", "power tiller"; a house: "housing", "awas"; studies: "scholarship", "education").
 If a PROFILE is given and the question asks what the person can get, choose words from it (a widow: "widow"; 60 or older: "old age", "pension"; a farmer: "farmer"; a disability: "disability"; a student: "scholarship").
 Reply with JSON only: {"keywords": ["..."]}: 1 to 8 English words or names that would appear in a scheme's title, tags or description. No generic words like "scheme" or "government".`;
 

@@ -70,3 +70,18 @@ describe('LIVE (local database): a state named in the question narrows the searc
     for (const s of rows) expect(s.authority, s.name).not.toMatch(/^(Kerala|Puducherry|Punjab|Delhi|Tamil Nadu)$/);
   });
 });
+
+describe('LIVE (local database): a specific need beats a common word', () => {
+  it('a farmer in Gujarat asking about tractors and farm equipment gets the tractor schemes first', async (ctx) => {
+    if (!dbUp) ctx.skip();
+    const found = await names(['tractor', 'farm equipment', 'Gujarat'], null, 5);
+    expect(found).toContain('Assistance to Farmers to Purchase Heavy Farm Equipment (Tractor)');
+    expect(found).toContain('AGR-50 Scheme-Assistance To Purchase Tractors');
+  });
+
+  it('"farm machinery" (no tractor word) still finds mechanization or equipment schemes, not only general farmer schemes', async (ctx) => {
+    if (!dbUp) ctx.skip();
+    const found = await names(['farm machinery', 'small farmer', 'Gujarat'], null, 5);
+    expect(found.filter((n) => /mechani|equipment|machine|tractor/i.test(n)).length).toBeGreaterThanOrEqual(2);
+  });
+});
