@@ -5,6 +5,7 @@
  *   npm run scrape:new-schemes -- --dry-run      reads everything, writes nothing, prints the report
  *   npm run scrape:new-schemes                    finds and reads new schemes, appends them to the CSV
  *   npm run scrape:new-schemes -- --sync-db       adds CSV schemes the database does not have yet (create only)
+ *   npm run scrape:new-schemes -- --check-db      says whether DATABASE_URL works, in plain words (never fails the run)
  * Options: --limit=N (new schemes per run, default 200), --report=<file>,
  *          --preview=<file> (dry run: also write the rows that would be added to this separate CSV, to look at).
  *
@@ -35,6 +36,7 @@ import { learnRelatedTags, withRelatedTags } from './relatedTags.js';
 import { problems, selfCheckDiffs, titleKey } from './checks.js';
 import { openBrowser, newSchemePage, readSchemePageWithRetry, listAllSchemeUrls, PAUSE_MS } from './myschemePage.js';
 import { renderReport, RunReport } from './report.js';
+import { cleanDatabaseUrl, databaseErrorReason, databaseUrlProblems } from './databaseCheck.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // On a PC, DATABASE_URL comes from backend/.env; on GitHub it is a repository secret.
@@ -59,7 +61,7 @@ export const MAX_SYNC = 300;
 const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 interface Options {
-  mode: 'scrape' | 'sync-db';
+  mode: 'scrape' | 'sync-db' | 'check-db';
   dryRun: boolean;
   limit: number;
   reportPath: string | null;
@@ -70,7 +72,7 @@ export function parseOptions(argv: string[]): Options {
   const value = (name: string) => argv.find((a) => a.startsWith(`--${name}=`))?.split('=')[1];
   const limit = Number(value('limit') ?? 200);
   return {
-    mode: argv.includes('--sync-db') ? 'sync-db' : 'scrape',
+    mode: argv.includes('--sync-db') ? 'sync-db' : argv.includes('--check-db') ? 'check-db' : 'scrape',
     dryRun: argv.includes('--dry-run'),
     limit: Number.isInteger(limit) && limit > 0 ? limit : 200,
     reportPath: value('report') ?? null,
@@ -84,10 +86,32 @@ const listOf = (r: CsvRecord, prefix: string, n: number) => Array.from({ length:
 const readCsv = (): CsvRecord[] => readCsvRecords(fs.readFileSync(CSV_PATH));
 
 async function openDatabase(): Promise<PrismaClient | null> {
-  if (!process.env.DATABASE_URL) return null;
+  // Spaces, quotes or a "psql '...'" around the secret are removed, so a slightly mis-pasted secret still works.
+  const url = cleanDatabaseUrl(process.env.DATABASE_URL);
+  if (!url) return null;
   // Its own connection: the job needs only DATABASE_URL, not the web server's settings (config/env.ts).
   const { PrismaClient } = await import('@prisma/client');
-  return new PrismaClient();
+  return new PrismaClient({ datasources: { db: { url } } });
+}
+
+/** --check-db: whether the database can be used, in plain words. Never shows the connection string. */
+export async function checkDatabase(): Promise<{ ok: boolean; text: string }> {
+  const shape = databaseUrlProblems(process.env.DATABASE_URL);
+  const prisma = await openDatabase();
+  if (!prisma) return { ok: false, text: `## Database check: NOT SET\n\n- ${shape.join('\n- ')}\n` };
+  try {
+    const schemes = await prisma.scheme.count();
+    const notes = shape.length > 0 ? `\n\nNote about the DATABASE_URL secret:\n- ${shape.join('\n- ')}` : '';
+    return { ok: true, text: `## Database check: OK\n\nConnected; the database has ${schemes} schemes.${notes}\n` };
+  } catch (e) {
+    const hints = shape.length > 0 ? `\n\nWhat looks wrong with the DATABASE_URL secret:\n- ${shape.join('\n- ')}` : '';
+    return {
+      ok: false,
+      text: `## Database check: FAILED\n\nThe DATABASE_URL secret did not work: ${databaseErrorReason(e)}.${hints}\n\nNew schemes are still found and saved to the CSV; they reach the database on the first run after this is fixed. To fix: Neon > your project > Connect > copy the connection string, then GitHub > Settings > Secrets and variables > Actions > Repository secrets > DATABASE_URL > Update.\n`,
+    };
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 async function readFull(page: Page, url: string, rules: ReturnType<typeof learnRelatedTags>): Promise<ScrapedScheme | 'removed'> {
@@ -125,6 +149,8 @@ export async function scrape(opts: Options): Promise<RunReport> {
   log(`CSV: ${records.length} schemes; ${rules.size} related-tag rules learned.`);
 
   // Schemes only in the database (should be none) are known too, so they are never added twice.
+  // If the database cannot be used, the run still goes on from the CSV (the record): the database only adds schemes
+  // that should not exist (in the database but not the CSV). The --sync-db step reports the database problem.
   const prisma = await openDatabase();
   if (prisma) {
     try {
@@ -132,6 +158,10 @@ export async function scrape(opts: Options): Promise<RunReport> {
         const u = canonicalSchemeUrl(sourceUrl);
         if (u) known.add(u);
       }
+    } catch (e) {
+      const reason = databaseErrorReason(e);
+      log(`Database not checked (${reason}); going on with the CSV only.`);
+      report.database = `could not be used this run (${reason}); new schemes were found from the CSV and reach the database once it works`;
     } finally {
       await prisma.$disconnect();
     }
@@ -240,6 +270,11 @@ export async function syncDatabase(): Promise<string> {
   const prisma = await openDatabase();
   if (!prisma) throw new Error('DATABASE_URL is not set');
   try {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+    } catch (e) {
+      throw new Error(`Could not use the database (DATABASE_URL secret): ${databaseErrorReason(e)}. The CSV is safe; the next run adds its schemes once the secret works.`);
+    }
     const { parseCsvFile } = await import('../ingestion/csvParser.js');
     const { addNewSchemes } = await import('./addToDatabase.js');
     const inDb = new Set((await prisma.scheme.findMany({ select: { sourceUrl: true } })).map((s) => s.sourceUrl));
@@ -265,6 +300,13 @@ function write(text: string, reportPath: string | null) {
 // Run from the command line (not when imported by a test).
 if (process.argv[1] && /scraper[\\/]run\.(ts|js)$/.test(process.argv[1])) {
   const opts = parseOptions(process.argv.slice(2));
+  if (opts.mode === 'check-db') {
+    // Informational: it never fails the run, so the myScheme step still runs when the database is down.
+    checkDatabase()
+      .then((r) => write(r.text, null))
+      .catch((e) => write(`## Database check: FAILED\n\n${databaseErrorReason(e)}\n`, null))
+      .finally(() => process.exit(0));
+  } else {
   const job =
     opts.mode === 'sync-db'
       ? syncDatabase().then((msg) => {
@@ -281,4 +323,5 @@ if (process.argv[1] && /scraper[\\/]run\.(ts|js)$/.test(process.argv[1])) {
       write(`# myScheme check: FAILED\n\n${(e as Error).message ?? e}\n\nNothing was added to the ${opts.mode === 'sync-db' ? 'database' : 'CSV'}.\n`, opts.mode === 'scrape' ? opts.reportPath : null);
       process.exit(1);
     });
+  }
 }

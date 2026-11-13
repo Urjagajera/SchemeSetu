@@ -56,12 +56,20 @@ jobs:
 
       - run: npm ci
       - run: npx prisma generate
+
+      # Says on the run's page whether the DATABASE_URL secret works, in plain words (never shows it). Never fails.
+      - name: Check the database connection
+        run: npm run scrape:new-schemes -- --check-db
+
       - name: Install the browser
         run: npx playwright install --with-deps chromium
 
-      # Before adding anything: CSV schemes a failed earlier run did not get into the database.
+      # Before adding anything: CSV schemes a failed earlier run did not get into the database. If the database cannot
+      # be used, this step is marked failed but the run goes on: new schemes are still found and committed to the CSV,
+      # and they reach the database on the first run after the secret works.
       - name: Catch up the database
         if: env.DRY_RUN != 'true'
+        continue-on-error: true
         run: npm run scrape:new-schemes -- --sync-db
 
       - name: Find and read new schemes

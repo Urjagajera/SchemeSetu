@@ -137,10 +137,12 @@ function parseItems(text: string): unknown {
 
 export function createTranslator(opts: TranslatorOptions) {
   function getChain(lang?: LanguageConfig): Array<{ model: string; effort?: 'low' | 'medium' }> {
-    // Every language, Gujarati included, tries the primary model (gpt-oss-120b) first and the fallback (Qwen) only if
-    // that fails validation. In the Gujarati audit gpt-oss-120b had 0.9% wrong-meaning lines against Qwen's 8.1%.
+    // Every language tries the primary model (gpt-oss-120b) first. Hindi then moves on to the fallback (Qwen) if that
+    // fails validation; Gujarati does not (Qwen got 8.8% of Gujarati lines wrong in meaning, gpt-oss-120b 3.1%) and
+    // tries the primary model once more with more reasoning instead.
     const chain: Array<{ model: string; effort?: 'low' | 'medium' }> = [{ model: opts.primaryModel, effort: 'low' }];
-    if (opts.fallbackModel && opts.fallbackModel !== opts.primaryModel) chain.push({ model: opts.fallbackModel });
+    if (lang && !lang.useFallbackModel) chain.push({ model: opts.primaryModel, effort: 'medium' });
+    else if (opts.fallbackModel && opts.fallbackModel !== opts.primaryModel) chain.push({ model: opts.fallbackModel });
     return chain;
   }
 

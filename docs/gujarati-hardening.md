@@ -1,7 +1,8 @@
 # Gujarati hardening
 
-Gujarati stays **off** (`LANGUAGES.gu.enabled = false`, guarded by a test). Nothing here has been checked by a native
-speaker; every Gujarati rendering in the glossary is marked `unverified`.
+**Update 2026-11-14:** Gujarati is now **on** (owner's decision), using gpt-oss-120b only (`useFallbackModel: false`:
+no Qwen for Gujarati), marked machine translated with a switch back to English. Still no native-speaker review; every
+Gujarati rendering in the glossary is marked `unverified`. The rest of this page is the history before it was switched on.
 
 ## What changed (2026-10-04)
 

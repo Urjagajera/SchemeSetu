@@ -5,6 +5,7 @@ vi.mock('@prisma/client', () => ({
   PrismaClient: class {
     scheme = { findMany: async () => db.inDb.map((sourceUrl) => ({ sourceUrl })) };
     $disconnect = async () => {};
+    $queryRaw = async () => [{ ok: 1 }];
   },
 }));
 vi.mock('../ingestion/csvParser.js', async (orig) => ({ ...(await orig<object>()), parseCsvFile: () => ({ schemes: db.csv }) }));

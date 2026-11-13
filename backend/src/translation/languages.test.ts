@@ -6,9 +6,16 @@ describe('which languages are switched on', () => {
     expect(enabledLanguage('hi')).toBe(LANGUAGES.hi);
   });
 
-  it('Gujarati stays off until a native speaker has reviewed it (see the Gujarati audit)', () => {
-    expect(LANGUAGES.gu.enabled).toBe(false);
-    expect(enabledLanguage('gu')).toBeNull();
-    expect(enabledLanguage(' GU ')).toBeNull();
+  it('Gujarati is on (owner decision, 2026-11-14), and never uses the fallback model', () => {
+    expect(enabledLanguage('gu')).toBe(LANGUAGES.gu);
+    expect(enabledLanguage(' GU ')).toBe(LANGUAGES.gu);
+    expect(LANGUAGES.gu.useFallbackModel).toBe(false);
+    expect(LANGUAGES.hi.useFallbackModel).toBe(true);
+  });
+
+  it('English and unknown languages are not translated', () => {
+    expect(enabledLanguage('en')).toBeNull();
+    expect(enabledLanguage('ta')).toBeNull();
+    expect(enabledLanguage(undefined)).toBeNull();
   });
 });

@@ -53,7 +53,7 @@ describe('GET /api/schemes/:id: ?lang=', () => {
     expect(mockService.getForView).toHaveBeenCalledWith(expect.objectContaining({ id: 's1' }), expect.objectContaining({ code: 'hi' }));
   });
 
-  it.each([['no lang', ''], ['lang=en', '?lang=en'], ['lang=gu (defined but not enabled yet)', '?lang=gu'], ['an unknown language', '?lang=fr'], ['junk', '?lang=%00']])(
+  it.each([['no lang', ''], ['lang=en', '?lang=en'], ['lang=ta (a language that is not enabled)', '?lang=ta'], ['an unknown language', '?lang=fr'], ['junk', '?lang=%00']])(
     'returns plain English and starts nothing for %s',
     async (_label, qs) => {
       const res = await request(buildApp()).get(`/api/schemes/s1${qs}`);
@@ -93,8 +93,8 @@ describe('GET /api/schemes/titles', () => {
     expect(mockPrisma.scheme.findMany.mock.calls[0][0].where.id.in).toHaveLength(100);
   });
 
-  it('does nothing for English, an unknown language or Gujarati (not enabled)', async () => {
-    for (const q of ['?ids=s1', '?lang=en&ids=s1', '?lang=gu&ids=s1', '?lang=xx&ids=s1']) {
+  it('does nothing for English, an unknown language or one that is not enabled', async () => {
+    for (const q of ['?ids=s1', '?lang=en&ids=s1', '?lang=ta&ids=s1', '?lang=xx&ids=s1']) {
       const res = await request(buildApp()).get('/api/schemes/titles' + q);
       expect(res.body.data).toEqual({ language: 'en', status: 'ready', titles: {}, summaries: {}, pending: 0, failed: 0 });
     }
@@ -129,8 +129,8 @@ describe('list endpoints: card text for ?lang=hi', () => {
     expect(res.body.translation).toEqual(view);
   });
 
-  it('adds nothing for English, Gujarati (not enabled) or no language', async () => {
-    for (const q of ['', '?lang=en', '?lang=gu']) {
+  it('adds nothing for English, a language that is not enabled or no language', async () => {
+    for (const q of ['', '?lang=en', '?lang=ta']) {
       const res = await request(buildApp()).get('/api/schemes' + q);
       expect(res.body).not.toHaveProperty('translation');
     }

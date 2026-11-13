@@ -4,7 +4,7 @@
 |---|---|
 | **Product** | SchemeSetu (स्कीमसेतु) — a finder for Indian government welfare schemes |
 | **Document type** | Software Requirements Specification, structured after IEEE 830 / ISO/IEC/IEEE 29148, kept up to date |
-| **Last updated** | 2026-11-13 (SetuAI finds specific needs such as farm machinery) |
+| **Last updated** | 2026-11-14 (Gujarati scheme text on; weekly job survives a database problem) |
 | **Project** | Project-I (CEUP 301), Department of Computer Science & Engineering, CSPIT, CHARUSAT — Group CS26015 |
 | **Student** | Urja Gajera (24CS021) |
 | **Mentor / Guide** | Dr. Jigar Sarda |
@@ -63,7 +63,7 @@ specifies what the system does, how it is built, and the qualities it must have.
 - Scheme detail pages with Share and Print, a document checklist, bookmarks, side-by-side comparison of up to 3 schemes.
 - **SetuAI**, an AI assistant that answers questions from SchemeSetu's own scheme data (Groq, free tier).
 - **Voice search** in English, Hindi and Gujarati (the browser's own speech-to-text).
-- Interface in **English, Hindi and Gujarati**; scheme text in English and Hindi (Gujarati scheme text is built but switched off).
+- Interface in **English, Hindi and Gujarati**; scheme text in **English, Hindi and Gujarati** (machine translated, marked as such, with a switch back to English).
 - Google sign-in, a saved profile (age worked out from the date of birth), "My documents", account data export and account deletion.
 - Privacy Policy and Terms pages that state only what the code does.
 - A **weekly automatic check** of myScheme that adds new schemes to the CSV and the database (never changes existing ones).
@@ -1316,7 +1316,7 @@ SchemeSetu/
 2. For 149 schemes whose only criterion is occupation, eligibility still follows the older tag path (decision deferred).
 3. Hindi detail text is translated on demand only, within the free quota.
 4. Criteria labels and a few API messages are English-only, even in Hindi mode.
-5. Gujarati scheme text is off; Hindi and Gujarati wording has no native-speaker review yet.
+5. Hindi and Gujarati scheme text has no native-speaker review yet (both are marked machine translated). Gujarati ministry/state names and tags are not in the vocabulary yet, so they stay English; Hindi and Gujarati share gpt-oss-120b's free daily allowance.
 6. 525 schemes fall in no topic.
 7. SetuAI can be wrong (it says so), is slower when Groq's free tier is busy, and depends on the daily allowance.
 8. Voice input does not work in Firefox, and Chrome/Edge send the voice to Google/Microsoft.
@@ -1433,3 +1433,5 @@ See section 1.4.
 | 2026-11-11 | **Built: read aloud, "what to carry", "New for you" and family profiles** (all as recommended). Read aloud uses the device's voices (this PC has only English voices, so Hindi and Gujarati depend on the device). "New for you" stays empty until the weekly job adds schemes (all 4,722 were added on 2026-09-03). Family members: new `FamilyMember` table (migration `20261110180000_add_family_members`), applied locally (`db push`, after a `pg_dump`) and on Neon (`migrate deploy`, after a `pg_dump`; 14 migrations, scheme data unchanged). Privacy page: new sections on family members and read aloud; updated 11 November 2026. | 5.3, 5.6, 5.7, 10 |
 | 2026-11-10 | First hand-started dry run stopped at "Install the browser": GitHub's `ubuntu-latest` is now Ubuntu 26, which Playwright 1.56.1 does not support. The weekly job is pinned to `ubuntu-24.04`, and its actions moved to checkout/setup-node/upload-artifact v5 (Node 24) to clear the Node 20 warning. | 3, 13.3 |
 | 2026-11-13 | **Fixed: SetuAI missed specific needs** ("Which schemes help a small farmer in Gujarat buy farm machinery?" found none, though Gujarat has tractor schemes). Causes: only the first 300 of ~670 matching schemes were scored, in no set order; every word counted the same; a phrase had to match exactly; the model sometimes made up a scheme name and dropped the state. Now every match is scored with rare words weighted higher, each search word counts once, phrases also match by their separate words, SC/ST are written out, and the keyword prompt forbids made-up names and asks for the state. Checked live with Groq in English and Hindi (tractor, farm machinery, PM-KISAN, SC girls' scholarships). | 5.8 |
+| 2026-11-14 | **Weekly job fixed: a database problem no longer stops it.** All 3 GitHub runs had failed in the first second: the job could not use the Neon database through the `DATABASE_URL` secret and stopped the whole run (reproduced locally with an unreachable database: same report, 421 vs 446 bytes, the difference being GitHub's longer path). Now the myScheme step goes on from the CSV when the database cannot be used; the database catch-up step may fail without stopping the run (`continue-on-error`); a new first step `--check-db` says on the run's page whether the secret works and, if not, why in plain words (never the secret or host); spaces, quotes or a pasted `psql '...'` around the secret are removed. Verified locally: broken database -> the run goes on and passes the self-check; secret in `psql '...'` form -> connects. The secret itself still has to be checked if the run page says it fails. | 9.6, 13.3 |
+| 2026-11-14 | **Decided (owner): Gujarati scheme text switched on**, with gpt-oss-120b only: a Gujarati field that fails validation retries gpt-oss-120b (more reasoning) and otherwise stays English, never Qwen (audits: Qwen 8.8% wrong-meaning lines, gpt-oss-120b 3.1%). New per-language setting `useFallbackModel` (Hindi true, Gujarati false). Shown as machine translated with the English switch, like Hindi. Checked live: the tractor scheme's 6 fields in Gujarati in about 10 s, all first attempt on gpt-oss-120b. No native-speaker review yet. | 8, 16 |
