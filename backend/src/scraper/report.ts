@@ -14,6 +14,8 @@ export interface RunReport {
   goneCheckSkipped: string | null;
   leftForNextRun: number;
   database: string;
+  /** "Report a wrong scheme" reports from the last week (null when the database could not be read for them). */
+  userReports?: Array<{ date: string; scheme: string; url: string; reason: string; message: string | null }> | null;
 }
 
 export function renderReport(r: RunReport): string {
@@ -42,5 +44,13 @@ export function renderReport(r: RunReport): string {
   section('Held back (not added; tried again next run)', r.heldBack.map((h) => `- [${h.title || h.url}](${h.url}): ${h.reasons.join('; ')}`));
   section('Could not read (tried again next run)', r.failedToRead.map((f) => `- ${f.url}: ${f.reason}`));
   section('Gone from myScheme (kept in SchemeSetu)', r.gone.map((g) => `- [${g.title}](${g.url})`));
+  if (r.userReports && r.userReports.length > 0) {
+    section(
+      `Reports from users in the last week (${r.userReports.length})`,
+      r.userReports.map((u) => `- ${u.date}, [${u.scheme}](${u.url}): **${u.reason}**${u.message ? `: "${u.message.replace(/\s+/g, ' ').slice(0, 300)}"` : ''}`),
+    );
+  } else if (r.userReports) {
+    out.push('', 'No reports from users in the last week.');
+  }
   return out.join('\n') + '\n';
 }

@@ -6,7 +6,7 @@ import config from './config/env.js';
 import { applyTrustProxy } from './utils/trustProxy.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { errorHandler } from './middleware/errorHandler.js';
-import { chatLimiter } from './middleware/rateLimiters.js';
+import { chatLimiter, reportLimiter } from './middleware/rateLimiters.js';
 import healthRouter from './routes/health.js';
 import schemesRouter from './routes/schemes.js';
 import categoriesRouter from './routes/categories.js';
@@ -19,6 +19,7 @@ import accountRouter from './routes/account.js';
 import checklistsRouter from './routes/checklists.js';
 import familyRouter from './routes/family.js';
 import vocabularyRouter from './routes/vocabulary.js';
+import reportsRouter from './routes/reports.js';
 
 const app = express();
 
@@ -60,6 +61,7 @@ app.use('/api/schemes', schemesRouter);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/eligibility', eligibilityRouter);
 app.use('/api/chat', chatLimiter, chatRouter);
+app.use('/api/reports', reportLimiter, reportsRouter);
 app.use('/api/bookmarks', bookmarksRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/profile', profileRouter);

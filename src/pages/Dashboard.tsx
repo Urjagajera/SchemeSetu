@@ -19,16 +19,21 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '../utils/cn';
+import { RecentScheme, loadRecent, clearRecent } from '../utils/recentlyViewed';
+import { useStoredTitles } from '../services/titleTranslations';
 
 export const Dashboard: React.FC = () => {
   const { user, profile } = useAuth();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const navigate = useNavigate();
   const { bookmarks, toggleBookmark } = useBookmarks();
   
   const [recommended, setRecommended] = useState<Scheme[]>([]);
   // "New for you": schemes added in the last 14 days that fit the profile.
   const [newForYou, setNewForYou] = useState<{ data: Scheme[]; total: number }>({ data: [], total: 0 });
+  // Recently viewed schemes (this device only), with their titles in the chosen language when already known.
+  const [recent, setRecent] = useState<RecentScheme[]>(loadRecent);
+  const recentTitles = useStoredTitles(recent.map((r) => r.id), language);
   const [trending, setTrending] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
   // The latest schemes could not be loaded; Retry bumps `attempt`. (The recommendations keep their own offline fallback.)
@@ -206,6 +211,38 @@ export const Dashboard: React.FC = () => {
 
         {/* Right Column: Side Widgets */}
         <div className="space-y-6">
+
+          {/* Recently viewed (kept on this device) */}
+          <section aria-labelledby="recently-viewed" className="bg-white dark:bg-zinc-900 border border-outline-variant dark:border-zinc-800 rounded-xl p-5 space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <h2 id="recently-viewed" className="font-heading text-sm md:text-base font-bold text-primary dark:text-white">
+                {t('recentlyViewed')}
+              </h2>
+              {recent.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => { clearRecent(); setRecent([]); }}
+                  className="text-xs font-semibold text-on-surface-variant dark:text-zinc-400 hover:text-secondary dark:hover:text-sky-400 focus:outline-none"
+                >
+                  {t('clearRecent')}
+                </button>
+              )}
+            </div>
+            {recent.length > 0 ? (
+              <ul className="space-y-2">
+                {recent.map((r) => (
+                  <li key={r.id}>
+                    <Link to={`/schemes/${r.id}`} className="block rounded-lg px-3 py-2 hover:bg-surface-container-low dark:hover:bg-zinc-800 transition-colors">
+                      <span className="block text-xs md:text-sm font-semibold text-on-surface dark:text-zinc-100 line-clamp-2">{recentTitles[r.id] ?? r.name}</span>
+                      {r.authority && <span className="block text-xs text-on-surface-variant dark:text-zinc-500">{r.authority}</span>}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-xs text-on-surface-variant dark:text-zinc-500">{t('recentlyViewedEmpty')}</p>
+            )}
+          </section>
           
           {/* AI Shortcut Card */}
           <div className="bg-gradient-to-br from-primary to-secondary dark:from-zinc-900 dark:to-zinc-950 text-white rounded-xl p-6 shadow-sm flex flex-col justify-between h-48 border border-outline-variant/10">

@@ -49,6 +49,7 @@ const PRIVACY: Section[] = [
   { heading: 'pvVoiceH', paragraphs: ['pvVoice'] },
   { heading: 'pvReadH', paragraphs: ['pvRead'] },
   { heading: 'pvFamilyH', paragraphs: ['pvFamily'] },
+  { heading: 'pvReportH', paragraphs: ['pvReport'] },
   { heading: 'pvCookieH', paragraphs: ['pvCookie'] },
   { heading: 'pvStoredH', paragraphs: ['pvStored'] },
   { heading: 'pvLogsH', paragraphs: ['pvLogs'] },

@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 vi.mock('../config/env.js', () => ({ default: { NODE_ENV: 'test' } }));
 
-const { default: schemesRouter } = await import('./schemes.js');
+const { default: schemesRouter, schemeVocabulary } = await import('./schemes.js');
 const { default: prisma } = await import('../db/prisma.js');
 
 const app = express();
@@ -21,7 +21,9 @@ app.use('/api/schemes', schemesRouter);
 let dbUp = false;
 beforeAll(async () => {
   dbUp = !!process.env.DATABASE_URL && (await prisma.$queryRaw`SELECT 1`.then(() => true, () => false));
-});
+  // Like the server at start-up (server.ts): build the typo word list first, so no search below waits for it.
+  if (dbUp) await schemeVocabulary();
+}, 60_000);
 afterAll(async () => {
   await prisma.$disconnect();
 });

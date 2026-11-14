@@ -5,6 +5,9 @@ import { chatService, WELCOME_TEXT } from '../services/chatService';
 import { ChatConversation, ChatMessage } from '../types';
 import Sidebar from '../components/Sidebar';
 import { VoiceButton } from '../components/VoiceButton';
+import { useReadAloud } from '../hooks/useReadAloud';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { spokenText } from '../utils/spokenText';
 import { 
   Bot, 
   Send, 
@@ -16,7 +19,9 @@ import {
   Sparkles, 
   ChevronRight,
   ClipboardCheck,
-  Compass
+  Compass,
+  Volume2,
+  Square
 } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -35,6 +40,14 @@ export const AIAssistant: React.FC = () => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  // Read aloud: a button on every answer, and (option in Settings or above the box) each new answer automatically.
+  const readAloud = useReadAloud();
+  const { readAnswersAloud, setReadAnswersAloud } = usePreferences();
+  const toggleReading = (id: string, text: string) => {
+    if (readAloud.readingId === id) readAloud.stop();
+    else readAloud.speak(id, spokenText(text), language);
+  };
 
   // Suggested Questions
   const suggestedQuestions = [
@@ -81,6 +94,7 @@ export const AIAssistant: React.FC = () => {
     const last = messages[messages.length - 1];
     if (seen.convId === activeConvId && messages.length > seen.count && last?.sender === 'ai') {
       setAnnouncement(last.text.replace(/\*\*/g, '')); // without the bold markers, which would be read out
+      if (readAnswersAloud) readAloud.speak(last.id, spokenText(last.text), language);
     }
     seenRef.current = { convId: activeConvId, count: messages.length };
     // The count, not the array: messages are pushed onto the same array, so its identity never changes.
@@ -437,6 +451,17 @@ export const AIAssistant: React.FC = () => {
                       isAI ? "justify-start" : "justify-end"
                     )}>
                       <span>{msg.timestamp}</span>
+                      {isAI && readAloud.supported && (
+                        <button
+                          onClick={() => toggleReading(msg.id, msg.text)}
+                          className="hover:text-secondary dark:hover:text-sky-400 p-0.5 focus:outline-none transition-colors"
+                          type="button"
+                          aria-label={readAloud.readingId === msg.id ? t('raStop') : t('readAnswer')}
+                          title={readAloud.readingId === msg.id ? t('raStop') : t('readAnswer')}
+                        >
+                          {readAloud.readingId === msg.id ? <Square className="w-3.5 h-3.5 text-secondary" /> : <Volume2 className="w-3.5 h-3.5" />}
+                        </button>
+                      )}
                       {isAI && (
                         <button
                           onClick={() => handleCopy(msg.id, msg.text)}
@@ -475,6 +500,21 @@ export const AIAssistant: React.FC = () => {
         {/* Input Bar: its own row under the feed, so it never covers a message */}
         <div className="shrink-0 px-4 pt-3 pb-4 border-t border-outline-variant dark:border-zinc-800 bg-background dark:bg-zinc-950">
           <div className="max-w-2xl mx-auto space-y-2 relative">
+            {readAloud.supported && (
+              <label className="flex items-center justify-end gap-2 text-xs font-semibold text-on-surface-variant dark:text-zinc-400 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={readAnswersAloud}
+                  onChange={(e) => {
+                    setReadAnswersAloud(e.target.checked);
+                    if (!e.target.checked) readAloud.stop();
+                  }}
+                  className="w-4 h-4 accent-secondary"
+                />
+                <Volume2 className="w-3.5 h-3.5" />
+                {t('readAnswersTitle')}
+              </label>
+            )}
 
             {/* Action Bar Input Box */}
             <div className="flex items-center bg-white dark:bg-zinc-900 rounded-xl shadow-lg border border-outline-variant dark:border-zinc-800 p-1.5 focus-within:border-secondary dark:focus-within:border-sky-500 transition-all">

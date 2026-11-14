@@ -235,6 +235,8 @@ export interface SchemeListResult {
   data: Scheme[];
   /** Total schemes matching the filters across ALL pages — not just data.length. */
   total: number;
+  /** The words actually searched when a misspelt word was corrected ("scolarship" -> "scholarship"). */
+  correctedQuery?: string;
 }
 
 /** The local schemes that fit the filters, one page of them, with the real local total. */
@@ -298,7 +300,8 @@ export const schemeService = {
       const data = assertJsonArray<any>(response.data?.data ?? response.data, 'getSchemes') as Scheme[];
       const total = typeof response.data?.total === 'number' ? response.data.total : data.length;
       ingestCardText(getActiveLang(), response.data?.translation, data.map((s) => s.id));
-      return { data, total };
+      const correctedQuery = typeof response.data?.correctedQuery === 'string' ? response.data.correctedQuery : undefined;
+      return { data, total, ...(correctedQuery ? { correctedQuery } : {}) };
     } catch (error) {
       // No sample schemes here: the page shows an error with Retry instead (LoadError).
       console.warn('[schemeService.getSchemes] Could not load schemes.', (error as Error).message);

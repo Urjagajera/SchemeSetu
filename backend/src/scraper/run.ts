@@ -162,6 +162,20 @@ export async function scrape(opts: Options): Promise<RunReport> {
       const reason = databaseErrorReason(e);
       log(`Database not checked (${reason}); going on with the CSV only.`);
       report.database = `could not be used this run (${reason}); new schemes were found from the CSV and reach the database once it works`;
+    }
+    // "Report a wrong scheme" reports from the last week, for the owner to read here. Its own try: a database without
+    // the SchemeReport table yet (migration not applied) must not stop the run.
+    try {
+      const since = new Date(Date.now() - 8 * 24 * 60 * 60 * 1000);
+      const rows = await prisma.schemeReport.findMany({
+        where: { createdAt: { gte: since } },
+        orderBy: { createdAt: 'desc' },
+        take: 100,
+        select: { createdAt: true, reason: true, message: true, scheme: { select: { name: true, sourceUrl: true } } },
+      });
+      report.userReports = rows.map((r) => ({ date: r.createdAt.toISOString().slice(0, 10), scheme: r.scheme.name, url: r.scheme.sourceUrl, reason: r.reason, message: r.message }));
+    } catch {
+      report.userReports = null;
     } finally {
       await prisma.$disconnect();
     }

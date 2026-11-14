@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { rememberViewed } from '../utils/recentlyViewed';
 import { useParams, Link } from 'react-router-dom';
 import { schemeService } from '../services/schemeService';
 import { useTranslation } from '../contexts/LanguageContext';
@@ -10,6 +11,7 @@ import { useCardText } from '../services/titleTranslations';
 import { BookmarkButton } from '../components/BookmarkButton';
 import { CompareButton } from '../components/CompareButton';
 import { ShareButton } from '../components/ShareButton';
+import { ReportScheme } from '../components/ReportScheme';
 import { DocumentChecklist } from '../components/DocumentChecklist';
 import { LoadError } from '../components/LoadError';
 import { usePrintSetup } from '../hooks/usePrintSetup';
@@ -90,6 +92,7 @@ export const SchemeDetail: React.FC = () => {
         setPollGaveUp(false);
         const data = await schemeService.getSchemeById(id);
         setScheme(data);
+        if (data) rememberViewed(data); // "Recently viewed" on the dashboard (this device only)
 
         if (data) {
           // Related = other schemes from the same authority (the scheme's Category row is its authority).
@@ -315,7 +318,7 @@ export const SchemeDetail: React.FC = () => {
 
               {/* Tags Section */}
               {translatedScheme.tags && translatedScheme.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 pt-2 border-t dark:border-zinc-800">
+                <div className="simple-hide flex flex-wrap gap-1.5 pt-2 border-t dark:border-zinc-800">
                   {translatedScheme.tags.map((tag, i) => (
                     <span key={i} className="inline-block bg-surface-container-low border dark:bg-zinc-850 dark:border-zinc-800 dark:text-zinc-300 text-xs font-semibold px-2.5 py-0.5 rounded-full text-on-surface-variant">
                       #{tag}
@@ -400,6 +403,8 @@ export const SchemeDetail: React.FC = () => {
                 <ShareButton
                   schemeId={translatedScheme.id}
                   schemeName={translatedScheme.name}
+                  benefits={benefitItems}
+                  documents={documentItems}
                   className="p-3 bg-surface-container dark:bg-zinc-800 border-none w-12 h-12 flex items-center justify-center"
                 />
                 <span className="text-xs text-on-surface-variant dark:text-zinc-500 font-bold mt-1">{t('shareShort')}</span>
@@ -427,6 +432,8 @@ export const SchemeDetail: React.FC = () => {
               {t('applyOnOfficialSite')}
               <ExternalLink className="w-4 h-4" />
             </a>
+
+            <ReportScheme schemeId={translatedScheme.id} />
           </div>
 
           {/* Related Schemes */}

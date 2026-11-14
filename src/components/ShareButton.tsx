@@ -2,11 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Share2, MessageCircle, Copy, Check } from 'lucide-react';
 import { useTranslation } from '../contexts/LanguageContext';
 import { cn } from '../utils/cn';
+import { buildShareMessage } from '../utils/shareMessage';
 
 interface ShareButtonProps {
   schemeId: string;
   /** The scheme's name as the page shows it (in the page's language). */
   schemeName: string;
+  /** The scheme's benefits and documents as the page shows them: when given, the message carries a short summary
+   * and the document list, so a family member can act on it from the chat itself. */
+  benefits?: string[];
+  documents?: string[];
   className?: string;
 }
 
@@ -15,7 +20,7 @@ function canUseShareSheet(): boolean {
   return typeof navigator.share === 'function' && !!window.matchMedia?.('(pointer: coarse)').matches;
 }
 
-export const ShareButton: React.FC<ShareButtonProps> = ({ schemeId, schemeName, className }) => {
+export const ShareButton: React.FC<ShareButtonProps> = ({ schemeId, schemeName, benefits, documents, className }) => {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -23,7 +28,12 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ schemeId, schemeName, 
 
   // Scheme pages are public, so this link opens for anyone it is sent to.
   const url = `${window.location.origin}/schemes/${schemeId}`;
-  const text = `${schemeName} — SchemeSetu`;
+  const withSummary = (benefits?.length ?? 0) > 0 || (documents?.length ?? 0) > 0;
+  const text = withSummary
+    ? buildShareMessage({ name: schemeName, benefits, documents }, url, { benefit: t('shareBenefit'), documents: t('shareDocuments'), details: t('shareDetails') })
+    : `${schemeName} — SchemeSetu`;
+  // The summary message already ends with the link, so it is not added a second time.
+  const whatsappText = withSummary ? text : `${text} ${url}`;
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -41,7 +51,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ schemeId, schemeName, 
   const handleClick = async () => {
     if (canUseShareSheet()) {
       try {
-        await navigator.share({ title: schemeName, text, url });
+        await navigator.share(withSummary ? { title: schemeName, text } : { title: schemeName, text, url });
         return;
       } catch (err) {
         if ((err as Error).name === 'AbortError') return; // the person closed the sheet
@@ -84,7 +94,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ schemeId, schemeName, 
         >
           <a
             role="menuitem"
-            href={`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`}
+            href={`https://wa.me/?text=${encodeURIComponent(whatsappText)}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setMenuOpen(false)}

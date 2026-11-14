@@ -32,7 +32,8 @@ beforeEach(() => {
   );
 });
 
-const whereOfSearch = () => JSON.stringify(mockPrisma.scheme.findMany.mock.calls[0][0].where);
+// The search's own query (the first call that has a where; the typo word list is loaded without one).
+const whereOfSearch = () => JSON.stringify(mockPrisma.scheme.findMany.mock.calls.find((c) => c[0]?.where)?.[0].where);
 
 describe('GET /api/schemes?q=: searched word by word, best matches first', () => {
   it('a spoken sentence finds schemes by its topic words, best match first, with the real total', async () => {
@@ -91,5 +92,20 @@ describe('GET /api/schemes?q=: searched word by word, best matches first', () =>
     mockPrisma.scheme.count.mockResolvedValue(0);
     await request(app).get('/api/schemes?q=schemes');
     expect(whereOfSearch()).toContain('{"name":{"contains":"schemes","mode":"insensitive"}}');
+  });
+});
+
+describe('GET /api/schemes?q=: typos are corrected from the words in the scheme data', () => {
+  it('"pention" searches for "pension" and says so', async () => {
+    const res = await request(app).get('/api/schemes?q=pention');
+    expect(res.status).toBe(200);
+    expect(res.body.correctedQuery).toBe('pension');
+    expect(whereOfSearch()).toContain('"contains":"pension"');
+    expect(res.body.data.length).toBeGreaterThan(0);
+  });
+
+  it('a correctly spelt search is not corrected', async () => {
+    const res = await request(app).get('/api/schemes?q=widow%20pension');
+    expect(res.body.correctedQuery).toBeUndefined();
   });
 });

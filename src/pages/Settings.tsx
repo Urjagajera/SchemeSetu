@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { usePreferences } from '../contexts/PreferencesContext';
 import { 
   Settings as SettingsIcon, 
   Globe, 
@@ -20,6 +21,7 @@ import { accountService } from '../services/accountService';
 export const Settings: React.FC = () => {
   const { t, language, setLanguage } = useTranslation();
   const { theme, toggleTheme } = useTheme();
+  const { simpleMode, setSimpleMode, readAnswersAloud, setReadAnswersAloud } = usePreferences();
   const { user, logout } = useAuth();
 
   const [exporting, setExporting] = useState(false);
@@ -158,6 +160,36 @@ export const Settings: React.FC = () => {
             )}
           </button>
         </div>
+
+        {/* Comfort: large text / simple mode, and SetuAI reading its answers aloud (both kept on this device) */}
+        {[
+          { id: 'simple-mode', title: t('simpleModeTitle'), desc: t('simpleModeDesc'), on: simpleMode, set: setSimpleMode },
+          { id: 'read-answers', title: t('readAnswersTitle'), desc: t('readAnswersDesc'), on: readAnswersAloud, set: setReadAnswersAloud },
+        ].map((row) => (
+          <div key={row.id} className="p-5 flex items-center justify-between gap-4">
+            <div>
+              <h3 id={`${row.id}-label`} className="text-xs md:text-sm font-bold text-primary dark:text-white">
+                {row.title}
+              </h3>
+              <p className="text-xs text-on-surface-variant dark:text-zinc-500 mt-0.5">{row.desc}</p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={row.on}
+              aria-labelledby={`${row.id}-label`}
+              onClick={() => row.set(!row.on)}
+              className={cn(
+                'shrink-0 px-4 py-2 rounded-lg text-xs font-bold border transition-colors focus:outline-none',
+                row.on
+                  ? 'bg-secondary text-white border-secondary'
+                  : 'border-outline-variant dark:border-zinc-700 dark:bg-zinc-850 dark:text-zinc-300 hover:bg-surface-container-low dark:hover:bg-zinc-800',
+              )}
+            >
+              {row.on ? t('on') : t('off')}
+            </button>
+          </div>
+        ))}
 
         {/* Dev Reset Preferences */}
         <div className="p-5 flex items-center justify-between gap-4">

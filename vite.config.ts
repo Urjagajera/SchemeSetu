@@ -13,6 +13,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['logo.png', 'icons/apple-touch-icon.png'],
       manifest: {
+        // A stable id, so an installed app (or the Android APK built from this site) stays the same app across updates.
+        id: '/',
         name: 'SchemeSetu',
         short_name: 'SchemeSetu',
         description: 'Find Indian government schemes you are eligible for, in English, Hindi and Gujarati.',
@@ -20,6 +22,8 @@ export default defineConfig({
         start_url: '/',
         scope: '/',
         display: 'standalone',
+        orientation: 'any',
+        categories: ['government', 'education', 'utilities'],
         background_color: '#faf9fd',
         theme_color: '#1960a3',
         icons: [
@@ -32,7 +36,8 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,png,svg,woff2}'],
         // Any page opens offline from the saved app; /api is never answered with the page.
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//],
+        // /.well-known holds assetlinks.json, which proves the Android app (APK) belongs to this site: never the page.
+        navigateFallbackDenylist: [/^\/api\//, /^\/\.well-known\//],
         runtimeCaching: [
           {
             // A scheme's own page (same for everyone, no sign-in): newest from the network, the saved copy when offline.

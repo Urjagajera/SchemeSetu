@@ -12,6 +12,7 @@ import config from '../config/env.js';
 import { createGroqLlm } from '../translation/llm.js';
 import { rankSchemes, searchWords, textWhere } from '../search/searchWords.js';
 import { createQueryTranslator, needsTranslation } from '../search/translateQuery.js';
+import { Vocabulary, buildVocabulary, correctWords } from '../search/spelling.js';
 import { getFilterOptions } from '../filters/options.js';
 import { enabledLanguage } from '../translation/languages.js';
 import { translationService } from '../translation/index.js';
@@ -54,11 +55,48 @@ const translateQuery = createQueryTranslator(queryLlm, config.CHAT_MODEL);
  * Null when the search has no words left once filler is dropped ("schemes for"): then the whole text is matched
  * as written, as before.
  */
+/** Every word of the scheme data, for correcting typos in searches; built once and refreshed every hour. */
+const VOCABULARY_TTL_MS = 60 * 60 * 1000;
+const VOCABULARY_WAIT_MS = 1500;
+let vocabulary: { built: number; vocab: Promise<Vocabulary> } | null = null;
+export function schemeVocabulary(): Promise<Vocabulary> {
+  if (!vocabulary || Date.now() - vocabulary.built > VOCABULARY_TTL_MS) {
+    const vocab = prisma.scheme
+      .findMany({ select: { name: true, description: true, authorityName: true, tags: { select: { name: true } } } })
+      .then((rows) => buildVocabulary(rows.map((r) => [r.name, r.authorityName, r.description, ...r.tags.map((t) => t.name)].join(' '))));
+    vocabulary = { built: Date.now(), vocab };
+    vocab.catch(() => {
+      vocabulary = null; // try again next search
+    });
+  }
+  return vocabulary.vocab;
+}
+
 async function searchByWords(filters: SchemeFilters, skip: number, limit: number) {
   const text = filters.query ?? '';
   const english = needsTranslation(text) ? await translateQuery(text) : null;
-  const { words, state } = searchWords(english ? english.join(' ') : text);
+  const parsed = searchWords(english ? english.join(' ') : text);
+  let { words, state } = parsed;
   if (words.length === 0) return null;
+
+  // "scolarship" -> "scholarship": a word that appears nowhere in the data is replaced by the closest one that does.
+  // The corrected words are read again, so a corrected state name ("gujrat" -> "gujarat") narrows the search.
+  // The word list is built when the server starts (server.ts); a search never waits more than 1.5 s for it, and
+  // searches as typed if it is not ready yet.
+  let correctedQuery: string | null = null;
+  try {
+    const vocab = await Promise.race([schemeVocabulary(), new Promise<null>((r) => setTimeout(() => r(null), VOCABULARY_WAIT_MS))]);
+    if (!vocab) throw new Error('word list not ready');
+    const fixed = correctWords(words, vocab);
+    if (fixed.corrected) {
+      correctedQuery = fixed.words.join(' ');
+      const again = searchWords(correctedQuery);
+      words = again.words.length > 0 ? again.words : fixed.words;
+      state = state ?? again.state;
+    }
+  } catch {
+    // no correction; search with the words as typed
+  }
 
   const where: Prisma.SchemeWhereInput = {
     AND: [buildSchemeWhere({ ...filters, query: undefined, state: filters.state ?? state ?? undefined }), textWhere(words)],
@@ -72,7 +110,7 @@ async function searchByWords(filters: SchemeFilters, skip: number, limit: number
   const pageIds = ranked.slice(skip, skip + limit).map((r) => r.id);
   const rows = pageIds.length === 0 ? [] : await prisma.scheme.findMany({ where: { id: { in: pageIds } }, include: { tags: true, categories: true } });
   const byId = new Map(rows.map((r) => [r.id, r]));
-  return { rows: pageIds.map((id) => byId.get(id)).filter((r): r is NonNullable<typeof r> => !!r), total: ranked.length };
+  return { rows: pageIds.map((id) => byId.get(id)).filter((r): r is NonNullable<typeof r> => !!r), total: ranked.length, correctedQuery };
 }
 
 /**
@@ -91,7 +129,14 @@ router.get(
     if (appliedFilters.query) {
       const found = await searchByWords(appliedFilters, skip, limit);
       if (found) {
-        res.json({ data: found.rows.map((s) => serializeScheme(s)), total: found.total, appliedFilters, ...(await cardTranslation(found.rows, req.query.lang)) });
+        res.json({
+          data: found.rows.map((s) => serializeScheme(s)),
+          total: found.total,
+          appliedFilters,
+          // Set when a misspelt word was replaced ("scolarship" -> "scholarship"); the page says what it searched for.
+          ...(found.correctedQuery ? { correctedQuery: found.correctedQuery } : {}),
+          ...(await cardTranslation(found.rows, req.query.lang)),
+        });
         return;
       }
     }

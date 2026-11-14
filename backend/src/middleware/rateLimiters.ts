@@ -17,3 +17,12 @@ export const chatLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: { message: 'Too many chat messages, please slow down.', status: 429 } },
 });
+
+/** POST /api/reports — "Report a wrong scheme". Tight: a real person sends a few at most. */
+export const reportLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: { message: 'Too many reports, please try again later.', status: 429 } },
+});

@@ -69,6 +69,24 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Large text, simple mode (Settings, or the "Aa" button in the header; PreferencesContext). Every size in the app is
+   in rem, so raising the root size makes all text, buttons and spacing larger together. Animations stop, and
+   extras marked .simple-hide (such as the tag list on scheme cards) are left out. */
+html.simple-mode {
+  font-size: 118.75%; /* 19px instead of 16px */
+  scroll-behavior: auto;
+}
+html.simple-mode *,
+html.simple-mode *::before,
+html.simple-mode *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+html.simple-mode .simple-hide {
+  display: none !important;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   @apply text-on-surface bg-background;

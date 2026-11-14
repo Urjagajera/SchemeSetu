@@ -45,6 +45,7 @@ model Scheme {
   bookmarks            Bookmark[]
   checklists           DocumentChecklist[]
   translations         SchemeTranslation[]
+  reports              SchemeReport[]
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
 }
@@ -221,4 +222,17 @@ model FamilyMember {
   updatedAt  DateTime @updatedAt
 
   @@index([userId])
+}
+
+/// "Report a wrong scheme": a visitor says something on a scheme's page looks wrong. Anonymous on purpose: no user,
+/// no IP, only the scheme, the kind of problem, an optional note and the date. Listed in the weekly job's report.
+model SchemeReport {
+  id        String   @id @default(uuid())
+  schemeId  String
+  scheme    Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  reason    String // one of REPORT_REASONS in routes/reports.ts
+  message   String?  @db.Text // up to 1,000 characters
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
 }

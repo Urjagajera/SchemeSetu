@@ -27,6 +27,8 @@ export const Search: React.FC = () => {
   const [schemes, setSchemes] = useState<Scheme[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalSchemes, setTotalSchemes] = useState(0);
+  // Set when the server corrected a misspelt word: the page says what it searched for instead.
+  const [correctedQuery, setCorrectedQuery] = useState<string | null>(null);
   const [options, setOptions] = useState<FilterOptions | null>(null);
   // Set when the results could not be loaded; Retry bumps `attempt` to ask again for them and for the filter options.
   const [loadFailed, setLoadFailed] = useState(false);
@@ -86,6 +88,7 @@ export const Search: React.FC = () => {
         if (!alive) return;
         setSchemes(Array.isArray(results.data) ? results.data : []);
         setTotalSchemes(results.total);
+        setCorrectedQuery(results.correctedQuery ?? null);
       } catch {
         if (alive) setLoadFailed(true);
       } finally {
@@ -197,6 +200,11 @@ export const Search: React.FC = () => {
             <span className="text-xs md:text-sm font-bold text-on-surface-variant dark:text-zinc-400">
               {loading ? t('searching') : loadFailed ? '' : `${totalSchemes} ${t('schemesFound')}`}
             </span>
+            {!loading && !loadFailed && correctedQuery && (
+              <span className="text-xs md:text-sm text-on-surface-variant dark:text-zinc-400" role="status">
+                {t('searchCorrected')} <strong className="text-on-surface dark:text-zinc-100">“{correctedQuery}”</strong>
+              </span>
+            )}
           </div>
 
           <ActiveFilterChips filters={filters} onChange={update} onToggleTopic={toggleTopic} onClear={clear} />

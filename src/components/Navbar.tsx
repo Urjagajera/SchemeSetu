@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../contexts/LanguageContext';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { ThemeToggle } from './ThemeProvider';
+import { ThemeToggle, SimpleModeToggle } from './ThemeProvider';
 import { LogOut, User, Menu, X, BookOpen, Compass, HelpCircle, Bot, LayoutDashboard } from 'lucide-react';
 import { useState } from 'react';
 import { loginPath } from '../utils/loginPath';
@@ -72,6 +72,7 @@ export const Navbar: React.FC = () => {
         {/* Right Action Menu */}
         <div className="hidden md:flex items-center gap-3">
           <LanguageSwitcher />
+          <SimpleModeToggle />
           <ThemeToggle />
 
           {isAuthenticated ? (
@@ -110,6 +111,7 @@ export const Navbar: React.FC = () => {
 
         {/* Mobile Hamburger Control (for non-nav links like Lang & Theme toggles) */}
         <div className="flex md:hidden items-center gap-2">
+          <SimpleModeToggle />
           <ThemeToggle />
           <button
             type="button"

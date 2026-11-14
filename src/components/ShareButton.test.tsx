@@ -109,3 +109,25 @@ describe('ShareButton on a computer', () => {
     expect(screen.getByRole('menu')).not.toBeNull();
   });
 });
+
+describe('ShareButton with benefits and documents', () => {
+  it('the WhatsApp message carries the benefit and the document list, and the link once', async () => {
+    device({ touch: false });
+    render(<ShareButton schemeId="abc" schemeName={NAME} benefits={['₹6,000 a year']} documents={['Aadhaar card', 'Bank passbook']} />);
+    await click(shareButton());
+    const href = decodeURIComponent(screen.getByRole('menuitem', { name: /shareWhatsApp/ }).getAttribute('href')!.replace('https://wa.me/?text=', ''));
+    expect(href).toContain(`*${NAME}*`);
+    expect(href).toContain('shareBenefit ₹6,000 a year');
+    expect(href).toContain('• Aadhaar card\n• Bank passbook');
+    expect(href.split(URL_).length - 1).toBe(1);
+  });
+
+  it('on a phone the share sheet gets the same message (with the link inside it)', async () => {
+    const share = vi.fn().mockResolvedValue(undefined);
+    device({ touch: true, share });
+    render(<ShareButton schemeId="abc" schemeName={NAME} documents={['Aadhaar card']} />);
+    await click(shareButton());
+    expect(share).toHaveBeenCalledWith({ title: NAME, text: expect.stringContaining(`• Aadhaar card`) });
+    expect(share.mock.calls[0][0].text).toContain(URL_);
+  });
+});
