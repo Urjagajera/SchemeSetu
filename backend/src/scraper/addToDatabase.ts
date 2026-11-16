@@ -10,9 +10,14 @@ import { CSV_HEADER, encodeCsvRow } from './csvRow.js';
  * ingestEligibility.ts): the CSV rows go through the same parser (broken-character repair, ways to apply), tags get
  * their cleaned-up names, and eligibility (age, income, gender, state...) is read from the text.
  *
- * It only ever CREATES schemes: an existing one is never updated or deleted. Everything happens in one transaction,
- * so if anything fails, nothing is added; the next run's --sync-db tries again (see run.ts).
+ * It only ever CREATES schemes: an existing one is never updated or deleted. Schemes are added in small batches, each
+ * in its own transaction: a batch is all or nothing, and the batches before it stay added. (One transaction for all
+ * of them ran past its 10-minute limit from GitHub to Neon with 198 schemes, and undid everything.) Whatever is still
+ * missing is added by the next run's --sync-db (see run.ts).
  */
+
+/** Schemes per transaction: about a minute of work from GitHub to Neon, well inside the limit below. */
+export const ADD_BATCH_SIZE = 20;
 
 /** The new CSV rows, parsed exactly as the import parses the whole file. */
 export function parseNewRows(rows: readonly (readonly string[])[]): ParsedScheme[] {
@@ -20,7 +25,28 @@ export function parseNewRows(rows: readonly (readonly string[])[]): ParsedScheme
   return parseCsv(text).schemes;
 }
 
-export async function addNewSchemes(prisma: PrismaClient, schemes: readonly ParsedScheme[]): Promise<{ added: number; withCriteria: number }> {
+export async function addNewSchemes(
+  prisma: PrismaClient,
+  schemes: readonly ParsedScheme[],
+  batchSize = ADD_BATCH_SIZE,
+): Promise<{ added: number; withCriteria: number }> {
+  let added = 0;
+  let withCriteria = 0;
+  for (let i = 0; i < schemes.length; i += batchSize) {
+    try {
+      const r = await addBatch(prisma, schemes.slice(i, i + batchSize));
+      added += r.added;
+      withCriteria += r.withCriteria;
+    } catch (e) {
+      // Say how far it got: the earlier batches are in the database, the rest are added by the next --sync-db.
+      throw new Error(`${(e as Error).message} (after ${added} of ${schemes.length} were added)`);
+    }
+  }
+  return { added, withCriteria };
+}
+
+/** One batch in one transaction: all of it is added, or none of it. */
+async function addBatch(prisma: PrismaClient, schemes: readonly ParsedScheme[]): Promise<{ added: number; withCriteria: number }> {
   if (schemes.length === 0) return { added: 0, withCriteria: 0 };
   return prisma.$transaction(
     async (tx) => {
@@ -78,6 +104,6 @@ export async function addNewSchemes(prisma: PrismaClient, schemes: readonly Pars
       }
       return { added: schemes.length, withCriteria };
     },
-    { timeout: 10 * 60_000, maxWait: 60_000 },
+    { timeout: 5 * 60_000, maxWait: 60_000 },
   );
 }

@@ -45,7 +45,7 @@ function fakePrisma(existing: string[] = []) {
   return { prisma: prisma as never, tx };
 }
 
-describe('addNewSchemes: only creates, in one transaction', () => {
+describe('addNewSchemes: only creates, in batches', () => {
   it('creates the scheme with its ministry and cleaned-up tags, and the eligibility read from its text', async () => {
     const { prisma, tx } = fakePrisma();
     const result = await addNewSchemes(prisma, parseNewRows([row()]));
@@ -89,3 +89,30 @@ describe('addNewSchemes: only creates, in one transaction', () => {
     expect(tx.eligibilityCriteria.create).not.toHaveBeenCalled();
   });
 });
+
+describe('addNewSchemes: small batches, each in its own transaction', () => {
+  const many = (n: number) => parseNewRows(Array.from({ length: n }, (_, i) => row({ url: `https://www.myscheme.gov.in/schemes/s${i}` })));
+
+  it('45 schemes go in 3 transactions of at most 20', async () => {
+    const { prisma, tx } = fakePrisma();
+    const result = await addNewSchemes(prisma, many(45), 20);
+    expect(result.added).toBe(45);
+    expect((prisma as unknown as { $transaction: { mock: { calls: unknown[] } } }).$transaction.mock.calls).toHaveLength(3);
+    expect(tx.scheme.create).toHaveBeenCalledTimes(45);
+  });
+
+  it('if a later batch fails, the earlier batches stay added and the error says how far it got', async () => {
+    const { prisma, tx } = fakePrisma();
+    const transaction = (prisma as unknown as { $transaction: ReturnType<typeof vi.fn> }).$transaction;
+    const real = transaction.getMockImplementation()!;
+    let call = 0;
+    transaction.mockImplementation(async (fn: never) => {
+      call++;
+      if (call === 3) throw new Error('Transaction already closed');
+      return real(fn);
+    });
+    await expect(addNewSchemes(prisma, many(45), 20)).rejects.toThrow(/Transaction already closed \(after 40 of 45 were added\)/);
+    expect(tx.scheme.create).toHaveBeenCalledTimes(40);
+  });
+});
+

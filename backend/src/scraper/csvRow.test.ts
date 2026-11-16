@@ -55,7 +55,9 @@ describe('the CSV file style', () => {
 describe('readCsvRecords: the CSV must have exactly the expected 91 columns', () => {
   it('reads the real CSV by column name', () => {
     const records = readCsvRecords(fs.readFileSync(REAL_CSV));
-    expect(records).toHaveLength(4722);
+    // The original import had 4,722 schemes; the weekly myScheme job only ever appends, so the file can only grow.
+    expect(records.length).toBeGreaterThanOrEqual(4722);
+    expect(new Set(records.map((r) => r.url)).size).toBe(records.length); // and never lists a scheme twice
     expect(records[0]).toMatchObject({ url: 'https://www.myscheme.gov.in/schemes/sui', TITLE: 'Stand-Up India', 'OFFERED BY': 'Ministry Of Finance' });
   });
 
