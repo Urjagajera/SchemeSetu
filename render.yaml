@@ -2,7 +2,9 @@
 # Secrets are never stored here: `sync: false` values are typed into the Render dashboard.
 services:
   - type: web
-    name: schemesetu-api
+    # Render turns this into the address https://<name>.onrender.com (or adds a few letters if the name is taken).
+    # "schemesetu-api" belongs to someone else; vercel.json must point at whatever address Render gives this service.
+    name: schemesetu-backend
     runtime: node
     plan: free
     region: singapore

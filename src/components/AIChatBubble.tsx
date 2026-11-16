@@ -13,7 +13,8 @@ export const AIChatBubble: React.FC = () => {
   if (location.pathname === '/ai' || location.pathname === '/login' || location.pathname === '/register') return null;
 
   return (
-    <div className="print:hidden fixed bottom-6 right-6 z-50">
+    // On phones it sits above the bottom menu bar (h-16, MainLayout), which it used to cover.
+    <div className="print:hidden fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50">
       <motion.button
         onClick={() => navigate('/ai')}
         whileHover={{ scale: 1.05 }}
