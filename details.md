@@ -1212,7 +1212,7 @@ flowchart LR
   → Actions; the workflow has `contents: write` permission to commit the CSV.
 
 ### 13.3 Status (2026-11-06)
-- **Backend deployed 2026-11-22** at `https://schemesetu-backend-ms7u.onrender.com`; `vercel.json` points there (see `RENDER.md`). Earlier: the Render address in `vercel.json` had to
+- **Live since 2026-11-23**: website `https://schemesetu-chi.vercel.app` (Vercel), backend deployed 2026-11-22 at `https://schemesetu-backend-ms7u.onrender.com`; `vercel.json` points there (see `RENDER.md`). Earlier: the Render address in `vercel.json` had to
   be changed and the Vercel origin added to the Google OAuth client.
 - **Neon:** created and filled on 2026-11-08 (Free plan, Singapore, direct connection). The 12 migrations were applied, then the 7
   scheme tables were copied from the local database in one transaction: 88 categories, 4,770 tags, 4,722 schemes, 2,987 criteria,
@@ -1329,7 +1329,7 @@ SchemeSetu/
 **Engineering**
 13. No end-to-end browser tests, formal WCAG audit or load tests (an accessibility pass was done: keyboard, screen reader, text size).
 14. Dev-only dependency findings need Vite / Vitest major upgrades.
-15. Not deployed yet (section 13.3); Neon holds the scheme data (2026-11-08) but no app server uses it yet.
+15. Deployed on free plans (section 13.3, `RENDER.md`); the Render backend sleeps after 15 minutes without visitors.
 
 **Future work (roadmap)**
 - Deploy on the free tiers (Render pointed at the Neon database) and add a keep-alive ping.
@@ -1441,3 +1441,4 @@ See section 1.4.
 | 2026-11-16 | **Weekly job: new schemes go into the database in batches of 20**, each in its own transaction (5-minute limit each). One transaction for all 198 schemes ran past its 10-minute limit between GitHub and Neon and added nothing. Now a failed batch adds nothing, the batches before it stay, the error says how many were added, and the next run's `--sync-db` adds the rest. The CSV test now expects at least 4,722 schemes and no scheme listed twice, since the weekly job appends. | 9.6, 11 |
 | 2026-11-21 | **Checked india.gov.in as a scheme source** (`docs/india-gov-check.md`): its scheme section is powered by myScheme (same links), 5,026 different schemes (it says 5,791 with duplicates). 115 are not in SchemeSetu: they still have myScheme pages but myScheme's own search no longer lists them, many look closed (e.g. SERB awards). Not added; owner to decide. Also added `RENDER.md`, the owner's Render checklist. | 9.6, 13 |
 | 2026-11-22 | **Backend live on Render** at `https://schemesetu-backend-ms7u.onrender.com` (free plan, from `render.yaml`). The first deploy failed because `DATABASE_URL` held the local database's address (`localhost:5432`); with the Neon string it starts and serves 5,195 schemes. `vercel.json` now rewrites `/api` there. The service was created three times (addresses -obmi, -zeh2, then -ms7u, the one kept); `CLIENT_URL` set and checked. Still to do by the owner: Vercel redeploy, Google OAuth origin, live checks. | 13 |
+| 2026-11-23 | **SchemeSetu is live**: website https://schemesetu-chi.vercel.app (Vercel), backend `https://schemesetu-backend-ms7u.onrender.com` (Render), Neon database. Checked: 5,195 schemes, search, Hindi scheme page, Google sign-in (owner). Fixes on the way: Vercel's Redeploy rebuilt an old commit (deploy on push is off, so new commits need Create Deployment); Vercel had backend settings copied in but not `VITE_GOOGLE_CLIENT_ID`, so the Google button had client ID `undefined` (only `VITE_GOOGLE_CLIENT_ID` is needed in Vercel; the backend secrets there can be removed). How to update the live site and the traps: `RENDER.md`. | 13 |

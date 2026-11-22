@@ -1,73 +1,74 @@
-# Render: what you have to do
+# Render and Vercel: how SchemeSetu is deployed
 
-A short checklist for putting the SchemeSetu backend on Render (free plan). The full guide with screenshots-level
-detail is [docs/deploy-backend.md](docs/deploy-backend.md). Nothing here costs money.
+SchemeSetu is **live** (since 23 Nov 2026), on free plans only. The longer first-time guide is
+[docs/deploy-backend.md](docs/deploy-backend.md).
 
-**Backend address: https://schemesetu-backend-ms7u.onrender.com** (live since 22 Nov 2026; `/health` ok, 5,195 schemes).
+| Part | Where | Address |
+|---|---|---|
+| Website | Vercel | https://schemesetu-chi.vercel.app |
+| Backend (API) | Render, service `schemesetu-backend` (from `render.yaml`) | https://schemesetu-backend-ms7u.onrender.com |
+| Database | Neon (free, Singapore) | — |
+| Weekly new schemes | GitHub Actions, Sunday 02:00 IST | writes to Neon directly |
 
-> ⚠️ Until step 4 (Vercel redeploy) is done: **do not sign in on https://schemesetu-chi.vercel.app and do not share
-> the link.** The deployed site still sends `/api` to `schemesetu-api.onrender.com`, which is someone else's server.
+```
+Browser ──> Vercel (schemesetu-chi.vercel.app) ──/api──> Render (schemesetu-backend-ms7u) ──> Neon
+                                                               └──> Groq (SetuAI, translation)
+```
 
-## What is already done (nothing to do)
+Checked live on 22–23 Nov: 5,195 schemes, search (`tractor` → 17 schemes), Hindi scheme page, Google sign-in.
 
-| | Status |
+## Settings (names only; values live in the dashboards, never in chat, GitHub or files)
+
+**Render → schemesetu-backend → Environment**
+
+| Name | Value |
 |---|---|
-| Neon database | Filled: 5,163 schemes, the same as the CSV (checked 16 Nov) |
-| `render.yaml` | Ready: service `schemesetu-backend`, free plan, Singapore, Node 22, health check `/health` |
-| Database changes | Render runs `prisma migrate deploy` on every start. It adds the one missing table (`add_scheme_reports`, for "Report a problem") and never deletes data |
-| `SESSION_SECRET` | Render creates it itself; you never type it |
-| Weekly myScheme job | Scheduled every Sunday 02:00 IST on GitHub; writes to Neon directly |
+| `DATABASE_URL` | Neon connection string, **direct (pooling off)**, ending `?sslmode=require&connect_timeout=15`. **Not** the local `localhost:5432` one |
+| `CLIENT_URL` | `https://schemesetu-chi.vercel.app` (no `/` at the end) |
+| `GOOGLE_CLIENT_ID` | the OAuth client ID (ends `.apps.googleusercontent.com`) |
+| `GROQ_API_KEY` | the Groq key |
+| `SESSION_SECRET`, `NODE_ENV`, `NODE_VERSION`, `TRUST_PROXY_HOPS` | set by `render.yaml`; nothing to type |
 
-## Your steps
+**Vercel → project → Settings → Environment Variables**: only **one** is needed.
 
-### 1. Create the service (about 10 minutes)
-- [ ] https://render.com → sign in **with GitHub**
-- [ ] **New → Blueprint** → pick the `Urjagajera/SchemeSetu` repository
-- [ ] Render shows one service, **schemesetu-backend**. Type these four values when it asks:
+| Name | Value | Environments |
+|---|---|---|
+| `VITE_GOOGLE_CLIENT_ID` | the same client ID as `GOOGLE_CLIENT_ID` on Render | Production (+ Preview, Development) |
 
-  | Name | What to paste | Where to find it |
-  |---|---|---|
-  | `DATABASE_URL` | Neon connection string, **direct (pooling off)**, ending in `?sslmode=require&connect_timeout=15` | Neon → project → Connect |
-  | `CLIENT_URL` | `https://schemesetu-chi.vercel.app` (no `/` at the end) | — |
-  | `GOOGLE_CLIENT_ID` | Same value as `VITE_GOOGLE_CLIENT_ID` in Vercel, ends in `.apps.googleusercontent.com` | Google Cloud → Credentials |
-  | `GROQ_API_KEY` | Your Groq key | console.groq.com → API Keys |
+Backend settings (`DATABASE_URL`, `SESSION_SECRET`, `GROQ_API_KEY`, ...) do **not** belong in Vercel.
 
-- [ ] Press **Apply** and wait for the first build (about 5 minutes)
+**Google Cloud → Credentials → OAuth client → Authorised JavaScript origins**: `https://schemesetu-chi.vercel.app`
+and `http://localhost:5173`. No redirect URI is needed.
 
-Paste these only into Render's dashboard: never into chat, GitHub or a file.
+## Updating the live site
 
-### 2. Check it on its own
-- [ ] Copy the address Render shows (for example `https://schemesetu-backend.onrender.com`, maybe with extra letters)
-- [ ] Open `<address>/health` → a short "ok" answer
-- [ ] Open `<address>/api/schemes?limit=1` → JSON with `"total"` about **5,163**
-- [ ] If it fails: Render → **Logs** → send Claude a screenshot
+**Backend changes** (anything in `backend/`): push, then Render → **Manual Deploy → Deploy latest commit**.
+Database changes are applied by `prisma migrate deploy` when the service starts; it never deletes data.
 
-### 3. Send the address to Claude
-- [x] `vercel.json` now sends `/api` to `https://schemesetu-backend-ms7u.onrender.com` (was `schemesetu-api`);
-      committed and pushed after your yes
-- [x] Render → Environment: `CLIENT_URL` = `https://schemesetu-chi.vercel.app` (checked 22 Nov: the backend accepts
-      requests from the Vercel site)
-- ⚠️ **Keep this service.** Each time the Blueprint/service is deleted and created again, Render gives a new address
-  (`-obmi`, `-zeh2`, now `-ms7u`) and `vercel.json` has to change. To change settings, edit the existing service's
-  **Environment** and redeploy instead.
+**Website changes** (anything else, including `vercel.json`): push, then Vercel → **Deployments** → **⋯** (top
+right) → **Create Deployment** → `master` → check the new row shows the new commit and the blue **Production** badge.
 
-### 4. Redeploy the frontend
-- [ ] Vercel → your project → **Deployments** → **Redeploy** (so the new `vercel.json` is used)
+## Traps we hit (22 Nov 2026)
 
-### 5. Google sign-in
-- [ ] Google Cloud Console → APIs & Services → Credentials → your OAuth client → **Authorised JavaScript origins**
-      → add `https://schemesetu-chi.vercel.app` → Save (keep `http://localhost:5173` too)
+1. **Vercel "Redeploy" rebuilds the same old commit.** Deploying on push is off (`vercel.json`), so a row's
+   Redeploy never picks up new commits. Use **Create Deployment** with `master` (or Redeploy only a row that is
+   already the newest commit).
+2. **Website settings must start with `VITE_`** and are built in at build time. `GOOGLE_CLIENT_ID` without
+   `VITE_` gave a Google button with client ID `undefined`. After changing a Vercel variable, rebuild.
+3. **Don't delete and recreate the Render service.** Each new one gets a new address (`-obmi`, `-zeh2`, then
+   `-ms7u`) and `vercel.json` must change with it. Edit the existing service's Environment instead.
+4. **`DATABASE_URL` was the local address** (`localhost:5432`) at first: the service exited with
+   `P1001: Can't reach database server`.
+5. **After a website update, a browser may still show the old version** (SchemeSetu is an installable app and keeps
+   an offline copy). Test in a private window or press Ctrl+Shift+R.
 
-### 6. Check the live site
-- [ ] Home shows the scheme count; Search `tractor` finds the Gujarat tractor schemes
-- [ ] A scheme page opens; हिंदी and ગુજરાતી translate it
-- [ ] Google sign-in works and stays after a reload
-- [ ] Eligibility, Saved, Compare and the dashboard work
+## Still to check on the live site
+- [ ] Eligibility, Saved, Compare and the dashboard work when signed in
 - [ ] SetuAI answers a question
 - [ ] "Report a problem with this scheme" sends
+- [ ] Gujarati (ગુજરાતી) scheme page translates
 
 ## Good to know (free plan)
-- It **sleeps after 15 minutes** without visitors; the first visit after that takes about 50 seconds. Open the site
-  a couple of minutes before a demo.
-- **Auto-deploy is off.** After backend changes are pushed: Render → **Manual Deploy → Deploy latest commit**.
+- The backend **sleeps after 15 minutes** without visitors; the first visit after that takes about 50 seconds.
+  Open the site a couple of minutes before a demo.
 - New schemes from the weekly job appear on the live site without redeploying anything.
