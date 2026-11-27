@@ -42,7 +42,16 @@ export function createLimiter(max: number): <T>(task: () => Promise<T>) => Promi
   };
 }
 
-export function createGroqLlm(apiKey: string, opts: { maxConcurrent?: number; timeoutMs?: number; maxRetries?: number } = {}): Llm {
+export function createGroqLlm(
+  apiKey: string,
+  opts: {
+    maxConcurrent?: number;
+    timeoutMs?: number;
+    maxRetries?: number;
+    /** Called after every answered call with the tokens it used (prompt + completion), for scripts that keep to a budget. */
+    onUsage?: (usage: { model: string; totalTokens: number }) => void;
+  } = {},
+): Llm {
   // The SDK retries 429 and 5xx responses with backoff on its own; a long timeout covers slow reasoning calls.
   // A chat, where someone is waiting, passes a short timeout and fewer retries instead.
   const groq = new Groq({ apiKey, maxRetries: opts.maxRetries ?? 3, timeout: opts.timeoutMs ?? 180_000 });
@@ -64,6 +73,7 @@ export function createGroqLlm(apiKey: string, opts: { maxConcurrent?: number; ti
       if (req.effort && req.model.startsWith('openai/gpt-oss')) params.reasoning_effort = req.effort;
 
       const resp = await groq.chat.completions.create(params as never);
+      opts.onUsage?.({ model: req.model, totalTokens: resp.usage?.total_tokens ?? 0 });
       const choice = resp.choices[0];
       return {
         // Some models (Qwen) put their reasoning in <think> blocks inside the content.

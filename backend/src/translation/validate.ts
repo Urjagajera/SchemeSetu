@@ -118,6 +118,34 @@ export function gluedLatinWords(text: string, lang: LanguageConfig): string[] {
   return [...new Set(found)];
 }
 
+const ENGLISH_LINK_WORDS = ['under', 'of', 'the', 'and', 'for', 'to', 'with', 'from', 'in', 'on', 'by'];
+/** English link words written out in Gujarati letters ("Development of Coir" -> "ડેવલપમેન્ટ ઓફ કોઇર"). */
+const PHONETIC_LINK_WORDS_GU = ['ઓફ', 'ટુ', 'એન્ડ', 'ફોર'];
+
+/**
+ * Gujarati only. Two ways the model leaves English in a Gujarati sentence that the other checks miss (found in the
+ * card trial of 2026-11-27):
+ *  - an English link word between Gujarati words: `"રોજગાર પ્રોત્સાહન" under "ઉદ્યોગો…"`. One between English words
+ *    ("Bank of Baroda" kept as a name) is fine, so only a word whose nearest letters on both sides are Gujarati counts;
+ *  - English phrases written out phonetically: "મોટિવેશન ઓફ એન્ટરપ્રેન્યોર્સ ટુ સ્ટાર્ટ ઇન્ડસ્ટ્રીઝ". One phonetic "of" is
+ *    normal in names (બેંક ઓફ બરોડા), so two or more are needed.
+ */
+export function leftoverEnglish(out: string, lang: LanguageConfig): string[] {
+  if (lang.code !== 'gu') return [];
+  const isGu = (ch: string | undefined) => ch !== undefined && /[઀-૿]/.test(ch);
+  const found: string[] = [];
+  for (const m of out.matchAll(/(?<![A-Za-z])([a-z]+)(?![A-Za-z])/g)) {
+    if (!ENGLISH_LINK_WORDS.includes(m[1])) continue;
+    const before = out.slice(0, m.index).replace(/[^\p{L}\p{M}]+$/u, '').slice(-1);
+    const after = out.slice(m.index! + m[1].length).replace(/^[^\p{L}\p{M}]+/u, '')[0];
+    if (isGu(before) && isGu(after)) found.push(m[1]);
+  }
+  const tokens = out.split(/[^\p{L}\p{M}]+/u);
+  const phonetic = tokens.filter((t) => PHONETIC_LINK_WORDS_GU.includes(t));
+  if (phonetic.length >= 2) found.push(...phonetic);
+  return [...new Set(found)];
+}
+
 /** Letters and combining marks (Indic vowel signs are marks): the characters that carry a script. */
 function scriptCounts(text: string, lang: LanguageConfig): { visible: number; native: number } {
   let visible = 0;
@@ -247,6 +275,8 @@ function checkBlock(
   if (stray.length > 0) reasons.push(`letters from another script inside the ${lang.name} text: ${stray.join(', ')}`);
   const glued = gluedLatinWords(out, lang);
   if (glued.length > 0) reasons.push(`Latin letters stuck inside ${lang.name} words: ${glued.slice(0, 3).join(', ')}`);
+  const leftover = leftoverEnglish(out, lang);
+  if (leftover.length > 0) reasons.push(`English left in the ${lang.name} sentence: ${leftover.slice(0, 4).join(', ')}`);
 
   if (english > 0) {
     if (out.trim() === source.trim()) reasons.push('returned the English unchanged');

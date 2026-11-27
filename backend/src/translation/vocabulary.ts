@@ -1,5 +1,6 @@
 import { LanguageConfig } from './languages.js';
 import { hi } from './vocabulary/hi.js';
+import { gu } from './vocabulary/gu.js';
 
 /**
  * Translated labels for the short, repeated words around a scheme: the "category" badge and ministry line
@@ -25,7 +26,7 @@ export interface Vocabulary extends VocabularyData {
 
 export const TAG_MIN_SCHEMES = 10;
 
-const DATA: Record<string, VocabularyData> = { hi };
+const DATA: Record<string, VocabularyData> = { hi, gu };
 
 /** The vocabulary for an enabled language; empty maps for English or a language that is not enabled. */
 export function vocabularyFor(lang: LanguageConfig | null): Vocabulary {

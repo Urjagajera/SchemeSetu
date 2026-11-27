@@ -25,6 +25,16 @@ const AUDIT: Array<[string, string, string, string]> = [
   ['Age relaxation', 'Age relaxation of up to 10 years is allowed.', 'ખાસ મુલતવી 10 વર્ષ સુધી આપવામાં આવે છે.', 'ઉંમરમાં 10 વર્ષ સુધીની છૂટછાટ આપવામાં આવે છે.'],
   ['Trimester', 'The applicant must be in her 2nd or 3rd trimester of pregnancy.', 'અરજદાર ગર્ભાવસ્થાના 2 અથવા 3 મહિનામાં હોવી જોઈએ.', 'અરજદાર ગર્ભાવસ્થાના બીજા અથવા ત્રીજા ત્રિમાસિકમાં હોવી જોઈએ.'],
   ['Free of charge', 'Medicines are provided free of charge.', 'દવાઓ મુક્ત રીતે આપવામાં આવે છે.', 'દવાઓ મફત આપવામાં આવે છે.'],
+  // From the 2026-11-27 card trial and vocabulary run (real outputs as the wrong ones).
+  ['Scholarship', 'Swanath Scholarship Scheme', 'સ્વનાથ વિત્તીય સહાય યોજના', 'સ્વનાથ શિષ્યવૃત્તિ યોજના'],
+  ['Mukhyamantri', 'Mukhyamantri Saur Swarojgar Yojana', 'મુખમંત્રી સૌર સ્વરોજગાર યોજના', 'મુખ્યમંત્રી સૌર સ્વરોજગાર યોજના'],
+  ['Janjati', 'Janjati Swarojgar Yojna', 'જંજનાતિ સ્વરોજગાર યોજના', 'જનજાતિ સ્વરોજગાર યોજના'],
+  ['Accident', 'Assistance in case of accident', 'અપઘાતના કિસ્સામાં સહાય', 'અકસ્માતના કિસ્સામાં સહાય'],
+  ['Treatment', 'Free treatment in hospitals', 'હોસ્પિટલોમાં મફત સાવકાર', 'હોસ્પિટલોમાં મફત સારવાર'],
+  ['Paddy', 'Back Ended Investment Subsidy to Paddy Growers', 'પાંદડાના ખેડૂતો માટે રોકાણ સબસિડી', 'ડાંગર ઉગાડતા ખેડૂતો માટે રોકાણ સબસિડી'],
+  ['Karaikal', '5% Additional Subsidy to Karaikal Region', 'કરાઓકે પ્રદેશ માટે 5% વધારાની સબસિડી', 'કરાઈકલ પ્રદેશ માટે 5% વધારાની સબસિડી'],
+  ['Intellectual Property', 'Assistance for Intellectual Property Protection', 'મનસિક સંપત્તિ સુરક્ષા માટે સહાય', 'બૌદ્ધિક સંપદા સુરક્ષા માટે સહાય'],
+  ['Entrepreneur', 'Training for every entrepreneur', 'દરેક ઉદ્યોગપતિ માટે તાલીમ', 'દરેક ઉદ્યોગસાહસિક માટે તાલીમ'],
 ];
 
 describe('Gujarati audit glossary: the audit\'s wrong renderings are rejected, the right ones accepted', () => {

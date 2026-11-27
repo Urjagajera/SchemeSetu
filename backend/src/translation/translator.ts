@@ -107,6 +107,14 @@ function systemPrompt(lang: LanguageConfig, glossary: GlossaryRequirement[], lis
     `- You must translate ALL of it into ${lang.name}. Never return the English unchanged, however long the content is.`,
     `- Translate procedural words like "Application Process", "Offline", "Online", "STEP 1", "STEP 2", "Step", "Note:" into ${lang.name} (for example in Gujarati: "અરજી પ્રક્રિયા", "ઓનલાઇન", "ઓફલાઇન", "પગલું 1", "નોંધ:"). Do not leave English steps or headings untranslated.`,
   ];
+  if (lang.code === 'gu') {
+    // In the 2026-11-27 card trial, gpt-oss-120b left quoted scheme names in English or wrote them out phonetically
+    // ("Livelihood Opportunity Promotion" -> લિવલિહુડ ઓપોર્ટ્યુનિટી પ્રોમોશન), which a Gujarati reader cannot follow.
+    lines.push(
+      '- Translate the meaning of scheme, programme and component names too, including names inside quotation marks (for example "Livelihood Opportunity Promotion Scheme" -> "આજીવિકા તક પ્રોત્સાહન યોજના").',
+      '- Never write English words phonetically in Gujarati letters. Only names of people, places and organisations, and names that are already Indian words (Mukhyamantri, Yojana, Swarojgar), are kept as names, written in Gujarati script (મુખ્યમંત્રી, યોજના, સ્વરોજગાર).',
+    );
+  }
   if (hint) lines.push(`- ${hint}`);
   if (glossary.length > 0) {
     lines.push('- Use exactly these renderings for these names:');

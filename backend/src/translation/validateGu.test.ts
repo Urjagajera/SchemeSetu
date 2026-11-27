@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateText, gluedLatinWords } from './validate.js';
+import { validateText, gluedLatinWords, leftoverEnglish } from './validate.js';
 import { LANGUAGES } from './languages.js';
 import { glossaryHits, mentions } from './glossary.js';
 
@@ -103,5 +103,34 @@ describe('glossary: pulse (singular) and marginal', () => {
   it('they apply to Gujarati only, are marked unverified, and do not fire inside other words', () => {
     expect(glossaryHits([PULSE_SRC, MARGINAL_SRC], 'hi')).toEqual([]);
     expect(glossaryHits(['Impulse buying', 'marginalised groups'], 'gu')).toEqual([]);
+  });
+});
+
+describe('leftoverEnglish (Gujarati): English left between Gujarati words, or phrases written out phonetically', () => {
+  // Real outputs from the card trial of 2026-11-27.
+  it.each([
+    ['an English "under" between two Gujarati names', '"રોજગાર પ્રોત્સાહન" under "ઉદ્યોગો શરૂ કરવા માટે ઉદ્યોગસાહસિકોને પ્રોત્સાહન"', ['under']],
+    ['a long phonetic title', 'મોટિવેશન ઓફ એન્ટરપ્રેન્યોર્સ ટુ સ્ટાર્ટ ઇન્ડસ્ટ્રીઝ એન્ડ ફિસ્કલ એસિસ્ટન્સ', ['ઓફ', 'ટુ', 'એન્ડ']],
+  ])('flags %s', (_what, out, words) => {
+    expect(leftoverEnglish(out, gu)).toEqual(expect.arrayContaining(words));
+  });
+
+  it.each([
+    ['a kept English name with "of"', 'આ યોજના Bank of Baroda દ્વારા અમલમાં મૂકવામાં આવે છે.'],
+    ['one phonetic "of" in an established name', 'લોન બેંક ઓફ બરોડા મારફતે આપવામાં આવે છે.'],
+    ['ordinary Gujarati', '"આજીવિકા તક પ્રોત્સાહન યોજના (દિવ્યાંગ)" સામાજિક કલ્યાણ વિભાગ દ્વારા શરૂ કરવામાં આવી હતી.'],
+    ['acronyms between Gujarati words', 'SC/ST અને OBC વિદ્યાર્થીઓ માટે'],
+  ])('accepts %s', (_what, out) => {
+    expect(leftoverEnglish(out, gu)).toEqual([]);
+  });
+
+  it('is a Gujarati-only check: Hindi is not affected', () => {
+    expect(leftoverEnglish('"रोजगार प्रोत्साहन" under "उद्योग"', hi)).toEqual([]);
+  });
+
+  it('makes validateText reject the output', () => {
+    const r = validateText('"Employment Incentive" under "Motivation of Entrepreneurs"', '"રોજગાર પ્રોત્સાહન" under "ઉદ્યોગસાહસિકોને પ્રોત્સાહન"', gu);
+    expect(r.ok).toBe(false);
+    expect(r.reasons.join(' ')).toMatch(/English left in the Gujarati sentence: under/);
   });
 });

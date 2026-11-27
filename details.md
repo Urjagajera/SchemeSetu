@@ -763,18 +763,21 @@ Each topic is a fixed list of cleaned tag names (`filters/topics.ts`); a scheme 
 - Hindi and Gujarati wording is **unverified** by a native speaker.
 
 ### 8.2 Scheme text translation pipeline (`backend/src/translation/`)
-1. **Languages:** Hindi **on**; Gujarati **off** (`LANGUAGES.gu.enabled = false` in `translation/languages.ts`) until a native-speaker review.
+1. **Languages:** Hindi and Gujarati both **on** (Gujarati since 2026-11-14), both shown as machine translated; no native-speaker review yet.
 2. **Storage:** table `SchemeTranslation` — one row per scheme + language + field (`title`, `summary`, `description`, `benefits`,
    `eligibility`, `documents`, `applicationProcess`), with status, model, attempts, error, and a `sourceHash` that marks a row stale
    when the English text changes.
 3. **Never waits for the model:** an API call returns what is stored now and starts the rest in the background; the page polls.
-4. **Models:** primary `openai/gpt-oss-120b`, automatic fallback `qwen/qwen3.8-27b`; text is sent per field and in chunks.
+4. **Models:** primary `openai/gpt-oss-120b`; Hindi falls back to `qwen/qwen3.8-27b`, Gujarati never does (it retries gpt-oss-120b with more reasoning). Text is sent per field and in chunks. Gujarati prompts also ask for scheme names (even quoted ones) to be translated by meaning, never English written out phonetically.
 5. **Validator:** an output is rejected (and the fallback tried) when there is too little native script, numbers or URLs are lost, the
    number of lines or list items changes, English comes back unchanged, a glossary term is wrong or forbidden, letters from another
-   script appear, or Latin letters are glued to native letters.
+   script appear, or Latin letters are glued to native letters. Gujarati only: an English link word between Gujarati words ("…" under "…"), or two or more
+   English link words written phonetically (ઓફ, ટુ, એન્ડ, ફોર), is also rejected.
 6. **Glossary:** preferred, acceptable and forbidden renderings (e.g. Hindi uses दिव्यांग; अपाहिज is forbidden).
-7. **Vocabulary:** ministry and state names plus 363 tags in Hindi (`GET /api/vocabulary?lang=hi`).
-8. **Batch scripts:** `npm run translate:cards`, `npm run scan:translations`.
+7. **Vocabulary:** ministry and state names plus common tags: Hindi 89 names + 363 tags, Gujarati 90 names + 383 tags
+   (`GET /api/vocabulary?lang=hi|gu`). The Gujarati one was hand-corrected in 96 places (`backend/reports/vocabulary-gu-review.md`).
+8. **Batch scripts:** `npm run translate:cards -- <hi|gu> --max-tokens N` (stops starting new work after N tokens, to leave
+   part of Groq's free 200,000-token daily allowance for visitors), `npm run translate:vocabulary -- <lang>`, `npm run scan:translations`.
 
 ### 8.3 Coverage (measured 2026-11-06, local database)
 
@@ -1442,3 +1445,4 @@ See section 1.4.
 | 2026-11-21 | **Checked india.gov.in as a scheme source** (`docs/india-gov-check.md`): its scheme section is powered by myScheme (same links), 5,026 different schemes (it says 5,791 with duplicates). 115 are not in SchemeSetu: they still have myScheme pages but myScheme's own search no longer lists them, many look closed (e.g. SERB awards). Not added; owner to decide. Also added `RENDER.md`, the owner's Render checklist. | 9.6, 13 |
 | 2026-11-22 | **Backend live on Render** at `https://schemesetu-backend-ms7u.onrender.com` (free plan, from `render.yaml`). The first deploy failed because `DATABASE_URL` held the local database's address (`localhost:5432`); with the Neon string it starts and serves 5,195 schemes. `vercel.json` now rewrites `/api` there. The service was created three times (addresses -obmi, -zeh2, then -ms7u, the one kept); `CLIENT_URL` set and checked. Still to do by the owner: Vercel redeploy, Google OAuth origin, live checks. | 13 |
 | 2026-11-23 | **SchemeSetu is live**: website https://schemesetu-chi.vercel.app (Vercel), backend `https://schemesetu-backend-ms7u.onrender.com` (Render), Neon database. Checked: 5,195 schemes, search, Hindi scheme page, Google sign-in (owner). Fixes on the way: Vercel's Redeploy rebuilt an old commit (deploy on push is off, so new commits need Create Deployment); Vercel had backend settings copied in but not `VITE_GOOGLE_CLIENT_ID`, so the Google button had client ID `undefined` (only `VITE_GOOGLE_CLIENT_ID` is needed in Vercel; the backend secrets there can be removed). How to update the live site and the traps: `RENDER.md`. | 13 |
+| 2026-11-27 | **Gujarati brought up to Hindi's level (owner chose: names/tags and cards, capped daily, no owner review, straight into Neon after a backup).** Gujarati vocabulary (90 names, 383 tags) built and served; Claude read all 472 and corrected 96 (e.g. Mishap had become અપઘાત, "suicide"; Ministry of Home Affairs "house ministry"; Scholarship "financial assistance"). Card trial on 35 schemes found mistranslated words and English left or written out phonetically in titles; fixed with a Gujarati prompt rule, 12 new glossary entries and a validator check, then re-translated. Card batch gains `--max-tokens`; Gujarati titles and summaries for all schemes to be filled at about 120,000 tokens a day (about 2–3 weeks). Backup before writing: `D:\ANTI\db-backups\neon-SchemeTranslation-20261127-1805.sql`. | 8 |

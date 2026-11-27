@@ -101,6 +101,23 @@ const GUJARATI_AUDIT_TERMS: GlossaryEntry[] = [
   { en: 'partnership firm', gu: unverified({ preferred: 'ભાગીદારી પેઢી', forbidden: ['સાહોદરિક'] }) },
   { en: 'partnership concern', gu: unverified({ preferred: 'ભાગીદારી પેઢી', acceptable: ['ભાગીદારી પેઢી'], forbidden: ['ચિંતા'] }) },
   { en: 'age relaxation', gu: unverified({ preferred: 'ઉંમરમાં છૂટછાટ', acceptable: ['વય મર્યાદામાં છૂટછાટ', 'વયમાં છૂટછાટ', 'છૂટછાટ', 'છૂટ'], forbidden: ['મુલતવી'] }) },
+  // From the card trial of 2026-11-27: "Swanath Scholarship Scheme" came back as "financial assistance scheme",
+  // Mukhyamantri and Janjati were misspelt (મુખમંત્રી, જંજનાતિ), and in the vocabulary run "Mishap" became અપઘાત,
+  // which means suicide in Gujarati. These entries only require the right word, so a wrong one fails and is retried.
+  { en: 'scholarship', wholeWord: true, gu: unverified({ preferred: 'શિષ્યવૃત્તિ', acceptable: ['સ્કોલરશિપ', 'સ્કોલરશીપ', 'છાત્રવૃત્તિ'] }) },
+  { en: 'chief minister', gu: unverified({ preferred: 'મુખ્યમંત્રી', acceptable: ['મુખ્ય મંત્રી'] }) },
+  { en: 'mukhyamantri', gu: unverified({ preferred: 'મુખ્યમંત્રી', acceptable: ['મુખ્ય મંત્રી'] }) },
+  { en: 'mukhya mantri', gu: unverified({ preferred: 'મુખ્યમંત્રી', acceptable: ['મુખ્ય મંત્રી'] }) },
+  { en: 'janjati', gu: unverified({ preferred: 'જનજાતિ', acceptable: ['જનજાતી'] }) },
+  { en: 'accident', wholeWord: true, gu: unverified({ preferred: 'અકસ્માત', acceptable: ['દુર્ઘટના'] }) },
+  { en: 'treatment', wholeWord: true, gu: unverified({ preferred: 'સારવાર', acceptable: ['ઉપચાર', 'ઇલાજ', 'ચિકિત્સા'] }) },
+  // From the second trial: entrepreneur came back as "industrialist", paddy as "leaves", Karaikal as "karaoke",
+  // intellectual property as "mental property".
+  { en: 'entrepreneur', wholeWord: true, gu: unverified({ preferred: 'ઉદ્યોગસાહસિક', acceptable: ['સાહસિક', 'ઉદ્યમી', 'એન્ટરપ્રેન્યોર'] }) },
+  { en: 'entrepreneurship', gu: unverified({ preferred: 'ઉદ્યોગસાહસિકતા', acceptable: ['ઉદ્યોગસાહસ', 'સાહસિકતા', 'ઉદ્યમશીલતા'] }) },
+  { en: 'paddy', wholeWord: true, gu: unverified({ preferred: 'ડાંગર', acceptable: ['ધાન', 'ચોખા'] }) },
+  { en: 'karaikal', gu: unverified({ preferred: 'કરાઈકલ', acceptable: ['કરાઇકલ', 'કારૈકલ', 'કરૈકલ', 'કારાઈકલ'] }) },
+  { en: 'intellectual property', gu: unverified({ preferred: 'બૌદ્ધિક સંપદા', acceptable: ['બૌદ્ધિક સંપત્તિ'] }) },
 ];
 
 export const GLOSSARY: GlossaryEntry[] = [

@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import express from 'express';
 import request from 'supertest';
 import { hi } from './vocabulary/hi.js';
+import { gu } from './vocabulary/gu.js';
 import { vocabularyFor } from './vocabulary.js';
 import { LANGUAGES } from './languages.js';
 import { translateTerms, renderVocabularyFile } from './vocabularyBuilder.js';
@@ -38,7 +39,45 @@ describe('the committed Hindi vocabulary', () => {
   });
 });
 
+const hasGujarati = (s: string) => /[઀-૿]/.test(s);
+
+describe('the committed Gujarati vocabulary', () => {
+  it('has the expected size (89 names + General, 383 common tags)', () => {
+    expect(Object.keys(gu.names).length).toBe(90);
+    expect(Object.keys(gu.tags).length).toBe(383);
+  });
+
+  it('is real Gujarati: every name has Gujarati letters and no Devanagari, and a tag without any is a deliberate acronym', () => {
+    const all = { ...gu.names, ...gu.tags };
+    for (const [en, out] of Object.entries(gu.names)) expect(hasGujarati(out), `${en} -> ${out}`).toBe(true);
+    for (const [en, out] of Object.entries(all)) expect(hasHindi(out), `${en} -> ${out}`).toBe(false);
+    for (const [en, out] of Object.entries(gu.tags).filter(([, o]) => !hasGujarati(o))) expect(out, en).toMatch(/^[A-Z]{2,6}s?$/);
+  });
+
+  it('has no stray invisible or non-breaking characters', () => {
+    const all = [...Object.values(gu.names), ...Object.values(gu.tags)].join('');
+    expect(all).not.toMatch(/[‐-― ​-‍ ﻿]/);
+  });
+
+  it('keeps the hand corrections (wrong meanings the model produced)', () => {
+    expect(gu.names['Ministry Of Home Affairs']).toBe('ગૃહ મંત્રાલય'); // model: "house ministry"
+    expect(gu.names['Ministry Of Defence']).toBe('સંરક્ષણ મંત્રાલય');
+    expect(gu.tags['Scholarship']).toBe('શિષ્યવૃત્તિ'); // model: "financial assistance"
+    expect(gu.tags['Mishap']).toBe('દુર્ઘટના'); // model: અપઘાત, which means suicide
+    expect(gu.tags['Treatment']).toBe('સારવાર'); // model: a non-word
+    expect(gu.tags['Daughter']).toBe('દીકરી');
+    expect(gu.tags['Minority']).toBe('લઘુમતી'); // the Gujarati word, not Hindi's अल्पसंख्यक
+  });
+});
+
 describe('state names', () => {
+  it('every one of the 36 states and union territories has a Gujarati name', () => {
+    for (const state of INDIAN_STATES_AND_UTS) {
+      expect(gu.names[state], state).toBeTruthy();
+      expect(hasGujarati(gu.names[state]), state).toBe(true);
+    }
+  });
+
   it('every one of the 36 states and union territories has a Hindi name, spelled with Devanagari', () => {
     for (const state of INDIAN_STATES_AND_UTS) {
       expect(hi.names[state], state).toBeTruthy();
@@ -67,13 +106,18 @@ describe('GET /api/vocabulary', () => {
     return app;
   };
 
-  it('serves Hindi, and empty tables for English, Gujarati (not enabled) and junk', async () => {
+  it('serves Hindi and Gujarati, and empty tables for English and junk', async () => {
     const app = await buildApp();
     const h = await request(app).get('/api/vocabulary?lang=hi');
     expect(h.status).toBe(200);
     expect(h.body.data.language).toBe('hi');
     expect(Object.keys(h.body.data.names).length).toBe(89);
-    for (const q of ['', '?lang=en', '?lang=gu', '?lang=xx']) {
+    const g = await request(app).get('/api/vocabulary?lang=gu');
+    expect(g.status).toBe(200);
+    expect(g.body.data.language).toBe('gu');
+    expect(g.body.data.names['Gujarat']).toBe('ગુજરાત');
+    expect(g.body.data.tags['Scholarship']).toBe('શિષ્યવૃત્તિ');
+    for (const q of ['', '?lang=en', '?lang=xx']) {
       const r = await request(app).get('/api/vocabulary' + q);
       expect(r.body.data.names).toEqual({});
       expect(r.body.data.tags).toEqual({});
