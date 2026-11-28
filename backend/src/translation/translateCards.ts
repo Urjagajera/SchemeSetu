@@ -16,10 +16,10 @@
  */
 import prisma from '../db/prisma.js';
 import config from '../config/env.js';
-import { createGroqLlm } from './llm.js';
+import { createGroqLlm, Llm } from './llm.js';
 import { createTranslator } from './translator.js';
 import { createTranslationService } from './service.js';
-import { createTokenBudget } from './tokenBudget.js';
+import { createTokenBudget, isDailyLimitError } from './tokenBudget.js';
 import { LANGUAGES, LanguageCode } from './languages.js';
 
 function flag(name: string, fallback: number): number {
@@ -42,11 +42,45 @@ async function main() {
 
   const budget = createTokenBudget(maxTokens);
   let rejected = 0;
+  const why: Record<string, number> = {};
+  const groq = createGroqLlm(config.GROQ_API_KEY, { onUsage: (u) => budget.add(u.totalTokens) });
+  // The limit is checked before every model call, not only between chunks: on 2026-11-27 a 30,000-token run used
+  // 68,081 because retries inside two chunks kept going. A call refused here leaves its text English (stored as
+  // failed), and the next run picks it up again.
+  // A second safety net: if Groq refuses many calls in a row (daily limit, outage), stop rather than marking every
+  // remaining scheme as failed.
+  const MAX_FAILS_IN_A_ROW = 15;
+  let failsInARow = 0;
+  const llm: Llm = async (req) => {
+    if (budget.exhausted()) throw new Error('token limit for this run reached');
+    try {
+      const resp = await groq(req);
+      failsInARow = 0;
+      return resp;
+    } catch (e) {
+      if (isDailyLimitError(String((e as Error).message)) || ++failsInARow >= MAX_FAILS_IN_A_ROW) {
+        if (!budget.exhausted()) console.log(`  Groq refused the call (${String((e as Error).message).slice(0, 90)}…): no new work will be started`);
+        budget.stop();
+      }
+      throw e;
+    }
+  };
   const translator = createTranslator({
-    llm: createGroqLlm(config.GROQ_API_KEY, { onUsage: (u) => budget.add(u.totalTokens) }),
+    llm,
     primaryModel: config.TRANSLATION_PRIMARY_MODEL,
     fallbackModel: config.TRANSLATION_FALLBACK_MODEL,
-    onReject: () => rejected++,
+    onReject: ({ reasons }) => {
+      rejected++;
+      for (const r of reasons) {
+        const k = r.replace(/\(.*$/s, '').replace(/:.*$/s, '').trim().slice(0, 70);
+        why[k] = (why[k] ?? 0) + 1;
+      }
+      // Groq's daily allowance is used up: every further call would fail and mark a scheme as failed, so stop here.
+      if (reasons.some(isDailyLimitError) && !budget.exhausted()) {
+        console.log('  Groq says the daily token limit is reached: no new chunks will be started');
+        budget.stop();
+      }
+    },
   });
   const service = createTranslationService({ db: prisma as never, translator });
 
@@ -86,6 +120,7 @@ async function main() {
       `${budget.used().toLocaleString('en-IN')} tokens used, ${rejected} attempts rejected by validation`,
   );
   for (const f of fields) console.log(`  ${lang.name} ${f}: ${count(f, 'ok')} stored, ${count(f, 'failed')} failed, of ${schemes.length} schemes`);
+  if (rejected > 0) console.log('  why attempts were rejected:', why);
 }
 
 main()

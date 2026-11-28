@@ -186,7 +186,11 @@ export function createTranslator(opts: TranslatorOptions) {
         reasons.push(`${step.model}: ${result.reasons.join('; ')}`);
         opts.onReject?.({ model: step.model, reasons: result.reasons, output: resp.text.slice(0, 300) });
       } catch (e) {
-        const msg = `request failed (${(e as { status?: number }).status ?? ''} ${String((e as Error).message).slice(0, 120)})`;
+        const full = String((e as Error).message);
+        // Groq's daily-limit message puts "tokens per day (TPD)" after a long organisation id, past the 120 characters kept
+        // here; say so up front, or a batch script never learns the day's allowance is gone (2026-11-27: ~7,500 texts failed).
+        const daily = /tokens per day|\bTPD\b/i.test(full) ? 'daily token limit (TPD) reached: ' : '';
+        const msg = `request failed (${(e as { status?: number }).status ?? ''} ${daily}${full.slice(0, 120)})`;
         reasons.push(`${step.model}: ${msg}`);
         opts.onReject?.({ model: step.model, reasons: [msg] });
       }

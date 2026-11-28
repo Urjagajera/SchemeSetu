@@ -77,6 +77,17 @@ describe('translateText: validated, with fallback', () => {
     expect(r.error).toMatch(/request failed/);
   });
 
+  it("names Groq's daily limit even though the long message is cut short", async () => {
+    const tpd = Object.assign(
+      new Error('429 {"error":{"message":"Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01km7zvj3hff5satxvp249b` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 199990'),
+      { status: 429 },
+    );
+    const { llm } = fakeLlm({ [PRIMARY]: [tpd], [FALLBACK]: [tpd] });
+    const r = await translator(llm).translateText(EN, hi);
+    expect(r.ok).toBe(false);
+    expect(r.error).toMatch(/daily token limit \(TPD\) reached/);
+  });
+
   it('does not call the same model twice when primary and fallback are the same', async () => {
     const { llm, calls } = fakeLlm({ [PRIMARY]: [EN] });
     const r = await createTranslator({ llm, primaryModel: PRIMARY, fallbackModel: PRIMARY }).translateText(EN, hi);

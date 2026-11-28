@@ -10,17 +10,28 @@ export interface TokenBudget {
   add(tokens: number): void;
   /** Tokens used so far. */
   used(): number;
-  /** True once the budget is spent: start no new work. */
+  /** True once the budget is spent, or Groq's own daily limit was hit: start no new work. */
   exhausted(): boolean;
+  /** Stops the run early (Groq said its daily limit is reached, so more calls would only fail). */
+  stop(): void;
 }
 
 export function createTokenBudget(maxTokens: number): TokenBudget {
   let used = 0;
+  let stopped = false;
   return {
     add: (tokens) => {
       if (Number.isFinite(tokens) && tokens > 0) used += tokens;
     },
     used: () => used,
-    exhausted: () => used >= maxTokens,
+    exhausted: () => stopped || used >= maxTokens,
+    stop: () => {
+      stopped = true;
+    },
   };
+}
+
+/** True for Groq's "Rate limit reached ... on tokens per day (TPD)" error, as opposed to the per-minute limit it waits out. */
+export function isDailyLimitError(message: string): boolean {
+  return /tokens per day|\bTPD\b/i.test(message);
 }
